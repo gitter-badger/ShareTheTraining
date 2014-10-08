@@ -8,12 +8,11 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
 
-import play.db.jpa.Transactional;
 import common.BaseModelObject;
 
 @Entity
 public class Course extends BaseModelObject {
-	@Transactional
+
 	public static Course create(String courseID, String courseName,
 			int courseCategory, EntityManager em) {
 		Course course = new Course();

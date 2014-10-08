@@ -1,5 +1,7 @@
 package models;
 
+import static play.test.Helpers.inMemoryDatabase;
+
 import javax.persistence.EntityManager;
 
 import org.junit.After;
@@ -15,7 +17,7 @@ public abstract class ModelBaseTest {
 	@Before
 	public void setUp() {
 		
-		final FakeApplication app = Helpers.fakeApplication();
+		final FakeApplication app = Helpers.fakeApplication(inMemoryDatabase());
 		Helpers.start(app);
 		Option<JPAPlugin> jpaPlugin = app.getWrappedApplication().plugin(JPAPlugin.class);
 		mEm = jpaPlugin.get().em("default");
