@@ -3,7 +3,6 @@ package common;
 import java.util.UUID;
 
 import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
