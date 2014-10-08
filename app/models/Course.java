@@ -12,23 +12,27 @@ import play.db.jpa.Transactional;
 import common.BaseModelObject;
 
 @Entity
-public class Course extends BaseModelObject{
+public class Course extends BaseModelObject {
 	@Transactional
-	public static Course create(String courseID,String courseName, EntityManager em) {
+	public static Course create(String courseID, String courseName,
+			int courseCategory, EntityManager em) {
 		Course course = new Course();
 		course.setCourseID(courseID);
 		course.setCourseName(courseName);
+		course.setCourseCategory(courseCategory);
 		em.persist(course);
 		return course;
 	}
-	
+
 	private String courseID;
-	
+
 	private String courseName;
+
+	private int courseCategory;
 
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
-	
+
 	public String getCourseID() {
 		return courseID;
 	}
@@ -36,10 +40,20 @@ public class Course extends BaseModelObject{
 	public void setCourseID(String courseID) {
 		this.courseID = courseID;
 	}
+
 	public String getCourseName() {
 		return courseName;
 	}
+
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
+	}
+
+	public int getCourseCategory() {
+		return courseCategory;
+	}
+
+	public void setCourseCategory(int courseCategory) {
+		this.courseCategory = courseCategory;
 	}
 }
