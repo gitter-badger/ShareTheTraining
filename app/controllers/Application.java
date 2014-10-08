@@ -1,8 +1,6 @@
 package controllers;
 
-import models.Course;
 import play.*;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.*;
 import views.html.*;

@@ -16,24 +16,23 @@ import scala.Option;
 public abstract class ModelBaseTest {
 	@Before
 	public void setUp() {
-		
+
 		final FakeApplication app = Helpers.fakeApplication(inMemoryDatabase());
 		Helpers.start(app);
-		Option<JPAPlugin> jpaPlugin = app.getWrappedApplication().plugin(JPAPlugin.class);
+		Option<JPAPlugin> jpaPlugin = app.getWrappedApplication().plugin(
+				JPAPlugin.class);
 		mEm = jpaPlugin.get().em("default");
-	    JPA.bindForCurrentThread(mEm);
-	    
-	}//end setUp Method
+		JPA.bindForCurrentThread(mEm);
+	}
 
 	@After
 	public void tearDown() {
-		
-	    JPA.bindForCurrentThread(null);
-	    this.mEm.close();
-	    
-        }//end tearDown Method
-	
-	//Variables
+
+		JPA.bindForCurrentThread(null);
+		this.mEm.close();
+
+	}
+
 	private EntityManager mEm;
 
 	public EntityManager getmEm() {
