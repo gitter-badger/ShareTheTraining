@@ -45,9 +45,6 @@ public abstract class BaseModelObject implements IModelObject,
 		return eb.isEquals();
 	}
 
-	/**
-	 * use HashCodeBuilder to calculate a hashcode
-	 */
 	public int hashCode() {
 		return new HashCodeBuilder().append(getId()).toHashCode();
 	}
