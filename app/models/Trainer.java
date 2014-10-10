@@ -1,7 +1,13 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Trainer extends User{
@@ -10,10 +16,14 @@ public class Trainer extends User{
 		super(email, username, password);
 	}
 	
-	public static Trainer create(String email, String userName, String password, EntityManager em) {
+	public static Trainer create(String email, String userName,
+			String password, EntityManager em) {
 		Trainer trainer = new Trainer(email, userName, password);
 		em.persist(trainer);
 		return trainer;
 	}
+	
+	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
+	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
 }

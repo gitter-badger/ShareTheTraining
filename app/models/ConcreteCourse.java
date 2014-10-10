@@ -1,7 +1,12 @@
 package models;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 import common.BaseModelObject;
@@ -19,6 +24,14 @@ public class ConcreteCourse extends BaseModelObject {
 	@ManyToOne
 	private Course courseInfo;
 
+	@ManyToOne
+	private Trainer trainer;
+	
+	@ManyToMany(cascade = { CascadeType.ALL })
+	private Collection<Customer> selectedCustomers = new ArrayList<Customer>();
+	
+	
+	
 	public Course getCourseInfo() {
 		return courseInfo;
 	}
