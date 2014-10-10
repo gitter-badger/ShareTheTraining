@@ -1,17 +1,15 @@
 package models;
 
-import static org.junit.Assert.assertNotNull;
+import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
-import play.db.jpa.Transactional;
 
 public class CourseTest extends ModelBaseTest{
 	
 	@Test
-	@Transactional
-	public void testCourse() {
+	public void testCourseCreation() {
 		Course course = Course.create("123", "234", 1, this.getmEm());
-		assertNotNull(course.getId());
+		assertThat(course.getId()).isNotNull();
 		
 	}
 }

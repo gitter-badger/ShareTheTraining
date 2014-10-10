@@ -1,49 +1,37 @@
 package models;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
 import common.BaseModelObject;
 
 @Entity
-public class User extends BaseModelObject{
-	
+@Inheritance(strategy = InheritanceType.JOINED)
+public abstract class User extends BaseModelObject {
+
 	//
 	@Constraints.Required
 	@Formats.NonEmpty
 	@Column(unique = true)
 	public String email;
-	
+
 	@Constraints.Required
 	@Formats.NonEmpty
 	public String username;
-	
+
 	@Constraints.Required
 	@Formats.NonEmpty
 	public String password;
-	
-//	@Formats.DateTime(pattern = "yyyy-MM-dd HH:mm:ss")
-//	public Date birthday; 
-	
-	//
-	public static User create( String email, String username, String password, EntityManager em){
-		User user = new User();
-		user.setEmail(email);
-		user.setUsername(username);
-		user.setPassword(password);
-		em.persist(user);
-		return user;
-		
+
+	protected User(String email, String username, String password) {
+		this.email = email;
+		this.username = username;
+		this.password = password;
 	}
-
-
-
 
 	public String getEmail() {
 		return email;
@@ -69,9 +57,4 @@ public class User extends BaseModelObject{
 		this.password = password;
 	}
 
-
-	
-	
-	
-	
 }
