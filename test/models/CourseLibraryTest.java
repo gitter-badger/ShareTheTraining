@@ -1,7 +1,6 @@
 package models;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
@@ -13,7 +12,6 @@ public class CourseLibraryTest extends ModelBaseTest {
 		this.getmEm().persist(course);
 		this.getmEm().getTransaction().commit();
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
-		Course course1 = courseLibrary.getCourseById(course.getCourseID());
-		assertEquals(course,course1);
+		assertThat(course).isEqualTo(courseLibrary.getCourseById(course.getCourseID()));
 	}
 }

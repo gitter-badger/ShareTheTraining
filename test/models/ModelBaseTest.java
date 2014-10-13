@@ -17,7 +17,7 @@ public abstract class ModelBaseTest {
 	@Before
 	public void setUp() {
 
-		final FakeApplication app = Helpers.fakeApplication(Helpers.inMemoryDatabase());
+		final FakeApplication app = Helpers.fakeApplication(inMemoryDatabase());
 		Helpers.start(app);
 		Option<JPAPlugin> jpaPlugin = app.getWrappedApplication().plugin(
 				JPAPlugin.class);
