@@ -13,7 +13,8 @@ libraryDependencies ++= Seq(
   cache,
   javaWs,
   "org.xerial" % "sqlite-jdbc" % "3.7.2",
-  "org.apache.commons" % "commons-lang3" % "3.3.2"
+  "org.apache.commons" % "commons-lang3" % "3.3.2",
+  "org.apache.solr" % "solr-solrj" % "4.10.1"
 )
 
 
