@@ -29,6 +29,8 @@ public class Course extends BaseModelObject {
 
 	private int courseCategory;
 
+	private double price;
+	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
@@ -54,5 +56,13 @@ public class Course extends BaseModelObject {
 
 	public void setCourseCategory(int courseCategory) {
 		this.courseCategory = courseCategory;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
 	}
 }

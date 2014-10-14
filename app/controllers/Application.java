@@ -13,5 +13,17 @@ public class Application extends Controller {
     public static Result index() {
         return ok(index.render("Your new application is ready."));
     }
+	
+	public static Result welcome() {
+		return ok(index_new.render());
+    }
+	
+	public static Result search() {
+		return ok(search_results.render());
+    }
+	
+	public static Result course() {
+		return ok(item_page.render());
+	}
 
 }

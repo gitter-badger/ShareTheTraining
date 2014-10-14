@@ -4,7 +4,7 @@ version := "1.0-SNAPSHOT"
 
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-scalaVersion := "2.11.1"
+scalaVersion := "2.11.3"
 
 libraryDependencies ++= Seq(
   javaJdbc,
@@ -14,7 +14,8 @@ libraryDependencies ++= Seq(
   javaWs,
   "org.xerial" % "sqlite-jdbc" % "3.7.2",
   "org.apache.commons" % "commons-lang3" % "3.3.2",
-  "org.apache.solr" % "solr-solrj" % "4.10.1"
+  "org.apache.solr" % "solr-solrj" % "4.10.1",
+  "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0"
 )
 
 
