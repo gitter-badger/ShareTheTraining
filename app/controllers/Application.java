@@ -22,8 +22,9 @@ public class Application extends Controller {
 		return ok(search_results.render());
     }
 	
-	public static Result course() {
-		return ok(item_page.render());
+	public static Result course(boolean confirmed, String orderId) {
+		Logger.info(Boolean.toString(confirmed));
+		return ok(item_page.render(confirmed,orderId));
 	}
 
 }

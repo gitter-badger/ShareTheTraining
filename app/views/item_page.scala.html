@@ -1,3 +1,4 @@
+@(confirmed:Boolean, orderId: String)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -276,7 +277,7 @@
 										<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">Sinclair Rimmon</a></h4>
 									</li>
 								</ul>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">Book Online</button>
+								<button onclick="window.open('http://www.eventbrite.com/event/13716601725?ref=ebtn')" target="_blank"type="submit" class="btn btn-primary btn-lg btn-block">Book Online</button>
 
 							</div>
 							<div class="col-sm-12 col-md-5 col-md-push-2">
@@ -708,7 +709,7 @@
 	<script src="@routes.Assets.at("js/bootstrap-select.min.js")"></script>
 	<script src="@routes.Assets.at("js/prism.js")"></script>
 	<script src="@routes.Assets.at("js/prism-line-numbers.js")"></script>
-	
+	<script src="@routes.Assets.at("js/bootbox.js")"></script>
 	<script>
 		$(document).ready(function(){
 			$('.selectpicker').selectpicker();
@@ -739,10 +740,17 @@
 				}
 			});
 		});
-
+		
+		
 	</script>
 	<script src="@routes.Assets.at("js/holder.js")"></script>
-
+	@if(confirmed){
+	<script>
+		bootbox.alert("Order confirmed! Your order ID : @orderId", function() {
+                console.log("Alert Callback");
+            });
+	</script>
+	}
 	
 </body>
 </html>
