@@ -55,7 +55,7 @@
 			<!-- Navbar -->
 			<div class="collapse navbar-collapse navbar-main-collapse">
 				<ul class="nav navbar-nav">
-					<li class="active"><a href="index.html">Home</a></li>
+					<li class="active"><a href="@routes.Application.welcome()">Home</a></li>
 					<li><a href="search_results.html" data-filter=".AllCourses">View All Courses</a></li>
 					<li><a href="gallery.html" data-filter=".ForCompanies">For Companies</a></li>
 					<li><a href="gallery.html" data-filter=".ForTrainers">For Trainers</a></li>
@@ -130,7 +130,7 @@
 					<div class="widget padding-lg bg-dark">
 						<h3 class="heading text-light">What would you like to be amazing at:</h3>
 						<br class="spacer-lg">
-						<form action="" role="form">
+						<form action="@routes.Application.search()" role="form">
 							<div class="row">
 								<div class="col-md-12">
 									<label for="">Course Catagories:</label>
@@ -174,7 +174,7 @@
 								</div><!-- /.col -->
 								<div class="col-md-12">
 									<label for="">Ready?</label>
-									<button class="btn btn-primary btn-block">Search</button>
+									<button class="btn btn-primary btn-block" type="submit">Search</button>
 								</div>
 							</div>
 						</form>
