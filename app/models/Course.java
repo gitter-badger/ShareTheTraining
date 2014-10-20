@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
@@ -16,22 +17,26 @@ import common.BaseModelObject;
 @Entity
 public class Course extends BaseModelObject {
 
-	public static Course create(String courseID, String courseName,
+	public static Course create(String courseId, String courseName,
 			int courseCategory, EntityManager em) {
 		Course course = new Course();
-		course.setCourseID(courseID);
+		course.setCourseId(courseId);
 		course.setCourseName(courseName);
 		course.setCourseCategory(courseCategory);
 		em.persist(course);
 		return course;
 	}
 
-	private String courseID;
+	private String courseId;
 
 	private String courseName;
+	
+	@ManyToOne
+	private Trainer trainer;
 
 	private int courseCategory;
 
+	//TODO should this be in ConcreteCourse?
 	private double price;
 	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
@@ -45,12 +50,12 @@ public class Course extends BaseModelObject {
 		return selections;
 	}
 	
-	public String getCourseID() {
-		return courseID;
+	public String getCourseId() {
+		return courseId;
 	}
 
-	public void setCourseID(String courseID) {
-		this.courseID = courseID;
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
 	}
 
 	public String getCourseName() {
@@ -60,6 +65,15 @@ public class Course extends BaseModelObject {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
+	
+	public Trainer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Trainer trainer) {
+		this.trainer = trainer;
+	}
+
 
 	public int getCourseCategory() {
 		return courseCategory;

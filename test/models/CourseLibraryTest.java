@@ -16,7 +16,7 @@ public class CourseLibraryTest extends BaseTest {
 	public void testGetCourseById() {
 
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
-		assertThat(initData.course1).isEqualTo(courseLibrary.getCourseById(initData.course1.getCourseID()));
+		assertThat(initData.course1).isEqualTo(courseLibrary.getCourseById(initData.course1.getCourseId()));
 		
 		//List<String> result = courseLibrary.getCourseByCustomRule();
 		//assertThat(result.size()).isEqualTo(1);
@@ -39,7 +39,7 @@ public class CourseLibraryTest extends BaseTest {
 		cb.setStartDate(date);
 		List<Course> result = courseLibrary.getCourseByCustomRule(cb);
 		assertThat(result.size()).isEqualTo(1);
-		System.out.println(result.get(0).getCourseID()+"lala");
+		System.out.println(result.get(0).getCourseId()+"lala");
 	}
 	
 }

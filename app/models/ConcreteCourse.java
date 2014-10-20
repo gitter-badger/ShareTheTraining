@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import common.BaseModelObject;
 
@@ -26,11 +27,13 @@ public class ConcreteCourse extends BaseModelObject {
 	@ManyToOne
 	private Course courseInfo;
 
-	@ManyToOne
-	private Trainer trainer;
+	
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Collection<Customer> selectedCustomers = new ArrayList<Customer>();
+	
+	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
+	private Collection<Review> reviews = new ArrayList<Review>();
 
 	private Date courseDate;
 
@@ -68,6 +71,23 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+
+	public Collection<Customer> getSelectedCustomers() {
+		return selectedCustomers;
+	}
+
+	public void setSelectedCustomers(Collection<Customer> selectedCustomers) {
+		this.selectedCustomers = selectedCustomers;
+	}
+
+	public Collection<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Collection<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 

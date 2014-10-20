@@ -25,9 +25,9 @@ public class CourseLibrary implements ICourseLibrary{
 	private EntityManager em;
 	
 	@Override
-	public Course getCourseById(String courseID) {
-		String hql="from Course c where c.courseID= :courseID";
-		Query query = em.createQuery(hql).setParameter("courseID", courseID);
+	public Course getCourseById(String courseId) {
+		String hql="from Course c where c.courseId= :courseId";
+		Query query = em.createQuery(hql).setParameter("courseId", courseId);
 		Collection result = query.getResultList();
 		if(result.size()<1)
 			return null;
@@ -41,9 +41,13 @@ public class CourseLibrary implements ICourseLibrary{
 	}
 
 	@Override
-	public Course getCourseByTrainer(String trainerId, int pageNumber, int pageSize) {
-		// TODO Auto-generated method stub
-		return null;
+	public Collection<Course> getCourseByTrainer(String trainerId, int pageNumber, int pageSize) {
+		String hql="from Course c where c.courseId= :courseId";
+		Query query = em.createQuery(hql).setParameter("trainerId", trainerId);
+		Collection result = query.getResultList();
+		if(result.size()<1)
+			return null;
+		return result;
 	}
 
 	@Override

@@ -13,40 +13,58 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
-public class CourseFilterBuilder implements FilterBuilder{
+public class CourseFilterBuilder implements FilterBuilder {
+	private String keyword;
 	private int location = -1;
-	private int courseRate = -1;
-	private int trainerRate = -1;
+	private int courseRating = -1;
+	private int trainerRating = -1;
 	private Date startDate;
 	private Date endDate;
 	private double lowPrice = -1;
 	private double highPrice = -1;
-	private String keyword;
-	
+
 	@Override
-	//can't order by date right now, I hope tomorrow morning when I wake up an elf has fixed this.
+	// can't order by date right now, I hope tomorrow morning when I wake up an
+	// elf has fixed this.
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root<ConcreteCourse> entityRoot = criteria.from(ConcreteCourse.class);
 		Path<ConcreteCourse> courseInfo = entityRoot.get("courseInfo");
 		Path<Location> location = entityRoot.get("location");
+		Path<Review> reviews = entityRoot.get("reviews");
 		List<Selection> selections = Course.getSelections(courseInfo);
 		selections.add(0, entityRoot.get("courseInfo"));
-		criteria.multiselect( selections.toArray(new Selection[0]) ).distinct(true);
+		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
+				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if(keyword != null)
-			predicates.add(cb.like(entityRoot.<String>get("name"),"%"+keyword+"%"));
+		if (courseRating != -1)
+			predicates.add(cb.greaterThanOrEqualTo(
+					reviews.<Integer> get("courseRating"), courseRating));
+		if (trainerRating != -1)
+			predicates.add(cb.greaterThanOrEqualTo(
+					reviews.<Integer> get("trainerRating"), trainerRating));
+		if (keyword != null)
+			predicates.add(cb.like(entityRoot.<String> get("name"), "%"
+					+ keyword + "%"));
 		if (startDate != null)
-			predicates.add(cb.greaterThanOrEqualTo(entityRoot.<Date>get("courseDate"), startDate));
+			predicates.add(cb.greaterThanOrEqualTo(
+					entityRoot.<Date> get("courseDate"), startDate));
 		if (endDate != null)
-			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Date>get("courseDate"), endDate));
+			predicates.add(cb.lessThanOrEqualTo(
+					entityRoot.<Date> get("courseDate"), endDate));
+		if (lowPrice != -1)
+			predicates.add(cb.greaterThanOrEqualTo(
+					courseInfo.<Double> get("price"), lowPrice));
+		if (highPrice != -1)
+			predicates.add(cb.lessThanOrEqualTo(
+					courseInfo.<Double> get("price"), highPrice));
 		// TODO add more filter here
-		javax.persistence.criteria.Order order = ascending ? cb.asc(courseInfo.get(orderByColumn))
-		        : cb.desc(entityRoot.get(orderByColumn));
+		javax.persistence.criteria.Order order = ascending ? cb.asc(courseInfo
+				.get(orderByColumn)) : cb.desc(entityRoot.get(orderByColumn));
 		criteria.orderBy(order);
 		criteria.groupBy(entityRoot.get("courseInfo"));
-		criteria.where(predicates.toArray(new Predicate[]{}));
+		criteria.where(predicates.toArray(new Predicate[] {}));
 		return criteria;
 	}
 
@@ -58,20 +76,20 @@ public class CourseFilterBuilder implements FilterBuilder{
 		this.location = location;
 	}
 
-	public int getCourseRate() {
-		return courseRate;
+	public int getCourseRating() {
+		return courseRating;
 	}
 
-	public void setCourseRate(int courseRate) {
-		this.courseRate = courseRate;
+	public void setCourseRating(int courseRating) {
+		this.courseRating = courseRating;
 	}
 
-	public int getTrainerRate() {
-		return trainerRate;
+	public int getTrainerRating() {
+		return trainerRating;
 	}
 
-	public void setTrainerRate(int trainerRate) {
-		this.trainerRate = trainerRate;
+	public void setTrainerRating(int trainerRating) {
+		this.trainerRating = trainerRating;
 	}
 
 	public Date getStartDate() {
@@ -113,6 +131,5 @@ public class CourseFilterBuilder implements FilterBuilder{
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
-	
-	
+
 }

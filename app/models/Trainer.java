@@ -19,6 +19,6 @@ public class Trainer extends User{
 	}
 
 	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
-	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
+	private Collection<Course> courses = new ArrayList<Course>();
 
 }
