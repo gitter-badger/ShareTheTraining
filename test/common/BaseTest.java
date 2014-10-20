@@ -1,4 +1,4 @@
-package models;
+package common;
 
 import static play.test.Helpers.inMemoryDatabase;
 
@@ -13,7 +13,10 @@ import play.test.FakeApplication;
 import play.test.Helpers;
 import scala.Option;
 
-public abstract class ModelBaseTest {
+public abstract class BaseTest {
+	
+	public Initialization initData;
+	
 	@Before
 	public void setUp() {
 
@@ -23,6 +26,7 @@ public abstract class ModelBaseTest {
 				JPAPlugin.class);
 		mEm = jpaPlugin.get().em("default");
 		JPA.bindForCurrentThread(mEm);
+		initData = new Initialization(mEm);
 	}
 
 	@After

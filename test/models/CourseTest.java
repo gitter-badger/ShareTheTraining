@@ -4,8 +4,10 @@ import static org.fest.assertions.Assertions.assertThat;
 
 import org.junit.Test;
 
+import common.BaseTest;
 
-public class CourseTest extends ModelBaseTest{
+
+public class CourseTest extends BaseTest{
 	
 	@Test
 	public void testCourseCreation() {

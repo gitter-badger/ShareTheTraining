@@ -36,7 +36,7 @@ public class ConcreteCourse extends BaseModelObject {
 
 	private Time length;
 
-	private int location;
+	private Location location = new Location();
 
 	public Course getCourseInfo() {
 		return courseInfo;
@@ -62,12 +62,13 @@ public class ConcreteCourse extends BaseModelObject {
 		this.length = length;
 	}
 
-	public int getLocation() {
+	public Location getLocation() {
 		return location;
 	}
 
-	public void setLocation(int location) {
+	public void setLocation(Location location) {
 		this.location = location;
 	}
+
 
 }
