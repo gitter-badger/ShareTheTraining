@@ -12,17 +12,12 @@ import javax.persistence.OneToMany;
 @Entity
 public class Trainer extends User{
 
+	
 	protected Trainer(String email, String username, String password) {
 		super(email, username, password);
+		// TODO Auto-generated constructor stub
 	}
-	
-	public static Trainer create(String email, String userName,
-			String password, EntityManager em) {
-		Trainer trainer = new Trainer(email, userName, password);
-		em.persist(trainer);
-		return trainer;
-	}
-	
+
 	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
