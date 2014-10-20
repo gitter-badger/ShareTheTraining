@@ -30,6 +30,7 @@ public class CourseFilterBuilder implements FilterBuilder{
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root<ConcreteCourse> entityRoot = criteria.from(ConcreteCourse.class);
 		Path<ConcreteCourse> courseInfo = entityRoot.get("courseInfo");
+		Path<Location> location = entityRoot.get("location");
 		List<Selection> selections = Course.getSelections(courseInfo);
 		selections.add(0, entityRoot.get("courseInfo"));
 		criteria.multiselect( selections.toArray(new Selection[0]) ).distinct(true);
