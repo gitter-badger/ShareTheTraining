@@ -1,5 +1,11 @@
 package controllers;
 
+import java.util.Collection;
+
+import models.ConcreteCourse;
+import models.Course;
+import models.CourseFilterBuilder;
+import models.CourseLibrary;
 import models.Customer;
 import models.User;
 import play.*;

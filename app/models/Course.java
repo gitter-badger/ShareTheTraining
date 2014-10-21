@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.criteria.Path;
@@ -18,11 +19,12 @@ import common.BaseModelObject;
 public class Course extends BaseModelObject {
 
 	public static Course create(String courseId, String courseName,
-			int courseCategory, EntityManager em) {
+			int courseCategory, String courseDesc, EntityManager em) {
 		Course course = new Course();
 		course.setCourseId(courseId);
 		course.setCourseName(courseName);
 		course.setCourseCategory(courseCategory);
+		course.setCourseDesc(courseDesc);
 		em.persist(course);
 		return course;
 	}
@@ -39,6 +41,9 @@ public class Course extends BaseModelObject {
 	//TODO should this be in ConcreteCourse?
 	private double price;
 	
+	@Lob
+	private String courseDesc;
+	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 	
@@ -47,6 +52,7 @@ public class Course extends BaseModelObject {
 		List<Selection> selections = new ArrayList<Selection>();
 		selections.add(path.get("price"));
 		selections.add(path.get("courseCategory"));
+		selections.add(path.get("courseDesc"));
 		return selections;
 	}
 	
@@ -89,5 +95,21 @@ public class Course extends BaseModelObject {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public String getCourseDesc() {
+		return courseDesc;
+	}
+
+	public void setCourseDesc(String courseDesc) {
+		this.courseDesc = courseDesc;
+	}
+
+	public Collection<ConcreteCourse> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Collection<ConcreteCourse> courses) {
+		this.courses = courses;
 	}
 }

@@ -38,9 +38,13 @@ public class CourseFilterBuilder implements FilterBuilder {
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (keyword != null)
-			predicates.add(cb.like(entityRoot.<String> get("name"), "%"
-					+ keyword + "%"));
+		if (keyword != null) {
+			predicates.add(cb.or(
+					cb.like(courseInfoRoot.<String> get("courseName"), "%" + keyword
+							+ "%"),
+					cb.like(courseInfoRoot.<String> get("courseDesc"), "%" + keyword
+							+ "%")));
+		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
 					reviews.<Integer> get("courseRating"), courseRating));
@@ -70,8 +74,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 					Predicate q1 = cb.equal(
 							locationRoot.<Integer> get("county"),
 							location.getCounty());
-					Predicate q2 = cb.equal(
-							locationRoot.<Integer> get("city"),
+					Predicate q2 = cb.equal(locationRoot.<Integer> get("city"),
 							location.getCity());
 					locationQueries.add(cb.and(q1, q2));
 				}

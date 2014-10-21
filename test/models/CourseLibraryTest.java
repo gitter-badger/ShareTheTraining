@@ -28,6 +28,16 @@ public class CourseLibraryTest extends BaseTest {
 		assertThat(courseLibrary.getCourseByCategory(1, 1, 10).size())
 				.isEqualTo(1);
 	}
+	
+	@Test
+	public void testFilterCourseByKeyword() {
+		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.setKeyword("la");
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
+		assertThat(result.size()).isEqualTo(1);
+		
+	}
 
 	@Test
 	public void testFilterCourseByStartDate() {
