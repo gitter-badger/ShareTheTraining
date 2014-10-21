@@ -15,7 +15,7 @@ import javax.persistence.criteria.Selection;
 
 public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;
-	private int location = -1;
+	private List<Location> locations;
 	private int courseRating = -1;
 	private int trainerRating = -1;
 	private Date startDate;
@@ -30,23 +30,23 @@ public class CourseFilterBuilder implements FilterBuilder {
 			String orderByColumn, boolean ascending) {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root<ConcreteCourse> entityRoot = criteria.from(ConcreteCourse.class);
-		Path<ConcreteCourse> courseInfo = entityRoot.get("courseInfo");
-		Path<Location> location = entityRoot.get("location");
+		Path<ConcreteCourse> courseInfoRoot = entityRoot.get("courseInfo");
+		Path<Location> locationRoot = entityRoot.get("location");
 		Path<Review> reviews = entityRoot.get("reviews");
-		List<Selection> selections = Course.getSelections(courseInfo);
+		List<Selection> selections = Course.getSelections(courseInfoRoot);
 		selections.add(0, entityRoot.get("courseInfo"));
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		if (keyword != null)
+			predicates.add(cb.like(entityRoot.<String> get("name"), "%"
+					+ keyword + "%"));
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
 					reviews.<Integer> get("courseRating"), courseRating));
 		if (trainerRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
 					reviews.<Integer> get("trainerRating"), trainerRating));
-		if (keyword != null)
-			predicates.add(cb.like(entityRoot.<String> get("name"), "%"
-					+ keyword + "%"));
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(
 					entityRoot.<Date> get("courseDate"), startDate));
@@ -55,25 +55,45 @@ public class CourseFilterBuilder implements FilterBuilder {
 					entityRoot.<Date> get("courseDate"), endDate));
 		if (lowPrice != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					courseInfo.<Double> get("price"), lowPrice));
+					courseInfoRoot.<Double> get("price"), lowPrice));
 		if (highPrice != -1)
 			predicates.add(cb.lessThanOrEqualTo(
-					courseInfo.<Double> get("price"), highPrice));
+					courseInfoRoot.<Double> get("price"), highPrice));
+		if (locations != null) {
+			List<Predicate> locationQueries = new ArrayList<Predicate>();
+			for (Location location : locations) {
+				if (location.getCity() == -1) {
+					locationQueries.add(cb.equal(
+							locationRoot.<Integer> get("county"),
+							location.getCounty()));
+				} else {
+					Predicate q1 = cb.equal(
+							locationRoot.<Integer> get("county"),
+							location.getCounty());
+					Predicate q2 = cb.equal(
+							locationRoot.<Integer> get("city"),
+							location.getCity());
+					locationQueries.add(cb.and(q1, q2));
+				}
+			}
+			predicates.add(cb.or(locationQueries.toArray(new Predicate[] {})));
+		}
 		// TODO add more filter here
-		javax.persistence.criteria.Order order = ascending ? cb.asc(courseInfo
-				.get(orderByColumn)) : cb.desc(entityRoot.get(orderByColumn));
+		javax.persistence.criteria.Order order = ascending ? cb
+				.asc(courseInfoRoot.get(orderByColumn)) : cb.desc(entityRoot
+				.get(orderByColumn));
 		criteria.orderBy(order);
 		criteria.groupBy(entityRoot.get("courseInfo"));
 		criteria.where(predicates.toArray(new Predicate[] {}));
 		return criteria;
 	}
 
-	public int getLocation() {
-		return location;
+	public List<Location> getLocations() {
+		return locations;
 	}
 
-	public void setLocation(int location) {
-		this.location = location;
+	public void setLocations(List<Location> locations) {
+		this.locations = locations;
 	}
 
 	public int getCourseRating() {
