@@ -16,7 +16,8 @@ libraryDependencies ++= Seq(
   "org.apache.commons" % "commons-lang3" % "3.3.2",
   "org.apache.solr" % "solr-solrj" % "4.10.1",
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0",
-  "mysql" % "mysql-connector-java" % "5.1.33"
+  "mysql" % "mysql-connector-java" % "5.1.33",
+  "net.sf.jazzy" % "jazzy-core" % "0.5.2"
 )
 
 
