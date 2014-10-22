@@ -1,5 +1,7 @@
 package controllers;
 
+import geolocation.*;
+
 import java.util.Collection;
 
 import models.ConcreteCourse;
@@ -13,6 +15,7 @@ import play.data.Form;
 import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.mvc.*;
+import play.mvc.Http.Request;
 import views.html.*;
 import static play.data.Form.form;
 
@@ -26,7 +29,7 @@ public class Application extends Controller {
 	@Transactional
 	public static Result submit() {
 		Form<Customer> filledForm = signupForm.bindFromRequest();
-		
+
 		// instantiate User entity
 		Customer created = filledForm.get();
 
@@ -42,6 +45,18 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result index() {
+		try {
+			Geolocation geolocation = GeolocationService
+					.getGeolocation(request().remoteAddress());
+			if (geolocation == null) { // the service does not responded
+				// properly
+				Logger.info("no geo");
+			}
+			else
+				Logger.info(geolocation.getCountryCode());
+		} catch (InvalidAddressException ex) {
+
+		}
 		return ok(index.render("Your new application is ready."));
 	}
 

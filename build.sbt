@@ -17,9 +17,10 @@ libraryDependencies ++= Seq(
   "org.apache.solr" % "solr-solrj" % "4.10.1",
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0",
   "mysql" % "mysql-connector-java" % "5.1.33",
-  "net.sf.jazzy" % "jazzy-core" % "0.5.2"
+  "ws.securesocial" %% "securesocial" % "master-SNAPSHOT"
 )
 
+resolvers += Resolver.sonatypeRepo("snapshots")
 
 javaOptions in Test ++= Seq(
   "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9998",
