@@ -1,4 +1,4 @@
-package models;
+package models.filters;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;

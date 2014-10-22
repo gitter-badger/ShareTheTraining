@@ -1,4 +1,4 @@
-package models;
+package models.users;
 
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;

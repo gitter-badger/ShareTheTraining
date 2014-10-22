@@ -1,4 +1,4 @@
-package models;
+package models.filters;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +12,11 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
+
+import models.courses.ConcreteCourse;
+import models.courses.Course;
+import models.courses.Review;
+import models.locations.Location;
 
 public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;

@@ -1,9 +1,9 @@
 package controllers;
 
 import static play.data.Form.form;
-import models.Customer;
-import models.Trainer;
-import models.User;
+import models.users.Customer;
+import models.users.Trainer;
+import models.users.User;
 import play.Logger;
 import play.i18n.Messages;
 import play.data.DynamicForm;

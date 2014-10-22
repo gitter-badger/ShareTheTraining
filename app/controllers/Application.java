@@ -1,15 +1,17 @@
 package controllers;
 
-import geolocation.*;
 
 import java.util.Collection;
 
-import models.ConcreteCourse;
-import models.Course;
-import models.CourseFilterBuilder;
-import models.CourseLibrary;
-import models.Customer;
-import models.User;
+import models.courses.ConcreteCourse;
+import models.courses.Course;
+import models.courses.CourseLibrary;
+import models.filters.CourseFilterBuilder;
+import models.locations.Geolocation;
+import models.locations.GeolocationService;
+import models.locations.InvalidAddressException;
+import models.users.Customer;
+import models.users.User;
 import play.*;
 import play.data.Form;
 import play.db.jpa.JPA;

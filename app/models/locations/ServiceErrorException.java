@@ -1,4 +1,4 @@
-package geolocation;
+package models.locations;
 
 public class ServiceErrorException extends RuntimeException {
 	public ServiceErrorException(String arg, Throwable cause) {

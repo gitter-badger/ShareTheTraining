@@ -1,8 +1,9 @@
-package models;
+package models.courses;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
+import models.users.Customer;
 import common.BaseModelObject;
 
 @Entity

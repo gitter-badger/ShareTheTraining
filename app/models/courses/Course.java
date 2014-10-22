@@ -1,4 +1,4 @@
-package models;
+package models.courses;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
+import models.users.Trainer;
 import common.BaseModelObject;
 
 @Entity

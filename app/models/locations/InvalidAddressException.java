@@ -1,4 +1,4 @@
-package geolocation;
+package models.locations;
 
 public class InvalidAddressException extends RuntimeException {
 	public InvalidAddressException(String arg, Throwable cause) {

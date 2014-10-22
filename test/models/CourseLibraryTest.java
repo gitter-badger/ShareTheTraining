@@ -9,6 +9,11 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import models.courses.Course;
+import models.courses.CourseLibrary;
+import models.filters.CourseFilterBuilder;
+import models.locations.Location;
+
 import org.junit.Test;
 
 import common.BaseTest;

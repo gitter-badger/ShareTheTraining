@@ -1,4 +1,4 @@
-package models;
+package models.locations;
 
 import javax.persistence.Embeddable;
 

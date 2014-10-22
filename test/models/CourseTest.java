@@ -1,6 +1,7 @@
 package models;
 
 import static org.fest.assertions.Assertions.assertThat;
+import models.courses.Course;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package models;
+package models.courses;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import models.locations.Location;
+import models.users.Customer;
 import common.BaseModelObject;
 
 @Entity

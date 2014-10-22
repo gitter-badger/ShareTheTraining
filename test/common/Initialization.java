@@ -6,10 +6,10 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import models.ConcreteCourse;
-import models.Course;
-import models.Location;
-import models.Trainer;
+import models.courses.ConcreteCourse;
+import models.courses.Course;
+import models.locations.Location;
+import models.users.Trainer;
 
 public class Initialization {
 	public Initialization(EntityManager entityManager){

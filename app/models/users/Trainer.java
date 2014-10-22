@@ -1,4 +1,4 @@
-package models;
+package models.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
+
+import models.courses.Course;
 
 
 @Entity

@@ -1,4 +1,4 @@
-package geolocation;
+package models.locations;
 
 import java.util.ArrayList;
 import java.util.List;

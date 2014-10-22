@@ -1,6 +1,8 @@
 package models;
 
 import static org.junit.Assert.assertNotNull;
+import models.courses.ConcreteCourse;
+import models.courses.Course;
 
 import org.junit.Test;
 

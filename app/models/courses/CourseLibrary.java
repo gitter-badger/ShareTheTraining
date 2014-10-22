@@ -1,4 +1,4 @@
-package models;
+package models.courses;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
+
+import models.filters.FilterBuilder;
 public class CourseLibrary implements ICourseLibrary {
 
 	public CourseLibrary(EntityManager em) {
