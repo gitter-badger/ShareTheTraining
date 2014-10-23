@@ -9,6 +9,7 @@ public interface ICourseLibrary {
 	public Collection<Course> getCourseByCategory(int category, int pageNumber, int pageSize);
 	
 	public Collection<Course> getCourseByTrainer(String trainerEmail, int pageNumber, int pageSize);
-	
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb);
+
+	public Collection<Course> getCourseByCustomRule(FilterBuilder cb, int pageNumber,
+			int pageSize);
 }

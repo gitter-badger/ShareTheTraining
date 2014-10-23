@@ -9,6 +9,7 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
 import models.filters.FilterBuilder;
+
 public class CourseLibrary implements ICourseLibrary {
 
 	public CourseLibrary(EntityManager em) {
@@ -28,10 +29,10 @@ public class CourseLibrary implements ICourseLibrary {
 	}
 
 	@Override
-	public Collection<Course> getCourseByCategory(int category, int pageNumber, int pageSize) {
+	public Collection<Course> getCourseByCategory(int category, int pageNumber,
+			int pageSize) {
 		String hql = "from Course c where c.courseCategory= :category";
-		Query query = em.createQuery(hql).setParameter("category",
-				category);
+		Query query = em.createQuery(hql).setParameter("category", category);
 		return getCourseByQuery(query, pageNumber, pageSize);
 	}
 
@@ -53,9 +54,12 @@ public class CourseLibrary implements ICourseLibrary {
 	}
 
 	@Override
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb) {
+	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+			int pageNumber, int pageSize) {
 		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
 				em.getCriteriaBuilder(), "price", true));
+		tq.setMaxResults(pageSize);
+		tq.setFirstResult(pageSize * (pageNumber - 1));
 		Collection<Course> result = new ArrayList<Course>();
 		for (Tuple t : tq.getResultList()) {
 			result.add((Course) t.get(0));
