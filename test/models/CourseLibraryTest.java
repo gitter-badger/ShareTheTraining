@@ -38,7 +38,7 @@ public class CourseLibraryTest extends BaseTest {
 	public void testFilterCourseByKeyword() {
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		cb.setKeyword("xingb xing");
+		cb.setKeyword("xingbxing");
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
 		assertThat(result.size()).isEqualTo(1);
 		

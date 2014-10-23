@@ -44,7 +44,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (keyword != null) {
-			keyword = SolrSuggestions.getSuggestions(keyword);
+			//keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
 			predicates.add(cb.or(
 					cb.like(courseInfoRoot.<String> get("courseName"), "%" + keyword
