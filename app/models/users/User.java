@@ -33,10 +33,6 @@
 			this.password = password;
 		}
 		
-		public User(){
-			
-		}
-	
 		public String getEmail() {
 			return email;
 		}

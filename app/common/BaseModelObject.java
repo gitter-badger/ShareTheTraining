@@ -9,6 +9,7 @@ import javax.persistence.PrePersist;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.solr.common.SolrInputDocument;
 
 
 @MappedSuperclass
@@ -48,5 +49,12 @@ public abstract class BaseModelObject implements IModelObject,
 	public int hashCode() {
 		return new HashCodeBuilder().append(getId()).toHashCode();
 	}
+	
+	@Override
+	public SolrInputDocument getSolrDoc() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

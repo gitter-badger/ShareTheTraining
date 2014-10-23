@@ -53,16 +53,7 @@ public class UserController extends Controller {
 		@Constraints.Required
 		public String password;
 		
-		public String validate(){
-			LOG.info("validating user");
-			Customer cus = Customer.authenticate(email, password);
-			
-			if(cus == null){
-				return "Invalid email or password";
-			}
-			LOG.info("validated Customer:"+cus.toString());
-			return null;
-		}
+
 			
 	}
 }

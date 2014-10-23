@@ -12,7 +12,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.apache.solr.common.SolrInputDocument;
+
 import models.locations.Location;
+import models.spellchecker.SolrDao;
 import models.users.Customer;
 import common.BaseModelObject;
 
@@ -23,6 +26,9 @@ public class ConcreteCourse extends BaseModelObject {
 		ConcreteCourse concreteCourse = new ConcreteCourse();
 		concreteCourse.setCourseInfo(courseInfo);
 		em.persist(concreteCourse);
+		SolrInputDocument doc = concreteCourse.getSolrDoc();
+		if(doc!=null)
+			new SolrDao().putDoc(doc);
 		return concreteCourse;
 	}
 

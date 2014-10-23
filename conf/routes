@@ -12,9 +12,6 @@ POST    /login                   controllers.UserController.authenticate()
 GET     /login                   controllers.UserController.login()
 GET		/logout						controllers.UserController.logout()
 
-#SignUp
-GET		/signup						controllers.Application.blank()
-POST	/signup						controllers.Application.submit()
 
 GET 	/search						controllers.Application.search()
 

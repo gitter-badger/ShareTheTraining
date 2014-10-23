@@ -13,6 +13,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Selection;
 
+import org.apache.solr.common.SolrInputDocument;
+
+import models.spellchecker.SolrDao;
 import models.users.Trainer;
 import common.BaseModelObject;
 
@@ -27,36 +30,47 @@ public class Course extends BaseModelObject {
 		course.setCourseCategory(courseCategory);
 		course.setCourseDesc(courseDesc);
 		em.persist(course);
+		SolrInputDocument doc = course.getSolrDoc();
+		if(doc!=null)
+			new SolrDao().putDoc(doc);
 		return course;
 	}
 
 	private String courseId;
 
 	private String courseName;
-	
+
 	@ManyToOne
 	private Trainer trainer;
 
 	private int courseCategory;
 
-	//TODO should this be in ConcreteCourse?
+	// TODO should this be in ConcreteCourse?
 	private double price;
-	
+
 	@Lob
 	private String courseDesc;
-	
+
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
-	
-	
-	public static List<Selection> getSelections(Path path){
+
+	public static List<Selection> getSelections(Path path) {
 		List<Selection> selections = new ArrayList<Selection>();
 		selections.add(path.get("price"));
 		selections.add(path.get("courseCategory"));
 		selections.add(path.get("courseDesc"));
 		return selections;
 	}
-	
+
+	@Override
+	public SolrInputDocument getSolrDoc() {
+		SolrInputDocument doc = new SolrInputDocument();
+		doc.addField("id", this.getId());
+		doc.addField("name", this.getCourseName());
+		doc.addField("description", this.getCourseDesc());
+		return doc;
+	}
+
 	public String getCourseId() {
 		return courseId;
 	}
@@ -72,7 +86,7 @@ public class Course extends BaseModelObject {
 	public void setCourseName(String courseName) {
 		this.courseName = courseName;
 	}
-	
+
 	public Trainer getTrainer() {
 		return trainer;
 	}
@@ -80,7 +94,6 @@ public class Course extends BaseModelObject {
 	public void setTrainer(Trainer trainer) {
 		this.trainer = trainer;
 	}
-
 
 	public int getCourseCategory() {
 		return courseCategory;

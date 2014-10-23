@@ -1,5 +1,7 @@
 package common;
 
+import org.apache.solr.common.SolrInputDocument;
+
 public interface IModelObject {
 	/**
 	 * get object id
@@ -15,4 +17,6 @@ public interface IModelObject {
 	 *            the object id
 	 */
 	void setId(String id);
+	
+	SolrInputDocument getSolrDoc();
 }

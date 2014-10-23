@@ -1,17 +1,10 @@
 package controllers;
 
 
-import java.util.Collection;
-
-import models.courses.ConcreteCourse;
-import models.courses.Course;
-import models.courses.CourseLibrary;
-import models.filters.CourseFilterBuilder;
 import models.locations.Geolocation;
 import models.locations.GeolocationService;
 import models.locations.InvalidAddressException;
 import models.users.Customer;
-import models.users.User;
 import play.*;
 import play.data.Form;
 import play.db.jpa.JPA;
@@ -24,26 +17,8 @@ import static play.data.Form.form;
 public class Application extends Controller {
 	public static Form<Customer> signupForm = form(Customer.class);
 
-	public static Result blank() {
-		return ok(signup.render(signupForm));
-	}
 
-	@Transactional
-	public static Result submit() {
-		Form<Customer> filledForm = signupForm.bindFromRequest();
 
-		// instantiate User entity
-		Customer created = filledForm.get();
-
-		Customer newcus = Customer.create(created.getEmail(),
-				created.getUsername(), created.getPassword());
-
-		session("email", newcus.getEmail());
-
-		return redirect(
-		// return to home page
-		routes.Application.welcome());
-	}
 
 	@Transactional
 	public static Result index() {
