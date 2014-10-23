@@ -14,7 +14,7 @@ import models.users.Trainer;
 public class Initialization {
 	public Initialization(EntityManager entityManager){
 		this.em = entityManager;
-		course1 = Course.create("ziyou", "xingbuxing", 1,"xixihaha", em);
+		course1 = Course.create("shishikan", "xingbuxing", 1,"xixihaha", em);
 		course2 = Course.create("fengjian", "fubai", 2, "xixilala", em);
 		concreteCourse1 = ConcreteCourse.create(course1, em);
 		concreteCourse1.setCourseDate(new Date());

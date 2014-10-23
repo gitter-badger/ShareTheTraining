@@ -7,7 +7,6 @@ import java.util.List;
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -17,6 +16,7 @@ import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.Review;
 import models.locations.Location;
+import models.spellchecker.SolrSuggestions;
 
 public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;
@@ -44,6 +44,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (keyword != null) {
+			keyword = SolrSuggestions.getSuggestions(keyword);
+			keyword = keyword.replaceAll("\\s+", "%");
 			predicates.add(cb.or(
 					cb.like(courseInfoRoot.<String> get("courseName"), "%" + keyword
 							+ "%"),
