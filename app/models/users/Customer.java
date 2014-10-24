@@ -29,14 +29,15 @@ public class Customer extends User {
 
 	protected Customer(String email, String username, String password) {
 		super(email, username, password);
+		this.setUserRole(UserRole.CUSTOMER);
 	}
 
 	public Customer() {}
 
 	@Override
 	public List<? extends Role> getRoles() {
-		List<UserRoles> list = new ArrayList<UserRoles>();
-		list.add(UserRoles.customer);
+		List<UserRole> list = new ArrayList<UserRole>();
+		list.add(this.getUserRole());
 		return list;
 	}
 

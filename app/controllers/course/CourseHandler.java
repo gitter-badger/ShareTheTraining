@@ -12,9 +12,15 @@ import models.courses.Course;
 import models.filters.FilterBuilder;
 
 public class CourseHandler implements ICourseHandler {
+	
+	private EntityManager em;
+	
+	public CourseHandler(EntityManager em){
+		this.em = em;
+	}
 
 	@Override
-	public Course getCourseById(String courseId, EntityManager em) {
+	public Course getCourseById(String courseId) {
 		String hql = "from Course c where c.courseId= :courseId";
 		Query query = em.createQuery(hql).setParameter("courseId", courseId);
 		Collection result = query.getResultList();
@@ -25,7 +31,7 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
-			int pageSize, EntityManager em) {
+			int pageSize) {
 		String hql = "from Course c where c.courseCategory= :category";
 		Query query = em.createQuery(hql).setParameter("category", category);
 		return getCourseByQuery(query, pageNumber, pageSize);
@@ -33,7 +39,7 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize, EntityManager em) {
+			int pageNumber, int pageSize) {
 		String hql = "from Course c where c.trainer.email= :trainerEmail";
 		Query query = em.createQuery(hql).setParameter("trainerEmail",
 				trainerEmail);
@@ -50,7 +56,7 @@ public class CourseHandler implements ICourseHandler {
 	
 	@Override
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
-			int pageNumber, int pageSize, EntityManager em) {
+			int pageNumber, int pageSize) {
 		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
 				em.getCriteriaBuilder(), "price", true));
 		tq.setMaxResults(pageSize);

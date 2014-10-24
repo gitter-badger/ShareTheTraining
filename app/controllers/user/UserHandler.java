@@ -10,8 +10,14 @@ import models.users.User;
 
 public class UserHandler implements IUserHandler {
 
+	private EntityManager em;
+	
+	public UserHandler(EntityManager em){
+		this.em = em;
+	}
+	
 	@Override
-	public User getUserByEmail(String email, EntityManager em) {
+	public User getUserByEmail(String email) {
 		String hql = "from User u where u.email= :email";
 		Query query = em.createQuery(hql).setParameter("email", email);
 		Collection result = query.getResultList();

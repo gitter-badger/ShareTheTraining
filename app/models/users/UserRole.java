@@ -2,11 +2,11 @@ package models.users;
 
 import be.objectify.deadbolt.core.models.Role;
 
-public enum UserRoles implements Role
+public enum UserRole implements Role
 {
-    admin,
-    customer,
-    trainer;
+    ADMIN,
+    CUSTOMER,
+    TRAINER;
 
     @Override
     public String getName()

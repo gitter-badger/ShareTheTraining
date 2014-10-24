@@ -10,27 +10,20 @@ import javax.persistence.InheritanceType;
 import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
 import be.objectify.deadbolt.core.models.Subject;
-import play.data.format.Formats;
-import play.data.validation.Constraints;
 import common.BaseModelObject;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public  abstract class User extends BaseModelObject implements Subject{
 
-	//
-	@Constraints.Required
-	@Formats.NonEmpty
 	@Column(unique = true)
 	private String email;
 
-	@Constraints.Required
-	@Formats.NonEmpty
 	private String username;
-
-	@Constraints.Required
-	@Formats.NonEmpty
+	
 	private String password;
+	
+	private UserRole userRole;
 
 	protected User(String email, String username, String password) {
 		this.email = email;
@@ -86,6 +79,14 @@ public  abstract class User extends BaseModelObject implements Subject{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
 
 

@@ -32,15 +32,15 @@ public class Trainer extends User{
 	
 	protected Trainer(String email, String username, String password) {
 		super(email, username, password);
-		// TODO Auto-generated constructor stub
+		this.setUserRole(UserRole.TRAINER);
 	}
 	
 	public Trainer(){}
 
 	@Override
 	public List<? extends Role> getRoles() {
-		List<UserRoles> list = new ArrayList<UserRoles>();
-		list.add(UserRoles.trainer);
+		List<UserRole> list = new ArrayList<UserRole>();
+		list.add(this.getUserRole());
 		return list;
 	}
 	

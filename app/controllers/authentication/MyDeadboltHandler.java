@@ -1,5 +1,6 @@
 package controllers.authentication;
 
+import controllers.routes;
 import controllers.user.UserHandler;
 import models.users.Customer;
 import models.users.User;
@@ -15,8 +16,7 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 
 	@Override
 	public F.Promise<Result> beforeAuthCheck(Context arg0) {
-		// TODO Auto-generated method stub
-		return null;
+		return F.Promise.pure(null);
 	}
 
 	@Override
@@ -25,11 +25,23 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 			@Override
 			public Subject apply() throws Throwable {
 				String email = context.session().get("connected");
-            	if(email != null){
-            		User u = new UserHandler().getUserByEmail(email, JPA.em());
-            		return u;
-            	}
+				if (email != null) {
+					User u = new UserHandler(JPA.em()).getUserByEmail(email);
+					return u;
+				}
 				return null;
+			}
+		});
+	}
+
+	@Override
+	public F.Promise<Result> onAuthFailure(final Http.Context context, String content) {
+		// you can return any result from here - forbidden, etc
+		return F.Promise.promise(new F.Function0<Result>() {
+			@Override
+			public Result apply() throws Throwable {
+				context.flash().put("message", "go sigining up, you dumbass!");
+				return redirect(routes.Application.index());
 			}
 		});
 	}

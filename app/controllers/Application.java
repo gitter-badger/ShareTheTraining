@@ -37,10 +37,14 @@ public class Application extends Controller {
 		} catch (InvalidAddressException ex) {
 
 		}
-		return ok(index.render("Your new application is ready."));
+		String message = flash().get("message");
+		message= message!=null ? message : "Your new application is ready.";
+		Logger.info(index.render(message).toString());
+		return ok(index.render(message));
 	}
 	
 	@Transactional
+	@Restrict({@Group("CUSTOMER"), @Group("TRAINER")})
 	public static Result welcome() {
 		return ok(index_new.render());
 	}
@@ -50,7 +54,6 @@ public class Application extends Controller {
 	}
 
 	public static Result course(boolean confirmed, String orderId) {
-		Logger.info(Boolean.toString(confirmed));
 		return ok(item_page.render(confirmed, orderId));
 	}
 

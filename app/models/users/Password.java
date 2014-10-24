@@ -2,7 +2,9 @@ package models.users;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+
 import java.security.SecureRandom;
+
 import org.apache.commons.codec.binary.Base64;
 
 public class Password {
@@ -24,11 +26,17 @@ public class Password {
 
     /** Checks whether given plaintext password corresponds 
         to a stored salted hash of the password. */
-    public static boolean check(String password, String stored) throws Exception{
+    public static boolean check(String password, String stored){
         String[] saltAndPass = stored.split("\\$");
         if (saltAndPass.length != 2)
             return false;
-        String hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[0]));
+        String hashOfInput = null;
+		try {
+			hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[0]));
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
         return hashOfInput.equals(saltAndPass[1]);
     }
 

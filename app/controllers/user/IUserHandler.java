@@ -8,5 +8,5 @@ import javax.persistence.Query;
 import models.users.User;
 
 public interface IUserHandler {
-	public User getUserByEmail(String email, EntityManager em);
+	public User getUserByEmail(String email);
 }

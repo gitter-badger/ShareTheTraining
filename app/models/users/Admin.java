@@ -24,14 +24,15 @@ public class Admin extends User {
 
 	protected Admin(String email, String username, String password) {
 		super(email, username, password);
+		this.setUserRole(UserRole.ADMIN);
 	}
 	
 	public Admin(){}
 	
 	@Override
 	public List<? extends Role> getRoles() {
-		List<UserRoles> list = new ArrayList<UserRoles>();
-		list.add(UserRoles.admin);
+		List<UserRole> list = new ArrayList<UserRole>();
+		list.add(this.getUserRole());
 		return list;
 	}
 
