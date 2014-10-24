@@ -42,6 +42,10 @@ public  abstract class User extends BaseModelObject implements Subject{
 		}
 	}
 	
+	public User(){
+		
+	}
+	
 	@Override
 	public String getIdentifier() {
 		return email;

@@ -3,6 +3,7 @@ package controllers;
 
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
+import be.objectify.deadbolt.java.actions.SubjectPresent;
 import models.locations.Geolocation;
 import models.locations.GeolocationService;
 import models.locations.InvalidAddressException;
@@ -39,6 +40,7 @@ public class Application extends Controller {
 		return ok(index.render("Your new application is ready."));
 	}
 	
+	@Transactional
 	public static Result welcome() {
 		return ok(index_new.render());
 	}

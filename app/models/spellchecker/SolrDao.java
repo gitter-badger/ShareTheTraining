@@ -13,6 +13,7 @@ import org.apache.solr.client.solrj.response.UpdateResponse;
 import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
 
+import play.Logger;
 import play.Play;
  
  
@@ -64,17 +65,15 @@ public class SolrDao <T>
             req.setAction( UpdateRequest.ACTION.COMMIT, false, false );
             req.add (docs);
             UpdateResponse rsp = req.process( server );
-            System.out.print ("Added documents to solr. Time taken = " + rsp.getElapsedTime() + ". " + rsp.toString());
             long endTime = System.currentTimeMillis();
-            System.out.println (" , time-taken=" + ((double)(endTime-startTime))/1000.00 + " seconds");
         }
         catch (SolrServerException e)
         {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+        	Logger.error(e.getMessage());
         }
     }
     

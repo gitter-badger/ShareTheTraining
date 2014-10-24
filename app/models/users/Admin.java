@@ -26,6 +26,8 @@ public class Admin extends User {
 		super(email, username, password);
 	}
 	
+	public Admin(){}
+	
 	@Override
 	public List<? extends Role> getRoles() {
 		List<UserRoles> list = new ArrayList<UserRoles>();

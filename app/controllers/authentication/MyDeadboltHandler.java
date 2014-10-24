@@ -2,6 +2,7 @@ package controllers.authentication;
 
 import controllers.user.UserHandler;
 import models.users.Customer;
+import models.users.User;
 import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Http;
@@ -18,13 +19,16 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 		return null;
 	}
 
+	@Override
 	public F.Promise<Subject> getSubject(final Http.Context context) {
 		return F.Promise.promise(new F.Function0<Subject>() {
 			@Override
 			public Subject apply() throws Throwable {
 				String email = context.session().get("connected");
-            	if(email != null)
-            		return new UserHandler().getUserByEmail(email, JPA.em());
+            	if(email != null){
+            		User u = new UserHandler().getUserByEmail(email, JPA.em());
+            		return u;
+            	}
 				return null;
 			}
 		});

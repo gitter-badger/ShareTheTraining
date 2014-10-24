@@ -34,6 +34,8 @@ public class Trainer extends User{
 		super(email, username, password);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public Trainer(){}
 
 	@Override
 	public List<? extends Role> getRoles() {
