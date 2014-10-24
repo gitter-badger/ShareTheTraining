@@ -12,7 +12,7 @@ import play.data.validation.Constraints;
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Result;
-import views.html.*;
+import views.html.login;
 
 public class UserController extends Controller {
 	

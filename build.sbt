@@ -18,10 +18,10 @@ libraryDependencies ++= Seq(
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0",
   "mysql" % "mysql-connector-java" % "5.1.33",
   "org.apache.directory.studio" % "org.apache.commons.io" % "2.4",
-  "ws.securesocial" %% "securesocial" % "master-SNAPSHOT"
+  "be.objectify" %% "deadbolt-java" % "2.3.2"
 )
 
-resolvers += Resolver.sonatypeRepo("snapshots")
+resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)
 
 javaOptions in Test ++= Seq(
   "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9998",

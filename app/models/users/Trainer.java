@@ -2,6 +2,7 @@ package models.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.OneToMany;
 
 import org.apache.solr.common.SolrInputDocument;
 
+import be.objectify.deadbolt.core.models.Role;
 import play.db.jpa.JPA;
 import models.courses.Course;
 import models.spellchecker.SolrDao;
@@ -33,6 +35,13 @@ public class Trainer extends User{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public List<? extends Role> getRoles() {
+		List<UserRoles> list = new ArrayList<UserRoles>();
+		list.add(UserRoles.trainer);
+		return list;
+	}
+	
 	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
 	private Collection<Course> courses = new ArrayList<Course>();
 

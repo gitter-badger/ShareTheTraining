@@ -38,8 +38,8 @@ public class CourseLibraryTest extends BaseTest {
 	public void testFilterCourseByKeyword() {
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		cb.setKeyword("xingbxing");
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
+		cb.setKeyword("xingbuxin");
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 		
 	}
@@ -58,7 +58,7 @@ public class CourseLibraryTest extends BaseTest {
 			e.printStackTrace();
 		}
 		cb.setStartDate(date);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -70,7 +70,7 @@ public class CourseLibraryTest extends BaseTest {
 		locations.add(new Location(1,-1,""));
 		locations.add(new Location(2,1,""));
 		cb.setLocations(locations);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 	
@@ -92,7 +92,7 @@ public class CourseLibraryTest extends BaseTest {
 		locations.add(new Location(1,-1,""));
 		locations.add(new Location(2,1,""));
 		cb.setLocations(locations);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb);
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
