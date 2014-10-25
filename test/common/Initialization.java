@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseStatus;
 import models.locations.Location;
 import models.users.Trainer;
 
@@ -15,7 +16,9 @@ public class Initialization {
 	public Initialization(EntityManager entityManager){
 		this.em = entityManager;
 		course1 = Course.create("shishikan", "xingbuxing", 1,"xixihaha", em);
+		course1.setStatus(CourseStatus.approved);
 		course2 = Course.create("fengjian", "fubai", 2, "xixilala", em);
+		course2.setStatus(CourseStatus.approved);
 		concreteCourse1 = ConcreteCourse.create(course1, em);
 		concreteCourse1.setCourseDate(new Date());
 		concreteCourse1.setLocation(new Location(1,1,""));

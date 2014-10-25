@@ -51,6 +51,8 @@ public class Course extends BaseModelObject {
 	@Lob
 	private String courseDesc;
 
+	private CourseStatus status = CourseStatus.verifying;
+	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
@@ -125,5 +127,13 @@ public class Course extends BaseModelObject {
 
 	public void setCourses(Collection<ConcreteCourse> courses) {
 		this.courses = courses;
+	}
+
+	public CourseStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(CourseStatus status) {
+		this.status = status;
 	}
 }

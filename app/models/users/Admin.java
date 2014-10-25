@@ -6,9 +6,6 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 
-import models.spellchecker.SolrDao;
-
-import org.apache.solr.common.SolrInputDocument;
 
 import be.objectify.deadbolt.core.models.Role;
 

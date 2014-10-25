@@ -14,6 +14,7 @@ import javax.persistence.criteria.Selection;
 
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseStatus;
 import models.courses.Review;
 import models.locations.Location;
 import models.spellchecker.SolrSuggestions;
@@ -43,14 +44,16 @@ public class CourseFilterBuilder implements FilterBuilder {
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		predicates.add(cb.equal(courseInfoRoot.<CourseStatus> get("status"),
+				CourseStatus.approved));
 		if (keyword != null) {
-			//keyword = SolrSuggestions.getSuggestions(keyword);
+			// keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
 			predicates.add(cb.or(
-					cb.like(courseInfoRoot.<String> get("courseName"), "%" + keyword
-							+ "%"),
-					cb.like(courseInfoRoot.<String> get("courseDesc"), "%" + keyword
-							+ "%")));
+					cb.like(courseInfoRoot.<String> get("courseName"), "%"
+							+ keyword + "%"),
+					cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
+							+ keyword + "%")));
 		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(

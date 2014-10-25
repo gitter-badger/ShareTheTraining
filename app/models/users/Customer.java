@@ -13,8 +13,7 @@ import javax.persistence.OneToMany;
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.ConcreteCourse;
 import models.courses.Review;
-import play.Logger;
-import play.db.jpa.JPA;
+import models.courses.WaitListRecord;
 
 @Entity
 public class Customer extends User {
@@ -41,10 +40,37 @@ public class Customer extends User {
 		return list;
 	}
 
-	@ManyToMany(cascade = { CascadeType.ALL })
+	@ManyToMany(mappedBy = "selectedCustomers", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> selectedCourses = new ArrayList<ConcreteCourse>();
+	
+	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
+	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
 	@OneToMany(mappedBy = "author", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
+
+	public Collection<ConcreteCourse> getSelectedCourses() {
+		return selectedCourses;
+	}
+
+	public void setSelectedCourses(Collection<ConcreteCourse> selectedCourses) {
+		this.selectedCourses = selectedCourses;
+	}
+
+	public Collection<WaitListRecord> getWaitListRecords() {
+		return waitListRecords;
+	}
+
+	public void setWaitListRecords(Collection<WaitListRecord> waitListRecords) {
+		this.waitListRecords = waitListRecords;
+	}
+
+	public Collection<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Collection<Review> reviews) {
+		this.reviews = reviews;
+	}
 
 }

@@ -2,9 +2,13 @@ package models.users;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
@@ -12,7 +16,6 @@ import javax.persistence.OneToMany;
 import org.apache.solr.common.SolrInputDocument;
 
 import be.objectify.deadbolt.core.models.Role;
-import play.db.jpa.JPA;
 import models.courses.Course;
 import models.spellchecker.SolrDao;
 
@@ -47,4 +50,24 @@ public class Trainer extends User{
 	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
 	private Collection<Course> courses = new ArrayList<Course>();
 
+	
+	@ElementCollection
+	private Set<Date> availableDates = new HashSet<Date>();
+
+
+	public Collection<Course> getCourses() {
+		return courses;
+	}
+
+	public void setCourses(Collection<Course> courses) {
+		this.courses = courses;
+	}
+
+	public Set<Date> getAvailableDates() {
+		return availableDates;
+	}
+
+	public void setAvailableDates(Set<Date> availableDates) {
+		this.availableDates = availableDates;
+	}
 }
