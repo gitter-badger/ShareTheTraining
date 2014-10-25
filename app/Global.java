@@ -15,11 +15,13 @@ import java.lang.reflect.Method;
 public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
-		Logger.info("Three tomatoes are walking down the street- a poppa tomato, a momma tomato, and a little baby tomato. ");
+		//Logger.info("Three tomatoes are walking down the street- a poppa tomato, a momma tomato, and a little baby tomato. ");
+		Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
 	}
 
 	public void onStop(Application app) {
-		Logger.info("Baby tomato starts lagging behind. Poppa tomato gets angry, goes over to the baby tomato, and smooshes him... and says, Catch up.");
+		//Logger.info("Baby tomato starts lagging behind. Poppa tomato gets angry, goes over to the baby tomato, and smooshes him... and says, Catch up.");
+		Logger.info("The other one says, \"Yeah, I know; and such small portions.\"");
 	}
 
 	/* 500, need modification */
