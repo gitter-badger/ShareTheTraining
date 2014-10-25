@@ -6,7 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import models.users.User;
+import models.users.UserRole;
 
 public interface IUserHandler {
-	public User getUserByEmail(String email);
+	public User getUserByEmail(String userEmail);
+	
+	public User createNewUser(String userEmail, String userName, String password,
+			UserRole userRole);
 }

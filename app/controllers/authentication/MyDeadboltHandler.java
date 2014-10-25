@@ -26,7 +26,7 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 			public Subject apply() throws Throwable {
 				String email = context.session().get("connected");
 				if (email != null) {
-					User u = new UserHandler(JPA.em()).getUserByEmail(email);
+					User u = new UserHandler().getUserByEmail(email);
 					return u;
 				}
 				return null;

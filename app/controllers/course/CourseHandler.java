@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import play.db.jpa.JPA;
 import models.courses.Course;
 import models.filters.FilterBuilder;
 
@@ -15,8 +16,8 @@ public class CourseHandler implements ICourseHandler {
 	
 	private EntityManager em;
 	
-	public CourseHandler(EntityManager em){
-		this.em = em;
+	public CourseHandler(){
+		this.em = JPA.em();
 	}
 
 	@Override

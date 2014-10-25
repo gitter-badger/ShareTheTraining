@@ -1,6 +1,9 @@
 package controllers;
 
 
+import com.typesafe.plugin.MailerAPI;
+import com.typesafe.plugin.MailerPlugin;
+
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
 import be.objectify.deadbolt.java.actions.SubjectPresent;
@@ -39,7 +42,6 @@ public class Application extends Controller {
 		}
 		String message = flash().get("message");
 		message= message!=null ? message : "Your new application is ready.";
-		Logger.info(index.render(message).toString());
 		return ok(index.render(message));
 	}
 	

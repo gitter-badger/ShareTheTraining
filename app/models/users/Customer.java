@@ -33,7 +33,7 @@ public class Customer extends User {
 	}
 
 	public Customer() {}
-
+	
 	@Override
 	public List<? extends Role> getRoles() {
 		List<UserRole> list = new ArrayList<UserRole>();

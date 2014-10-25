@@ -11,6 +11,7 @@ import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
 import be.objectify.deadbolt.core.models.Subject;
 import common.BaseModelObject;
+import common.Password;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,10 +25,13 @@ public  abstract class User extends BaseModelObject implements Subject{
 	private String password;
 	
 	private UserRole userRole;
+	
+	private UserStatus userStatus;
 
 	protected User(String email, String username, String password) {
 		this.email = email;
 		this.username = username;
+		this.setUserStatus(UserStatus.INACTIVE);
 		try {
 			this.password = Password.getSaltedHash(password);
 		} catch (Exception e) {
@@ -78,7 +82,12 @@ public  abstract class User extends BaseModelObject implements Subject{
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		try {
+			this.password = Password.getSaltedHash(password);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		};
 	}
 
 	public UserRole getUserRole() {
@@ -87,6 +96,14 @@ public  abstract class User extends BaseModelObject implements Subject{
 
 	public void setUserRole(UserRole userRole) {
 		this.userRole = userRole;
+	}
+
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
 	}
 
 
