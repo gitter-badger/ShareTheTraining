@@ -16,7 +16,10 @@ import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LinearRing;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
 
 import models.courses.ConcreteCourse;
@@ -107,8 +110,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		if (curentLocation != null) {
 			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
 					locationRoot.<Point> get("point"), createCircle(
-							curentLocation.getPoint().getX(), curentLocation
-									.getPoint().getY(), 0.2)));
+							curentLocation.getPoint(), 0.36)));
 		}
 		// TODO add more filter here
 		javax.persistence.criteria.Order order = ascending ? cb
@@ -120,12 +122,25 @@ public class CourseFilterBuilder implements FilterBuilder {
 		return criteria;
 	}
 
-	private static Geometry createCircle(double x, double y, final double RADIUS) {
+	private static Geometry createCircle(Point point, final double RADIUS) {
+		Coordinate[] coordinates = new Coordinate[5];
+		double x = 0.3 + Math.abs(point.getX()/180 *0.5);
+		coordinates[0] = new Coordinate(point.getX()+x, point.getY()+0.3);
+		coordinates[1] = new Coordinate(point.getX()+x, point.getY()-0.3);
+		coordinates[2] = new Coordinate(point.getX()-x, point.getY()-0.3);
+		coordinates[3] = new Coordinate(point.getX()-x, point.getY()+0.3);
+		coordinates[4] = new Coordinate(point.getX()+x, point.getY()+0.3);
+		GeometryFactory fact = new GeometryFactory();
+		LinearRing linear = new GeometryFactory().createLinearRing(coordinates);
+		Polygon poly = new Polygon(linear, null, fact);
+		/*
 		GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
-		shapeFactory.setNumPoints(32);
+		shapeFactory.setNumPoints(64);
 		shapeFactory.setCentre(new Coordinate(x, y));
 		shapeFactory.setSize(RADIUS * 2);
 		return shapeFactory.createCircle();
+		*/
+		return poly;
 	}
 
 	public List<Location> getLocations() {

@@ -18,7 +18,8 @@ libraryDependencies ++= Seq(
   "com.typesafe.play.plugins" %% "play-plugins-mailer" % "2.3.0",
   "mysql" % "mysql-connector-java" % "5.1.33",
   "org.apache.directory.studio" % "org.apache.commons.io" % "2.4",
-  "be.objectify" %% "deadbolt-java" % "2.3.2"
+  "be.objectify" %% "deadbolt-java" % "2.3.2",
+  "com.google.maps" % "google-maps-services" % "0.1.3"
 )
 
 resolvers += Resolver.url("Objectify Play Repository", url("http://deadbolt.ws/releases/"))(Resolver.ivyStylePatterns)

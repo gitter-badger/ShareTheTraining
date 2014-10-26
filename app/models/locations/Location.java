@@ -5,6 +5,11 @@ import javax.persistence.Embeddable;
 
 import org.hibernate.annotations.Type;
 
+import play.Play;
+
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -27,9 +32,37 @@ public class Location {
 		this.county = county;
 		this.city = city;
 		this.detailedLoc = detailedLoc;
-		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel(), 4326);
+		GeometryFactory geometryFactory = new GeometryFactory(
+				new PrecisionModel(), 4326);
 		this.point = geometryFactory.createPoint(new Coordinate(longitude,
 				latitude));
+	}
+
+	public Location(int county, int city, String detailedLoc) {
+		this.county = county;
+		this.city = city;
+		this.detailedLoc = detailedLoc;
+		this.generateLatLng();
+	}
+
+	private void generateLatLng() {
+		GeoApiContext context = new GeoApiContext().setApiKey(Play
+				.application().configuration().getString("token.google.map"));
+		GeocodingResult[] results;
+		try {
+			results = GeocodingApi.geocode(context,
+					this.detailedLoc)
+					.await();
+			GeometryFactory geometryFactory = new GeometryFactory(
+					new PrecisionModel(), 4326);
+			this.point = geometryFactory.createPoint(new Coordinate(
+					results[0].geometry.location.lng,
+					results[0].geometry.location.lat));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	public int getCounty() {

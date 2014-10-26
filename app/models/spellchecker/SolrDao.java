@@ -39,7 +39,7 @@ public class SolrDao <T>
         try 
         {
             UpdateResponse rsp = server.addBeans (dao);
-            System.out.println ("Added documents to solr. Time taken = " + rsp.getElapsedTime() + ". " + rsp.toString());
+            //System.out.println ("Added documents to solr. Time taken = " + rsp.getElapsedTime() + ". " + rsp.toString());
         }
         catch (SolrServerException e)
         {

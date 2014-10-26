@@ -16,6 +16,10 @@ import models.locations.Location;
 
 import org.junit.Test;
 
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.model.GeocodingResult;
+
 import common.BaseTest;
 
 public class CourseLibraryTest extends BaseTest {
@@ -98,10 +102,24 @@ public class CourseLibraryTest extends BaseTest {
 	
 	@Test
 	public void testSearchNearbyCourse(){
+		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyA8Msu-j7RYqgcmHNzbdtSG4G5m12CFJ_o");
+		GeocodingResult[] results;
+		try {
+			results = GeocodingApi.geocode(context,
+			    "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
+			System.out.println(results[0].formattedAddress);
+			System.out.println("heheh");
+			System.out.println(results[0].geometry.location.lat);
+			System.out.println(results[0].geometry.location.lng);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		List<Location> locations =  new ArrayList<Location>();
-		cb.setCurentLocation(new Location(1,-1,"", -117.94 , 34.07));
+		cb.setCurentLocation(new Location(1,-1,"", -118.495 , 34.030));
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 	}

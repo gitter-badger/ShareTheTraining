@@ -21,6 +21,7 @@ import models.users.UserAction;
 import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
+import play.Play;
 import play.db.jpa.JPA;
 import play.mvc.Http.Context;
 
@@ -142,7 +143,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		ActionToken oldToken = findToken(userEmail, userAction);
 		if (oldToken != null)
 			em.remove(oldToken);
-		Date expireDate = getExpireDate(1);
+		Date expireDate = getExpireDate(Play.application().configuration().getInt("token.days"));
 		return ActionToken.create(userEmail, userAction, UUID.randomUUID()
 				.toString(), expireDate);
 	}
