@@ -28,6 +28,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private Date endDate;
 	private double lowPrice = -1;
 	private double highPrice = -1;
+	private int category = -1;
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -54,6 +55,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 							+ keyword + "%"),
 					cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
 							+ keyword + "%")));
+		}
+		if (category != -1) {
+			predicates.add(cb.equal(courseInfoRoot.<Integer> get("courseCategory"),
+					category));
 		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
