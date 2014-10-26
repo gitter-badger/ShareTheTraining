@@ -14,5 +14,7 @@ public class ConcreteCourseTest extends BaseTest{
 		Course course=Course.create("hehehe", "hehehe", 1, "lala", this.getmEm());
 		ConcreteCourse concreteCourse = ConcreteCourse.create(course, this.getmEm());
 		assertNotNull(concreteCourse.getId());
+		this.getmEm().remove(concreteCourse);
+		this.getmEm().remove(course);
 	}
 }

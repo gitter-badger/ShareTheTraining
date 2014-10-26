@@ -20,7 +20,7 @@ public abstract class BaseTest {
 	@Before
 	public void setUp() {
 
-		final FakeApplication app = Helpers.fakeApplication(inMemoryDatabase());
+		final FakeApplication app = Helpers.fakeApplication();
 		Helpers.start(app);
 		Option<JPAPlugin> jpaPlugin = app.getWrappedApplication().plugin(
 				JPAPlugin.class);
@@ -31,7 +31,7 @@ public abstract class BaseTest {
 
 	@After
 	public void tearDown() {
-
+		initData.dispose();
 		JPA.bindForCurrentThread(null);
 		this.mEm.close();
 

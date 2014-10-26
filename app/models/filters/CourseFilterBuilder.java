@@ -12,6 +12,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 
+import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.util.GeometricShapeFactory;
+
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseStatus;
@@ -21,7 +28,7 @@ import models.spellchecker.SolrSuggestions;
 
 public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;
-	private List<Location> locations;
+	private List<Location> locations = new ArrayList<Location>();
 	private int courseRating = -1;
 	private int trainerRating = -1;
 	private Date startDate;
@@ -29,6 +36,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private double lowPrice = -1;
 	private double highPrice = -1;
 	private int category = -1;
+	private Location curentLocation;
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -57,8 +65,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 							+ keyword + "%")));
 		}
 		if (category != -1) {
-			predicates.add(cb.equal(courseInfoRoot.<Integer> get("courseCategory"),
-					category));
+			predicates.add(cb.equal(
+					courseInfoRoot.<Integer> get("courseCategory"), category));
 		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
@@ -78,7 +86,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		if (highPrice != -1)
 			predicates.add(cb.lessThanOrEqualTo(
 					courseInfoRoot.<Double> get("price"), highPrice));
-		if (locations != null) {
+		if (locations.size() > 0) {
 			List<Predicate> locationQueries = new ArrayList<Predicate>();
 			for (Location location : locations) {
 				if (location.getCity() == -1) {
@@ -96,6 +104,12 @@ public class CourseFilterBuilder implements FilterBuilder {
 			}
 			predicates.add(cb.or(locationQueries.toArray(new Predicate[] {})));
 		}
+		if (curentLocation != null) {
+			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
+					locationRoot.<Point> get("point"), createCircle(
+							curentLocation.getPoint().getX(), curentLocation
+									.getPoint().getY(), 0.2)));
+		}
 		// TODO add more filter here
 		javax.persistence.criteria.Order order = ascending ? cb
 				.asc(courseInfoRoot.get(orderByColumn)) : cb.desc(entityRoot
@@ -104,6 +118,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 		criteria.groupBy(entityRoot.get("courseInfo"));
 		criteria.where(predicates.toArray(new Predicate[] {}));
 		return criteria;
+	}
+
+	private static Geometry createCircle(double x, double y, final double RADIUS) {
+		GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
+		shapeFactory.setNumPoints(32);
+		shapeFactory.setCentre(new Coordinate(x, y));
+		shapeFactory.setSize(RADIUS * 2);
+		return shapeFactory.createCircle();
 	}
 
 	public List<Location> getLocations() {
@@ -168,6 +190,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
+	}
+
+	public Location getCurentLocation() {
+		return curentLocation;
+	}
+
+	public void setCurentLocation(Location curentLocation) {
+		this.curentLocation = curentLocation;
 	}
 
 }

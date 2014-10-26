@@ -14,5 +14,6 @@ public class CourseTest extends BaseTest{
 	public void testCourseCreation() {
 		Course course = Course.create("123", "234", 1, "lala", this.getmEm());
 		assertThat(course.getId()).isNotNull();
+		this.getmEm().remove(course);
 	}
 }

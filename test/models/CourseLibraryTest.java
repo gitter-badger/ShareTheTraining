@@ -67,8 +67,8 @@ public class CourseLibraryTest extends BaseTest {
 		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		List<Location> locations =  new ArrayList<Location>();
-		locations.add(new Location(1,-1,""));
-		locations.add(new Location(2,1,""));
+		locations.add(new Location(1,-1,"", -118.14 , 34.03));
+		locations.add(new Location(2,1,"", -118.14 , 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
@@ -89,11 +89,21 @@ public class CourseLibraryTest extends BaseTest {
 		}
 		cb.setStartDate(date);
 		List<Location> locations =  new ArrayList<Location>();
-		locations.add(new Location(1,-1,""));
-		locations.add(new Location(2,1,""));
+		locations.add(new Location(1,-1,"",-118.14 , 34.03));
+		locations.add(new Location(2,1,"",-118.14 , 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
-
+	
+	@Test
+	public void testSearchNearbyCourse(){
+		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		List<Location> locations =  new ArrayList<Location>();
+		cb.setCurentLocation(new Location(1,-1,"", -117.94 , 34.07));
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		assertThat(result.size()).isEqualTo(1);
+	}
+	
 }
