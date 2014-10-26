@@ -31,8 +31,13 @@ public class Customer extends User {
 		this.setUserRole(UserRole.CUSTOMER);
 	}
 
-	public Customer() {}
-	
+	public Customer() {
+	}
+
+	private String cellPhone;
+
+	private String phone;
+
 	@Override
 	public List<? extends Role> getRoles() {
 		List<UserRole> list = new ArrayList<UserRole>();
@@ -42,7 +47,7 @@ public class Customer extends User {
 
 	@ManyToMany(mappedBy = "selectedCustomers", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> selectedCourses = new ArrayList<ConcreteCourse>();
-	
+
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 

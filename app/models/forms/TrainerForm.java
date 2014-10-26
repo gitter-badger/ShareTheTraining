@@ -1,4 +1,4 @@
-package models.form;
+package models.forms;
 
 import java.util.List;
 
@@ -25,10 +25,10 @@ public class TrainerForm {
 	private String experience;
 	
 	//certification, image? 
-	private List certification;
+	private List<String>certification;
 	
 	//how far are you willing to travel to deliver a course without travel reimbursement
-	private String howfar;
+	private int howfar;
 
 	public String getUsername() {
 		return username;
@@ -103,11 +103,11 @@ public class TrainerForm {
 		this.certification = certification;
 	}
 
-	public String getHowfar() {
+	public int getHowfar() {
 		return howfar;
 	}
 
-	public void setHowfar(String howfar) {
+	public void setHowfar(int howfar) {
 		this.howfar = howfar;
 	}
 	

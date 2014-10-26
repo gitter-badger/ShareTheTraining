@@ -27,7 +27,7 @@ import models.courses.Course;
 import models.courses.CourseStatus;
 import models.courses.Review;
 import models.locations.Location;
-import models.spellchecker.SolrSuggestions;
+import models.users.Trainer;
 
 public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;
@@ -48,7 +48,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 			String orderByColumn, boolean ascending) {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root<ConcreteCourse> entityRoot = criteria.from(ConcreteCourse.class);
-		Path<ConcreteCourse> courseInfoRoot = entityRoot.get("courseInfo");
+		Path<Course> courseInfoRoot = entityRoot.get("courseInfo");
+		Path<Trainer> trainerRoot = courseInfoRoot.get("trainer");
 		Path<Location> locationRoot = entityRoot.get("location");
 		Path<Review> reviews = entityRoot.get("reviews");
 		List<Selection> selections = Course.getSelections(courseInfoRoot);
@@ -61,11 +62,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 		if (keyword != null) {
 			// keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
-			predicates.add(cb.or(
-					cb.like(courseInfoRoot.<String> get("courseName"), "%"
-							+ keyword + "%"),
-					cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
-							+ keyword + "%")));
+			Predicate keyWordConditions = cb.disjunction();
+			keyWordConditions.getExpressions().add(cb.like(courseInfoRoot.<String> get("courseName"), "%"
+					+ keyword + "%"));
+			keyWordConditions.getExpressions().add(cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
+					+ keyword + "%"));
+			keyWordConditions.getExpressions().add(cb.like(trainerRoot.<String> get("username"), "%"
+					+ keyword + "%"));
+			predicates.add(keyWordConditions);
 		}
 		if (category != -1) {
 			predicates.add(cb.equal(

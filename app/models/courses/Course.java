@@ -48,10 +48,16 @@ public class Course extends BaseModelObject {
 	// TODO should this be in ConcreteCourse?
 	private double price;
 
+	private String fromCompany;
+	
 	@Lob
 	private String courseDesc;
 
 	private CourseStatus status = CourseStatus.verifying;
+	
+	private String methods;
+	
+	private String keyPoints;
 	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
@@ -135,5 +141,21 @@ public class Course extends BaseModelObject {
 
 	public void setStatus(CourseStatus status) {
 		this.status = status;
+	}
+
+	public String getFromCompany() {
+		return fromCompany;
+	}
+
+	public void setFromCompany(String fromCompany) {
+		this.fromCompany = fromCompany;
+	}
+
+	public String getMethods() {
+		return methods;
+	}
+
+	public void setMethods(String methods) {
+		this.methods = methods;
 	}
 }

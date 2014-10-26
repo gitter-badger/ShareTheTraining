@@ -1,5 +1,6 @@
-package models.form;
+package models.forms;
 
+import models.courses.ConcreteCourseStatus;
 import models.locations.Location;
 
 public class CourseForm {
@@ -7,13 +8,13 @@ public class CourseForm {
 	private String courseName;
 	
 	//id?emial?username?
-	private String trainerName;
+	private String trainerEmail;
 	
 	private Location locations;
 	
 	private String keyPoints;
 	
-	private String courseOverview;
+	private String courseDesc;
 	
 	private String startDate;
 	
@@ -23,7 +24,7 @@ public class CourseForm {
 	
 	private int maxnum;
 	
-	private int minnum;
+	private int minmum;
 	
 	//room set up
 	private String roomInfo;
@@ -38,15 +39,15 @@ public class CourseForm {
 	
 	private String address;
 	
-	private String status;
+	private ConcreteCourseStatus status;
 
 	
 	
-	public String getStatus() {
+	public ConcreteCourseStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(ConcreteCourseStatus status) {
 		this.status = status;
 	}
 
@@ -90,13 +91,7 @@ public class CourseForm {
 		this.courseName = courseName;
 	}
 
-	public String getTrainerName() {
-		return trainerName;
-	}
 
-	public void setTrainerName(String trainerName) {
-		this.trainerName = trainerName;
-	}
 
 	public String getFromCompany() {
 		return fromCompany;
@@ -121,14 +116,6 @@ public class CourseForm {
 
 	public void setKeyPoints(String keyPoints) {
 		this.keyPoints = keyPoints;
-	}
-
-	public String getCourseOverview() {
-		return courseOverview;
-	}
-
-	public void setCourseOverview(String courseOverview) {
-		this.courseOverview = courseOverview;
 	}
 
 	public String getStartDate() {
@@ -163,12 +150,12 @@ public class CourseForm {
 		this.maxnum = maxnum;
 	}
 
-	public int getMinnum() {
-		return minnum;
+	public int getMinmum() {
+		return minmum;
 	}
 
 	public void setMinnum(int minnum) {
-		this.minnum = minnum;
+		this.minmum = minmum;
 	}
 
 	public String getRoomInfo() {
@@ -181,6 +168,22 @@ public class CourseForm {
 	
 	public CourseForm(){
 		
+	}
+
+	public String getTrainerEmail() {
+		return trainerEmail;
+	}
+
+	public void setTrainerEmail(String trainerEmail) {
+		this.trainerEmail = trainerEmail;
+	}
+
+	public String getCourseDesc() {
+		return courseDesc;
+	}
+
+	public void setCourseDesc(String courseDesc) {
+		this.courseDesc = courseDesc;
 	}
 	
 	

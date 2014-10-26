@@ -22,7 +22,7 @@ import com.google.maps.model.GeocodingResult;
 import common.BaseTest;
 import controllers.course.CourseHandler;
 
-public class CourseLibraryTest extends BaseTest {
+public class CourseHandlerTest extends BaseTest {
 	@Test
 	public void testGetCourseById() {
 

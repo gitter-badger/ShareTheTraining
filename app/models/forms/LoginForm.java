@@ -1,4 +1,4 @@
-package models.form;
+package models.forms;
 
 public class LoginForm {
 	

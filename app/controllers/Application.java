@@ -1,6 +1,5 @@
 package controllers;
 
-
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
@@ -26,56 +25,44 @@ import static play.data.Form.form;
 public class Application extends Controller {
 	public static Form<Customer> signupForm = form(Customer.class);
 
-	
 	@Transactional
 	public static Promise<Result> index() {
-		  Promise<Geolocation> promiseOfGeolocation = Promise.promise(
-		    new Function0<Geolocation>() {
-		      public Geolocation apply() {
-		        return GeolocationService
-						.getGeolocation("68.191.236.135");
-		      }
-		    }
-		  );
-		  return promiseOfGeolocation.map(
-		    new Function<Geolocation, Result>() {
-		      public Result apply(Geolocation geolocation) {
-		    	  if (geolocation == null) { // the service does not responded
-						// properly
-						Logger.info("no geo");
+		Promise<Geolocation> promiseOfGeolocation = Promise
+				.promise(new Function0<Geolocation>() {
+					public Geolocation apply() {
+						return GeolocationService
+								.getGeolocation("68.191.236.135");
 					}
-					else
-						Logger.info(geolocation.getCity());
-		    	  String message = flash().get("message");
-		  		message= message!=null ? message : "Your new application is ready.";
-		  		return ok(index.render(message));
-		      } 
-		    }
-		  );
-		}
-
-/*
-	@Transactional
-	public static Result index() {
-		try {
-			Geolocation geolocation = GeolocationService
-					.getGeolocation(request().remoteAddress());
-			if (geolocation == null) { // the service does not responded
-				// properly
-				Logger.info("no geo");
+				});
+		return promiseOfGeolocation.map(new Function<Geolocation, Result>() {
+			public Result apply(Geolocation geolocation) {
+				if (geolocation == null) { // the service does not responded
+					// properly
+					Logger.info("no geo");
+				} else
+					Logger.info(geolocation.getCity());
+				String message = flash().get("message");
+				message = message != null ? message
+						: "Your new application is ready.";
+				return ok(index.render(message));
 			}
-			else
-				Logger.info(geolocation.getCountryCode());
-		} catch (InvalidAddressException ex) {
-
-		}
-		String message = flash().get("message");
-		message= message!=null ? message : "Your new application is ready.";
-		return ok(index.render(message));
+		});
 	}
-*/	
+
+	/*
+	 * @Transactional public static Result index() { try { Geolocation
+	 * geolocation = GeolocationService
+	 * .getGeolocation(request().remoteAddress()); if (geolocation == null) { //
+	 * the service does not responded // properly Logger.info("no geo"); } else
+	 * Logger.info(geolocation.getCountryCode()); } catch
+	 * (InvalidAddressException ex) {
+	 * 
+	 * } String message = flash().get("message"); message= message!=null ?
+	 * message : "Your new application is ready."; return
+	 * ok(index.render(message)); }
+	 */
 	@Transactional
-	@Restrict({@Group("CUSTOMER"), @Group("TRAINER")})
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result welcome() {
 		return ok(index_new.render());
 	}

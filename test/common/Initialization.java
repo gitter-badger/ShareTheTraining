@@ -15,10 +15,13 @@ import models.users.Trainer;
 public class Initialization {
 	public Initialization(EntityManager entityManager){
 		this.em = entityManager;
+		trainer1 = Trainer.create("sda", "dasda", "dasd", em);
 		course1 = Course.create("shishikan", "xingbuxing", 1,"xixihaha", em);
 		course1.setStatus(CourseStatus.approved);
+		course1.setTrainer(trainer1);
 		course2 = Course.create("fengjian", "fubai", 2, "xixilala", em);
 		course2.setStatus(CourseStatus.approved);
+		course2.setTrainer(trainer1);
 		concreteCourse1 = ConcreteCourse.create(course1, em);
 		concreteCourse1.setCourseDate(new Date());
 		concreteCourse1.setLocation(new Location(1,1,"",-118.14 , 34.03));
@@ -38,6 +41,7 @@ public class Initialization {
 		concreteCourse3.setCourseDate(new Date());
 		concreteCourse3.setLocation(new Location(2,1,"",121.28,31.10));
 		em.getTransaction().begin();
+		em.persist(trainer1);
 		em.persist(course1);
 		em.persist(course2);
 		em.persist(concreteCourse1);
@@ -65,6 +69,7 @@ public class Initialization {
 		em.remove(concreteCourse3);
 		em.remove(course1);
 		em.remove(course2);
+		em.remove(trainer1);
 		em.getTransaction().commit();
 	}
 }
