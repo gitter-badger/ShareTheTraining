@@ -1,4 +1,4 @@
-package models;
+package controllers;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -10,7 +10,6 @@ import java.util.Date;
 import java.util.List;
 
 import models.courses.Course;
-import models.courses.CourseLibrary;
 import models.filters.CourseFilterBuilder;
 import models.locations.Location;
 
@@ -21,36 +20,37 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
+import controllers.course.CourseHandler;
 
 public class CourseLibraryTest extends BaseTest {
 	@Test
 	public void testGetCourseById() {
 
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseHandler = new CourseHandler();
 		assertThat(initData.course1).isEqualTo(
-				courseLibrary.getCourseById(initData.course1.getCourseId()));
+				courseHandler.getCourseById(initData.course1.getCourseId()));
 	}
 
 	@Test
 	public void testGetCourseByCategory() {
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
-		assertThat(courseLibrary.getCourseByCategory(1, 1, 10).size())
+		CourseHandler courseHandler = new CourseHandler();
+		assertThat(courseHandler.getCourseByCategory(1, 1, 10).size())
 				.isEqualTo(1);
 	}
 	
 	@Test
 	public void testFilterCourseByKeyword() {
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setKeyword("xingbuxin");
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 		
 	}
 
 	@Test
 	public void testFilterCourseByStartDate() {
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		String dateInString = "10-01-1949";
@@ -62,25 +62,25 @@ public class CourseLibraryTest extends BaseTest {
 			e.printStackTrace();
 		}
 		cb.setStartDate(date);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
 	@Test
 	public void testFilterCourseByLocation() {
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		List<Location> locations =  new ArrayList<Location>();
 		locations.add(new Location(1,-1,"", -118.14 , 34.03));
 		locations.add(new Location(2,1,"", -118.14 , 34.03));
 		cb.setLocations(locations);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 	
 	@Test
 	public void testFilterCourseByMultiOption(){
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseLibrary = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		String dateInString = "10-01-1949";
@@ -116,11 +116,11 @@ public class CourseLibraryTest extends BaseTest {
 			e.printStackTrace();
 		}
 		
-		CourseLibrary courseLibrary = new CourseLibrary(this.getmEm());
+		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		List<Location> locations =  new ArrayList<Location>();
 		cb.setCurentLocation(new Location(1,-1,"", -118.495 , 34.030));
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 	}
 	
