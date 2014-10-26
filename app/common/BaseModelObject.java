@@ -38,6 +38,7 @@ public abstract class BaseModelObject implements IModelObject,
 		return this.getId().compareTo(o.getId());
 	}
 
+	@Override
 	public boolean equals(Object other) {
 		if (other == null || other.getClass() != this.getClass())
 			return false;
@@ -46,6 +47,7 @@ public abstract class BaseModelObject implements IModelObject,
 		return eb.isEquals();
 	}
 
+	@Override
 	public int hashCode() {
 		return new HashCodeBuilder().append(getId()).toHashCode();
 	}
