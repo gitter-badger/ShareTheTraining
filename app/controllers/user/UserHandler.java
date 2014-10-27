@@ -49,4 +49,16 @@ public class UserHandler implements IUserHandler {
 		}
 	}
 
+	@Override
+	public boolean writeReview() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean registerCourse() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

@@ -13,4 +13,8 @@ public interface IUserHandler {
 	
 	public User createNewUser(String userEmail, String userName, String password,
 			UserRole userRole);
+	
+	public boolean writeReview();
+	
+	public boolean registerCourse();
 }

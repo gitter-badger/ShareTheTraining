@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import play.db.jpa.JPA;
 import models.courses.Course;
 import models.filters.FilterBuilder;
+import models.forms.CourseForm;
 
 public class CourseHandler implements ICourseHandler {
 	
@@ -67,6 +68,24 @@ public class CourseHandler implements ICourseHandler {
 			result.add((Course) t.get(0));
 		}
 		return result;
+	}
+
+	@Override
+	public boolean modifyMaximum(String courseId, int maximum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean modifyMinimum(String courseId, int minimum) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean addNewCourse(String trainerEmail, CourseForm courseForm) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
