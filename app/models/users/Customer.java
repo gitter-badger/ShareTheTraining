@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.ConcreteCourse;
-import models.courses.RegistrationOrder;
+import models.courses.CourseOrder;
 import models.courses.Review;
 import models.courses.WaitListRecord;
 
@@ -53,7 +53,9 @@ public class Customer extends User {
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 	
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
-	private Collection<RegistrationOrder> orders = new ArrayList<RegistrationOrder>();
+	private Collection<CourseOrder> courseOrders = new ArrayList<CourseOrder>();
+
+	
 
 	@OneToMany(mappedBy = "author", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
@@ -81,5 +83,32 @@ public class Customer extends User {
 	public void setReviews(Collection<Review> reviews) {
 		this.reviews = reviews;
 	}
+	
+	public String getCellPhone() {
+		return cellPhone;
+	}
+
+	public void setCellPhone(String cellPhone) {
+		this.cellPhone = cellPhone;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public Collection<CourseOrder> getCourseOrders() {
+		return courseOrders;
+	}
+
+	public void setCourseOrders(
+			Collection<CourseOrder> courseOrders) {
+		this.courseOrders = courseOrders;
+	}
+
+	
 
 }

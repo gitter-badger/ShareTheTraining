@@ -8,7 +8,6 @@ public class MailHandler implements IMailHandler{
 	public boolean sendMailWithToken(String email, String token, UserAction action) {
 		switch(action){
 		case REGISTER:
-			
 			return true;
 		case PASSWORDRESET:
 			return true;

@@ -56,6 +56,8 @@ public class ConcreteCourse extends BaseModelObject {
 	
 	private int maximum;
 	
+	private String eventbriteId;
+	
 	private ConcreteCourseStatus status = ConcreteCourseStatus.unstarted;
 	
 	public Course getCourseInfo() {
@@ -139,5 +141,16 @@ public class ConcreteCourse extends BaseModelObject {
 		this.status = status;
 	}
 
+	public String getEventbriteId() {
+		return eventbriteId;
+	}
+
+	public void setEventbriteId(String eventbriteId) {
+		this.eventbriteId = eventbriteId;
+	}
+
+	public String getEventbriteUrl(){
+		return "http://www.eventbrite.com/e/software-engineering-tickets-"+eventbriteId;
+	}
 
 }
