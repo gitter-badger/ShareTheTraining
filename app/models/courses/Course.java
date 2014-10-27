@@ -59,6 +59,8 @@ public class Course extends BaseModelObject {
 	
 	private String keyPoints;
 	
+	private int popularity;
+	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
@@ -157,5 +159,21 @@ public class Course extends BaseModelObject {
 
 	public void setMethods(String methods) {
 		this.methods = methods;
+	}
+
+	public String getKeyPoints() {
+		return keyPoints;
+	}
+
+	public void setKeyPoints(String keyPoints) {
+		this.keyPoints = keyPoints;
+	}
+
+	public int getPopularity() {
+		return popularity;
+	}
+
+	public void setPopularity(int popularity) {
+		this.popularity = popularity;
 	}
 }
