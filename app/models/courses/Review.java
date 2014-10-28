@@ -21,15 +21,15 @@ public class Review extends BaseModelObject {
 		review.putSolrDoc();
 		return null;
 	}
-	
-	protected Review(Customer author, Course course,
-			int courseRating, int trainerRating) {
+
+	protected Review(Customer author, Course course, int courseRating,
+			int trainerRating) {
 		this.author = author;
 		this.course = course;
 		this.courseRating = courseRating;
 		this.trainerRating = trainerRating;
 		this.date = new Date();
-		
+
 	}
 
 	@ManyToOne
@@ -41,7 +41,7 @@ public class Review extends BaseModelObject {
 	private int courseRating;
 
 	private int trainerRating;
-	
+
 	private Date date;
 
 	public Course getCourse() {
@@ -83,6 +83,5 @@ public class Review extends BaseModelObject {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-
 
 }
