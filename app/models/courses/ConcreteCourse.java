@@ -53,9 +53,6 @@ public class ConcreteCourse extends BaseModelObject {
 	@OneToMany(mappedBy = "concreteCourse", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
-	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
-	private Collection<Review> reviews = new ArrayList<Review>();
-
 	private Date courseDate;
 
 	@ElementCollection
@@ -115,14 +112,6 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setSelectedCustomers(Collection<Customer> selectedCustomers) {
 		this.selectedCustomers = selectedCustomers;
-	}
-
-	public Collection<Review> getReviews() {
-		return reviews;
-	}
-
-	public void setReviews(Collection<Review> reviews) {
-		this.reviews = reviews;
 	}
 
 	public Collection<WaitListRecord> getWaitListRecords() {

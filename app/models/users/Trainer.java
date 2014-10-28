@@ -50,6 +50,8 @@ public class Trainer extends User {
 	private String certification;
 	
 	private double rating;
+	
+	private int rateCount;
 
 	@Override
 	public List<? extends Role> getRoles() {
@@ -64,6 +66,11 @@ public class Trainer extends User {
 	@ElementCollection
 	private Set<Date> availableDates = new HashSet<Date>();
 
+	public void updateRating(double rating) {
+		this.rateCount += 1;
+		this.rating = (this.rating * this.rateCount) / this.rateCount;
+	}
+	
 	public Collection<Course> getCourses() {
 		return courses;
 	}
@@ -126,5 +133,13 @@ public class Trainer extends User {
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+
+	public int getRateCount() {
+		return rateCount;
+	}
+
+	public void setRateCount(int rateCount) {
+		this.rateCount = rateCount;
 	}
 }

@@ -45,6 +45,9 @@ public class Customer extends User {
 		concreteCourse.enrollCustomer(this);
 	}
 	
+	public void addReview(Review review){
+		this.reviews.add(review);
+	}
 
 	@Override
 	public List<? extends Role> getRoles() {

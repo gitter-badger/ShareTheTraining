@@ -9,6 +9,7 @@ import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.courses.Review;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.Trainer;
@@ -53,7 +54,6 @@ public class UserHandler implements IUserHandler {
 
 	@Override
 	public boolean writeReview() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

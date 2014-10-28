@@ -23,8 +23,8 @@ import common.BaseModelObject;
 @Entity
 public class Course extends BaseModelObject {
 
-	public static Course create(String courseName,
-			int courseCategory, String courseDesc, EntityManager em) {
+	public static Course create(String courseName, int courseCategory,
+			String courseDesc, EntityManager em) {
 		Course course = new Course();
 		course.setCourseName(courseName);
 		course.setCourseCategory(courseCategory);
@@ -45,22 +45,44 @@ public class Course extends BaseModelObject {
 	private double price;
 
 	private String fromCompany;
-	
+
 	@Lob
 	private String courseDesc;
 
 	private CourseStatus status = CourseStatus.verifying;
-	
+
 	private String methods;
-	
+
 	private String keyPoints;
-	
+
 	private int popularity;
-	
+
 	private double rating;
+
 	
+	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
+	private Collection<Review> reviews = new ArrayList<Review>();
+
+
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
+
+	public void updateRating(double rating) {
+		this.rating = (this.rating * this.reviews.size()+rating) / (this.reviews.size()+1);
+	}
+	
+	public void addReview(Review review){
+		this.updateRating(review.getCourseRating());
+		this.reviews.add(review);
+	}
+	
+	public Collection<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Collection<Review> reviews) {
+		this.reviews = reviews;
+	}
 
 	public static List<Selection> getSelections(Path path) {
 		List<Selection> selections = new ArrayList<Selection>();
