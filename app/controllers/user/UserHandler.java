@@ -6,7 +6,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseOrder;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.Trainer;
@@ -33,8 +35,8 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public User createNewUser(String userEmail, String userName, String password,
-			UserRole userRole) {
+	public User createNewUser(String userEmail, String userName,
+			String password, UserRole userRole) {
 		if (getUserByEmail(userEmail) != null)
 			return null;
 		switch (userRole) {
@@ -56,9 +58,16 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public boolean registerCourse() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean registerCourse(Customer customer,
+			ConcreteCourse concreteCourse, String orderId) {
+		try {
+			CourseOrder order = CourseOrder.create(orderId, concreteCourse,
+					customer, em);
+			customer.registerCourse(concreteCourse);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

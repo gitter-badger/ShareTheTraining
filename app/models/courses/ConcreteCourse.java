@@ -3,9 +3,12 @@ package models.courses;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
@@ -22,44 +25,58 @@ import common.BaseModelObject;
 @Entity
 public class ConcreteCourse extends BaseModelObject {
 
-	public static ConcreteCourse create(Course courseInfo, EntityManager em) {
+	public static ConcreteCourse create(Course courseInfo, String eventbriteId,
+			Location location, List<Date> dates, int maximum, int minimum,
+			EntityManager em) {
 		ConcreteCourse concreteCourse = new ConcreteCourse();
 		concreteCourse.setCourseInfo(courseInfo);
+		concreteCourse.setEventbriteId(eventbriteId);
+		concreteCourse.setLocation(location);
+		concreteCourse.setMaximum(maximum);
+		concreteCourse.setMinimum(minimum);
+		if (dates.size() > 0) {
+			Collections.sort(dates);
+			concreteCourse.setCourseDates(dates);
+			concreteCourse.setCourseDate(dates.get(0));
+		}
 		em.persist(concreteCourse);
-		SolrInputDocument doc = concreteCourse.getSolrDoc();
-		if(doc!=null)
-			new SolrDao().putDoc(doc);
+		concreteCourse.putSolrDoc();
 		return concreteCourse;
 	}
 
 	@ManyToOne
 	private Course courseInfo;
 
-	
-
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Collection<Customer> selectedCustomers = new ArrayList<Customer>();
-	
+
 	@OneToMany(mappedBy = "concreteCourse", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
-	
+
 	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
 
 	private Date courseDate;
+
+	@ElementCollection
+	private Collection<Date> courseDates = new ArrayList<Date>();
 
 	private Time length;
 
 	private Location location = new Location(-1, -1, "", 0, 0);
 
 	private int minimum;
-	
+
 	private int maximum;
-	
+
 	private String eventbriteId;
-	
+
 	private ConcreteCourseStatus status = ConcreteCourseStatus.unstarted;
-	
+
+	public void enrollCustomer(Customer customer) {
+		this.selectedCustomers.add(customer);
+	}
+
 	public Course getCourseInfo() {
 		return courseInfo;
 	}
@@ -91,7 +108,6 @@ public class ConcreteCourse extends BaseModelObject {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
-
 
 	public Collection<Customer> getSelectedCustomers() {
 		return selectedCustomers;
@@ -149,8 +165,17 @@ public class ConcreteCourse extends BaseModelObject {
 		this.eventbriteId = eventbriteId;
 	}
 
-	public String getEventbriteUrl(){
-		return "http://www.eventbrite.com/e/software-engineering-tickets-"+eventbriteId;
+	public String getEventbriteUrl() {
+		return "http://www.eventbrite.com/e/software-engineering-tickets-"
+				+ eventbriteId;
+	}
+
+	public Collection<Date> getCourseDates() {
+		return courseDates;
+	}
+
+	public void setCourseDates(Collection<Date> courseDates) {
+		this.courseDates = courseDates;
 	}
 
 }

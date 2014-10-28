@@ -1,10 +1,7 @@
 package controllers.user;
 
-import java.util.Collection;
-
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
-
+import models.courses.ConcreteCourse;
+import models.users.Customer;
 import models.users.User;
 import models.users.UserRole;
 
@@ -16,5 +13,5 @@ public interface IUserHandler {
 	
 	public boolean writeReview();
 	
-	public boolean registerCourse();
+	public boolean registerCourse(Customer customer, ConcreteCourse course, String orderId);
 }

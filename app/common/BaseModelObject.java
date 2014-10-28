@@ -1,18 +1,15 @@
 package common;
 
-import java.util.UUID;
-
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.PrePersist;
+
+import models.spellchecker.SolrDao;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.solr.common.SolrInputDocument;
-
-
 
 @MappedSuperclass
 public abstract class BaseModelObject implements IModelObject,
@@ -30,12 +27,11 @@ public abstract class BaseModelObject implements IModelObject,
 	public void setId(Integer _id) {
 		id = _id;
 	}
-/*
-	@PrePersist
-	private void ensureId(){
-	    this.setId(UUID.randomUUID().toString());
-	}
-*/	
+
+	/*
+	 * @PrePersist private void ensureId(){
+	 * this.setId(UUID.randomUUID().toString()); }
+	 */
 	@Override
 	public int compareTo(IModelObject o) {
 		return this.getId().compareTo(o.getId());
@@ -54,12 +50,17 @@ public abstract class BaseModelObject implements IModelObject,
 	public int hashCode() {
 		return new HashCodeBuilder().append(getId()).toHashCode();
 	}
-	
+
 	@Override
 	public SolrInputDocument getSolrDoc() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	public void putSolrDoc() {
+		SolrInputDocument doc = this.getSolrDoc();
+		if (doc != null)
+			new SolrDao().putDoc(doc);
+	}
 
 }

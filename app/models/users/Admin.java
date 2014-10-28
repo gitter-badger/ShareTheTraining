@@ -15,6 +15,7 @@ public class Admin extends User {
 	public static Admin create(String email, String username, String password, EntityManager em) {
 		Admin admin = new Admin(email, username, password);
 		em.persist(admin);
+		admin.putSolrDoc();
 		return admin;
 
 	}

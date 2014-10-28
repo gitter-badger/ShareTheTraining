@@ -2,8 +2,7 @@ package controllers.course;
 
 import java.util.Collection;
 
-import javax.persistence.EntityManager;
-
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.filters.FilterBuilder;
 import models.forms.CourseForm;
@@ -25,5 +24,7 @@ public interface ICourseHandler {
 	public boolean modifyMinimum(String courseId, int minimum);
 
 	public boolean addNewCourse(String trainerEmail, CourseForm courseForm);
+
+	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
 }

@@ -30,9 +30,7 @@ public class Course extends BaseModelObject {
 		course.setCourseCategory(courseCategory);
 		course.setCourseDesc(courseDesc);
 		em.persist(course);
-		SolrInputDocument doc = course.getSolrDoc();
-		if(doc!=null)
-			new SolrDao().putDoc(doc);
+		course.putSolrDoc();
 		return course;
 	}
 

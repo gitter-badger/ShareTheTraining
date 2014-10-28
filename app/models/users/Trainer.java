@@ -26,9 +26,7 @@ public class Trainer extends User {
 			String password, EntityManager em) {
 		Trainer trainer = new Trainer(email, username, password);
 		em.persist(trainer);
-		SolrInputDocument doc = trainer.getSolrDoc();
-		if (doc != null)
-			new SolrDao().putDoc(doc);
+		trainer.putSolrDoc();
 		return trainer;
 
 	}

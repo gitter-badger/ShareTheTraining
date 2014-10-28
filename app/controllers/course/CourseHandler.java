@@ -8,7 +8,9 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import akka.util.Collections;
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.filters.FilterBuilder;
 import models.forms.CourseForm;
@@ -28,6 +30,16 @@ public class CourseHandler implements ICourseHandler {
 		Collection result = query.getResultList();
 		if (result.size() > 0)
 			return (Course) result.iterator().next();
+		return null;
+	}
+	
+	@Override
+	public ConcreteCourse getCourseByEventbriteId(String eventbriteId) {
+		String hql = "from ConcreteCourse c where c.eventbriteId= :eventbriteId";
+		Query query = em.createQuery(hql).setParameter("courseId", eventbriteId);
+		Collection result = query.getResultList();
+		if (result.size() > 0)
+			return (ConcreteCourse) result.iterator().next();
 		return null;
 	}
 

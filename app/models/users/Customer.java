@@ -23,6 +23,7 @@ public class Customer extends User {
 			String password, EntityManager em) {
 		Customer customer = new Customer(email, username, password);
 		em.persist(customer);
+		customer.putSolrDoc();
 		return customer;
 
 	}
@@ -39,6 +40,12 @@ public class Customer extends User {
 
 	private String phone;
 
+	public void registerCourse(ConcreteCourse concreteCourse) {
+		this.selectedCourses.add(concreteCourse);
+		concreteCourse.enrollCustomer(this);
+	}
+	
+
 	@Override
 	public List<? extends Role> getRoles() {
 		List<UserRole> list = new ArrayList<UserRole>();
@@ -51,11 +58,9 @@ public class Customer extends User {
 
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
-	
+
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
 	private Collection<CourseOrder> courseOrders = new ArrayList<CourseOrder>();
-
-	
 
 	@OneToMany(mappedBy = "author", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
@@ -83,7 +88,7 @@ public class Customer extends User {
 	public void setReviews(Collection<Review> reviews) {
 		this.reviews = reviews;
 	}
-	
+
 	public String getCellPhone() {
 		return cellPhone;
 	}
@@ -104,11 +109,8 @@ public class Customer extends User {
 		return courseOrders;
 	}
 
-	public void setCourseOrders(
-			Collection<CourseOrder> courseOrders) {
+	public void setCourseOrders(Collection<CourseOrder> courseOrders) {
 		this.courseOrders = courseOrders;
 	}
-
-	
 
 }
