@@ -67,6 +67,29 @@ public class CourseHandlerTest extends BaseTest {
 	}
 
 	@Test
+	public void testFilterCourseByCourseRating() {
+		CourseHandler courseHandler = new CourseHandler();
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.setCourseRating(3);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		assertThat(result.size()).isEqualTo(1);
+		
+	}
+	
+	@Test
+	public void testFilterCourseByTrainerRating() {
+		CourseHandler courseHandler = new CourseHandler();
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.setTrainerRating(3);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		assertThat(result.size()).isEqualTo(2);
+		cb.setTrainerRating(4);
+		result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		assertThat(result.size()).isEqualTo(0);
+		
+	}
+	
+	@Test
 	public void testFilterCourseByLocation() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();

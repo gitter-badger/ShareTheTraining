@@ -51,7 +51,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		Path<Course> courseInfoRoot = entityRoot.get("courseInfo");
 		Path<Trainer> trainerRoot = courseInfoRoot.get("trainer");
 		Path<Location> locationRoot = entityRoot.get("location");
-		Path<Review> reviews = entityRoot.get("reviews");
 		List<Selection> selections = Course.getSelections(courseInfoRoot);
 		selections.add(0, entityRoot.get("courseInfo"));
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
@@ -77,10 +76,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					reviews.<Integer> get("courseRating"), courseRating));
+					courseInfoRoot.<Integer> get("rating"), courseRating));
 		if (trainerRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					reviews.<Integer> get("trainerRating"), trainerRating));
+					trainerRoot.<Integer> get("rating"), trainerRating));
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(
 					entityRoot.<Date> get("courseDate"), startDate));

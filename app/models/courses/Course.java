@@ -57,6 +57,8 @@ public class Course extends BaseModelObject {
 	
 	private int popularity;
 	
+	private double rating;
+	
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
@@ -163,5 +165,13 @@ public class Course extends BaseModelObject {
 
 	public void setPopularity(int popularity) {
 		this.popularity = popularity;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 }

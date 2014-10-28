@@ -48,6 +48,8 @@ public class Trainer extends User {
 	private String experience;
 	
 	private String certification;
+	
+	private double rating;
 
 	@Override
 	public List<? extends Role> getRoles() {
@@ -116,5 +118,13 @@ public class Trainer extends User {
 
 	public void setCertification(String certification) {
 		this.certification = certification;
+	}
+
+	public double getRating() {
+		return rating;
+	}
+
+	public void setRating(double rating) {
+		this.rating = rating;
 	}
 }

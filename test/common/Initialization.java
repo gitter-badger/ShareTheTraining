@@ -18,12 +18,14 @@ public class Initialization {
 	public Initialization(EntityManager entityManager) {
 		this.em = entityManager;
 		trainer1 = Trainer.create("sda", "dasda", "dasd", em);
+		trainer1.setRating(3);
 		course1 = Course.create("xingbuxing", 1, "xixihaha", em);
 		course1.setStatus(CourseStatus.approved);
 		course1.setTrainer(trainer1);
 		course2 = Course.create("fubai", 2, "xixilala", em);
 		course2.setStatus(CourseStatus.approved);
 		course2.setTrainer(trainer1);
+		course2.setRating(5);
 		List<Date> dates = new ArrayList<Date>();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		String dateInString = "06-04-1989";
