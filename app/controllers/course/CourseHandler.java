@@ -22,8 +22,8 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public Course getCourseById(String courseId) {
-		String hql = "from Course c where c.courseId= :courseId";
+	public Course getCourseById(Integer courseId) {
+		String hql = "from Course c where c.id= :courseId";
 		Query query = em.createQuery(hql).setParameter("courseId", courseId);
 		Collection result = query.getResultList();
 		if (result.size() > 0)

@@ -16,10 +16,10 @@ public class Initialization {
 	public Initialization(EntityManager entityManager){
 		this.em = entityManager;
 		trainer1 = Trainer.create("sda", "dasda", "dasd", em);
-		course1 = Course.create("shishikan", "xingbuxing", 1,"xixihaha", em);
+		course1 = Course.create("xingbuxing", 1,"xixihaha", em);
 		course1.setStatus(CourseStatus.approved);
 		course1.setTrainer(trainer1);
-		course2 = Course.create("fengjian", "fubai", 2, "xixilala", em);
+		course2 = Course.create("fubai", 2, "xixilala", em);
 		course2.setStatus(CourseStatus.approved);
 		course2.setTrainer(trainer1);
 		concreteCourse1 = ConcreteCourse.create(course1, em);

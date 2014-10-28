@@ -3,6 +3,7 @@ package common;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -12,27 +13,29 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.solr.common.SolrInputDocument;
 
 
+
 @MappedSuperclass
 public abstract class BaseModelObject implements IModelObject,
 		Comparable<IModelObject> {
 
 	@Id
+	@GeneratedValue
 	@Column(name = "ID")
-	private String id;
+	private Integer id;
 
-	public String getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(String _id) {
+	public void setId(Integer _id) {
 		id = _id;
 	}
-
+/*
 	@PrePersist
 	private void ensureId(){
 	    this.setId(UUID.randomUUID().toString());
 	}
-	
+*/	
 	@Override
 	public int compareTo(IModelObject o) {
 		return this.getId().compareTo(o.getId());

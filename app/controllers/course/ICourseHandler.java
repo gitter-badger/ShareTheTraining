@@ -9,7 +9,7 @@ import models.filters.FilterBuilder;
 import models.forms.CourseForm;
 
 public interface ICourseHandler {
-	public Course getCourseById(String courseId);
+	public Course getCourseById(Integer courseId);
 
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
 			int pageSize);

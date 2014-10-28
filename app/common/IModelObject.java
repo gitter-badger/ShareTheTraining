@@ -8,7 +8,7 @@ public interface IModelObject {
 	 * 
 	 * @return the object id
 	 */
-	String getId();
+	Integer getId();
 
 	/**
 	 * set object id
@@ -16,7 +16,7 @@ public interface IModelObject {
 	 * @param id
 	 *            the object id
 	 */
-	void setId(String id);
+	void setId(Integer id);
 	
 	SolrInputDocument getSolrDoc();
 }

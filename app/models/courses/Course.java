@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Lob;
@@ -22,10 +23,9 @@ import common.BaseModelObject;
 @Entity
 public class Course extends BaseModelObject {
 
-	public static Course create(String courseId, String courseName,
+	public static Course create(String courseName,
 			int courseCategory, String courseDesc, EntityManager em) {
 		Course course = new Course();
-		course.setCourseId(courseId);
 		course.setCourseName(courseName);
 		course.setCourseCategory(courseCategory);
 		course.setCourseDesc(courseDesc);
@@ -35,8 +35,6 @@ public class Course extends BaseModelObject {
 			new SolrDao().putDoc(doc);
 		return course;
 	}
-
-	private String courseId;
 
 	private String courseName;
 
@@ -79,14 +77,6 @@ public class Course extends BaseModelObject {
 		doc.addField("name", this.getCourseName());
 		doc.addField("description", this.getCourseDesc());
 		return doc;
-	}
-
-	public String getCourseId() {
-		return courseId;
-	}
-
-	public void setCourseId(String courseId) {
-		this.courseId = courseId;
 	}
 
 	public String getCourseName() {

@@ -28,7 +28,7 @@ public class CourseHandlerTest extends BaseTest {
 
 		CourseHandler courseHandler = new CourseHandler();
 		assertThat(initData.course1).isEqualTo(
-				courseHandler.getCourseById(initData.course1.getCourseId()));
+				courseHandler.getCourseById(initData.course1.getId()));
 	}
 
 	@Test
