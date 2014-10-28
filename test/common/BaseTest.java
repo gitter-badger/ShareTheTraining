@@ -26,12 +26,14 @@ public abstract class BaseTest {
 				JPAPlugin.class);
 		mEm = jpaPlugin.get().em("default");
 		JPA.bindForCurrentThread(mEm);
+		mEm.getTransaction().begin();
 		initData = new Initialization(mEm);
 	}
 
 	@After
 	public void tearDown() {
 		initData.dispose();
+		mEm.getTransaction().commit();
 		JPA.bindForCurrentThread(null);
 		this.mEm.close();
 

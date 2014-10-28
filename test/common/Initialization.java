@@ -48,12 +48,8 @@ public class Initialization {
 		dates.add(new Date());
 		concreteCourse3 = ConcreteCourse.create(course2, "234", new Location(2,
 				1, "", 121.28, 31.10), dates, 2, 1, em);
-		em.getTransaction().begin();
-		em.persist(trainer1);
-		em.persist(course1);
-		em.persist(course2);
-		em.persist(concreteCourse1);
-		em.getTransaction().commit();
+		
+		
 	}
 
 	private EntityManager em;
@@ -71,13 +67,12 @@ public class Initialization {
 	public ConcreteCourse concreteCourse3;
 
 	public void dispose() {
-		em.getTransaction().begin();
+		
 		em.remove(concreteCourse1);
 		em.remove(concreteCourse2);
 		em.remove(concreteCourse3);
 		em.remove(course1);
 		em.remove(course2);
 		em.remove(trainer1);
-		em.getTransaction().commit();
 	}
 }

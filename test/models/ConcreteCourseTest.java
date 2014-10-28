@@ -22,14 +22,8 @@ public class ConcreteCourseTest extends BaseTest {
 		ConcreteCourse concreteCourse = ConcreteCourse.create(course, "123",
 				new Location(1, 1, "", -118.14, 34.03), dates, 2, 1,
 				this.getmEm());
-		this.getmEm().getTransaction().begin();
-		this.getmEm().persist(course);
-		this.getmEm().persist(concreteCourse);
-		this.getmEm().getTransaction().commit();
 		assertNotNull(concreteCourse.getId());
-		this.getmEm().getTransaction().begin();
 		this.getmEm().remove(concreteCourse);
 		this.getmEm().remove(course);
-		this.getmEm().getTransaction().commit();
 	}
 }
