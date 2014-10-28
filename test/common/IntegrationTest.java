@@ -20,7 +20,7 @@ public class IntegrationTest {
     public void test() {
         running(testServer(3333, fakeApplication(inMemoryDatabase())), HTMLUNIT, new Callback<TestBrowser>() {
             public void invoke(TestBrowser browser) {
-                browser.goTo("http://localhost:3333");
+                browser.goTo("http://localhost:3333/test");
                 assertThat(browser.pageSource()).contains("Your new application is ready.");
             }
         });

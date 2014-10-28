@@ -42,7 +42,7 @@ public class Application extends Controller {
 	public static Form<Customer> signupForm = form(Customer.class);
 
 	@Transactional
-	public static Promise<Result> index() {
+	public static Promise<Result> test() {
 		Promise<Geolocation> promiseOfGeolocation = Promise
 				.promise(new Function0<Geolocation>() {
 					public Geolocation apply() {
@@ -60,86 +60,101 @@ public class Application extends Controller {
 				String message = flash().get("message");
 				message = message != null ? message
 						: "Your new application is ready.";
-				return ok(index.render(message));
+				return ok(test.render(message));
 			}
 		});
 	}
 
 	@Transactional
-//	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	public static Result testAuth() {
+		CourseHandler ch = new CourseHandler();
+		CourseFilterBuilder cfb = new CourseFilterBuilder();
+		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
+				2, 2);
+		Logger.info("course" + course.size());
+		return ok(home.render(course));
+
+	}
+	
+	@Transactional
+	// @Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result welcome() {
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
-		Collection<Course> course = ch.getCourseByPopularity(cfb, 2, 2);
-		Logger.info("course"+course.size());
+		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
+				2, 2);
+		Logger.info("course" + course.size());
 		return ok(home.render(course));
-		
+
 	}
-	
-	
+
 	@Transactional
 	public static Result search() {
-		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class).bindFromRequest();
-		Logger.info("category"+filterForm.get().getCfb().getCategory());
+		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
+				.bindFromRequest();
+		Logger.info("category" + filterForm.get().getCfb().getCategory());
 		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get().getCfb(), filterForm.get().getPageNumber(), filterForm.get().getPageSize());
-		Logger.info("course"+course.size());
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get()
+				.getCfb(), null, filterForm.get().getPageNumber(), filterForm
+				.get().getPageSize());
+		Logger.info("course" + course.size());
 		return ok(searchindex.render(course));
 	}
 
-	public static Result signupcus(){
+	public static Result signupcus() {
 		return ok(customersignup.render());
 	}
-	
-	public static Result signuptrainer(){
+
+	public static Result signuptrainer() {
 		return ok(trainersignup.render());
 	}
-	
-	public static Result cusprofile(){
+
+	public static Result cusprofile() {
 		return ok(cuscoursehistory.render());
 	}
-	
-	public static Result cuscourseconfirmed(){
+
+	public static Result cuscourseconfirmed() {
 		return ok(cuscoursehistory.render());
 	}
-	
-	public static Result cuscourseordered(){
+
+	public static Result cuscourseordered() {
 		return ok(cuscoursehistory.render());
 	}
-	
-	public static Result cuscoursedone(){
+
+	public static Result cuscoursedone() {
 		return ok(cuscoursehistory.render());
 	}
-	
-	public static Result cuscoursecanceled(){
+
+	public static Result cuscoursecanceled() {
 		return ok(cuscoursehistory.render());
 	}
-	
-	public static Result cusinfo(){
+
+	public static Result cusinfo() {
 		return ok(cusinfo.render());
 	}
-	
-	public static Result cusinfoedit(){
+
+	public static Result cusinfoedit() {
 		return ok(cusinfoedit.render());
 	}
-	
-	public static Result cuschangepsw(){
+
+	public static Result cuschangepsw() {
 		return ok(cuschangepsw.render());
 	}
-	
-	public static Result forgetpsw(){
+
+	public static Result forgetpsw() {
 		return ok(forgetpsw.render());
 	}
-	
-	public static Result forgetpswsubmit(){
+
+	public static Result forgetpswsubmit() {
 		return ok(forgetpswconfirm.render());
 	}
-	
-	public static Result signupcussubmit(){
+
+	public static Result signupcussubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		UserHandler uh = new UserHandler();
-//		uh.createNewUser(userEmail, userName, password, userRole);
-		
+		// uh.createNewUser(userEmail, userName, password, userRole);
+
 		return TODO;
 	}
 

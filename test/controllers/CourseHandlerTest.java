@@ -37,15 +37,16 @@ public class CourseHandlerTest extends BaseTest {
 		assertThat(courseHandler.getCourseByCategory(1, 1, 10).size())
 				.isEqualTo(1);
 	}
-	
+
 	@Test
 	public void testFilterCourseByKeyword() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setKeyword("xingbuxin");
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
-		
+
 	}
 
 	@Test
@@ -62,7 +63,8 @@ public class CourseHandlerTest extends BaseTest {
 			e.printStackTrace();
 		}
 		cb.setStartDate(date);
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -71,38 +73,41 @@ public class CourseHandlerTest extends BaseTest {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setCourseRating(3);
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
-		
+
 	}
-	
+
 	@Test
 	public void testFilterCourseByTrainerRating() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setTrainerRating(3);
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 		cb.setTrainerRating(4);
-		result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		result = courseHandler.getCourseByCustomRule(cb, null, 1, 10);
 		assertThat(result.size()).isEqualTo(0);
-		
+
 	}
-	
+
 	@Test
 	public void testFilterCourseByLocation() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		List<Location> locations =  new ArrayList<Location>();
-		locations.add(new Location(1,-1,"", -118.14 , 34.03));
-		locations.add(new Location(2,1,"", -118.14 , 34.03));
+		List<Location> locations = new ArrayList<Location>();
+		locations.add(new Location(1, -1, "", -118.14, 34.03));
+		locations.add(new Location(2, 1, "", -118.14, 34.03));
 		cb.setLocations(locations);
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
-	
+
 	@Test
-	public void testFilterCourseByMultiOption(){
+	public void testFilterCourseByMultiOption() {
 		CourseHandler courseLibrary = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
@@ -115,21 +120,33 @@ public class CourseHandlerTest extends BaseTest {
 			e.printStackTrace();
 		}
 		cb.setStartDate(date);
-		List<Location> locations =  new ArrayList<Location>();
-		locations.add(new Location(1,-1,"",-118.14 , 34.03));
-		locations.add(new Location(2,1,"",-118.14 , 34.03));
+		List<Location> locations = new ArrayList<Location>();
+		locations.add(new Location(1, -1, "", -118.14, 34.03));
+		locations.add(new Location(2, 1, "", -118.14, 34.03));
 		cb.setLocations(locations);
-		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb, 1, 10);
+		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 	
 	@Test
-	public void testSearchNearbyCourse(){
-		GeoApiContext context = new GeoApiContext().setApiKey("AIzaSyA8Msu-j7RYqgcmHNzbdtSG4G5m12CFJ_o");
+	public void testGetAllCourse() {
+		CourseHandler courseHandler = new CourseHandler();
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
+		assertThat(result.size()).isEqualTo(2);
+	}
+
+	@Test
+	public void testSearchNearbyCourse() {
+		GeoApiContext context = new GeoApiContext()
+				.setApiKey("AIzaSyA8Msu-j7RYqgcmHNzbdtSG4G5m12CFJ_o");
 		GeocodingResult[] results;
 		try {
 			results = GeocodingApi.geocode(context,
-			    "1600 Amphitheatre Parkway Mountain View, CA 94043").await();
+					"1600 Amphitheatre Parkway Mountain View, CA 94043")
+					.await();
 			System.out.println(results[0].formattedAddress);
 			System.out.println("heheh");
 			System.out.println(results[0].geometry.location.lat);
@@ -138,13 +155,13 @@ public class CourseHandlerTest extends BaseTest {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		List<Location> locations =  new ArrayList<Location>();
-		cb.setCurentLocation(new Location(1,-1,"", -118.495 , 34.030));
-		Collection<Course> result = courseHandler.getCourseByCustomRule(cb, 1, 10);
+		cb.setCurentLocation(new Location(1, -1, "", -118.495, 34.030));
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 	}
-	
+
 }

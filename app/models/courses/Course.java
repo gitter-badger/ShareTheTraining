@@ -89,6 +89,7 @@ public class Course extends BaseModelObject {
 		selections.add(path.get("price"));
 		selections.add(path.get("courseCategory"));
 		selections.add(path.get("courseDesc"));
+		selections.add(path.get("popularity"));
 		return selections;
 	}
 

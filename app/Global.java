@@ -26,13 +26,13 @@ public class Global extends GlobalSettings {
 
 	/* 500, need modification */
 	public Promise<Result> onError(RequestHeader request, Throwable t) {
-		return Promise.<Result> pure(internalServerError(views.html.index
+		return Promise.<Result> pure(internalServerError(views.html.test
 				.render(t.toString())));
 	}
 
 	/* 404, need modification later */
 	public Promise<Result> onHandlerNotFound(RequestHeader request) {
-		return Promise.<Result> pure(notFound(views.html.index.render(request
+		return Promise.<Result> pure(notFound(views.html.test.render(request
 				.uri())));
 	}
 
@@ -43,7 +43,8 @@ public class Global extends GlobalSettings {
 
 	/* intercept request, need modification later */
 	public Action onRequest(Request request, Method actionMethod) {
-		System.out.println("before each request..." + request.toString());
+		Logger.info("before each request..." + request.toString());
+		Logger.info("Naw man. I'm pretty fuckin' far from okay.");
 		return super.onRequest(request, actionMethod);
 	}
 

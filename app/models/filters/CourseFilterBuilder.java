@@ -30,7 +30,7 @@ import models.locations.Location;
 import models.users.Trainer;
 
 public class CourseFilterBuilder implements FilterBuilder {
-	
+
 	private String keyword;
 	private List<Location> locations = new ArrayList<Location>();
 	private int courseRating = -1;
@@ -63,12 +63,15 @@ public class CourseFilterBuilder implements FilterBuilder {
 			// keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
 			Predicate keyWordConditions = cb.disjunction();
-			keyWordConditions.getExpressions().add(cb.like(courseInfoRoot.<String> get("courseName"), "%"
-					+ keyword + "%"));
-			keyWordConditions.getExpressions().add(cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
-					+ keyword + "%"));
-			keyWordConditions.getExpressions().add(cb.like(trainerRoot.<String> get("username"), "%"
-					+ keyword + "%"));
+			keyWordConditions.getExpressions().add(
+					cb.like(courseInfoRoot.<String> get("courseName"), "%"
+							+ keyword + "%"));
+			keyWordConditions.getExpressions().add(
+					cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
+							+ keyword + "%"));
+			keyWordConditions.getExpressions().add(
+					cb.like(trainerRoot.<String> get("username"), "%" + keyword
+							+ "%"));
 			predicates.add(keyWordConditions);
 		}
 		if (category != -1) {
@@ -117,10 +120,12 @@ public class CourseFilterBuilder implements FilterBuilder {
 							curentLocation.getPoint(), 0.36)));
 		}
 		// TODO add more filter here
-		javax.persistence.criteria.Order order = ascending ? cb
-				.asc(courseInfoRoot.get(orderByColumn)) : cb.desc(entityRoot
-				.get(orderByColumn));
-		criteria.orderBy(order);
+		if (orderByColumn != null) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(courseInfoRoot.get(orderByColumn)) : cb
+					.desc(entityRoot.get(orderByColumn));
+			criteria.orderBy(order);
+		}
 		criteria.groupBy(entityRoot.get("courseInfo"));
 		criteria.where(predicates.toArray(new Predicate[] {}));
 		return criteria;
@@ -128,22 +133,21 @@ public class CourseFilterBuilder implements FilterBuilder {
 
 	private static Geometry createCircle(Point point, final double RADIUS) {
 		Coordinate[] coordinates = new Coordinate[5];
-		double x = 0.3 + Math.abs(point.getX()/180 *0.5);
-		coordinates[0] = new Coordinate(point.getX()+x, point.getY()+0.3);
-		coordinates[1] = new Coordinate(point.getX()+x, point.getY()-0.3);
-		coordinates[2] = new Coordinate(point.getX()-x, point.getY()-0.3);
-		coordinates[3] = new Coordinate(point.getX()-x, point.getY()+0.3);
-		coordinates[4] = new Coordinate(point.getX()+x, point.getY()+0.3);
+		double x = 0.3 + Math.abs(point.getX() / 180 * 0.5);
+		coordinates[0] = new Coordinate(point.getX() + x, point.getY() + 0.3);
+		coordinates[1] = new Coordinate(point.getX() + x, point.getY() - 0.3);
+		coordinates[2] = new Coordinate(point.getX() - x, point.getY() - 0.3);
+		coordinates[3] = new Coordinate(point.getX() - x, point.getY() + 0.3);
+		coordinates[4] = new Coordinate(point.getX() + x, point.getY() + 0.3);
 		GeometryFactory fact = new GeometryFactory();
 		LinearRing linear = new GeometryFactory().createLinearRing(coordinates);
 		Polygon poly = new Polygon(linear, null, fact);
 		/*
-		GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
-		shapeFactory.setNumPoints(64);
-		shapeFactory.setCentre(new Coordinate(x, y));
-		shapeFactory.setSize(RADIUS * 2);
-		return shapeFactory.createCircle();
-		*/
+		 * GeometricShapeFactory shapeFactory = new GeometricShapeFactory();
+		 * shapeFactory.setNumPoints(64); shapeFactory.setCentre(new
+		 * Coordinate(x, y)); shapeFactory.setSize(RADIUS * 2); return
+		 * shapeFactory.createCircle();
+		 */
 		return poly;
 	}
 
@@ -226,7 +230,5 @@ public class CourseFilterBuilder implements FilterBuilder {
 	public void setCategory(int category) {
 		this.category = category;
 	}
-	
-	
 
 }

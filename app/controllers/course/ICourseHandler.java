@@ -16,7 +16,7 @@ public interface ICourseHandler {
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
 			int pageNumber, int pageSize);
 
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+	public Collection<Course> getCourseByCustomRule(FilterBuilder cb, String orderByColumn,
 			int pageNumber, int pageSize);
 
 	public boolean modifyMaximum(String courseId, int maximum);
@@ -26,8 +26,5 @@ public interface ICourseHandler {
 	public boolean addNewCourse(String trainerEmail, CourseForm courseForm);
 
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
-
-	public Collection<Course> getCourseByPopularity(FilterBuilder cb, 
-			int pageNumber,int pageSize);
 
 }
