@@ -83,6 +83,20 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
+	public Collection<Course> getCourseByPopularity(FilterBuilder cb,
+			int pageNumber, int pageSize) {
+		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
+				em.getCriteriaBuilder(), "popularity", true));
+		tq.setMaxResults(pageSize);
+		tq.setFirstResult(pageSize * (pageNumber - 1));
+		Collection<Course> result = new ArrayList<Course>();
+		for (Tuple t : tq.getResultList()) {
+			result.add((Course) t.get(0));
+		}
+		return result;
+	}
+	
+	@Override
 	public boolean modifyMaximum(String courseId, int maximum) {
 		// TODO Auto-generated method stub
 		return false;

@@ -1,53 +1,99 @@
 package models.forms;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
+import models.courses.ConcreteCourse;
 import models.courses.ConcreteCourseStatus;
+import models.courses.CourseStatus;
 import models.locations.Location;
+import models.users.Trainer;
 
 public class CourseForm {
 	
+	private String courseId;
+
 	private String courseName;
 	
-	//id?emial?username?
-	private String trainerEmail;
-	
-	private Location locations;
-	
-	private String keyPoints;
-	
-	private String courseDesc;
-	
-	private String startDate;
-	
-	private String endDate;
+	private Trainer trainer;
+
+	private int courseCategory;
 	
 	private double price;
-	
-	private int maxnum;
-	
-	private int minmum;
-	
-	//room set up
-	private String roomInfo;
-	
+
 	private String fromCompany;
 	
-	private int courseRating;
-	
-	private int trainerRating;
+	private String courseDesc;
+
+	private CourseStatus status = CourseStatus.verifying;
 	
 	private String methods;
 	
-	private String address;
+	private String keyPoints;
 	
-	private ConcreteCourseStatus status;
+	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
-	
-	
-	public ConcreteCourseStatus getStatus() {
+	public String getCourseId() {
+		return courseId;
+	}
+
+	public void setCourseId(String courseId) {
+		this.courseId = courseId;
+	}
+
+	public String getCourseName() {
+		return courseName;
+	}
+
+	public void setCourseName(String courseName) {
+		this.courseName = courseName;
+	}
+
+	public Trainer getTrainer() {
+		return trainer;
+	}
+
+	public void setTrainer(Trainer trainer) {
+		this.trainer = trainer;
+	}
+
+	public int getCourseCategory() {
+		return courseCategory;
+	}
+
+	public void setCourseCategory(int courseCategory) {
+		this.courseCategory = courseCategory;
+	}
+
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public String getFromCompany() {
+		return fromCompany;
+	}
+
+	public void setFromCompany(String fromCompany) {
+		this.fromCompany = fromCompany;
+	}
+
+	public String getCourseDesc() {
+		return courseDesc;
+	}
+
+	public void setCourseDesc(String courseDesc) {
+		this.courseDesc = courseDesc;
+	}
+
+	public CourseStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(ConcreteCourseStatus status) {
+	public void setStatus(CourseStatus status) {
 		this.status = status;
 	}
 
@@ -59,57 +105,6 @@ public class CourseForm {
 		this.methods = methods;
 	}
 
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public int getCourseRating() {
-		return courseRating;
-	}
-
-	public void setCourseRating(int courseRating) {
-		this.courseRating = courseRating;
-	}
-
-	public int getTrainerRating() {
-		return trainerRating;
-	}
-
-	public void setTrainerRating(int trainerRating) {
-		this.trainerRating = trainerRating;
-	}
-
-	public String getCourseName() {
-		return courseName;
-	}
-
-	public void setCourseName(String courseName) {
-		this.courseName = courseName;
-	}
-
-
-
-	public String getFromCompany() {
-		return fromCompany;
-	}
-
-	public void setFromCompany(String fromCompany) {
-		this.fromCompany = fromCompany;
-	}
-
-
-	public Location getLocations() {
-		return locations;
-	}
-
-	public void setLocations(Location locations) {
-		this.locations = locations;
-	}
-
 	public String getKeyPoints() {
 		return keyPoints;
 	}
@@ -118,74 +113,14 @@ public class CourseForm {
 		this.keyPoints = keyPoints;
 	}
 
-	public String getStartDate() {
-		return startDate;
+	public Collection<ConcreteCourse> getCourses() {
+		return courses;
 	}
 
-	public void setStartDate(String startDate) {
-		this.startDate = startDate;
+	public void setCourses(Collection<ConcreteCourse> courses) {
+		this.courses = courses;
 	}
 
-	public String getEndDate() {
-		return endDate;
-	}
-
-	public void setEndDate(String endDate) {
-		this.endDate = endDate;
-	}
-
-	public double getPrice() {
-		return price;
-	}
-
-	public void setPrice(double price) {
-		this.price = price;
-	}
-
-	public int getMaxnum() {
-		return maxnum;
-	}
-
-	public void setMaxnum(int maxnum) {
-		this.maxnum = maxnum;
-	}
-
-	public int getMinmum() {
-		return minmum;
-	}
-
-	public void setMinnum(int minnum) {
-		this.minmum = minmum;
-	}
-
-	public String getRoomInfo() {
-		return roomInfo;
-	}
-
-	public void setRoomInfo(String roomInfo) {
-		this.roomInfo = roomInfo;
-	}
-	
-	public CourseForm(){
-		
-	}
-
-	public String getTrainerEmail() {
-		return trainerEmail;
-	}
-
-	public void setTrainerEmail(String trainerEmail) {
-		this.trainerEmail = trainerEmail;
-	}
-
-	public String getCourseDesc() {
-		return courseDesc;
-	}
-
-	public void setCourseDesc(String courseDesc) {
-		this.courseDesc = courseDesc;
-	}
-	
 	
 	
 }

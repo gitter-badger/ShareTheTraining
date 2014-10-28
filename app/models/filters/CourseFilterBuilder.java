@@ -30,6 +30,7 @@ import models.locations.Location;
 import models.users.Trainer;
 
 public class CourseFilterBuilder implements FilterBuilder {
+	
 	private String keyword;
 	private List<Location> locations = new ArrayList<Location>();
 	private int courseRating = -1;
@@ -217,5 +218,15 @@ public class CourseFilterBuilder implements FilterBuilder {
 	public void setCurentLocation(Location curentLocation) {
 		this.curentLocation = curentLocation;
 	}
+
+	public int getCategory() {
+		return category;
+	}
+
+	public void setCategory(int category) {
+		this.category = category;
+	}
+	
+	
 
 }

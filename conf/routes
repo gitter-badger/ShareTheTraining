@@ -3,19 +3,32 @@
 # ~~~~
 
 # Home page
-GET     /                           controllers.Application.index()
-
-GET		/welcome		    		controllers.Application.welcome()
+GET     /                           controllers.Application.welcome()
 
 #login
-POST    /login                   controllers.UserController.authenticate()
-GET     /login                   controllers.UserController.login()
-GET		/logout						controllers.UserController.logout()
+GET    /forgetpsw                   controllers.Application.forgetpsw()
+POST   /forgetpsw                   controllers.Application.forgetpswsubmit()
+
+#signup-cus
+GET    /signupcus                   controllers.Application.signupcus()
+POST   /signupcus                   controllers.Application.signupcussubmit()
+GET    /signuptrainer               controllers.Application.signuptrainer()
+
+#profile
+GET    /cusprofile                  controllers.Application.cusprofile()
+GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
+GET    /cuscourseordered            controllers.Application.cuscourseordered()
+GET    /cuscoursedone               controllers.Application.cuscoursedone()
+GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
+GET    /cusinfo                     controllers.Application.cusinfo()
+GET    /cusinfoedit                 controllers.Application.cusinfoedit()
+GET    /cuschangepsw                controllers.Application.cuschangepsw()
 
 
 GET 	/search						controllers.Application.search()
+POST    /search                     controllers.Application.search()
 
-GET 	/course						controllers.Application.course(confirmed: Boolean ?= false, oid: String ?="")
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

@@ -1,0 +1,107 @@
+<script>
+		$(document).ready(function(){
+					 
+			$("#signup").validate({
+				rules:{
+					name:{
+						required:true
+					},
+					email:{
+						required:true,
+						email:true
+					},
+					username:{
+						required:true,
+						minlength:3,
+						maxlength:15
+					},
+					pass:{
+						required:true,
+						maxlength:16,
+						minlength:6
+					},
+					repass:{
+						required:true,
+						maxlength:16,
+						minlength:6,
+						equalTo:"#pass"
+					},
+					address:{
+						required:true
+					},
+					city:{
+						required:true
+					},
+					state:{
+						required:true
+					},
+					zipcode:"isZipCode",
+					agree:{
+						required:true
+					}
+				},
+				messages:{
+					username:{
+						remote:"This username has already been registered, please change to another username！"
+					},
+					repass:{
+						equalTo:"Please input same password！"
+					},
+					address:"Please input valid street address",
+					agree:"please check the terms "
+				},
+				errorPlacement: function(error, element) {
+					if ( element.is(":radio") )
+						error.appendTo ( element.parent() );
+					else if ( element.is(":checkbox") )
+						error.appendTo ( element.parent() );
+					else
+						error.insertBefore(element);
+				},
+			    success: function(label) {
+				   label.html("&nbsp;").addClass("right").text("√");
+			    },	
+    			onfocusout: function(element){
+        			$("#name").valid();
+        			$("#email").valid();
+        			$("#username").valid();
+        			$("#pass").valid();
+        			$("#repass").valid();
+        			$("#address").valid();
+        			$("#city").valid();
+        			$("#state").valid();
+        			$("#zipcode").valid();
+        			$("#phone").valid();
+        			$("#agree").valid();
+   				}
+
+   			}); 
+			$('.selectpicker').selectpicker();
+			// tooltips
+			$('[data-toggle="tooltip"]').tooltip();
+			// popover demo
+			$('[data-toggle="popover"]').popover();
+			// dismiss alerts
+			$(".alert").alert();
+			// toggle open and close icon for collapse (accordions)
+			// set initial content
+			$('[data-state]').each(function () {
+				if ($(this).attr('data-state') == "open") {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+			// toggle content on click
+			$('[data-state]').click(function () {
+				// toggle state
+				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
+				// toggle content based on state
+				if ($(this).attr('data-state') == 'open') {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+		});
+	</script>

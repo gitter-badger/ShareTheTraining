@@ -1,0 +1,67 @@
+@main("signup_trainer"){
+	<section class="wrapper-md bg-custom-home">
+		<div class="container">
+			<div class="row ">
+				<div class="col-sm-12 col-md-6 col-md-offset-3 widget padding-lg bg-dark">
+					<h2 class="text-center">Basic Information</h2>
+					<p class="text-primary"><strong>Note: (*) denotes required item.</strong></p>
+					<form role="form" action="#" id="signup" method="post">
+						<div class="form-group">
+							<label for="name">Name <span class="text-primary">(*)</span></label>
+							<input type="text" name="name" class="form-control required" size="25" id="name" placeholder="Your name">
+						</div>
+						<div class="form-group">
+							<label for="email">Email address <span class="text-primary">(*)</span></label>
+							<input type="email" class="form-control required email" name="email" id="email" placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<label for="username">Username <span class="text-primary">(*)</span></label>
+							<input type="text" name="username" class="form-control required minlength maxlength" id="username" placeholder="Your username">
+						</div>
+						<div class="form-group">
+							<label for="pass">Password <span class="text-primary">(*)</span></label>
+							<input type="password" name="pass" class="form-control required  " id="pass" placeholder="Your password">
+						</div>
+						<div class="form-group">
+							<label for="repass">Re-enter Password <span class="text-primary">(*)</span></label>
+							<input type="password" name="repass" class="form-control required " id="repass" placeholder="Re-enter your password">
+						</div>
+						<div class="form-group">
+							<label for="address">Street Address <span class="text-primary">(*)</span></label>
+							<input type="address" name="address" class="form-control required" id="address" placeholder="Your address">
+						</div>
+						<div class="form-group">
+							<label for="city">City <span class="text-primary">(*)</span></label>
+							<input type="text" name="city" class="form-control required" id="city" placeholder="Your city">
+						</div>
+						<div class="form-group">
+							<label for="state">State <span class="text-primary">(*)</span></label>
+							<input type="text" name="state" class="form-control required" id="state" placeholder="Your state">
+						</div>
+						<div class="form-group">
+							<label for="zipcode">Zipcode <span class="text-primary">(*)</span></label>
+							<input type="text" name="zipcode" class="form-control required digits" id="zipcode" placeholder="Your zipcode">
+						</div>
+						<div class="form-group">
+							<label for="phone">Phone(option)</label>
+							<input type="text" name="phone" class="form-control" id="phone" placeholder="Your phone number">
+						</div>
+						<div class="form-group">
+							<input type="checkbox" name="agree" id="agree" class="required"><strong> I accept <a href="#link">terms and conditions</a> <span class="text-primary">(*)</span></strong>
+						</div>
+						<div class="form-group">
+							<input type="hidden" id="userRole" value="TRAINER" />
+						</div>
+						<div class="form-group">
+							<div class="col-sm-12 col-md-4 col-md-push-4">
+								<input type="submit" class="btn btn-primary btn-lg" value="Next Step">
+							</div>
+						</div>
+					</form>
+				</div><!-- /.col -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+	
+	
+}

@@ -41,7 +41,7 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 			@Override
 			public Result apply() throws Throwable {
 				context.flash().put("message", "go sigining up, you dumbass!");
-				return redirect(routes.Application.index());
+				return redirect(routes.Application.welcome());
 			}
 		});
 	}

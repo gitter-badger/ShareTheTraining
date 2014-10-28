@@ -27,4 +27,7 @@ public interface ICourseHandler {
 
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
+	public Collection<Course> getCourseByPopularity(FilterBuilder cb, 
+			int pageNumber,int pageSize);
+
 }
