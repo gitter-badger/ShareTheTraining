@@ -10,14 +10,9 @@ import javax.persistence.Query;
 
 import org.apache.commons.codec.binary.Base64;
 
-import be.objectify.deadbolt.core.models.Subject;
-import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 import common.Password;
-import controllers.routes;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
-import controllers.user.MailHandler;
-import controllers.user.UserHandler;
 import models.users.ActionToken;
 import models.users.User;
 import models.users.UserAction;
@@ -25,10 +20,6 @@ import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
 import play.Play;
-import play.db.jpa.JPA;
-import play.libs.F;
-import play.mvc.Http;
-import play.mvc.Result;
 import play.mvc.Http.Context;
 
 public class AuthenticationHandler implements IAuthenticationHandler {

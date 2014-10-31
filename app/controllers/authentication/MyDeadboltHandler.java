@@ -2,9 +2,7 @@ package controllers.authentication;
 
 import controllers.routes;
 import controllers.user.UserHandler;
-import models.users.Customer;
 import models.users.User;
-import play.db.jpa.JPA;
 import play.libs.F;
 import play.mvc.Http;
 import play.mvc.Http.Context;
