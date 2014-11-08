@@ -78,7 +78,6 @@ public class Application extends Controller {
 	}
 	
 	@Transactional
-	// @Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result welcome() {
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();

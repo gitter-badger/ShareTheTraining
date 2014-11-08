@@ -29,6 +29,10 @@ public class ConcreteCourse extends BaseModelObject {
 			Location location, List<Date> dates, int maximum, int minimum,
 			EntityManager em) {
 		ConcreteCourse concreteCourse = new ConcreteCourse();
+		concreteCourse.setConcreteCourseId(courseInfo.getId() + "-"
+				+ Integer.toString(courseInfo.getConcreteCourseCount()));
+		courseInfo
+				.setConcreteCourseCount(courseInfo.getConcreteCourseCount() + 1);
 		concreteCourse.setCourseInfo(courseInfo);
 		concreteCourse.setEventbriteId(eventbriteId);
 		concreteCourse.setLocation(location);
@@ -46,6 +50,8 @@ public class ConcreteCourse extends BaseModelObject {
 
 	@ManyToOne
 	private Course courseInfo;
+
+	private String concreteCourseId;
 
 	@ManyToMany(cascade = { CascadeType.ALL })
 	private Collection<Customer> selectedCustomers = new ArrayList<Customer>();
@@ -165,6 +171,14 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setCourseDates(Collection<Date> courseDates) {
 		this.courseDates = courseDates;
+	}
+
+	public String getConcreteCourseId() {
+		return concreteCourseId;
+	}
+
+	public void setConcreteCourseId(String concreteCourseId) {
+		this.concreteCourseId = concreteCourseId;
 	}
 
 }
