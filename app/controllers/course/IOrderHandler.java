@@ -1,11 +1,13 @@
 package controllers.course;
 
+import java.util.Collection;
+
 import models.courses.CourseOrder;
 
 public interface IOrderHandler {
-	public CourseOrder getCourseOrderByCustomer(String userEmail);
+	public Collection<CourseOrder> getCourseOrderByCustomer(String userEmail);
 
-	public CourseOrder getCourseOrderByCourse(Integer id);
+	public Collection<CourseOrder> getCourseOrderByCourse(Integer id);
 
-	public CourseOrder getCourseOrderByConcreteCourse(String concreteCourseId);
+	public Collection<CourseOrder> getCourseOrderByConcreteCourse(String concreteCourseId);
 }

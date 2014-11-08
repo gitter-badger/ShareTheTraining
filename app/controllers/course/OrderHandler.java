@@ -17,33 +17,27 @@ public class OrderHandler implements IOrderHandler {
 	}
 
 	@Override
-	public CourseOrder getCourseOrderByCustomer(String userEmail) {
+	public Collection<CourseOrder> getCourseOrderByCustomer(String userEmail) {
 		String hql = "from CourseOrder o where o.customer.email= :userEmail";
 		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
 		Collection result = query.getResultList();
-		if (result.size() > 0)
-			return (CourseOrder) result.iterator().next();
-		return null;
+		return result;
 	}
 	
 	@Override
-	public CourseOrder getCourseOrderByCourse(Integer id) {
+	public Collection<CourseOrder> getCourseOrderByCourse(Integer id) {
 		String hql = "from CourseOrder o where o.concreteCourse.courseInfo.id= :id";
 		Query query = em.createQuery(hql).setParameter("id", id);
 		Collection result = query.getResultList();
-		if (result.size() > 0)
-			return (CourseOrder) result.iterator().next();
-		return null;
+		return result; 
 	}
 	
 	@Override
-	public CourseOrder getCourseOrderByConcreteCourse(String concreteCourseId) {
+	public Collection<CourseOrder> getCourseOrderByConcreteCourse(String concreteCourseId) {
 		String hql = "from CourseOrder o where o.concreteCourse.concreteCourseId= :concreteCourseId";
 		Query query = em.createQuery(hql).setParameter("concreteCourseId", concreteCourseId);
 		Collection result = query.getResultList();
-		if (result.size() > 0)
-			return (CourseOrder) result.iterator().next();
-		return null;
+		return result; 
 	}
 	
 

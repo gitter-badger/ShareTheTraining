@@ -4,16 +4,16 @@ import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
 import models.users.UserAction;
-import views.html.login.*;
+import views.html.email.*;
 
 public class MailHandler implements IMailHandler {
 	@Override
 	public boolean sendMailWithToken(String userName, String email,
 			String token, UserAction action) {
-		String content;
+		String content=null;
 		switch (action) {
 		case REGISTER:
-			content = l;
+			//content = ;
 			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
