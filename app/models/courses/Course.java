@@ -36,6 +36,8 @@ public class Course extends BaseModelObject {
 
 	private String courseName;
 
+	private int concreteCourseCount = 0;
+	
 	@ManyToOne
 	private Trainer trainer;
 
@@ -196,5 +198,13 @@ public class Course extends BaseModelObject {
 
 	public void setRating(double rating) {
 		this.rating = rating;
+	}
+
+	public int getConcreteCourseCount() {
+		return concreteCourseCount;
+	}
+
+	public void setConcreteCourseCount(int concreteCourseCount) {
+		this.concreteCourseCount = concreteCourseCount;
 	}
 }

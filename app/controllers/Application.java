@@ -86,7 +86,6 @@ public class Application extends Controller {
 	
 	
 	@Transactional
-	// @Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result welcome() {
 		session("connected","xiaoting@usc.edu");
 		CourseHandler ch = new CourseHandler();

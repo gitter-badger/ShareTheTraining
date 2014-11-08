@@ -13,8 +13,6 @@ import org.apache.commons.codec.binary.Base64;
 import common.Password;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
-import controllers.user.MailHandler;
-import controllers.user.UserHandler;
 import models.users.ActionToken;
 import models.users.User;
 import models.users.UserAction;
@@ -22,17 +20,19 @@ import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
 import play.Play;
-import play.db.jpa.JPA;
 import play.mvc.Http.Context;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
 
 	EntityManager em;
 
-	public AuthenticationHandler() {
-		this.em = JPA.em();
+	public AuthenticationHandler() {}
+	
+	public AuthenticationHandler(EntityManager em) {
+		this.em = em;
 	}
 
+	
 	@Override
 	public User doLogin(String userEmail, String password, UserRole userRole,
 			Context context, IUserHandler userHandler) {
@@ -67,7 +67,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	}
 
 	@Override
-	public boolean activeUser(String token, IUserHandler userHandler) {
+	public boolean activateUser(String token, IUserHandler userHandler) {
 		String[] tokenAndEmail = token.split("\\#");
 		if (tokenAndEmail.length == 2) {
 			String userEmail = new String(Base64.decodeBase64(tokenAndEmail[1]));
