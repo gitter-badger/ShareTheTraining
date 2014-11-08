@@ -16,7 +16,7 @@ public interface IAuthenticationHandler  {
 
 	public boolean doLogout(Context context);
 
-	boolean authorizeResetPassword(String userEmail, IMailHandler mailHandler);
+	boolean authorizeResetPassword(String userName, String userEmail, IMailHandler mailHandler);
 
 	boolean doResetPassword(String token, String newPassword,
 			IUserHandler userHandler);

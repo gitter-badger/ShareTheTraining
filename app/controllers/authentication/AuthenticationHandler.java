@@ -55,7 +55,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);
-				mailHandler.sendMailWithToken(userEmail, confirmToken,
+				mailHandler.sendMailWithToken(userName, userEmail, confirmToken,
 						UserAction.REGISTER);
 				return true;
 			}
@@ -93,13 +93,13 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	}
 
 	@Override
-	public boolean authorizeResetPassword(String userEmail,
+	public boolean authorizeResetPassword(String userName, String userEmail,
 			IMailHandler mailHandler) {
 		try {
 			ActionToken actionToken = assignNewToke(userEmail,
 					UserAction.PASSWORDRESET);
 			String confirmToken = generateConfirmToken(actionToken);
-			mailHandler.sendMailWithToken(userEmail, confirmToken,
+			mailHandler.sendMailWithToken(userName, userEmail, confirmToken,
 					UserAction.PASSWORDRESET);
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
