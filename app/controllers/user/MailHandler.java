@@ -6,33 +6,37 @@ import com.typesafe.plugin.MailerPlugin;
 import models.users.UserAction;
 import views.html.login.*;
 
-public class MailHandler implements IMailHandler{
-
+public class MailHandler implements IMailHandler {
 	@Override
-	public boolean sendMailWithToken(String userName, String email, String token, UserAction action) {
-		switch(action){
+	public boolean sendMailWithToken(String userName, String email,
+			String token, UserAction action) {
+		String content;
+		switch (action) {
 		case REGISTER:
+			content = l;
+			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
+			content = null;
+			sendEmail(email, "hehe", content);
 			return true;
-		default :
+		default:
 			return false;
 		}
 	}
-	
-	private boolean sendEmail(String email, String title, String content){
-		try{
-			MailerAPI mail = play.Play.application().plugin(MailerPlugin.class).email();
-			mail.setSubject("mailer");
-			mail.setRecipient("Agent Smith",email);
+
+	private boolean sendEmail(String email, String title, String content) {
+		try {
+			MailerAPI mail = play.Play.application().plugin(MailerPlugin.class)
+					.email();
+			mail.setSubject(title);
+			mail.setRecipient("Agent Smith", email);
 			mail.setFrom("Thomas A. Anderson <noreply@email.com>");
 			mail.sendHtml(content);
-		} catch(Exception e){
+		} catch (Exception e) {
 			return false;
 		}
 		return true;
 	}
-
-
 
 }
