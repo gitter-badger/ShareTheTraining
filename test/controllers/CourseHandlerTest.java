@@ -20,6 +20,7 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
+
 import controllers.course.CourseHandler;
 
 public class CourseHandlerTest extends BaseTest {

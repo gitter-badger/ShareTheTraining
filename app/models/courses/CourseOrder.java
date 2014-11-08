@@ -17,6 +17,8 @@ public class CourseOrder extends BaseModelObject {
 		order.putSolrDoc();
 		return order;
 	}
+	
+	
 
 	protected CourseOrder(String orderId, ConcreteCourse concreteCourse,
 			Customer customer) {

@@ -1,7 +1,11 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
@@ -11,6 +15,7 @@ import controllers.user.UserHandler;
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
 import be.objectify.deadbolt.java.actions.SubjectPresent;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
@@ -19,6 +24,7 @@ import models.forms.CustomerForm;
 import models.locations.Geolocation;
 import models.locations.GeolocationService;
 import models.locations.InvalidAddressException;
+import models.locations.Location;
 import models.users.Customer;
 import play.*;
 import play.api.mvc.Cookie;
@@ -77,17 +83,24 @@ public class Application extends Controller {
 
 	}
 	
+	
+	
 	@Transactional
 	// @Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result welcome() {
+		session("connected","xiaoting@usc.edu");
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
-		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
-				2, 2);
+//		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
+//				2, 2);
+		Collection<Course> course = ch.getCourseByCustomRule(cfb,
+				null, 1, 10);
 		Logger.info("course" + course.size());
 		return ok(home.render(course));
 
 	}
+	
+	
 
 	@Transactional
 	public static Result search() {
@@ -101,6 +114,11 @@ public class Application extends Controller {
 		Logger.info("course" + course.size());
 		return ok(searchindex.render(course));
 	}
+	
+	public static Result login() {
+		
+		return redirect(routes.Application.welcome());
+	}
 
 	public static Result signupcus() {
 		return ok(customersignup.render());
@@ -111,6 +129,7 @@ public class Application extends Controller {
 	}
 
 	public static Result cusprofile() {
+		
 		return ok(cuscoursehistory.render());
 	}
 
