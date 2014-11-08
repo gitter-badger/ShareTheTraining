@@ -37,9 +37,9 @@ public class OrderHandler implements IOrderHandler {
 	}
 	
 	@Override
-	public CourseOrder getCourseOrderByConcreteCourse(Integer id) {
-		String hql = "from CourseOrder o where o.concreteCourse.courseInfo.id= :id";
-		Query query = em.createQuery(hql).setParameter("id", id);
+	public CourseOrder getCourseOrderByConcreteCourse(String concreteCourseId) {
+		String hql = "from CourseOrder o where o.concreteCourse.concreteCourseId= :concreteCourseId";
+		Query query = em.createQuery(hql).setParameter("concreteCourseId", concreteCourseId);
 		Collection result = query.getResultList();
 		if (result.size() > 0)
 			return (CourseOrder) result.iterator().next();

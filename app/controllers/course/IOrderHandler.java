@@ -7,5 +7,5 @@ public interface IOrderHandler {
 
 	public CourseOrder getCourseOrderByCourse(Integer id);
 
-	public CourseOrder getCourseOrderByConcreteCourse(Integer id);
+	public CourseOrder getCourseOrderByConcreteCourse(String concreteCourseId);
 }
