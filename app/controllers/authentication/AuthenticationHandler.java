@@ -20,19 +20,21 @@ import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
 import play.Play;
+import play.db.jpa.JPA;
 import play.mvc.Http.Context;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
 
 	EntityManager em;
 
-	public AuthenticationHandler() {}
-	
+	public AuthenticationHandler() {
+		this.em = JPA.em();
+	}
+
 	public AuthenticationHandler(EntityManager em) {
 		this.em = em;
 	}
 
-	
 	@Override
 	public User doLogin(String userEmail, String password, UserRole userRole,
 			Context context, IUserHandler userHandler) {
@@ -48,18 +50,19 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	@Override
 	public boolean doRegister(String userEmail, String userName,
 			String password, UserRole userRole, IUserHandler userHandler,
-			Context context, IMailHandler mailHandler) {
+			IMailHandler mailHandler) {
 		try {
 			if (userHandler.createNewUser(userEmail, userName, password,
 					userRole) != null) {
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);
-				mailHandler.sendMailWithToken(userName, userEmail, confirmToken,
-						UserAction.REGISTER);
+				mailHandler.sendMailWithToken(userName, userEmail,
+						confirmToken, UserAction.REGISTER);
 				return true;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			Logger.error(e.getMessage());
 			return false;
 		}
@@ -132,7 +135,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 				&& actionToken.getExpireDate().after(new Date());
 	}
 
-	private String generateConfirmToken(ActionToken actionToken) {
+	public String generateConfirmToken(ActionToken actionToken) {
 		return actionToken.getToken()
 				+ "#"
 				+ Base64.encodeBase64URLSafeString(actionToken.getUserEmail()
@@ -143,9 +146,10 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		ActionToken oldToken = findToken(userEmail, userAction);
 		if (oldToken != null)
 			em.remove(oldToken);
-		Date expireDate = getExpireDate(Play.application().configuration().getInt("token.days"));
+		Date expireDate = getExpireDate(Play.application().configuration()
+				.getInt("token.days"));
 		return ActionToken.create(userEmail, userAction, UUID.randomUUID()
-				.toString(), expireDate);
+				.toString(), expireDate, em);
 	}
 
 	private Date getExpireDate(int days) {
@@ -156,7 +160,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		return c.getTime();
 	}
 
-	private ActionToken findToken(String userEmail, UserAction userAction) {
+	public ActionToken findToken(String userEmail, UserAction userAction) {
 		String hql = "from ActionToken t where t.userEmail = :userEmail and t.userAction = :userAction";
 		Query query = em.createQuery(hql).setParameter("userEmail", userEmail)
 				.setParameter("userAction", userAction);

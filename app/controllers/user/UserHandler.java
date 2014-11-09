@@ -27,7 +27,7 @@ public class UserHandler implements IUserHandler {
 	@Override
 	public User getUserByEmail(String userEmail) {
 		String hql = "from User u where u.email= :userEmail";
-		Query query = em.createQuery(hql).setParameter("email", userEmail);
+		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
 		Collection result = query.getResultList();
 		if (result.size() > 0) {
 			return (User) result.iterator().next();

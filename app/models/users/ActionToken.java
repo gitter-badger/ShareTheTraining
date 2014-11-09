@@ -3,6 +3,7 @@ package models.users;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 
 import common.BaseModelObject;
 import common.Password;
@@ -10,20 +11,27 @@ import common.Password;
 @Entity
 public class ActionToken extends BaseModelObject {
 	private String userEmail;
-	
+
 	private UserAction userAction;
-	
+
 	private String token;
-	
+
 	private Date expireDate;
-	
-	
-	public static ActionToken create(String userEmail, UserAction userAction, String guid, Date expireDate){
-		ActionToken actionToken = new ActionToken(userEmail, userAction, guid, expireDate);
+
+	public static ActionToken create(String userEmail, UserAction userAction,
+			String guid, Date expireDate, EntityManager em) {
+		ActionToken actionToken = new ActionToken(userEmail, userAction, guid,
+				expireDate);
+		em.persist(actionToken);
 		return actionToken;
 	}
+	
+	public ActionToken(){
+		
+	}
 
-	protected ActionToken(String userEmail, UserAction userAction, String guid, Date expireDate){
+	protected ActionToken(String userEmail, UserAction userAction, String guid,
+			Date expireDate) {
 		this.userEmail = userEmail;
 		this.userAction = userAction;
 		this.expireDate = expireDate;
@@ -34,13 +42,15 @@ public class ActionToken extends BaseModelObject {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public String getUserEmail() {
 		return userEmail;
 	}
+
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+
 	public UserAction getUserAction() {
 		return userAction;
 	}
