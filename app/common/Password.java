@@ -7,6 +7,8 @@ import java.security.SecureRandom;
 
 import org.apache.commons.codec.binary.Base64;
 
+import play.Logger;
+
 public class Password {
     // The higher the number of iterations the more 
     // expensive computing the hash is for us
@@ -34,7 +36,7 @@ public class Password {
 		try {
 			hashOfInput = hash(password, Base64.decodeBase64(saltAndPass[0]));
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e.toString());
 			return false;
 		}
         return hashOfInput.equals(saltAndPass[1]);

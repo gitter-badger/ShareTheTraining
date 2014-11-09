@@ -15,6 +15,8 @@ import models.locations.Location;
 
 import org.junit.Test;
 
+import play.Logger;
+
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -59,8 +61,7 @@ public class CourseHandlerTest extends BaseTest {
 		try {
 			date = sdf.parse(dateInString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 		cb.setStartDate(date);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
@@ -116,8 +117,7 @@ public class CourseHandlerTest extends BaseTest {
 		try {
 			date = sdf.parse(dateInString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 		cb.setStartDate(date);
 		List<Location> locations = new ArrayList<Location>();
@@ -152,8 +152,7 @@ public class CourseHandlerTest extends BaseTest {
 			System.out.println(results[0].geometry.location.lat);
 			System.out.println(results[0].geometry.location.lng);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 
 		CourseHandler courseHandler = new CourseHandler();

@@ -62,8 +62,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 				return true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-			Logger.error(e.getMessage());
+			Logger.error(e.toString());
 			return false;
 		}
 		return true;

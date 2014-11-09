@@ -27,4 +27,6 @@ public interface ICourseHandler {
 
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
+	public ConcreteCourse getCourseByConcreteCourseId(String concreteCourseId);
+
 }

@@ -43,11 +43,11 @@ public class SolrDao <T>
         }
         catch (SolrServerException e)
         {
-            e.printStackTrace();
+        	Logger.error(e.toString());
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+        	Logger.error(e.toString());
         }
     }
     

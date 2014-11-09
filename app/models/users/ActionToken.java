@@ -5,6 +5,7 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 
+import play.Logger;
 import common.BaseModelObject;
 import common.Password;
 
@@ -38,8 +39,7 @@ public class ActionToken extends BaseModelObject {
 		try {
 			this.token = Password.getSaltedHash(guid);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 	}
 

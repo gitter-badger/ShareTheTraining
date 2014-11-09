@@ -1,5 +1,6 @@
 package controllers.user;
 
+import play.Logger;
 import play.twirl.api.Html;
 
 import com.typesafe.plugin.MailerAPI;
@@ -36,7 +37,7 @@ public class MailHandler implements IMailHandler {
 			mail.setFrom("Thomas A. Anderson <noreply@email.com>");
 			mail.sendHtml(content.toString());
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e.toString());
 			return false;
 		}
 		return true;
