@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import play.db.jpa.JPA;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.courses.OrderStatus;
 
 public class OrderHandler implements IOrderHandler {
 	private EntityManager em;
@@ -20,6 +21,15 @@ public class OrderHandler implements IOrderHandler {
 	public Collection<CourseOrder> getCourseOrderByCustomer(String userEmail) {
 		String hql = "from CourseOrder o where o.customer.email= :userEmail";
 		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
+		Collection result = query.getResultList();
+		return result;
+	}
+	
+	@Override
+	public Collection<CourseOrder> getCourseOrderByCustomerAndStatus(String userEmail, OrderStatus orderStatus) {
+		String hql = "from CourseOrder o where o.customer.email= :userEmail and o.orderStatus= :orderStatus";
+		Query query = em.createQuery(hql).setParameter("userEmail", userEmail).setParameter("orderStatus", orderStatus);
+		
 		Collection result = query.getResultList();
 		return result;
 	}

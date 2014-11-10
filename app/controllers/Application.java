@@ -19,6 +19,7 @@ import be.objectify.deadbolt.java.actions.SubjectPresent;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.CourseFilterForm;
@@ -137,27 +138,35 @@ public class Application extends Controller {
 		return ok(cuscoursehistory.render(order));
 	}
 
+	@Transactional
 	public static Result cuscourseconfirmed() {
 		OrderHandler oh = new OrderHandler();
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		Collection<CourseOrder> order = 
+				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[0]);
 		return ok(cuscoursehistory.render(order));
 	}
 
+	@Transactional
 	public static Result cuscourseordered() {
 		OrderHandler oh = new OrderHandler();
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		Collection<CourseOrder> order = 
+				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[1]);
 		return ok(cuscoursehistory.render(order));
 	}
-
+	
+	@Transactional
 	public static Result cuscoursedone() {
 		OrderHandler oh = new OrderHandler();
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		Collection<CourseOrder> order = 
+				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[2]);
 		return ok(cuscoursehistory.render(order));
 	}
 
+	@Transactional
 	public static Result cuscoursecanceled() {
 		OrderHandler oh = new OrderHandler();
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		Collection<CourseOrder> order = 
+				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[3]);
 		return ok(cuscoursehistory.render(order));
 	}
 
