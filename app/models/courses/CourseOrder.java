@@ -23,6 +23,7 @@ public class CourseOrder extends BaseModelObject {
 	
 	
 	
+	
 	protected CourseOrder(String orderId, ConcreteCourse concreteCourse,
 			Customer customer, Date orderDate, OrderStatus orderStatus) {
 		super();
