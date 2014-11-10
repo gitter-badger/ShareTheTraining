@@ -1,5 +1,8 @@
 package controllers.user;
 
+import play.Logger;
+import play.twirl.api.Html;
+
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
@@ -10,10 +13,10 @@ public class MailHandler implements IMailHandler {
 	@Override
 	public boolean sendMailWithToken(String userName, String email,
 			String token, UserAction action) {
-		String content=null;
+		Html content=null;
 		switch (action) {
 		case REGISTER:
-			//content = ;
+			content = reset_content.render("hehe", "");
 			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
@@ -25,15 +28,16 @@ public class MailHandler implements IMailHandler {
 		}
 	}
 
-	private boolean sendEmail(String email, String title, String content) {
+	private boolean sendEmail(String email, String title, Html content) {
 		try {
 			MailerAPI mail = play.Play.application().plugin(MailerPlugin.class)
 					.email();
 			mail.setSubject(title);
-			mail.setRecipient("Agent Smith", email);
+			mail.setRecipient("Agent Smith <noreply@email.com>", email);
 			mail.setFrom("Thomas A. Anderson <noreply@email.com>");
-			mail.sendHtml(content);
+			mail.sendHtml(content.toString());
 		} catch (Exception e) {
+			Logger.error(e.toString());
 			return false;
 		}
 		return true;

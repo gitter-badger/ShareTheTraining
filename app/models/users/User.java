@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import play.Logger;
 import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
 import be.objectify.deadbolt.core.models.Subject;
@@ -35,7 +36,7 @@ public  abstract class User extends BaseModelObject implements Subject{
 		try {
 			this.password = Password.getSaltedHash(password);
 		} catch (Exception e) {
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 	}
 	
@@ -85,8 +86,7 @@ public  abstract class User extends BaseModelObject implements Subject{
 		try {
 			this.password = Password.getSaltedHash(password);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		};
 	}
 

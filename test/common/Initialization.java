@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import play.Logger;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseStatus;
@@ -33,8 +34,7 @@ public class Initialization {
 		try {
 			date = sdf.parse(dateInString);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 		dates.add(new Date());
 		dates.add(date);

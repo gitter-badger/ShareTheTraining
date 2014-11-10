@@ -5,6 +5,7 @@ import javax.persistence.Embeddable;
 
 import org.hibernate.annotations.Type;
 
+import play.Logger;
 import play.Play;
 
 import com.google.maps.GeoApiContext;
@@ -59,8 +60,7 @@ public class Location {
 					results[0].geometry.location.lng,
 					results[0].geometry.location.lat));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Logger.error(e.toString());
 		}
 
 	}

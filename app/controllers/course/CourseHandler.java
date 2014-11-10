@@ -9,6 +9,7 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
 import akka.util.Collections;
+import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
@@ -38,13 +39,23 @@ public class CourseHandler implements ICourseHandler {
 	@Override
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId) {
 		String hql = "from ConcreteCourse c where c.eventbriteId= :eventbriteId";
-		Query query = em.createQuery(hql).setParameter("courseId", eventbriteId);
+		Query query = em.createQuery(hql).setParameter("eventbriteId", eventbriteId);
 		Collection result = query.getResultList();
 		if (result.size() > 0)
 			return (ConcreteCourse) result.iterator().next();
 		return null;
 	}
 
+	@Override
+	public ConcreteCourse getCourseByConcreteCourseId(String concreteCourseId) {
+		String hql = "from ConcreteCourse c where c.concreteCourseId= :concreteCourseId";
+		Query query = em.createQuery(hql).setParameter("concreteCourseId", concreteCourseId);
+		Collection result = query.getResultList();
+		if (result.size() > 0)
+			return (ConcreteCourse) result.iterator().next();
+		return null;
+	}
+	
 	@Override
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
 			int pageSize) {
@@ -86,15 +97,25 @@ public class CourseHandler implements ICourseHandler {
 
 	
 	@Override
-	public boolean modifyMaximum(String courseId, int maximum) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modifyMaximum(String concreteCourseId, int maximum) {
+		try{
+		ConcreteCourse c = this.getCourseByConcreteCourseId(concreteCourseId);
+		if (c.getSelectedCustomers().size() > maximum){
+			return false;
+		}
+		c.setMaximum(maximum);
+		return true;
+		}catch(Exception e){
+			Logger.error(e.toString());
+			return false;
+		}
 	}
 
 	@Override
-	public boolean modifyMinimum(String courseId, int minimum) {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean modifyMinimum(String concreteCourseId, int minimum) {
+		ConcreteCourse c = this.getCourseByConcreteCourseId(concreteCourseId);
+		c.setMaximum(minimum);
+		return true;
 	}
 
 	@Override
