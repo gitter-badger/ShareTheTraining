@@ -1,6 +1,7 @@
 package controllers.user;
 
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -9,6 +10,7 @@ import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.courses.OrderStatus;
 import models.courses.Review;
 import models.users.Admin;
 import models.users.Customer;
@@ -59,15 +61,17 @@ public class UserHandler implements IUserHandler {
 
 	@Override
 	public boolean registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId) {
+			ConcreteCourse concreteCourse, String orderId, Date orderDate, OrderStatus orderStatus ) {
 		try {
 			CourseOrder order = CourseOrder.create(orderId, concreteCourse,
-					customer, em);
+					customer, orderDate, orderStatus, em);
 			customer.registerCourse(concreteCourse);
 			return true;
 		} catch (Exception e) {
 			return false;
 		}
 	}
+
+	
 
 }

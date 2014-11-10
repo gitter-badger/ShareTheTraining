@@ -1,5 +1,7 @@
 package models.courses;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.ManyToOne;
@@ -11,21 +13,27 @@ import common.BaseModelObject;
 public class CourseOrder extends BaseModelObject {
 
 	public static CourseOrder create(String orderId,
-			ConcreteCourse concreteCourse, Customer customer, EntityManager em) {
-		CourseOrder order = new CourseOrder(orderId, concreteCourse, customer);
+			ConcreteCourse concreteCourse, Customer customer, Date orderDate, OrderStatus orderStatus, EntityManager em) {
+		CourseOrder order = new CourseOrder(orderId, concreteCourse, customer, orderDate, orderStatus);
 		em.persist(order);
 		order.putSolrDoc();
 		return order;
 	}
 	
 	
-
+	
+	
 	protected CourseOrder(String orderId, ConcreteCourse concreteCourse,
-			Customer customer) {
+			Customer customer, Date orderDate, OrderStatus orderStatus) {
+		super();
 		this.orderId = orderId;
 		this.concreteCourse = concreteCourse;
 		this.customer = customer;
+		this.orderDate = orderDate;
+		this.orderStatus = orderStatus;
 	}
+
+
 
 	private String orderId;
 
@@ -34,6 +42,49 @@ public class CourseOrder extends BaseModelObject {
 
 	@ManyToOne
 	private Customer customer;
+	
+	private Date orderDate;
+	
+	private OrderStatus orderStatus = OrderStatus.Pending;
+
+	
+	
+	protected CourseOrder() {
+		super();
+	}
+
+
+
+
+	public Date getOrderDate() {
+		return orderDate;
+	}
+
+
+
+	public void setOrderDate(Date orderDate) {
+		this.orderDate = orderDate;
+	}
+
+
+
+	public OrderStatus getOrderStatus() {
+		return orderStatus;
+	}
+
+
+
+	public void setOrderStatus(OrderStatus orderStatus) {
+		this.orderStatus = orderStatus;
+	}
+
+
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+
 
 	public String getOrderId() {
 		return orderId;

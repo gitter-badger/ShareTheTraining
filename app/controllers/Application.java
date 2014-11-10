@@ -11,12 +11,14 @@ import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
 import controllers.course.CourseHandler;
+import controllers.course.OrderHandler;
 import controllers.user.UserHandler;
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
 import be.objectify.deadbolt.java.actions.SubjectPresent;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseOrder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.CourseFilterForm;
@@ -127,25 +129,36 @@ public class Application extends Controller {
 		return ok(trainersignup.render());
 	}
 
+	@Transactional
 	public static Result cusprofile() {
-		
-		return ok(cuscoursehistory.render());
+		OrderHandler oh = new OrderHandler();
+		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		System.out.print(order.size());
+		return ok(cuscoursehistory.render(order));
 	}
 
 	public static Result cuscourseconfirmed() {
-		return ok(cuscoursehistory.render());
+		OrderHandler oh = new OrderHandler();
+		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		return ok(cuscoursehistory.render(order));
 	}
 
 	public static Result cuscourseordered() {
-		return ok(cuscoursehistory.render());
+		OrderHandler oh = new OrderHandler();
+		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		return ok(cuscoursehistory.render(order));
 	}
 
 	public static Result cuscoursedone() {
-		return ok(cuscoursehistory.render());
+		OrderHandler oh = new OrderHandler();
+		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		return ok(cuscoursehistory.render(order));
 	}
 
 	public static Result cuscoursecanceled() {
-		return ok(cuscoursehistory.render());
+		OrderHandler oh = new OrderHandler();
+		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+		return ok(cuscoursehistory.render(order));
 	}
 
 	public static Result cusinfo() {
