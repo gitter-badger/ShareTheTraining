@@ -27,22 +27,39 @@
 	<!-- Main Navbar -->
 	
 		<nav class="navbar navbar-default" role="navigation">
-		<section class="wrapper-xs bg-primary">
+		@if(session.get("connected").isEmpty){
+			<section class="wrapper-xs bg-primary">
+				<div class="container">
+					<div class="row"> 
+						<div class="col-sm-12 col-md-9">
+							<h1><p>ShareTheTraining</p></h1>
+						</div><!-- /.col -->
+						<div class="col-md-3">
+							<!-- Button trigger modal -->
+							<button class="btn btn-primary" data-toggle="modal" data-target=".bs-modal-signup"> Sign up
+							</button>
+							<button class="btn btn-primary" data-toggle="modal" data-target=".bs-modal-login">Log in
+							</button>
+						</div>
+					</div><!-- /.row -->
+				</div><!-- /.container -->
+			</section><!-- /.wrapper -->
+		}else{
+			<section class="wrapper-xs bg-primary">
 			<div class="container">
 				<div class="row"> 
 					<div class="col-sm-12 col-md-9">
 						<h1><p>ShareTheTraining</p></h1>
 					</div><!-- /.col -->
 					<div class="col-md-3">
-						<!-- Button trigger modal -->
-						<button class="btn btn-primary" data-toggle="modal" data-target=".bs-modal-signup"> Sign up
-						</button>
-						<button class="btn btn-primary" data-toggle="modal" data-target=".bs-modal-login">Log in
-						</button>
+						<form action="@routes.Application.cusprofile()">
+							<button>@session.get("connected")</button>
+						</form>
 					</div>
 				</div><!-- /.row -->
 			</div><!-- /.container -->
-		</section><!-- /.wrapper -->
+			</section><!-- /.wrapper -->
+		}
 	
 		<div class="container">
 			<div class="navbar-header">

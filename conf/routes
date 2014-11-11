@@ -8,6 +8,7 @@ GET     /                           controllers.Application.welcome()
 #login
 GET    /forgetpsw                   controllers.Application.forgetpsw()
 POST   /forgetpsw                   controllers.Application.forgetpswsubmit()
+GET    /login                       controllers.Application.login()
 
 #signup-cus
 GET    /signupcus                   controllers.Application.signupcus()

@@ -24,6 +24,8 @@ public class CourseHandler implements ICourseHandler {
 		this.em = JPA.em();
 	}
 
+	
+	
 	@Override
 	public Course getCourseById(Integer courseId) {
 		String hql = "from Course c where c.id= :courseId";

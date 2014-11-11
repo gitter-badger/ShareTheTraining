@@ -1,3 +1,7 @@
+@import models.courses._
+@(order: Collection[CourseOrder])
+@import helper._
+
  @main("course-history"){
 <section class="wrapper-sm bg-highlight">
 	<div class="container">
@@ -9,12 +13,13 @@
 				<hr>
 				<div class="col-sm-12 col-md-11">
 					<h3 class="headline">All Courses:</h3>
+					@for(o <- order){
 					<div class="panel panel-success">
 						<div class="col-sm-12 col-md-7 panel-heading">
-							<h3 class="panel-title">Oct.19, 2014</h3>
+							<h3 class="panel-title">@o.getOrderDate()</h3>
 						</div>
 						<div class="col-sm-12 col-md-5 panel-heading ">
-							<h3 class="panel-title">Order Number: 1234567</h3>
+							<h3 class="panel-title">Order Number: @o.getOrderId()</h3>
 						</div>
 
 						<div class="panel-body">
@@ -23,7 +28,7 @@
 							</div>
 							<div class="col-sm-8 col-md-9">
 								<h4>
-									<a href="#">Assertive Communication to Reach Your Goals</a>
+									<a href="#">@o.getConcreteCourse().getCourseInfo().getCourseName()</a>
 								</h4>
 								<div class="col-sm-5 col-md-4">
 									<a href="item_page.html"><img
@@ -38,14 +43,15 @@
 											data-container="body" data-toggle="popover"
 											data-placement="top"
 											data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
-											data-original-title="Popover Title Here">Sinclair
-											Rimmon</button>
+											data-original-title="Popover Title Here">
+											@o.getConcreteCourse().getCourseInfo().getTrainer()</button>
 										</li>
-										<li><i class="fa fa-fw fa-columns"></i>Start Time: 10:00
-											AM, Wed, Oct.22</li>
-										<li><i class="fa fa-fw fa-truck"></i>Location: Downtown,
-											Los Angeles</li>
-										<li><i class="fa fa-fw fa-money"></i>Price: $150</li>
+										<li><i class="fa fa-fw fa-columns"></i>Start Time: 
+										@o.getConcreteCourse().getCourseDates()</li>
+										<li><i class="fa fa-fw fa-truck"></i>Location: 
+										@o.getConcreteCourse().getLocation()</li>
+										<li><i class="fa fa-fw fa-money"></i>Price: 
+										@o.getConcreteCourse().getCourseInfo().getPrice()</li>
 									</ul>
 
 
@@ -53,7 +59,7 @@
 							</div>
 							<div class="col-sm-2 col-md-3 ">
 								<p>
-									Status: <span class="btn btn-success">Confirmed</span>
+									Status: <span class="btn btn-success">@o.getOrderStatus()</span>
 								</p>
 								<p>
 									<a href="item_page.html" class="btn btn-primary">View
@@ -62,7 +68,9 @@
 							</div>
 						</div>
 						<!-- /.panel-body -->
+						
 					</div>
+					}
 					<!-- /.panel -->
 					<!-- Pagination -->
 					<div class="row">

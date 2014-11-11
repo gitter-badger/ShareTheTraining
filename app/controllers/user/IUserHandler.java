@@ -1,6 +1,9 @@
 package controllers.user;
 
+import java.util.Date;
+
 import models.courses.ConcreteCourse;
+import models.courses.OrderStatus;
 import models.users.Customer;
 import models.users.User;
 import models.users.UserRole;
@@ -13,5 +16,7 @@ public interface IUserHandler {
 	
 	public boolean writeReview();
 	
-	public boolean registerCourse(Customer customer, ConcreteCourse course, String orderId);
+
+	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
+			String orderId, Date orderDate, OrderStatus orderStatus);
 }
