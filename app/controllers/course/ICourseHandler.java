@@ -39,4 +39,7 @@ public interface ICourseHandler {
 
 	public boolean updateCourseInfo(int courseId, CourseForm courseForm);
 
+	public boolean deleteConcreteCourse(String concreteCourseId);
+	
+	public boolean deleteCourse(int courseId);
 }

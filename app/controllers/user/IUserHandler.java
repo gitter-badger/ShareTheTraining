@@ -17,4 +17,6 @@ public interface IUserHandler {
 	public boolean writeReview();
 	
 	public boolean updateProfile();
+	
+	public boolean deactiveUser(String userEmail);
 }

@@ -105,6 +105,10 @@ public class Course extends BaseModelObject {
 		doc.addField("description", this.getCourseDesc());
 		return doc;
 	}
+	
+	public boolean removeConcreteCourse(ConcreteCourse c){
+		return this.courses.remove(c);
+	}
 
 	public String getCourseName() {
 		return courseName;

@@ -9,6 +9,7 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
@@ -19,6 +20,16 @@ public class OrderHandler implements IOrderHandler {
 
 	public OrderHandler() {
 		this.em = JPA.em();
+	}
+
+	@Override
+	public CourseOrder getCourseOrderByOrderId(String orderId) {
+		String hql = "from CourseOrder o where o.orderId= :orderId";
+		Query query = em.createQuery(hql).setParameter("orderId", orderId);
+		Collection result = query.getResultList();
+		if (result.size() > 0)
+			return (CourseOrder) result.iterator().next();
+		return null;
 	}
 
 	@Override
@@ -61,6 +72,12 @@ public class OrderHandler implements IOrderHandler {
 			result.add((CourseOrder) t.get(0));
 		}
 		return result;
+	}
+
+	public boolean updateOrderStatus(String orderId, OrderStatus s) {
+		CourseOrder order = this.getCourseOrderByOrderId(orderId);
+		order.setOrderStatus(s);
+		return true;
 	}
 
 }

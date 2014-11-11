@@ -9,7 +9,6 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
-import akka.util.Collections;
 import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
@@ -132,10 +131,10 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public boolean updateCourseInfo(int courseId, CourseForm courseForm){
+	public boolean updateCourseInfo(int courseId, CourseForm courseForm) {
 		return false;
 	}
-	
+
 	@Override
 	public boolean registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId) {
@@ -151,6 +150,7 @@ public class CourseHandler implements ICourseHandler {
 			}
 			return false;
 		} catch (Exception e) {
+			Logger.error(e.toString());
 			return false;
 		}
 	}
@@ -158,5 +158,44 @@ public class CourseHandler implements ICourseHandler {
 	@Override
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse) {
 		return customer.dropCourse(concreteCourse);
+	}
+
+	@Override
+	public boolean deleteConcreteCourse(String concreteCourseId) {
+		try {
+			ConcreteCourse concreteCourse = this
+					.getCourseByConcreteCourseId(concreteCourseId);
+			if (concreteCourse == null)
+				return false;
+			return _deleteConcreteCourse(concreteCourse);
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return false;
+		}
+	}
+
+	//TODO How to handle orders
+	private boolean _deleteConcreteCourse(ConcreteCourse concreteCourse) {
+		for (Customer customer : concreteCourse.getSelectedCustomers()) {
+			this.dropCourse(customer, concreteCourse);
+		}
+		concreteCourse.getCourseInfo().removeConcreteCourse(concreteCourse);
+		em.remove(concreteCourse);
+		return true;
+	}
+
+	@Override
+	public boolean deleteCourse(int courseId) {
+		try {
+			Course course = this.getCourseById(courseId);
+			for (ConcreteCourse c : course.getCourses()) {
+				this._deleteConcreteCourse(c);
+			}
+			em.remove(course);
+			return true;
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return false;
+		}
 	}
 }

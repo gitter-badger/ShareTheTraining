@@ -15,4 +15,6 @@ public interface IOrderHandler {
 
 	public Collection<CourseOrder> getCourseOrderByCustomRule(FilterBuilder cb,
 			String orderByColumn, int pageNumber, int pageSize);
+
+	public CourseOrder getCourseOrderByOrderId(String orderId);
 }

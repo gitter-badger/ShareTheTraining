@@ -65,6 +65,15 @@ public class UserHandler implements IUserHandler {
 		return false;
 	}
 
+	//// TODO How to handle selected courses
+	@Override
+	public boolean deactiveUser(String userEmail) {
+		User u =  this.getUserByEmail(userEmail);
+		
+		em.remove(u);
+		return false;
+	}
+
 
 	
 
