@@ -25,6 +25,17 @@ public class UserHandler implements IUserHandler {
 	public UserHandler() {
 		this.em = JPA.em();
 	}
+	
+	@Override
+	public User getUserById(int userId) {
+		String hql = "from User u where u.id= :userId";
+		Query query = em.createQuery(hql).setParameter("userId", userId);
+		Collection result = query.getResultList();
+		if (result.size() > 0) {
+			return (User) result.iterator().next();
+		}
+		return null;
+	}
 
 	@Override
 	public User getUserByEmail(String userEmail) {

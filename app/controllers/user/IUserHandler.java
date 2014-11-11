@@ -19,4 +19,6 @@ public interface IUserHandler {
 	public boolean updateProfile();
 	
 	public boolean deactiveUser(String userEmail);
+
+	public User getUserById(int userId);
 }
