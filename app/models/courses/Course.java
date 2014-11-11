@@ -53,7 +53,7 @@ public class Course extends BaseModelObject {
 	@Lob
 	private String courseDesc;
 
-	private CourseStatus status = CourseStatus.verifying;
+	private CourseStatus status = CourseStatus.VERIFYING;
 
 	private String methods;
 

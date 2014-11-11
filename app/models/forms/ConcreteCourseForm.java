@@ -31,7 +31,7 @@ public class ConcreteCourseForm {
 	
 	private String eventbriteId;
 	
-	private ConcreteCourseStatus status = ConcreteCourseStatus.unstarted;
+	private ConcreteCourseStatus status = ConcreteCourseStatus.UNSTARTED;
 
 	public Course getCourseInfo() {
 		return courseInfo;

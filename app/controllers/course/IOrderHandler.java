@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
+import models.filters.FilterBuilder;
 
 public interface IOrderHandler {
 	public Collection<CourseOrder> getCourseOrderByCustomer(String userEmail);
@@ -12,6 +13,6 @@ public interface IOrderHandler {
 
 	public Collection<CourseOrder> getCourseOrderByConcreteCourse(String concreteCourseId);
 
-	public Collection<CourseOrder> getCourseOrderByCustomerAndStatus(String userEmail,
-			OrderStatus orderStatus);
+	public Collection<CourseOrder> getCourseOrderByCustomRule(FilterBuilder cb,
+			String orderByColumn, int pageNumber, int pageSize);
 }

@@ -1,11 +1,14 @@
 package controllers.course;
 
 import java.util.Collection;
+import java.util.Date;
 
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
 import models.forms.CourseForm;
+import models.users.Customer;
 
 public interface ICourseHandler {
 	public Course getCourseById(Integer courseId);
@@ -28,5 +31,12 @@ public interface ICourseHandler {
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
 	public ConcreteCourse getCourseByConcreteCourseId(String concreteCourseId);
+
+	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse);
+
+	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
+			String orderId);
+
+	public boolean updateCourseInfo(int courseId, CourseForm courseForm);
 
 }

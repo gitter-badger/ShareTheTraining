@@ -16,7 +16,5 @@ public interface IUserHandler {
 	
 	public boolean writeReview();
 	
-
-	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
-			String orderId, Date orderDate, OrderStatus orderStatus);
+	public boolean updateProfile();
 }

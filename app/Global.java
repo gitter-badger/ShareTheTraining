@@ -1,6 +1,7 @@
 
 import play.mvc.*;
 import play.mvc.Http.*;
+import play.db.jpa.JPA;
 import play.libs.F.*;
 import static play.mvc.Results.*;
 import play.Application;

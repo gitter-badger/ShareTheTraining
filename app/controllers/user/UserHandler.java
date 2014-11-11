@@ -60,17 +60,11 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public boolean registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId, Date orderDate, OrderStatus orderStatus ) {
-		try {
-			CourseOrder order = CourseOrder.create(orderId, concreteCourse,
-					customer, orderDate, orderStatus, em);
-			customer.registerCourse(concreteCourse);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean updateProfile() {
+		// TODO Auto-generated method stub
+		return false;
 	}
+
 
 	
 

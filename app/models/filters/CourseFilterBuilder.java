@@ -23,6 +23,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.util.GeometricShapeFactory;
 
 import models.courses.ConcreteCourse;
+import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
 import models.courses.CourseStatus;
 import models.courses.Review;
@@ -41,6 +42,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private double highPrice = -1;
 	private int category = -1;
 	private Location curentLocation;
+	private int courseStatus = -1;
+	private int concreteCourseStatus = -1;
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -57,8 +60,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		predicates.add(cb.equal(courseInfoRoot.<CourseStatus> get("status"),
-				CourseStatus.approved));
+		if (courseStatus != -1)
+			predicates.add(cb.equal(
+					courseInfoRoot.<CourseStatus> get("status"),
+					CourseStatus.fromInteger(courseStatus)));
+		if (concreteCourseStatus != -1)
+			predicates.add(cb.equal(
+					entityRoot.<ConcreteCourseStatus> get("status"),
+					ConcreteCourseStatus.fromInteger(courseStatus)));
 		if (keyword != null) {
 			// keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
@@ -230,5 +239,23 @@ public class CourseFilterBuilder implements FilterBuilder {
 	public void setCategory(int category) {
 		this.category = category;
 	}
+
+	public int getCourseStatus() {
+		return courseStatus;
+	}
+
+	public void setCourseStatus(int courseStatus) {
+		this.courseStatus = courseStatus;
+	}
+
+	public int getConcreteCourseStatus() {
+		return concreteCourseStatus;
+	}
+
+	public void setConcreteCourseStatus(int concreteCourseStatus) {
+		this.concreteCourseStatus = concreteCourseStatus;
+	}
+	
+
 
 }

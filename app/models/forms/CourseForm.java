@@ -25,7 +25,7 @@ public class CourseForm {
 	
 	private String courseDesc;
 
-	private CourseStatus status = CourseStatus.verifying;
+	private CourseStatus status = CourseStatus.VERIFYING;
 	
 	private String methods;
 	
