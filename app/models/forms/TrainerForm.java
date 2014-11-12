@@ -14,7 +14,7 @@ public class TrainerForm {
 	
 	private String name;
 	
-	private String address;
+	private Location location;
 	
 	private String cellPhone;
 	
@@ -62,13 +62,13 @@ public class TrainerForm {
 		this.name = name;
 	}
 
-
-	public String getAddress() {
-		return address;
+	
+	public Location getLocation() {
+		return location;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 	public String getCellPhone() {

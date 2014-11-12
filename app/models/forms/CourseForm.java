@@ -31,6 +31,8 @@ public class CourseForm {
 	
 	private String keyPoints;
 	
+	
+	
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
 	public String getCourseId() {

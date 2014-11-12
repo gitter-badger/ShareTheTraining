@@ -20,8 +20,11 @@ import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
 import play.Play;
+import play.api.mvc.Session;
 import play.db.jpa.JPA;
 import play.mvc.Http.Context;
+import play.mvc.Http.Request;
+import play.mvc.Http.Response;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
 
@@ -36,12 +39,14 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	}
 
 	@Override
-	public User doLogin(String userEmail, String password, UserRole userRole,
+	public User doLogin(String userEmail, String password, 
 			Context context, IUserHandler userHandler) {
+		Logger.info(userEmail);
+		Logger.info(password);
 		User u = userHandler.getUserByEmail(userEmail);
-		if (u != null && Password.check(password, u.getPassword())
-				&& u.getUserRole() == userRole) {
+		if (u != null && Password.check(password, u.getPassword())) {
 			context.session().put("connected", u.getEmail());
+			
 			return u;
 		}
 		return null;

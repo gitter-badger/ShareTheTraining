@@ -16,21 +16,15 @@
 							<div class="row">
 								<div class="col-md-12">
 									<label for="">Course Catagories:</label>
-									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary">
-										<optgroup label="Show All">
-											<option>Show All</option>
-										</optgroup>
-										<optgroup label="Personal:">
-											<option>Apartment</option>
-											<option>Condo</option>
-											<option>Villa</option>
-										</optgroup>
-										<optgroup label="Business:">
-											<option>Office</option>
-											<option>Warehouse</option>
-											<option>Studio</option>
-										</optgroup>
-									</select>
+									<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.category" id="cfb.dataChoice">
+											<optgroup label="Show All">
+												<option value="-1" selected="selected">Show All</option>
+											</optgroup>
+											<optgroup label="Computer Science:">
+												<option value="1">algorithm</option>
+												<option value="2">database system</option>
+											</optgroup>
+										</select>
 								</div><!-- /.col -->
 								
 								<div class="col-md-12">

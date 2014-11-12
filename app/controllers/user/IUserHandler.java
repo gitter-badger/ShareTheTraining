@@ -19,4 +19,6 @@ public interface IUserHandler {
 
 	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
 			String orderId, Date orderDate, OrderStatus orderStatus);
+
+	public Customer getCusByEmail(String userEmail);
 }

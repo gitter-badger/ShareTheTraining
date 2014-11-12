@@ -13,6 +13,7 @@ public class MailHandler implements IMailHandler {
 	@Override
 	public boolean sendMailWithToken(String userName, String email,
 			String token, UserAction action) {
+		Logger.info(email);
 		Html content=null;
 		switch (action) {
 		case REGISTER:

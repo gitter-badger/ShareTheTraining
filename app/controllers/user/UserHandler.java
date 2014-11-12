@@ -6,6 +6,7 @@ import java.util.Date;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
@@ -33,6 +34,17 @@ public class UserHandler implements IUserHandler {
 		Collection result = query.getResultList();
 		if (result.size() > 0) {
 			return (User) result.iterator().next();
+		}
+		return null;
+	}
+	
+	@Override
+	public Customer getCusByEmail(String userEmail) {
+		String hql = "from Customer c where c.email= :userEmail";
+		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
+		Collection result = query.getResultList();
+		if (result.size() > 0) {
+			return (Customer) result.iterator().next();
 		}
 		return null;
 	}

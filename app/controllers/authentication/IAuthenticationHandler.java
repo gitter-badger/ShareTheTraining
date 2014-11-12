@@ -7,7 +7,7 @@ import models.users.User;
 import models.users.UserRole;
 
 public interface IAuthenticationHandler {
-	public User doLogin(String userEmail, String password, UserRole userRole,
+	public User doLogin(String userEmail, String password,
 			Context context, IUserHandler userHandler);
 
 	public boolean doRegister(String userEmail, String userName,

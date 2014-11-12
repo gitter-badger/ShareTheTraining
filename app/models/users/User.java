@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import models.locations.Location;
 import play.Logger;
 import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
@@ -20,6 +21,8 @@ public  abstract class User extends BaseModelObject implements Subject{
 
 	@Column(unique = true)
 	private String email;
+	
+	private String name;
 
 	private String username;
 	
@@ -28,6 +31,8 @@ public  abstract class User extends BaseModelObject implements Subject{
 	private UserRole userRole;
 	
 	private UserStatus userStatus;
+	
+	
 
 	protected User(String email, String username, String password) {
 		this.email = email;
@@ -106,5 +111,18 @@ public  abstract class User extends BaseModelObject implements Subject{
 		this.userStatus = userStatus;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	
+
+	
+
+	
 
 }

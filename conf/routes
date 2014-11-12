@@ -9,6 +9,9 @@ GET     /                           controllers.Application.welcome()
 GET    /forgetpsw                   controllers.Application.forgetpsw()
 POST   /forgetpsw                   controllers.Application.forgetpswsubmit()
 GET    /login                       controllers.Application.login()
+POST   /login                       controllers.Application.loginAuthen()
+GET    /logout                      controllers.Application.logout()
+
 
 #signup-cus
 GET    /signupcus                   controllers.Application.signupcus()
@@ -25,9 +28,13 @@ GET    /cusinfo                     controllers.Application.cusinfo()
 GET    /cusinfoedit                 controllers.Application.cusinfoedit()
 GET    /cuschangepsw                controllers.Application.cuschangepsw()
 
+#mail
+GET    /activate                    controllers.Application.activate()
+GET    /resetpsw                    controllers.Application.resetpsw()
 
+#search
 GET 	/search						controllers.Application.search()
-POST    /search                     controllers.Application.search()
+POST    /search  	                controllers.Application.search()
 
 #test
 

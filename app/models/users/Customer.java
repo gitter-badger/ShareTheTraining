@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import play.Logger;
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
@@ -21,6 +22,8 @@ public class Customer extends User {
 
 	public static Customer create(String email, String username,
 			String password, EntityManager em) {
+		Logger.info(email);
+		Logger.info(password);
 		Customer customer = new Customer(email, username, password);
 		em.persist(customer);
 		customer.putSolrDoc();
