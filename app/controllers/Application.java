@@ -27,6 +27,7 @@ import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.DateFilterHandler;
 import models.filters.FilterBuilder;
+import models.filters.OrderFilterBuilder;
 import models.forms.CourseFilterForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
@@ -224,32 +225,44 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cuscourseconfirmed() {
 		OrderHandler oh = new OrderHandler();
+		OrderFilterBuilder fb = new OrderFilterBuilder();
+		fb.setOrderStatus(OrderStatus.CONFIRMED.ordinal());
+		fb.setUserEmail(session().get("connected"));
 		Collection<CourseOrder> order = 
-				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[0]);
+				oh.getCourseOrderByCustomRule(fb, null, -1, -1);
 		return ok(cuscoursehistory.render(order));
 	}
 
 	@Transactional
 	public static Result cuscourseordered() {
 		OrderHandler oh = new OrderHandler();
+		OrderFilterBuilder fb = new OrderFilterBuilder();
+		fb.setOrderStatus(OrderStatus.ORDERED.ordinal());
+		fb.setUserEmail(session().get("connected"));
 		Collection<CourseOrder> order = 
-				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[1]);
+				oh.getCourseOrderByCustomRule(fb, null, -1, -1);
 		return ok(cuscoursehistory.render(order));
 	}
 	
 	@Transactional
 	public static Result cuscoursedone() {
 		OrderHandler oh = new OrderHandler();
+		OrderFilterBuilder fb = new OrderFilterBuilder();
+		fb.setOrderStatus(OrderStatus.DONE.ordinal());
+		fb.setUserEmail(session().get("connected"));
 		Collection<CourseOrder> order = 
-				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[2]);
+				oh.getCourseOrderByCustomRule(fb, null, -1, -1);
 		return ok(cuscoursehistory.render(order));
 	}
 
 	@Transactional
 	public static Result cuscoursecanceled() {
 		OrderHandler oh = new OrderHandler();
+		OrderFilterBuilder fb = new OrderFilterBuilder();
+		fb.setOrderStatus(OrderStatus.CANCELLED.ordinal());
+		fb.setUserEmail(session().get("connected"));
 		Collection<CourseOrder> order = 
-				oh.getCourseOrderByCustomerAndStatus(session().get("connected"), OrderStatus.values()[3]);
+				oh.getCourseOrderByCustomRule(fb, null, -1, -1);
 		return ok(cuscoursehistory.render(order));
 	}
 

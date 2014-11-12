@@ -9,7 +9,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
+import models.courses.CourseStatus;
 import models.filters.CourseFilterBuilder;
 import models.locations.Location;
 
@@ -22,7 +24,6 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
-
 import controllers.course.CourseHandler;
 
 public class CourseHandlerTest extends BaseTest {
@@ -45,6 +46,7 @@ public class CourseHandlerTest extends BaseTest {
 	public void testFilterCourseByKeyword() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.setCourseStatus(CourseStatus.APPROVED.ordinal());
 		cb.setKeyword("xingbuxin");
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
 				null, 1, 10);

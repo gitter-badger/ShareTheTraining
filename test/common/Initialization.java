@@ -13,6 +13,7 @@ import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseStatus;
 import models.locations.Location;
+import models.users.Customer;
 import models.users.Trainer;
 
 public class Initialization {
@@ -21,10 +22,10 @@ public class Initialization {
 		trainer1 = Trainer.create("sda", "dasda", "dasd", em);
 		trainer1.setRating(3);
 		course1 = Course.create("xingbuxing", 1, "xixihaha", em);
-		course1.setStatus(CourseStatus.approved);
+		course1.setStatus(CourseStatus.APPROVED);
 		course1.setTrainer(trainer1);
 		course2 = Course.create("fubai", 2, "xixilala", em);
-		course2.setStatus(CourseStatus.approved);
+		course2.setStatus(CourseStatus.APPROVED);
 		course2.setTrainer(trainer1);
 		course2.setRating(5);
 		List<Date> dates = new ArrayList<Date>();
@@ -48,7 +49,7 @@ public class Initialization {
 		dates.add(new Date());
 		concreteCourse3 = ConcreteCourse.create(course2, "234", new Location(2,
 				1, "", 121.28, 31.10), dates, 2, 1, em);
-		
+		customer1 = Customer.create("qnmb", "xixihaha", "lala", em);
 		
 	}
 
@@ -56,6 +57,8 @@ public class Initialization {
 
 	public Trainer trainer1;
 
+	public Customer customer1;
+	
 	public Course course1;
 
 	public Course course2;
@@ -74,5 +77,6 @@ public class Initialization {
 		em.remove(course1);
 		em.remove(course2);
 		em.remove(trainer1);
+		em.remove(customer1);
 	}
 }

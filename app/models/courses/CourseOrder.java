@@ -13,17 +13,15 @@ import common.BaseModelObject;
 public class CourseOrder extends BaseModelObject {
 
 	public static CourseOrder create(String orderId,
-			ConcreteCourse concreteCourse, Customer customer, Date orderDate, OrderStatus orderStatus, EntityManager em) {
-		CourseOrder order = new CourseOrder(orderId, concreteCourse, customer, orderDate, orderStatus);
+			ConcreteCourse concreteCourse, Customer customer, Date orderDate,
+			OrderStatus orderStatus, EntityManager em) {
+		CourseOrder order = new CourseOrder(orderId, concreteCourse, customer,
+				orderDate, orderStatus);
 		em.persist(order);
 		order.putSolrDoc();
 		return order;
 	}
-	
-	
-	
-	
-	
+
 	protected CourseOrder(String orderId, ConcreteCourse concreteCourse,
 			Customer customer, Date orderDate, OrderStatus orderStatus) {
 		super();
@@ -34,8 +32,6 @@ public class CourseOrder extends BaseModelObject {
 		this.orderStatus = orderStatus;
 	}
 
-
-
 	private String orderId;
 
 	@ManyToOne
@@ -43,49 +39,34 @@ public class CourseOrder extends BaseModelObject {
 
 	@ManyToOne
 	private Customer customer;
-	
-	private Date orderDate;
-	
-	private OrderStatus orderStatus = OrderStatus.Pending;
 
-	
-	
+	private Date orderDate;
+
+	private OrderStatus orderStatus = OrderStatus.PENDING;
+
 	protected CourseOrder() {
 		super();
 	}
-
-
-
 
 	public Date getOrderDate() {
 		return orderDate;
 	}
 
-
-
 	public void setOrderDate(Date orderDate) {
 		this.orderDate = orderDate;
 	}
-
-
 
 	public OrderStatus getOrderStatus() {
 		return orderStatus;
 	}
 
-
-
 	public void setOrderStatus(OrderStatus orderStatus) {
 		this.orderStatus = orderStatus;
 	}
 
-
-
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
 	}
-
-
 
 	public String getOrderId() {
 		return orderId;

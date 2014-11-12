@@ -53,7 +53,7 @@ public class Course extends BaseModelObject {
 	@Lob
 	private String courseDesc;
 
-	private CourseStatus status = CourseStatus.verifying;
+	private CourseStatus status = CourseStatus.VERIFYING;
 
 	private String methods;
 
@@ -104,6 +104,10 @@ public class Course extends BaseModelObject {
 		doc.addField("name", this.getCourseName());
 		doc.addField("description", this.getCourseDesc());
 		return doc;
+	}
+	
+	public boolean removeConcreteCourse(ConcreteCourse c){
+		return this.courses.remove(c);
 	}
 
 	public String getCourseName() {

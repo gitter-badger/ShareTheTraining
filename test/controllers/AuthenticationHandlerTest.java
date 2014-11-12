@@ -50,4 +50,20 @@ public class AuthenticationHandlerTest extends BaseTest {
 		assertThat(mockContext.session().get("connected")).isEqualTo("wjf3121@gmail.com");
 		this.getmEm().remove(u);
 	}
+	
+	@Test
+	public void testLogout() {
+		Context mockContext = this.getMockContext();
+		AuthenticationHandler authenticationHandler = new AuthenticationHandler();
+		UserHandler userHandler = new UserHandler();
+		User u = userHandler.createNewUser("wjf3121@gmail.com", "hehe", "123",
+				UserRole.CUSTOMER);
+		u.setUserStatus(UserStatus.ACTIVE);
+		authenticationHandler.doLogin("wjf3121@gmail.com", "123",
+				UserRole.CUSTOMER, mockContext, userHandler);
+		assertThat(mockContext.session().get("connected")).isEqualTo("wjf3121@gmail.com");
+		authenticationHandler.doLogout(mockContext);
+		assertThat(mockContext.session().get("connected")).isEqualTo(null);
+		this.getmEm().remove(u);
+	}
 }

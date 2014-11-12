@@ -26,6 +26,17 @@ public class UserHandler implements IUserHandler {
 	public UserHandler() {
 		this.em = JPA.em();
 	}
+	
+	@Override
+	public User getUserById(int userId) {
+		String hql = "from User u where u.id= :userId";
+		Query query = em.createQuery(hql).setParameter("userId", userId);
+		Collection result = query.getResultList();
+		if (result.size() > 0) {
+			return (User) result.iterator().next();
+		}
+		return null;
+	}
 
 	@Override
 	public User getUserByEmail(String userEmail) {
@@ -72,17 +83,20 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public boolean registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId, Date orderDate, OrderStatus orderStatus ) {
-		try {
-			CourseOrder order = CourseOrder.create(orderId, concreteCourse,
-					customer, orderDate, orderStatus, em);
-			customer.registerCourse(concreteCourse);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
+	public boolean updateProfile() {
+		// TODO Auto-generated method stub
+		return false;
 	}
+
+	//// TODO How to handle selected courses
+	@Override
+	public boolean deactiveUser(String userEmail) {
+		User u =  this.getUserByEmail(userEmail);
+		
+		em.remove(u);
+		return false;
+	}
+
 
 	
 

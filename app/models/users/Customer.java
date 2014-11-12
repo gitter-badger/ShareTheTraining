@@ -43,9 +43,20 @@ public class Customer extends User {
 
 	private String phone;
 
-	public void registerCourse(ConcreteCourse concreteCourse) {
+	public boolean registerCourse(ConcreteCourse concreteCourse) {
+		if(this.selectedCourses.contains(concreteCourse))
+			return false;
 		this.selectedCourses.add(concreteCourse);
 		concreteCourse.enrollCustomer(this);
+		return true;
+	}
+	
+	public boolean dropCourse(ConcreteCourse concreteCourse){
+		if(!this.selectedCourses.contains(concreteCourse))
+			return false;
+		this.selectedCourses.remove(concreteCourse);
+		concreteCourse.removeCustomer(this);
+		return true;
 	}
 	
 	public void addReview(Review review){
