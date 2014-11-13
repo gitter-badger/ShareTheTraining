@@ -1,6 +1,12 @@
 package controllers.user;
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.apache.http.client.utils.URIBuilder;
+
 import play.Logger;
+import play.Play;
 import play.twirl.api.Html;
 
 import com.typesafe.plugin.MailerAPI;
@@ -13,10 +19,10 @@ public class MailHandler implements IMailHandler {
 	@Override
 	public boolean sendMailWithToken(String userName, String email,
 			String token, UserAction action) {
-		Html content=null;
+		Html content = null;
 		switch (action) {
 		case REGISTER:
-			content = reset_content.render("hehe", "");
+			content = reset_content.render("hehe", generateURL(token, action));
 			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
@@ -43,4 +49,25 @@ public class MailHandler implements IMailHandler {
 		return true;
 	}
 
+	private String generateURL(String token, UserAction action) {
+		URIBuilder builder = new URIBuilder().setScheme("http").setHost(
+				Play.application().configuration().getString("url.base"));
+		switch(action){
+		case PASSWORDRESET:
+			builder.setPath("resetpsw");
+			break;
+		case REGISTER:
+			builder.setPath("activate");
+			break;
+		}
+		builder.setParameter("token", token);
+		URI uri;
+		try {
+			uri = builder.build();
+		} catch (URISyntaxException e) {
+			Logger.error(e.toString());
+			return null;
+		}
+		return uri.toString();
+	}
 }
