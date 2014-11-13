@@ -75,7 +75,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 
 	@Override
 	public boolean activateUser(String token, IUserHandler userHandler) {
-		String[] tokenAndEmail = token.split("\\#");
+		String[] tokenAndEmail = token.split("\\*");
 		if (tokenAndEmail.length == 2) {
 			String userEmail = new String(Base64.decodeBase64(tokenAndEmail[1]));
 			ActionToken actionToken = findToken(userEmail, UserAction.REGISTER);
@@ -118,7 +118,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	@Override
 	public boolean doResetPassword(String token, String newPassword,
 			IUserHandler userHandler) {
-		String[] tokenAndEmail = token.split("\\#");
+		String[] tokenAndEmail = token.split("\\*");
 		if (tokenAndEmail.length == 2) {
 			String userEmail = new String(Base64.decodeBase64(tokenAndEmail[1]));
 			ActionToken actionToken = findToken(userEmail,
@@ -141,7 +141,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 
 	public String generateConfirmToken(ActionToken actionToken) {
 		return actionToken.getToken()
-				+ "#"
+				+ "*"
 				+ Base64.encodeBase64URLSafeString(actionToken.getUserEmail()
 						.getBytes());
 	}
