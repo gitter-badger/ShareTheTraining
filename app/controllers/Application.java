@@ -96,7 +96,9 @@ public class Application extends Controller {
 
 	}
 	
-	
+	public static Result addCourse(){
+		return TODO;
+	}
 	
 	@Transactional
 	public static Result welcome() {
@@ -104,6 +106,7 @@ public class Application extends Controller {
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 //		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
 //				2, 2);
+		cfb.setCourseStatus(1);
 		Collection<Course> course = ch.getCourseByCustomRule(cfb,
 				null, 1, 10);
 		Logger.info("course" + course.size());
@@ -172,10 +175,6 @@ public class Application extends Controller {
 	public static Result search() {
 		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
 				.bindFromRequest();
-//		Logger.info(filterForm.value().toString());
-//		//Logger.info("category" + filterForm.get().getCfb().getCategory());
-////		Logger.info("location" + filterForm.get().getCfb().getLocations());
-//		Logger.info("dateChoice" + filterForm.get().getCfb().getDataChoice());
 		Logger.info("keyword" + filterForm.get().getCfb().getKeyword());
 		
 		int datec = filterForm.get().getCfb().getDataChoice();
@@ -229,7 +228,7 @@ public class Application extends Controller {
 		fb.setOrderStatus(OrderStatus.CONFIRMED.ordinal());
 		fb.setUserEmail(session().get("connected"));
 		Collection<CourseOrder> order = 
-				oh.getCourseOrderByCustomRule(fb, null, -1, -1);
+				oh.getCourseOrderByCustomRule(fb, null, 1, 10);
 		return ok(cuscoursehistory.render(order));
 	}
 

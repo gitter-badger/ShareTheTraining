@@ -97,6 +97,14 @@ public class UserHandler implements IUserHandler {
 		return false;
 	}
 
+	@Override
+	public boolean registerCourse(Customer customer,
+			ConcreteCourse concreteCourse, String orderId, Date orderDate,
+			OrderStatus orderStatus) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 	
 

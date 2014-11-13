@@ -96,4 +96,10 @@ public class OrderFilterBuilder implements FilterBuilder {
 		this.orderStatus = orderStatus;
 	}
 
+	@Override
+	public int getCategory() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

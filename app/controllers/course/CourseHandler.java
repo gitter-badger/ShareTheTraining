@@ -86,14 +86,11 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-<<<<<<< HEAD
+
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb, String orderByColumn,
 			int pageNumber, int pageSize) {
 		Logger.info("category:  "+cb.getCategory());
-=======
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
-			String orderByColumn, int pageNumber, int pageSize) {
->>>>>>> 3104a62f855e7b082a32e74bb82bf4567e6280bd
+
 		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
 				em.getCriteriaBuilder(), orderByColumn, true));
 		if (pageNumber != -1 && pageSize != -1) {

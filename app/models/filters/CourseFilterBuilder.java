@@ -48,12 +48,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private double highPrice = -1;
 	private int category = -1;
 	private Location curentLocation;
-<<<<<<< HEAD
 	private int dataChoice = -1;
-=======
 	private int courseStatus = -1;
 	private int concreteCourseStatus = -1;
->>>>>>> 3104a62f855e7b082a32e74bb82bf4567e6280bd
+
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -250,7 +248,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.category = category;
 	}
 
-<<<<<<< HEAD
+
 	public int getDataChoice() {
 		return dataChoice;
 	}
@@ -259,8 +257,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.dataChoice = dataChoice;
 	}
 
-	
-=======
 	public int getCourseStatus() {
 		return courseStatus;
 	}
@@ -279,5 +275,5 @@ public class CourseFilterBuilder implements FilterBuilder {
 	
 
 
->>>>>>> 3104a62f855e7b082a32e74bb82bf4567e6280bd
+
 }
