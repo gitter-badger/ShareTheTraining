@@ -26,7 +26,7 @@ public class MailHandler implements IMailHandler {
 			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
-			content = null;
+			content = register_content.render("hehe", generateURL(token, action));
 			sendEmail(email, "hehe", content);
 			return true;
 		default:
