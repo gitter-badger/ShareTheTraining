@@ -20,5 +20,12 @@ public interface IUserHandler {
 	
 	public boolean deactiveUser(String userEmail);
 
+
+	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
+			String orderId, Date orderDate, OrderStatus orderStatus);
+
+	public Customer getCusByEmail(String userEmail);
+
 	public User getUserById(int userId);
+
 }

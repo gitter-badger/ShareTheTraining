@@ -5,63 +5,49 @@
 							<h3 class="panel-title">What would you like to be amazing at:</h3>
 						</div>
 						<div class="panel-body">
-							<form action="@routes.Application.search()" role="form" method="psot">
+							<form action="@routes.Application.search()"  method="post"  role="form">
 								<div class="row">
 									<div class="col-md-12">
 										<label for="">Course Catagories:</label>
-										<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" id="category">
+										<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.category" id="cfb.dataChoice">
 											<optgroup label="Show All">
-												<option>Show All</option>
+												<option value="-1" selected="selected">Show All</option>
 											</optgroup>
-											<optgroup label="Personal:">
+											<optgroup label="Computer Science:">
 												<option value="1">algorithm</option>
-												<option>Condo</option>
-												<option>Villa</option>
-											</optgroup>
-											<optgroup label="Business:">
-												<option>Office</option>
-												<option>Warehouse</option>
-												<option>cxt</option>
+												<option value="2">database system</option>
 											</optgroup>
 										</select>
 									</div><!-- /.col -->
 									
 									<div class="col-md-12">
-									<label for="">City:</label>
-									<select multiple="" class="form-control selectpicker show-tick" data-live-search="true" data-style="btn-primary">
-										<optgroup label="Los Angeles:">
-											<option>Any LA</option>
-											<option>Downtown</option>
-											<option>Santa Monica</option>
-											<option>Northwest County</option>
-											<option>San Gabriel Valley</option>
-										</optgroup>
-										<optgroup label="San Francisco:">
-											<option>Any SF</option>
-											<option>Alamo Square</option>
-											<option>Bernal Heights</option>
-											<option>China Basin</option>
+									<label for="">Location:</label>
+									<select multiple=""  class="form-control selectpicker show-tick" data-live-search="true" data-style="btn-primary">
+										<optgroup label="City:">
+											<option value="1">Los Angeles</option>
+											<option value="2">San Diego</option>
 										</optgroup>
 										
 									</select>
 								</div><!-- /.col -->
 								<div class="col-md-12">
 									<label for="">Date:</label>
-									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary">
+									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.dataChoice" id="cfb.dataChoice">
 										<optgroup label="Date:">
-											<option>Next month</option>
-											<option>Next 2 to 4 months</option>
-											<option>5 months later</option>
+											<option value="1">Next month</option>
+											<option value="2">Next 2 to 4 months</option>
+											<option value="3">4 months later</option>
 										</optgroup>
-									</select>
+									</select> 
 								</div><!-- /.col -->
-									<div class="col-md-12">
+									<!-- <div class="col-md-12">
 											<label for="exmaple-contact-email">Key words</label>
-											<input type="text" class="form-control" id="keyword" placeholder="">
-									</div>
+											<input type="text" class="form-control" name="cfb.keyword" id="cfb.keyword" placeholder="">
+									</div> -->
 									<div class="col-md-12">
 										<label for="">Ready?</label>
-										<button class="btn btn-primary btn-block">Search</button>
+										<button type="submit" class="btn btn-primary btn-block">Search</button>
+										
 									</div>
 								</div>
 							</form>

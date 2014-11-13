@@ -14,6 +14,8 @@ import javax.persistence.criteria.Selection;
 
 import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 
+import play.Logger;
+
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -31,6 +33,10 @@ import models.locations.Location;
 import models.users.Trainer;
 
 public class CourseFilterBuilder implements FilterBuilder {
+	
+	public CourseFilterBuilder(){
+		
+	}
 
 	private String keyword;
 	private List<Location> locations = new ArrayList<Location>();
@@ -42,8 +48,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private double highPrice = -1;
 	private int category = -1;
 	private Location curentLocation;
+	private int dataChoice = -1;
 	private int courseStatus = -1;
 	private int concreteCourseStatus = -1;
+
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -240,6 +248,15 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.category = category;
 	}
 
+
+	public int getDataChoice() {
+		return dataChoice;
+	}
+
+	public void setDataChoice(int dataChoice) {
+		this.dataChoice = dataChoice;
+	}
+
 	public int getCourseStatus() {
 		return courseStatus;
 	}
@@ -256,6 +273,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.concreteCourseStatus = concreteCourseStatus;
 	}
 	
+
 
 
 }

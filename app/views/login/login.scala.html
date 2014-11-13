@@ -1,17 +1,40 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <title>login.scala.html</title>
+@main("login"){
 	
-    <meta name="keywords" content="keyword1,keyword2,keyword3">
-    <meta name="description" content="this is my page">
-    <meta name="content-type" content="text/html; charset=US-ASCII">
-    
-    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
-
-  </head>
-  
-  <body>
-    This is my HTML page. <br>
-  </body>
-</html>
+	
+	<section class="wrapper-md bg-custom-home">
+		<div class="container">
+			<div class="row ">
+				<div class="col-sm-12 col-md-6 col-md-offset-3 widget padding-lg bg-dark">
+					<h2 class="text-center">Please Log In......</h2>
+					<div class="modal-body">
+	      		<form role="form" action="@routes.Application.loginAuthen()" method="post">
+	      		@flash.get("error")
+					<div class="form-group">
+						<label for="exmaple-contact-email">Email address</label>
+						<input type="email" class="form-control" id="email" name="email" placeholder="Enter email">
+					</div>
+					<div class="form-group">
+						<label for="example-contact-password">Password</label>
+						<input type="password" class="form-control" id="password" name="password" placeholder="Your password">
+					</div>
+					<div class="checkbox">
+						<label>
+							<input type="checkbox">Remember me
+						</label>
+					</div>
+					<div align="right">
+						<button type="submit" class="btn btn-primary">Log in</button>
+			        	
+			        	<a class="btn btn-default" href="@routes.Application.forgetpsw()">Forgot password?</a>
+					</div>
+			        	
+	      			
+				</form>
+			</div>
+				</div><!-- /.col -->
+				
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+	
+}

@@ -1,6 +1,7 @@
 package models.forms;
 
 import models.locations.Location;
+import models.users.UserRole;
 
 public class CustomerForm {
 	
@@ -17,6 +18,28 @@ public class CustomerForm {
 	private String cellPhone;
 	
 	private String phone;
+	
+	private String userRole;
+	
+	private Location location;
+	
+	
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
 
 	public String getUsername() {
 		return username;
@@ -78,4 +101,6 @@ public class CustomerForm {
 	public CustomerForm(){
 		
 	}
+	
+	
 }

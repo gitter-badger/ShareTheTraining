@@ -7,4 +7,6 @@ import javax.persistence.criteria.CriteriaQuery;
 public interface FilterBuilder {
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending);
+
+	public int getCategory();
 }
