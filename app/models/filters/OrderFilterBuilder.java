@@ -39,7 +39,7 @@ public class OrderFilterBuilder implements FilterBuilder {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (orderStatus != -1) {
 			predicates.add(cb.equal(
-					courseRoot.<OrderStatus> get("orderStatus"),
+					entityRoot.<OrderStatus> get("orderStatus"),
 					OrderStatus.fromInteger(orderStatus)));
 		}
 		if (courseId != -1) {

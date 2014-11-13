@@ -23,6 +23,7 @@ public class OrderHandlerTest extends BaseTest {
 				new Date(), OrderStatus.ORDERED, this.getmEm());
 		OrderHandler orderHandler = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
+		fb.setOrderStatus(OrderStatus.ORDERED.ordinal());
 		fb.setUserEmail(this.initData.customer1.getEmail());
 		Collection<CourseOrder> result = orderHandler
 				.getCourseOrderByCustomRule(fb, null, -1,
