@@ -5,41 +5,35 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import models.courses.ConcreteCourse;
 import models.courses.ConcreteCourseStatus;
-import models.courses.Course;
 import models.courses.Review;
 import models.locations.Location;
 import models.users.Customer;
 
 public class ConcreteCourseForm {
-	
-	private Course courseInfo;
-	
+
+	private int courseInfoId;
+
+	private String concreteCourseId;
+
 	private Collection<Customer> selectedCustomers = new ArrayList<Customer>();
-	
+
 	private Collection<Review> reviews = new ArrayList<Review>();
-	
+
 	private Date courseDate;
-	
+
 	private Time length;
-	
+
 	private Location location = new Location();
-	
+
 	private int minimum;
-	
+
 	private int maximum;
-	
+
 	private String eventbriteId;
-	
+
 	private ConcreteCourseStatus status = ConcreteCourseStatus.UNSTARTED;
-
-	public Course getCourseInfo() {
-		return courseInfo;
-	}
-
-	public void setCourseInfo(Course courseInfo) {
-		this.courseInfo = courseInfo;
-	}
 
 	public Collection<Customer> getSelectedCustomers() {
 		return selectedCustomers;
@@ -113,4 +107,18 @@ public class ConcreteCourseForm {
 		this.status = status;
 	}
 
+	public int getCourseInfoId() {
+		return courseInfoId;
+	}
+
+	public void setCourseInfoId(int courseInfoId) {
+		this.courseInfoId = courseInfoId;
+	}
+
+	public boolean bindConcreteCourse(ConcreteCourse concreteCourse){
+		if(concreteCourse == null ||concreteCourse.getConcreteCourseId()!=this.concreteCourseId)
+			return false;
+		//TODO a lot of set here
+		return true;
+	}
 }

@@ -13,11 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
 
-import org.apache.solr.common.SolrInputDocument;
-
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.Course;
-import models.spellchecker.SolrDao;
 
 @Entity
 public class Trainer extends User {

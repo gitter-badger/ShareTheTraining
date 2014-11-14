@@ -3,56 +3,29 @@ package models.forms;
 import java.util.List;
 
 import models.locations.Location;
+import models.users.Trainer;
+import models.users.User;
+import models.users.UserRole;
 
-public class TrainerForm {
-	
-	private String username;
-	
-	private String password;
-	
-	private String email;
-	
+public class TrainerForm extends UserForm {
 	private String name;
-	
+
 	private Location location;
-	
+
 	private String cellPhone;
-	
+
 	private String phone;
 
 	private String education;
-	
+
 	private String experience;
-	
-	//certification, image? 
-	private List<String>certification;
-	
-	//how far are you willing to travel to deliver a course without travel reimbursement
+
+	// certification, image?
+	private List<String> certification;
+
+	// how far are you willing to travel to deliver a course without travel
+	// reimbursement
 	private int howfar;
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
 
 	public String getName() {
 		return name;
@@ -62,7 +35,6 @@ public class TrainerForm {
 		this.name = name;
 	}
 
-	
 	public Location getLocation() {
 		return location;
 	}
@@ -95,11 +67,11 @@ public class TrainerForm {
 		this.experience = experience;
 	}
 
-	public List getCertification() {
+	public List<String> getCertification() {
 		return certification;
 	}
 
-	public void setCertification(List certification) {
+	public void setCertification(List<String> certification) {
 		this.certification = certification;
 	}
 
@@ -110,7 +82,7 @@ public class TrainerForm {
 	public void setHowfar(int howfar) {
 		this.howfar = howfar;
 	}
-	
+
 	public String getPhone() {
 		return phone;
 	}
@@ -118,9 +90,21 @@ public class TrainerForm {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
 	public TrainerForm() {
+
+	}
+
+	@Override
+	public boolean bindUser(User user) {
+		if (user == null || user.getUserRole() != UserRole.CUSTOMER
+				|| user.getEmail() != this.getEmail())
+			return false;
+		Trainer trainer = (Trainer) user;
+		trainer.setCellPhone(cellPhone);
+		trainer.setPhone(phone);
+		return true;
 		
 	}
-	
 
 }

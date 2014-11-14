@@ -20,11 +20,8 @@ import models.users.UserRole;
 import models.users.UserStatus;
 import play.Logger;
 import play.Play;
-import play.api.mvc.Session;
 import play.db.jpa.JPA;
 import play.mvc.Http.Context;
-import play.mvc.Http.Request;
-import play.mvc.Http.Response;
 
 public class AuthenticationHandler implements IAuthenticationHandler {
 
@@ -57,8 +54,10 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 			String password, UserRole userRole, IUserHandler userHandler,
 			IMailHandler mailHandler) {
 		try {
-			if (userHandler.createNewUser(userEmail, userName, password,
-					userRole) != null) {
+			User user = userHandler.createNewUser(userEmail, userName, password,
+					userRole);
+			if (user != null) {
+				//TODO update profile here?
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);

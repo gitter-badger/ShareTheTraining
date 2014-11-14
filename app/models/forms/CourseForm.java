@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import models.courses.ConcreteCourse;
-import models.courses.ConcreteCourseStatus;
+import models.courses.Course;
 import models.courses.CourseStatus;
-import models.locations.Location;
 import models.users.Trainer;
 
 public class CourseForm {
 	
-	private String courseId;
+	private int courseId;
 
 	private String courseName;
 	
@@ -35,11 +34,11 @@ public class CourseForm {
 	
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
-	public String getCourseId() {
+	public int getCourseId() {
 		return courseId;
 	}
 
-	public void setCourseId(String courseId) {
+	public void setCourseId(int courseId) {
 		this.courseId = courseId;
 	}
 
@@ -122,7 +121,13 @@ public class CourseForm {
 	public void setCourses(Collection<ConcreteCourse> courses) {
 		this.courses = courses;
 	}
-
+	
+	public boolean bindCourse(Course course){
+		if(course == null ||course.getId()!=this.courseId)
+			return false;
+		//TODO a lot of set here
+		return true;
+	}
 	
 	
 }

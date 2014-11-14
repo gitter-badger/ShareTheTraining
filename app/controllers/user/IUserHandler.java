@@ -4,6 +4,7 @@ import java.util.Date;
 
 import models.courses.ConcreteCourse;
 import models.courses.OrderStatus;
+import models.forms.UserForm;
 import models.users.Customer;
 import models.users.User;
 import models.users.UserRole;
@@ -16,7 +17,7 @@ public interface IUserHandler {
 	
 	public boolean writeReview();
 	
-	public boolean updateProfile();
+	public boolean updateProfile(String userEmail, UserForm form);
 	
 	public boolean deactiveUser(String userEmail);
 

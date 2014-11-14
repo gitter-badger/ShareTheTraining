@@ -1,14 +1,7 @@
 package controllers;
 
-import java.util.ArrayList;
+
 import java.util.Collection;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
 
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
@@ -19,37 +12,28 @@ import controllers.user.MailHandler;
 import controllers.user.UserHandler;
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
-import be.objectify.deadbolt.java.actions.SubjectPresent;
-import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.DateFilterHandler;
-import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
 import models.forms.CourseFilterForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.locations.Geolocation;
 import models.locations.GeolocationService;
-import models.locations.InvalidAddressException;
-import models.locations.Location;
 import models.users.Customer;
 import models.users.User;
 import models.users.UserRole;
 import play.*;
-import play.api.mvc.Cookie;
 import play.data.Form;
-import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Function;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
 import play.mvc.*;
 import play.mvc.Http.Context;
-import play.mvc.Http.Request;
-import play.mvc.Http.Response;
 import views.html.*;
 import views.html.searchview.*;
 import views.html.signup.*;

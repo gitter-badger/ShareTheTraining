@@ -9,10 +9,8 @@ import javax.persistence.Query;
 import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
-import models.courses.Course;
-import models.courses.CourseOrder;
 import models.courses.OrderStatus;
-import models.courses.Review;
+import models.forms.UserForm;
 import models.users.Admin;
 import models.users.Customer;
 import models.users.Trainer;
@@ -83,9 +81,16 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public boolean updateProfile() {
-		// TODO Auto-generated method stub
-		return false;
+	public boolean updateProfile(String userEmail, UserForm form) {
+		try{
+		User user = this.getUserByEmail(form.getEmail());
+		if(userEmail!=form.getEmail())
+			return false;
+		return form.bindUser(user);
+		}catch(Exception e){
+			Logger.error(e.toString());
+			return false;
+		}
 	}
 
 	//// TODO How to handle selected courses

@@ -1,12 +1,12 @@
 package controllers.course;
 
 import java.util.Collection;
-import java.util.Date;
 
 import models.courses.ConcreteCourse;
 import models.courses.Course;
-import models.courses.OrderStatus;
+import models.courses.CourseOrder;
 import models.filters.FilterBuilder;
+import models.forms.ConcreteCourseForm;
 import models.forms.CourseForm;
 import models.users.Customer;
 
@@ -19,8 +19,8 @@ public interface ICourseHandler {
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
 			int pageNumber, int pageSize);
 
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb, String orderByColumn,
-			int pageNumber, int pageSize);
+	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+			String orderByColumn, int pageNumber, int pageSize);
 
 	public boolean modifyMaximum(String courseId, int maximum);
 
@@ -34,12 +34,18 @@ public interface ICourseHandler {
 
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse);
 
-	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
-			String orderId);
+	public CourseOrder registerCourse(Customer customer,
+			ConcreteCourse concreteCourse, String orderId);
 
-	public boolean updateCourseInfo(int courseId, CourseForm courseForm);
+	public boolean updateCourseInfo(String trainerEmail, CourseForm courseForm);
 
 	public boolean deleteConcreteCourse(String concreteCourseId);
-	
+
 	public boolean deleteCourse(int courseId);
+
+	public boolean addNewConcreteCourse(String trainerEmail,
+			ConcreteCourseForm courseForm);
+
+	public boolean updateConcreteCourse(String trainerEmail,
+			ConcreteCourseForm courseForm);
 }

@@ -17,6 +17,7 @@ import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
+import models.forms.ConcreteCourseForm;
 import models.forms.CourseForm;
 import models.users.Customer;
 
@@ -86,10 +87,9 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb, String orderByColumn,
-			int pageNumber, int pageSize) {
-		Logger.info("category:  "+cb.getCategory());
+	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+			String orderByColumn, int pageNumber, int pageSize) {
+		Logger.info("category:  " + cb.getCategory());
 
 		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
 				em.getCriteriaBuilder(), orderByColumn, true));
@@ -135,27 +135,40 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public boolean updateCourseInfo(int courseId, CourseForm courseForm) {
+	public boolean updateCourseInfo(String trainerEmail, CourseForm courseForm) {
+		// don't forget to verify trainer
 		return false;
 	}
 
 	@Override
-	public boolean registerCourse(Customer customer,
+	public boolean updateConcreteCourse(String trainerEmail,
+			ConcreteCourseForm courseForm) {
+		// don't forget to verify trainer
+		return false;
+	}
+
+	@Override
+	public boolean addNewConcreteCourse(String trainerEmail,
+			ConcreteCourseForm courseForm) {
+		return false;
+	}
+
+	@Override
+	public CourseOrder registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId) {
 		try {
 			if (concreteCourse.getStatus() != ConcreteCourseStatus.STARTED
 					|| concreteCourse.getSelectedCustomers().size() == concreteCourse
 							.getMaximum())
-				return false;
+				return null;
 			if (customer.registerCourse(concreteCourse)) {
-				CourseOrder order = CourseOrder.create(orderId, concreteCourse,
+				return CourseOrder.create(orderId, concreteCourse,
 						customer, new Date(), OrderStatus.CONFIRMED, em);
-				return true;
 			}
-			return false;
+			return null;
 		} catch (Exception e) {
 			Logger.error(e.toString());
-			return false;
+			return null;
 		}
 	}
 
@@ -178,7 +191,7 @@ public class CourseHandler implements ICourseHandler {
 		}
 	}
 
-	//TODO How to handle orders
+	// TODO How to handle orders
 	private boolean _deleteConcreteCourse(ConcreteCourse concreteCourse) {
 		for (Customer customer : concreteCourse.getSelectedCustomers()) {
 			this.dropCourse(customer, concreteCourse);

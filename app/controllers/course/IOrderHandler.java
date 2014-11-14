@@ -3,7 +3,6 @@ package controllers.course;
 import java.util.Collection;
 
 import models.courses.CourseOrder;
-import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
 
 public interface IOrderHandler {

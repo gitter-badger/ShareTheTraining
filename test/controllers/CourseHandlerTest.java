@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
 import models.courses.CourseStatus;
 import models.filters.CourseFilterBuilder;

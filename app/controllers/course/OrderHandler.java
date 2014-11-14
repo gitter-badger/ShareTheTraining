@@ -9,8 +9,6 @@ import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
 import play.db.jpa.JPA;
-import models.courses.ConcreteCourse;
-import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;

@@ -7,7 +7,6 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
-import models.locations.Location;
 import play.Logger;
 import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
@@ -56,15 +55,11 @@ public  abstract class User extends BaseModelObject implements Subject{
 
 	@Override
 	public List<? extends Permission> getPermissions() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<? extends Role> getRoles() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract List<? extends Role> getRoles();
 
 
 	public String getEmail() {
