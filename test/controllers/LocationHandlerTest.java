@@ -14,7 +14,7 @@ import org.junit.*;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 
-public class LocationHnaderTest extends BaseTest {
+public class LocationHandlerTest extends BaseTest {
 	@Test
 	public void testGetStateList() {
 		List<String> stateList = LocationHandler.getStateList();
