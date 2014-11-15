@@ -41,8 +41,8 @@ public class Customer extends User {
 	private String cellPhone;
 
 	private String phone;
-	
-	private Location location = new Location(null,null, "", 0, 0);
+
+	private Location location = new Location(null, null, "", 0, 0);
 
 	public boolean registerCourse(ConcreteCourse concreteCourse) {
 		if (this.selectedCourses.contains(concreteCourse))

@@ -33,9 +33,9 @@ import models.locations.Location;
 import models.users.Trainer;
 
 public class CourseFilterBuilder implements FilterBuilder {
-	
-	public CourseFilterBuilder(){
-		
+
+	public CourseFilterBuilder() {
+
 	}
 
 	private String keyword;
@@ -51,7 +51,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private int dataChoice = -1;
 	private int courseStatus = -1;
 	private int concreteCourseStatus = -1;
-
+	private boolean isVeteran = false;
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -90,6 +90,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 					cb.like(trainerRoot.<String> get("username"), "%" + keyword
 							+ "%"));
 			predicates.add(keyWordConditions);
+		}
+		if (isVeteran == true) {
+			predicates.add(cb.equal(
+					trainerRoot.<Boolean> get("isVeteran"), isVeteran));
 		}
 		if (category != -1) {
 			predicates.add(cb.equal(
@@ -248,7 +252,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.category = category;
 	}
 
-
 	public int getDataChoice() {
 		return dataChoice;
 	}
@@ -272,8 +275,13 @@ public class CourseFilterBuilder implements FilterBuilder {
 	public void setConcreteCourseStatus(int concreteCourseStatus) {
 		this.concreteCourseStatus = concreteCourseStatus;
 	}
-	
 
+	public Boolean getIsVeteran() {
+		return isVeteran;
+	}
 
+	public void setIsVeteran(Boolean isVeteran) {
+		this.isVeteran = isVeteran;
+	}
 
 }
