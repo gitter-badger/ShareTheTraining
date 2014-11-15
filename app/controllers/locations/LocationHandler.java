@@ -67,7 +67,7 @@ public class LocationHandler {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(selectSQL);
 			ResultSet rs = preparedStatement.executeQuery(selectSQL);
-			if (rs.next()) {
+			while (rs.next()) {
 				String state = rs.getString("state");
 				String city = rs.getString("city");
 				List<String> cityList = cityMap.get(state);
