@@ -116,15 +116,15 @@ public class CourseFilterBuilder implements FilterBuilder {
 		if (locations.size() > 0) {
 			List<Predicate> locationQueries = new ArrayList<Predicate>();
 			for (Location location : locations) {
-				if (location.getCity() == -1) {
+				if (location.getCity() == null) {
 					locationQueries.add(cb.equal(
-							locationRoot.<Integer> get("county"),
-							location.getCounty()));
+							locationRoot.<String> get("region"),
+							location.getRegion()));
 				} else {
 					Predicate q1 = cb.equal(
-							locationRoot.<Integer> get("county"),
-							location.getCounty());
-					Predicate q2 = cb.equal(locationRoot.<Integer> get("city"),
+							locationRoot.<String> get("region"),
+							location.getRegion());
+					Predicate q2 = cb.equal(locationRoot.<String> get("city"),
 							location.getCity());
 					locationQueries.add(cb.and(q1, q2));
 				}

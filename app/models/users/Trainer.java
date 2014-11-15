@@ -15,6 +15,7 @@ import javax.persistence.OneToMany;
 
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.Course;
+import models.locations.Location;
 
 @Entity
 public class Trainer extends User {
@@ -43,12 +44,16 @@ public class Trainer extends User {
 	private String education;
 
 	private String experience;
-	
+
 	private String certification;
-	
+
 	private double rating;
-	
+
 	private int rateCount;
+
+	private boolean isVeteran;
+
+	private Location location = new Location(null,null, "", 0, 0);
 
 	@Override
 	public List<? extends Role> getRoles() {
@@ -67,7 +72,7 @@ public class Trainer extends User {
 		this.rateCount += 1;
 		this.rating = (this.rating * this.rateCount) / this.rateCount;
 	}
-	
+
 	public Collection<Course> getCourses() {
 		return courses;
 	}
@@ -138,5 +143,21 @@ public class Trainer extends User {
 
 	public void setRateCount(int rateCount) {
 		this.rateCount = rateCount;
+	}
+
+	public boolean isVeteran() {
+		return isVeteran;
+	}
+
+	public void setVeteran(boolean isVeteran) {
+		this.isVeteran = isVeteran;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 }

@@ -1,15 +1,18 @@
-package models.locations;
+package controllers.locations;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashMap;
 import java.util.Map;
 
+import models.locations.Geolocation;
+import models.locations.InvalidAddressException;
+import models.locations.ServiceErrorException;
+
 import com.fasterxml.jackson.databind.JsonNode;
 
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
-
 import play.Play;
 import play.cache.Cache;
 import play.Logger.ALogger;

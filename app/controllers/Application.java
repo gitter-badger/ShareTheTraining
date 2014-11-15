@@ -6,6 +6,7 @@ import java.util.Collection;
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
+import controllers.locations.GeolocationService;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
 import controllers.user.MailHandler;
@@ -22,7 +23,6 @@ import models.forms.CourseFilterForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.locations.Geolocation;
-import models.locations.GeolocationService;
 import models.users.Customer;
 import models.users.User;
 import models.users.UserRole;
@@ -50,7 +50,7 @@ public class Application extends Controller {
 				.promise(new Function0<Geolocation>() {
 					public Geolocation apply() {
 						return GeolocationService
-								.getGeolocation("68.191.236.135");
+								.getGeolocation("68.181.54.30");
 					}
 				});
 		return promiseOfGeolocation.map(new Function<Geolocation, Result>() {
@@ -59,7 +59,7 @@ public class Application extends Controller {
 					// properly
 					Logger.info("no geo");
 				} else
-					Logger.info(geolocation.getCity());
+					Logger.info(geolocation.getRegionName());
 				String message = flash().get("message");
 				message = message != null ? message
 						: "Your new application is ready.";

@@ -66,7 +66,7 @@ public class ConcreteCourse extends BaseModelObject {
 
 	private Time length;
 
-	private Location location = new Location(-1, -1, "", 0, 0);
+	private Location location = new Location(null,null, "", 0, 0);
 
 	private int minimum;
 

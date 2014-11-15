@@ -18,8 +18,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 @Embeddable
 public class Location {
-	private int county = 1;
-	private int city = 1;
+	private String region;
+	private String city;
 	private String detailedLoc = "";
 
 	@Type(type = "org.hibernate.spatial.GeometryType")
@@ -28,9 +28,9 @@ public class Location {
 	public Location() {
 	}
 
-	public Location(int county, int city, String detailedLoc, double longitude,
+	public Location(String region, String city, String detailedLoc, double longitude,
 			double latitude) {
-		this.county = county;
+		this.region = region;
 		this.city = city;
 		this.detailedLoc = detailedLoc;
 		GeometryFactory geometryFactory = new GeometryFactory(
@@ -39,8 +39,8 @@ public class Location {
 				latitude));
 	}
 
-	public Location(int county, int city, String detailedLoc) {
-		this.county = county;
+	public Location(String region, String city, String detailedLoc) {
+		this.region = region;
 		this.city = city;
 		this.detailedLoc = detailedLoc;
 		this.generateLatLng();
@@ -65,19 +65,19 @@ public class Location {
 
 	}
 
-	public int getCounty() {
-		return county;
+	public String getRegion() {
+		return region;
 	}
 
-	public void setCounty(int county) {
-		this.county = county;
+	public void setRegion(String region) {
+		this.region = region;
 	}
 
-	public int getCity() {
+	public String getCity() {
 		return city;
 	}
 
-	public void setCity(int city) {
+	public void setCity(String city) {
 		this.city = city;
 	}
 

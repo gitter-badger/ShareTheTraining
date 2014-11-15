@@ -39,16 +39,16 @@ public class Initialization {
 		}
 		dates.add(new Date());
 		dates.add(date);
-		concreteCourse1 = ConcreteCourse.create(course1, "123", new Location(1,
-				1, "", -118.14, 34.03), dates, 2, 1, em);
+		concreteCourse1 = ConcreteCourse.create(course1, "123", new Location("qunimaba",
+				"gun", "", -118.14, 34.03), dates, 2, 1, em);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
-		concreteCourse2 = ConcreteCourse.create(course1, "234", new Location(1,
-				1, "", -118.14, 34.03), dates, 2, 1, em);
+		concreteCourse2 = ConcreteCourse.create(course1, "234", new Location("qunimaba",
+				"gun","", -118.14, 34.03), dates, 2, 1, em);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
-		concreteCourse3 = ConcreteCourse.create(course2, "234", new Location(2,
-				1, "", 121.28, 31.10), dates, 2, 1, em);
+		concreteCourse3 = ConcreteCourse.create(course2, "234", new Location("nimabi",
+				"gun", "", 121.28, 31.10), dates, 2, 1, em);
 		customer1 = Customer.create("qnmb", "xixihaha", "lala", em);
 		
 	}

@@ -20,8 +20,8 @@ public class ConcreteCourseTest extends BaseTest {
 		Course course = Course.create("hehehe", 1, "lala", this.getmEm());
 		List<Date> dates = new ArrayList<Date>();
 		ConcreteCourse concreteCourse = ConcreteCourse.create(course, "123",
-				new Location(1, 1, "", -118.14, 34.03), dates, 2, 1,
-				this.getmEm());
+				new Location("qunimaba", "gun", "", -118.14, 34.03), dates, 2,
+				1, this.getmEm());
 		assertNotNull(concreteCourse.getId());
 		this.getmEm().remove(concreteCourse);
 		this.getmEm().remove(course);

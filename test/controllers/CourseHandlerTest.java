@@ -101,8 +101,8 @@ public class CourseHandlerTest extends BaseTest {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		List<Location> locations = new ArrayList<Location>();
-		locations.add(new Location(1, -1, "", -118.14, 34.03));
-		locations.add(new Location(2, 1, "", -118.14, 34.03));
+		locations.add(new Location("qunimaba", null, "", -118.14, 34.03));
+		locations.add(new Location("nimabi", "gun", "", -118.14, 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
 				null, 1, 10);
@@ -123,14 +123,14 @@ public class CourseHandlerTest extends BaseTest {
 		}
 		cb.setStartDate(date);
 		List<Location> locations = new ArrayList<Location>();
-		locations.add(new Location(1, -1, "", -118.14, 34.03));
-		locations.add(new Location(2, 1, "", -118.14, 34.03));
+		locations.add(new Location("qunimaba", null, "", -118.14, 34.03));
+		locations.add(new Location("nimabi", "gun", "", -118.14, 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb,
 				null, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
-	
+
 	@Test
 	public void testGetAllCourse() {
 		CourseHandler courseHandler = new CourseHandler();
@@ -159,7 +159,8 @@ public class CourseHandlerTest extends BaseTest {
 
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		cb.setCurentLocation(new Location(1, -1, "", -118.495, 34.030));
+		cb.setCurentLocation(new Location("qunimaba", null, "", -118.495,
+				34.030));
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
 				null, 1, 10);
 		assertThat(result.size()).isEqualTo(1);

@@ -16,14 +16,13 @@ import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.Review;
 import models.courses.WaitListRecord;
+import models.locations.Location;
 
 @Entity
 public class Customer extends User {
 
 	public static Customer create(String email, String username,
 			String password, EntityManager em) {
-		Logger.info(email);
-		Logger.info(password);
 		Customer customer = new Customer(email, username, password);
 		em.persist(customer);
 		customer.putSolrDoc();
@@ -42,24 +41,26 @@ public class Customer extends User {
 	private String cellPhone;
 
 	private String phone;
+	
+	private Location location = new Location(null,null, "", 0, 0);
 
 	public boolean registerCourse(ConcreteCourse concreteCourse) {
-		if(this.selectedCourses.contains(concreteCourse))
+		if (this.selectedCourses.contains(concreteCourse))
 			return false;
 		this.selectedCourses.add(concreteCourse);
 		concreteCourse.enrollCustomer(this);
 		return true;
 	}
-	
-	public boolean dropCourse(ConcreteCourse concreteCourse){
-		if(!this.selectedCourses.contains(concreteCourse))
+
+	public boolean dropCourse(ConcreteCourse concreteCourse) {
+		if (!this.selectedCourses.contains(concreteCourse))
 			return false;
 		this.selectedCourses.remove(concreteCourse);
 		concreteCourse.removeCustomer(this);
 		return true;
 	}
-	
-	public void addReview(Review review){
+
+	public void addReview(Review review) {
 		this.reviews.add(review);
 	}
 
@@ -128,6 +129,14 @@ public class Customer extends User {
 
 	public void setCourseOrders(Collection<CourseOrder> courseOrders) {
 		this.courseOrders = courseOrders;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
 	}
 
 }
