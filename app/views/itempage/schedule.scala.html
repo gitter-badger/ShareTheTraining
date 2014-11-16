@@ -1,0 +1,40 @@
+@import models.courses._
+@(course: Course)		
+		
+		<div class="tab-pane fade active in" id="tab-7">
+			<h3 class="headline">Schedules:</h3>
+			<table class="table table-bordered table-hover">
+				<thead>
+					<tr>
+						<th>Start Dates</th>
+						<th>Length</th>
+						<th>Location</th>
+						<th>Max Seats</th>
+						<th>Available Seats</th>
+						<th>Price</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					@for(c <- course.getCourses()){
+					<tr class="success">
+						<td>@c.getCourseDate().getDate()
+							<ul>
+								<li>(Meets:@for(d <- c.getCourseDates()){
+									@d.getMonth()/@d.getDate(), } )</li>
+							</ul>
+						</td>
+						<td>@c.getLength()</td>
+						<td>@c.getLocation().getRegion(), @c.getLocation().getCity()</td>
+						<td>&lt;@c.getMaximum()</td>
+						<td>&lt;@(c.getMaximum()-c.getMinimum())</td>
+						<td>$@course.getPrice()</td>
+						<td><button type="submit" class="btn btn-primary btn-sm">Book
+								Online</button>
+							<button class="btn btn-success btn-sm" data-toggle="modal"
+								data-target=".bs-modal-share">Share</button></td>
+					</tr>
+					}
+				</tbody>
+			</table>
+		</div>

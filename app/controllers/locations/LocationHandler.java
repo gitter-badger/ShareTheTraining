@@ -38,6 +38,7 @@ public class LocationHandler {
 		}
 		return null;
 	}
+	
 
 	public static List<String> getStateList() {
 		DataSource ds = DB.getDataSource();

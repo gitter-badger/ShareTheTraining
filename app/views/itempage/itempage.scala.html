@@ -1,5 +1,16 @@
+@import models.courses._
+@(course: Course)
+
+
+
 @main("item page"){
+<section class="wrapper-sm bg-highlight">
+		<div class="container">
+			<div class="row">
+				@searchview.searchsidebar()
+
 <!-- Main -->
+				<!-- Main -->
 				<div class="col-sm-12 col-md-9">
 					<article class="post">
 						<h2>Assertive Communication to Reach Your Goals</h2>
@@ -9,8 +20,7 @@
 							<div class="col-sm-12 col-md-5">
 								<ul class="list-unstyled">
 									
-									<li><h4><i class="fa fa-fw fa-dollar"></i> Price: <span class="text-primary">$ 150.00</span></h4></li>
-									<li><h4><i class="fa fa-fw fa-th"></i> Max: <span class="text-primary">50 </span> people</h4></li>
+									<li><h4><i class="fa fa-fw fa-dollar"></i> Price: <span class="text-primary">@course.getPrice()</span></h4></li>
 									<li><h4><i class="fa fa-fw fa-location-arrow"></i> From: 
 										<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">XXX company</a></h4>
 									</li>
@@ -33,15 +43,7 @@
 									<div class="panel-heading">
 										<h3 class="panel-title">Share with Friends</h3>
 									</div>
-									<div class="panel-body">
-										<ul class="social-networks">
-											<li><a class="btn btn-default" href="#" data-toggle="modal" data-target=".bs-modal-email"><i class="fa fa-fw fa-envelope"></i></a></li>
-											<li><a class="btn btn-twitter" href="#"><i class="fa fa-fw fa-twitter"></i></a></li>
-											<li><a class="btn btn-facebook" href="#"><i class="fa fa-fw fa-facebook"></i></a></li>
-											<li><a class="btn btn-pinterest" href="#"><i class="fa fa-fw fa-linkedin"></i></a></li>
-											<li><a class="btn btn-google-plus" href="#"><i class="fa fa-fw fa-google-plus"></i></a></li>
-										</ul>
-									</div>
+									@socialshare(course)
 								</div><!-- /.panel -->
 								<h4><i class="fa fa-fw fa-list"></i> Note: <span class="text-primary">Include lunch</span></h4>
 							</div>
@@ -52,13 +54,13 @@
 						<div class="row">
 							<div class="col-sm-12 col-md-12">
 								<ul class="nav nav-tabs">
-									<li class="active"><a href="#overview" data-toggle="tab">Overview &amp; Style</a></li>
-									<li><a href="#keypoints" data-toggle="tab">Key Points</a></li>
-									<li><a href="#schedule" data-toggle="tab">Schedules</a></li>
+									<li><a href="#tab-5" data-toggle="tab">Overview &amp; Style</a></li>
+									<li><a href="#tab-6" data-toggle="tab">Key Points</a></li>
+									<li  class="active"><a href="#tab-7" data-toggle="tab">Schedules</a></li>
 								</ul>
 
 								<div id="myTabContent" class="tab-content">
-									<div class="tab-pane fade active in" id="overview">
+									<div class="tab-pane fade  in" id="tab-5">
 										<h3 class="headline">Overview &amp; Style:</h3>
 										<!-- Carousel -->
 										<div id="my-carousel" class="carousel slide">
@@ -92,7 +94,7 @@
 										<h4><i class="fa fa-fw fa-signal"></i>Method:</h4>
 										<h5>lecture. discussion. large group exercises. individual exercises.</h5>
 									</div>
-									<div class="tab-pane fade" id="keypoints">
+									<div class="tab-pane fade" id="tab-6">
 										<h3 class="headline">Key Points:</h3>
 										<ul class="list-unstyled">
 											<li><i class="fa fa-fw fa-th"></i> <strong>Property:</strong> 1.460 Ft<sup>2</sup></li>
@@ -105,106 +107,7 @@
 											<li><i class="fa fa-fw fa-briefcase"></i> <strong>Last Sold:</strong> May 2006, for $106.000</li>
 										</ul>
 									</div>
-									<div class="tab-pane fade" id="schedule">
-										<h3 class="headline">Schedules:</h3>
-										<table class="table table-bordered table-hover" >
-											<thead>
-												<tr>
-													<th>Start Dates</th>
-													<th>Duration</th>
-													<th>Location</th>
-													<th>Available Seats</th>
-													<th>Price</th>
-													<th> </th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr class="warning">
-													<td>Oct. 20 10:00am to 2:00pm
-														<ul>
-															<li>(Meets:10/21)</li>
-														</ul>
-													</td>
-													<td>2 days</td>
-													<td>Downtown LA</td>
-													<td>&lt;3</td>
-													<td>$150</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												
-												<tr>
-													<td>Oct. 20 4:00pm to 6:00pm
-														<ul>
-															<li>(Meets:10/22, 10/24)</li>
-														</ul>
-													</td>
-													<td>3 day</td>
-													<td>Downtown LA</td>
-													<td>&lt;3</td>
-													<td>$150</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												<tr class="danger">
-													<td>Oct. 28 4:00pm to 6:00pm
-														<ul>
-														</ul>
-													</td>
-													<td>half day</td>
-													<td>Downtown LA</td>
-													<td>FULL</td>
-													<td>$80</td>
-													<td><button type="submit" class="btn btn-warning btn-sm">Add Waitinglist</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												<tr>
-													<td>Oct. 28 4:00pm to 6:00pm
-														<ul>
-															<li>(Meets:11/2, 11/4)</li>
-														</ul>
-													</td>
-													
-													<td>half day</td>
-													<td>Downtown LA</td>
-													<td>&lt;3</td>
-													<td>$150</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												<tr >
-													<td>Nov. 2 10:00am
-														<ul>
-														</ul>
-													</td>
-													<td>3 days</td>
-													<td>Santa Monica LA</td>
-													<td>&gt;10</td>
-													<td>$150</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												<tr class="success">
-													<td>Nov. 8 10:00am
-														<ul>
-														</ul>
-													</td>
-													<td>half day</td>
-													<td>Downtown LA</td>
-													<td>&gt;10</td>
-													<td>$80</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-												<tr class="">
-													<td>Nov. 12 10:00am
-														<ul>
-															<li>(Meets:11/16, 11/18, 11/20)</li>
-														</ul>
-													</td>
-													<td>4 days</td>
-													<td>Downtown LA</td>
-													<td>&lt;3</td>
-													<td>$250</td>
-													<td><button type="submit" class="btn btn-primary btn-sm">Book Online</button> <button class="btn btn-success btn-sm" data-toggle="modal" data-target=".bs-modal-share">Share</button></td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
+									@schedule(course)
 									
 								</div>
 							</div>
@@ -240,17 +143,11 @@
 					      			<div class="col-md-3 col-md-push-1">
 					      				<a class="btn btn-default" href="#"><i class="fa fa-fw fa-envelope"></i></a>
 					      			</div>
-					      			<div class="col-md-2">
-										<a class="btn btn-twitter" href="#"><i class="fa fa-fw fa-twitter"></i></a>
-									</div>
 									<div class="col-md-2">
 										<a class="btn btn-facebook" href="#"><i class="fa fa-fw fa-facebook"></i></a>
 									</div>
 									<div class="col-md-2">
 										<a class="btn btn-pinterest" href="#"><i class="fa fa-fw fa-linkedin"></i></a>
-									</div>
-									<div class="col-md-2">
-										<a class="btn btn-google-plus" href="#"><i class="fa fa-fw fa-google-plus"></i></a>
 									</div>
 								</div>
 								<br/>
@@ -386,4 +283,8 @@
 
 				</div><!-- /.col -->
 				<!-- End of main -->
+				</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+
 }

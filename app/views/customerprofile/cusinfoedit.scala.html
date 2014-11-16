@@ -1,8 +1,32 @@
 @import models.users._
-@(cus: Customer)
+@(cus: Customer)(states: List[String])
+
 
 
 @main("course-info-edit"){
+<script>
+	function showCity(value){
+	    $.post("@routes.Application.showCity()",{name:value} ,function(data,textStatuts){
+             //alert(data);
+             var dataObj=eval("("+data+")");
+             //alert(dataObj);
+             
+             //删除城市
+             $("select[name='location.city'] option[value!='']").remove();
+             
+             // <select name="city" style="width:90%">
+                 //<option value="">--------</option>
+             //</select>
+             for(var i=0;i<dataObj.length;i++){
+                   var $option=$("<option></option>");
+                   $option.attr("value",dataObj[i]);
+                   $option.text(dataObj[i]);
+                   $("select[name='location.city']").append($option);
+             }
+        });
+	}
+	</script>
+
 <section class="wrapper-sm bg-highlight">
 		<div class="container">
 			<div class="row">
@@ -51,37 +75,39 @@
 											<div class="col-md-4">
 												<h4>Phone:</h4>
 											</div>
-											 <h4><span class="text-primary"><input type="tel" name="phone" id="phone" placeholder="(213)834-5678"></span></h4>
+											 <h4><span class="text-primary"><input type="tel" name="phone" id="phone" placeholder="@cus.getPhone()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Address:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="address" id="address" placeholder="325 W. adams Blvd"></span></h4>
+											 <h4><span class="text-primary"><input name="address" id="address" placeholder=""></span></h4>
 										</li>
 										<li class="list-group-item form-group">
-											<div class="col-md-4">
-												<h4>City:</h4>
-											</div>
-											 <h4><span class="text-primary"><input  type="text" name="city" id="city" placeholder="Los Angeles"></span></h4>
+											<select onchange="showCity(this.value)" class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="location.region" id="location.region">
+												<optgroup label="State:">
+												@for(s <- states){
+													<option value="@s">@s</option>
+													}
+												</optgroup>
+											</select> 
 										</li>
 										<li class="list-group-item form-group">
-											<div class="col-md-4">
-												<h4>State:</h4>
-											</div>
-											 <h4><span class="text-primary"><input name="state" id="state" placeholder="California"></span></h4>
+											<select class="form-control show-tick" title='Choose One' data-style="btn-primary" name="location.city" id="location.city">
+												
+											</select> 
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Zipcode:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="zipcode" id="zipcode" placeholder="90007"></span></h4>
+											 <h4><span class="text-primary"><input name="zipcode" id="zipcode" placeholder=""></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Username:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="username" id="username" placeholder="Blade007"></span></h4>
+											 <h4><span class="text-primary"><input name="username" id="username" placeholder="@cus.getUsername"></span></h4>
 										</li>
 									</ul>
 								</form>

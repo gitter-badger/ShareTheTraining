@@ -18,7 +18,7 @@ GET    /signupcus                   controllers.Application.signupcus()
 POST   /signupcus                   controllers.Application.signupcussubmit()
 GET    /signuptrainer               controllers.Application.signuptrainer()
 
-#profile
+#profile-cus
 GET    /cusprofile                  controllers.Application.cusprofile()
 GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
 GET    /cuscourseordered            controllers.Application.cuscourseordered()
@@ -28,6 +28,10 @@ GET    /cusinfo                     controllers.Application.cusinfo()
 GET    /cusinfoedit                 controllers.Application.cusinfoedit()
 GET    /cuschangepsw                controllers.Application.cuschangepsw()
 
+
+#profile-trainer
+GET   /trainerprofile              controllers.Application.trainerprofile()
+
 #mail
 GET    /activate                    controllers.Application.activate()
 GET    /resetpsw                    controllers.Application.resetpsw()
@@ -36,10 +40,14 @@ GET    /resetpsw                    controllers.Application.resetpsw()
 GET 	/search						controllers.Application.search()
 POST    /search  	                controllers.Application.search()
 
+#itempage
+GET    /itempage/:id                controllers.Application.itempage(id: Integer)
+
+#state&city
+POST   /showcity                    controllers.Application.showCity()
+
 #test
-
 GET		/test						controllers.Application.test()
-
 GET		/testAuth					controllers.Application.testAuth()
 
 # Map static resources from the /public folder to the /assets URL path
