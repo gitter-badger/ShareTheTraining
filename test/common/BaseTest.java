@@ -1,10 +1,8 @@
 package common;
 
 import static org.mockito.Mockito.*;
-import static play.test.Helpers.inMemoryDatabase;
 
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -16,7 +14,6 @@ import org.mockito.Mock;
 import play.api.mvc.Request;
 import play.db.jpa.JPA;
 import play.db.jpa.JPAPlugin;
-import play.i18n.Lang;
 import play.mvc.Http;
 import play.test.FakeApplication;
 import play.test.Helpers;

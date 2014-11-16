@@ -14,10 +14,10 @@ public interface ICourseHandler {
 	public Course getCourseById(Integer courseId);
 
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
-			int pageSize);
+			int pageSize, String orderByColumn);
 
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize);
+			int pageNumber, int pageSize, String orderByColumn);
 
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
 			String orderByColumn, int pageNumber, int pageSize);

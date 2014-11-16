@@ -1,8 +1,6 @@
 package controllers;
 
 import static org.fest.assertions.Assertions.assertThat;
-import static play.test.Helpers.contentAsString;
-
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +12,7 @@ import org.junit.*;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 
-public class LocationHnaderTest extends BaseTest {
+public class LocationHandlerTest extends BaseTest {
 	@Test
 	public void testGetStateList() {
 		List<String> stateList = LocationHandler.getStateList();

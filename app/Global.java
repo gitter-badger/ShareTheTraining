@@ -12,12 +12,15 @@ import play.mvc.Http.Request;
 
 import java.lang.reflect.Method;
 
+import controllers.locations.LocationHandler;
+
 
 public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
 		//Logger.info("Three tomatoes are walking down the street- a poppa tomato, a momma tomato, and a little baby tomato. ");
 		Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
+		LocationHandler.initialize();
 	}
 
 	public void onStop(Application app) {

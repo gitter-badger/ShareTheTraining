@@ -37,7 +37,7 @@ public class CourseHandlerTest extends BaseTest {
 	@Test
 	public void testGetCourseByCategory() {
 		CourseHandler courseHandler = new CourseHandler();
-		assertThat(courseHandler.getCourseByCategory(1, 1, 10).size())
+		assertThat(courseHandler.getCourseByCategory(1, 1, 10, null).size())
 				.isEqualTo(1);
 	}
 

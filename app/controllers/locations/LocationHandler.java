@@ -16,8 +16,16 @@ import play.db.DB;
 import models.locations.Location;
 
 public class LocationHandler {
+	public static List<String> stateList;
+
+	private static Map<String, List<String>> cityMap;
+
+	public static void initialize() {
+		stateList = getStateList();
+		cityMap = getCityMap();
+	}
+
 	public static Location getLocationByZipcode(int zipcode) {
-		DataSource ds = DB.getDataSource();
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT * FROM zips WHERE state = ? AND city = ?";
 		try {
@@ -41,7 +49,6 @@ public class LocationHandler {
 	
 
 	public static List<String> getStateList() {
-		DataSource ds = DB.getDataSource();
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT DISTINCT state FROM cities";
 		List<String> stateList = new ArrayList<String>();
@@ -60,7 +67,6 @@ public class LocationHandler {
 	}
 
 	public static Map<String, List<String>> getCityMap() {
-		DataSource ds = DB.getDataSource();
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT * FROM cities";
 		Map<String, List<String>> cityMap = new HashMap<String, List<String>>();
@@ -82,5 +88,10 @@ public class LocationHandler {
 			Logger.info(e.toString());
 		}
 		return cityMap;
+	}
+	
+	
+	public static List<String> getCitiesByState(String state){
+		return cityMap.get(state);
 	}
 }

@@ -43,6 +43,7 @@ public class ConcreteCourse extends BaseModelObject {
 			concreteCourse.setCourseDates(dates);
 			concreteCourse.setCourseDate(dates.get(0));
 		}
+		courseInfo.addConcreteCourse(concreteCourse);
 		em.persist(concreteCourse);
 		concreteCourse.putSolrDoc();
 		return concreteCourse;

@@ -2,6 +2,7 @@ package models.courses;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -34,12 +35,10 @@ public class Course extends BaseModelObject {
 		return course;
 	}
 
-	
-	
 	private String courseName;
 
 	private int concreteCourseCount = 0;
-	
+
 	@ManyToOne
 	private Trainer trainer;
 
@@ -63,29 +62,34 @@ public class Course extends BaseModelObject {
 
 	private double rating;
 
-	
+	private Date earliestDate;
+
+	private Date latestDate;
+
 	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
-
 
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
 	public void updateRating(double rating) {
-		this.rating = (this.rating * this.reviews.size()+rating) / (this.reviews.size()+1);
+		this.rating = (this.rating * this.reviews.size() + rating)
+				/ (this.reviews.size() + 1);
 	}
-	
-	public void addReview(Review review){
+
+	public void addReview(Review review) {
 		this.updateRating(review.getCourseRating());
 		this.reviews.add(review);
 	}
-	
-	public Collection<Review> getReviews() {
-		return reviews;
-	}
 
-	public void setReviews(Collection<Review> reviews) {
-		this.reviews = reviews;
+	public void addConcreteCourse(ConcreteCourse concreteCourse) {
+		this.courses.add(concreteCourse);
+		if (this.earliestDate == null
+				|| this.earliestDate.after(concreteCourse.getCourseDate()))
+			this.setEarliestDate(concreteCourse.getCourseDate());
+		if (this.latestDate == null
+				|| this.latestDate.before(concreteCourse.getCourseDate()))
+			this.setLatestDate(concreteCourse.getCourseDate());
 	}
 
 	public static List<Selection> getSelections(Path path) {
@@ -105,8 +109,8 @@ public class Course extends BaseModelObject {
 		doc.addField("description", this.getCourseDesc());
 		return doc;
 	}
-	
-	public boolean removeConcreteCourse(ConcreteCourse c){
+
+	public boolean removeConcreteCourse(ConcreteCourse c) {
 		return this.courses.remove(c);
 	}
 
@@ -213,4 +217,29 @@ public class Course extends BaseModelObject {
 	public void setConcreteCourseCount(int concreteCourseCount) {
 		this.concreteCourseCount = concreteCourseCount;
 	}
+
+	public Date getEarliestDate() {
+		return earliestDate;
+	}
+
+	public void setEarliestDate(Date earliestDate) {
+		this.earliestDate = earliestDate;
+	}
+
+	public Date getLatestDate() {
+		return latestDate;
+	}
+
+	public void setLatestDate(Date latestDate) {
+		this.latestDate = latestDate;
+	}
+
+	public Collection<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(Collection<Review> reviews) {
+		this.reviews = reviews;
+	}
+
 }
