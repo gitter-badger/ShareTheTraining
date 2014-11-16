@@ -9,18 +9,23 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import controllers.user.UserHandler;
 import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseForm;
 import models.users.Customer;
+import models.users.Trainer;
+import models.users.User;
+import models.users.UserRole;
 
 public class CourseHandler implements ICourseHandler {
 
@@ -64,29 +69,31 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
-			int pageSize, String orderByColumn) {
+			int pageSize, String orderByColumn, boolean ascending) {
 		/*
-		String hql = "from Course c where c.courseCategory= :category";
-		Query query = em.createQuery(hql).setParameter("category", category);
-		return getCourseByQuery(query, pageNumber, pageSize);
-		*/
+		 * String hql = "from Course c where c.courseCategory= :category"; Query
+		 * query = em.createQuery(hql).setParameter("category", category);
+		 * return getCourseByQuery(query, pageNumber, pageSize);
+		 */
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		cfb.setCategory(category);
-		return this.getCourseByCustomRule(cfb, orderByColumn, pageNumber, pageSize);
+		return this.getCourseByCustomRule(cfb, orderByColumn, ascending,
+				pageNumber, pageSize);
 	}
 
 	@Override
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize, String orderByColumn) {
+			int pageNumber, int pageSize, String orderByColumn,
+			boolean ascending) {
 		/*
-		String hql = "from Course c where c.trainer.email= :trainerEmail";
-		Query query = em.createQuery(hql).setParameter("trainerEmail",
-				trainerEmail);
-		return getCourseByQuery(query, pageNumber, pageSize);
-		*/
+		 * String hql = "from Course c where c.trainer.email= :trainerEmail";
+		 * Query query = em.createQuery(hql).setParameter("trainerEmail",
+		 * trainerEmail); return getCourseByQuery(query, pageNumber, pageSize);
+		 */
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		cfb.setTrainerEmail(trainerEmail);
-		return this.getCourseByCustomRule(cfb, orderByColumn, pageNumber, pageSize);
+		return this.getCourseByCustomRule(cfb, orderByColumn, ascending,
+				pageNumber, pageSize);
 	}
 
 	private static Collection<Course> getCourseByQuery(Query query,
@@ -99,9 +106,10 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
-			String orderByColumn, int pageNumber, int pageSize) {
+			String orderByColumn, boolean ascending, int pageNumber,
+			int pageSize) {
 		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
-				em.getCriteriaBuilder(), orderByColumn, true));
+				em.getCriteriaBuilder(), orderByColumn, ascending));
 		if (pageNumber != -1 && pageSize != -1) {
 			tq.setMaxResults(pageSize);
 			tq.setFirstResult(pageSize * (pageNumber - 1));
@@ -119,7 +127,8 @@ public class CourseHandler implements ICourseHandler {
 		try {
 			ConcreteCourse c = this
 					.getCourseByConcreteCourseId(concreteCourseId);
-			if (c.getSelectedCustomers().size() > maximum) {
+			if (maximum < 1 || c.getSelectedCustomers().size() > maximum
+					|| c.getMinimum() != -1 && c.getMinimum() > maximum) {
 				return false;
 			}
 			c.setMaximum(maximum);
@@ -132,34 +141,66 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public boolean modifyMinimum(String concreteCourseId, int minimum) {
-		ConcreteCourse c = this.getCourseByConcreteCourseId(concreteCourseId);
-		c.setMaximum(minimum);
-		return true;
+		try {
+			ConcreteCourse c = this
+					.getCourseByConcreteCourseId(concreteCourseId);
+			if (minimum < 0 || c == null
+					|| (c.getMaximum() != -1 && c.getMaximum() < minimum))
+				return false;
+			c.setMaximum(minimum);
+			return true;
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return false;
+		}
 	}
 
 	@Override
-	public boolean addNewCourse(String trainerEmail, CourseForm courseForm) {
-		// TODO Auto-generated method stub
-		return false;
+	public Course addNewCourse(String trainerEmail, CourseForm courseForm) {
+		Trainer trainer = new UserHandler().getTrainerByEmail(trainerEmail);
+		if (trainer == null)
+			return null;
+		Course course = trainer.createNewCourse(courseForm.getCourseName(), em);
+		courseForm.bindCourse(course);
+		return course;
 	}
 
 	@Override
 	public boolean updateCourseInfo(String trainerEmail, CourseForm courseForm) {
-		// don't forget to verify trainer
+		Course course = this.getCourseById(courseForm.getCourseId());
+		if (course != null && course.getTrainer() != null
+				&& course.getTrainer().getEmail().equals(trainerEmail)) {
+			courseForm.bindCourse(course);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public boolean updateConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm) {
-		// don't forget to verify trainer
+		ConcreteCourse concreteCourse = this
+				.getCourseByConcreteCourseId(courseForm.getConcreteCourseId());
+		Course course = this.getCourseById(courseForm.getCourseInfoId());
+		if (course != null && course.getTrainer() != null
+				&& course.getTrainer().getEmail().equals(trainerEmail)) {
+			courseForm.bindConcreteCourse(concreteCourse);
+			return true;
+		}
 		return false;
 	}
 
 	@Override
-	public boolean addNewConcreteCourse(String trainerEmail,
+	public ConcreteCourse addNewConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm) {
-		return false;
+		Course course = this.getCourseById(courseForm.getCourseInfoId());
+		ConcreteCourse concreteCourse = ConcreteCourse.create(course, em);
+		if (course != null && course.getTrainer() != null
+				&& course.getTrainer().getEmail().equals(trainerEmail)) {
+			course.addConcreteCourse(concreteCourse);
+			return concreteCourse;
+		}
+		return null;
 	}
 
 	@Override
@@ -171,8 +212,8 @@ public class CourseHandler implements ICourseHandler {
 							.getMaximum())
 				return null;
 			if (customer.registerCourse(concreteCourse)) {
-				return CourseOrder.create(orderId, concreteCourse,
-						customer, new Date(), OrderStatus.CONFIRMED, em);
+				return CourseOrder.create(orderId, concreteCourse, customer,
+						new Date(), OrderStatus.CONFIRMED, em);
 			}
 			return null;
 		} catch (Exception e) {
@@ -218,6 +259,20 @@ public class CourseHandler implements ICourseHandler {
 				this._deleteConcreteCourse(c);
 			}
 			em.remove(course);
+			return true;
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return false;
+		}
+	}
+
+	@Override
+	public boolean activateCourse(int courseId) {
+		try {
+			Course course = this.getCourseById(courseId);
+			if (course.getStatus() != CourseStatus.VERIFYING)
+				return false;
+			course.setStatus(CourseStatus.APPROVED);
 			return true;
 		} catch (Exception e) {
 			Logger.error(e.toString());

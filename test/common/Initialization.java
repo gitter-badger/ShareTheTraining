@@ -21,12 +21,14 @@ public class Initialization {
 		this.em = entityManager;
 		trainer1 = Trainer.create("sda", "dasda", "dasd", em);
 		trainer1.setRating(3);
-		course1 = Course.create("xingbuxing", 1, "xixihaha", em);
-		course1.setStatus(CourseStatus.APPROVED);
-		course1.setTrainer(trainer1);
-		course2 = Course.create("fubai", 2, "xixilala", em);
-		course2.setStatus(CourseStatus.APPROVED);
-		course2.setTrainer(trainer1);
+		course1 = Course.create("xingbuxing", trainer1, em);
+		course1.setCourseDesc("xixihaha");
+		course1.setCourseCategory(1);
+		course1.setStatus(CourseStatus.OPEN);
+		course2 = Course.create("fubai", trainer1, em);
+		course2.setCourseDesc("xixilala");
+		course2.setCourseCategory(2);
+		course2.setStatus(CourseStatus.OPEN);
 		course2.setRating(5);
 		List<Date> dates = new ArrayList<Date>();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
@@ -39,16 +41,31 @@ public class Initialization {
 		}
 		dates.add(new Date());
 		dates.add(date);
-		concreteCourse1 = ConcreteCourse.create(course1, "123", new Location("qunimaba",
-				"gun", "", -118.14, 34.03), dates, 2, 1, em);
+		concreteCourse1 = ConcreteCourse.create(course1, em);
+		concreteCourse1.setEventbriteId("123");
+		concreteCourse1.setLocation(new Location("qunimaba",
+				"gun", "", -118.14, 34.03));
+		concreteCourse1.setCourseDates(dates);
+		concreteCourse1.setMinimum(1);
+		concreteCourse1.setMaximum(2);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
-		concreteCourse2 = ConcreteCourse.create(course1, "234", new Location("qunimaba",
-				"gun","", -118.14, 34.03), dates, 2, 1, em);
+		concreteCourse2 = ConcreteCourse.create(course1, em);
+		concreteCourse2.setEventbriteId("234");
+		concreteCourse2.setLocation(new Location("qunimaba",
+				"gun","", -118.14, 34.03));
+		concreteCourse2.setCourseDates(dates);
+		concreteCourse2.setMinimum(1);
+		concreteCourse2.setMaximum(2);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
-		concreteCourse3 = ConcreteCourse.create(course2, "234", new Location("nimabi",
-				"gun", "", 121.28, 31.10), dates, 2, 1, em);
+		concreteCourse3 = ConcreteCourse.create(course2, em);
+		concreteCourse3.setEventbriteId("234");
+		concreteCourse3.setLocation(new Location("nimabi",
+				"gun", "", 121.28, 31.10));
+		concreteCourse3.setCourseDates(dates);
+		concreteCourse3.setMinimum(1);
+		concreteCourse3.setMaximum(2);
 		customer1 = Customer.create("qnmb", "xixihaha", "lala", em);
 		
 	}

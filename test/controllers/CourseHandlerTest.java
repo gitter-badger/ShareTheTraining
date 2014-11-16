@@ -37,7 +37,7 @@ public class CourseHandlerTest extends BaseTest {
 	@Test
 	public void testGetCourseByCategory() {
 		CourseHandler courseHandler = new CourseHandler();
-		assertThat(courseHandler.getCourseByCategory(1, 1, 10, null).size())
+		assertThat(courseHandler.getCourseByCategory(1, 1, 10, null, true).size())
 				.isEqualTo(1);
 	}
 
@@ -45,10 +45,10 @@ public class CourseHandlerTest extends BaseTest {
 	public void testFilterCourseByKeyword() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
-		cb.setCourseStatus(CourseStatus.APPROVED.ordinal());
+		cb.setCourseStatus(CourseStatus.OPEN.ordinal());
 		cb.setKeyword("xingbuxin");
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 
 	}
@@ -67,7 +67,7 @@ public class CourseHandlerTest extends BaseTest {
 		}
 		cb.setStartDate(date);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -77,7 +77,7 @@ public class CourseHandlerTest extends BaseTest {
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setCourseRating(3);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 
 	}
@@ -88,10 +88,10 @@ public class CourseHandlerTest extends BaseTest {
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setTrainerRating(3);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 		cb.setTrainerRating(4);
-		result = courseHandler.getCourseByCustomRule(cb, null, 1, 10);
+		result = courseHandler.getCourseByCustomRule(cb, null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(0);
 
 	}
@@ -105,7 +105,7 @@ public class CourseHandlerTest extends BaseTest {
 		locations.add(new Location("nimabi", "gun", "", -118.14, 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -127,7 +127,7 @@ public class CourseHandlerTest extends BaseTest {
 		locations.add(new Location("nimabi", "gun", "", -118.14, 34.03));
 		cb.setLocations(locations);
 		Collection<Course> result = courseLibrary.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -136,7 +136,7 @@ public class CourseHandlerTest extends BaseTest {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(2);
 	}
 
@@ -162,7 +162,7 @@ public class CourseHandlerTest extends BaseTest {
 		cb.setCurentLocation(new Location("qunimaba", null, "", -118.495,
 				34.030));
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
-				null, 1, 10);
+				null, true, 1, 10);
 		assertThat(result.size()).isEqualTo(1);
 	}
 

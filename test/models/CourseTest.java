@@ -12,7 +12,7 @@ public class CourseTest extends BaseTest{
 	
 	@Test
 	public void testCourseCreation() {
-		Course course = Course.create("234", 1, "lala", this.getmEm());
+		Course course = Course.create("234",null, this.getmEm());
 		assertThat(course.getId()).isNotNull();
 		this.getmEm().remove(course);
 	}

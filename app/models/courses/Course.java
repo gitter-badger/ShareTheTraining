@@ -24,12 +24,11 @@ import common.BaseModelObject;
 @Entity
 public class Course extends BaseModelObject {
 
-	public static Course create(String courseName, int courseCategory,
-			String courseDesc, EntityManager em) {
+	public static Course create(String courseName, Trainer trainer,
+			EntityManager em) {
 		Course course = new Course();
 		course.setCourseName(courseName);
-		course.setCourseCategory(courseCategory);
-		course.setCourseDesc(courseDesc);
+		course.setTrainer(trainer);
 		em.persist(course);
 		course.putSolrDoc();
 		return course;
@@ -58,7 +57,7 @@ public class Course extends BaseModelObject {
 
 	private String keyPoints;
 
-	private int popularity;
+	private int popularity = 0;
 
 	private double rating;
 
@@ -90,6 +89,8 @@ public class Course extends BaseModelObject {
 		if (this.latestDate == null
 				|| this.latestDate.before(concreteCourse.getCourseDate()))
 			this.setLatestDate(concreteCourse.getCourseDate());
+		if(this.courses.size() == 1 && this.status == CourseStatus.APPROVED)
+			this.status = CourseStatus.OPEN;
 	}
 
 	public static List<Selection> getSelections(Path path) {
@@ -111,7 +112,12 @@ public class Course extends BaseModelObject {
 	}
 
 	public boolean removeConcreteCourse(ConcreteCourse c) {
-		return this.courses.remove(c);
+		if (this.courses.remove(c)) {
+			if (this.courses.size() == 0 && this.status == CourseStatus.OPEN)
+				this.setStatus(CourseStatus.APPROVED);
+			return true;
+		}
+		return false;
 	}
 
 	public String getCourseName() {

@@ -48,13 +48,26 @@ public class UserHandler implements IUserHandler {
 	}
 	
 	@Override
-	public Customer getCusByEmail(String userEmail) {
-		String hql = "from Customer c where c.email= :userEmail";
-		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
-		Collection result = query.getResultList();
-		if (result.size() > 0) {
-			return (Customer) result.iterator().next();
-		}
+	public Customer getCustomerByEmail(String userEmail) {
+		User user = getUserByEmail(userEmail);
+		if(user!=null && user.getUserRole() == UserRole.CUSTOMER)
+			return (Customer)user;
+		return null;
+	}
+	
+	@Override
+	public Trainer getTrainerByEmail(String userEmail) {
+		User user = getUserByEmail(userEmail);
+		if(user!=null && user.getUserRole() == UserRole.TRAINER)
+			return (Trainer)user;
+		return null;
+	}
+	
+	@Override
+	public Admin getAdminByEmail(String userEmail) {
+		User user = getUserByEmail(userEmail);
+		if(user!=null && user.getUserRole() == UserRole.ADMIN)
+			return (Admin)user;
 		return null;
 	}
 
@@ -106,7 +119,7 @@ public class UserHandler implements IUserHandler {
 	public boolean registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId, Date orderDate,
 			OrderStatus orderStatus) {
-		// TODO Auto-generated method stub
+		// TODO Generate order
 		return false;
 	}
 

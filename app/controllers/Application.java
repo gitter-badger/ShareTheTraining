@@ -73,7 +73,7 @@ public class Application extends Controller {
 	public static Result testAuth() {
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
-		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
+		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",true,
 				2, 2);
 		Logger.info("course" + course.size());
 		return ok(home.render(course));
@@ -92,7 +92,7 @@ public class Application extends Controller {
 //				2, 2);
 		cfb.setCourseStatus(1);
 		Collection<Course> course = ch.getCourseByCustomRule(cfb,
-				null, 1, 10);
+				null,true, 1, 10);
 		Logger.info("course" + course.size());
 		return ok(home.render(course));
 
@@ -167,7 +167,7 @@ public class Application extends Controller {
 		
 		CourseHandler ch = new CourseHandler();
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get().getCfb()
-				, null, 1, 10);
+				, null,true, 1, 10);
 		Logger.info("course" + course.size());
 		return ok(searchindex.render(course));
 	}
@@ -252,14 +252,14 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cusinfo() {
 		UserHandler uh = new UserHandler();
-		Customer customer = uh.getCusByEmail(session().get("connected"));
+		Customer customer = uh.getCustomerByEmail(session().get("connected"));
 		return ok(cusinfo.render(customer));
 	}
 
 	@Transactional
 	public static Result cusinfoedit() {
 		UserHandler uh = new UserHandler();
-		Customer customer = uh.getCusByEmail(session().get("connected"));
+		Customer customer = uh.getCustomerByEmail(session().get("connected"));
 		return ok(cusinfoedit.render(customer));
 	}
 	
