@@ -16,6 +16,7 @@ import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
+import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseForm;
@@ -63,19 +64,29 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
-			int pageSize) {
+			int pageSize, String orderByColumn) {
+		/*
 		String hql = "from Course c where c.courseCategory= :category";
 		Query query = em.createQuery(hql).setParameter("category", category);
 		return getCourseByQuery(query, pageNumber, pageSize);
+		*/
+		CourseFilterBuilder cfb = new CourseFilterBuilder();
+		cfb.setCategory(category);
+		return this.getCourseByCustomRule(cfb, orderByColumn, pageNumber, pageSize);
 	}
 
 	@Override
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize) {
+			int pageNumber, int pageSize, String orderByColumn) {
+		/*
 		String hql = "from Course c where c.trainer.email= :trainerEmail";
 		Query query = em.createQuery(hql).setParameter("trainerEmail",
 				trainerEmail);
 		return getCourseByQuery(query, pageNumber, pageSize);
+		*/
+		CourseFilterBuilder cfb = new CourseFilterBuilder();
+		cfb.setTrainerEmail(trainerEmail);
+		return this.getCourseByCustomRule(cfb, orderByColumn, pageNumber, pageSize);
 	}
 
 	private static Collection<Course> getCourseByQuery(Query query,

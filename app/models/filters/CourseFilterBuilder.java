@@ -38,6 +38,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 	}
 
 	private String keyword;
+	private String trainerEmail;
 	private List<Location> locations = new ArrayList<Location>();
 	private int courseRating = -1;
 	private int trainerRating = -1;
@@ -54,7 +55,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
-	// elf has fixed this.
+	// elf has fixed this.(fixed it in a dumb way, stupid me)
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
@@ -90,9 +91,13 @@ public class CourseFilterBuilder implements FilterBuilder {
 							+ "%"));
 			predicates.add(keyWordConditions);
 		}
+		if (trainerEmail != null) {
+			predicates.add(cb.equal(trainerRoot.<String> get("email"),
+					trainerEmail));
+		}
 		if (isVeteran == true) {
-			predicates.add(cb.equal(
-					trainerRoot.<Boolean> get("isVeteran"), isVeteran));
+			predicates.add(cb.equal(trainerRoot.<Boolean> get("isVeteran"),
+					isVeteran));
 		}
 		if (category != -1) {
 			predicates.add(cb.equal(
@@ -279,7 +284,15 @@ public class CourseFilterBuilder implements FilterBuilder {
 		return isVeteran;
 	}
 
-	public void setIsVeteran(Boolean isVeteran) {
+	public String getTrainerEmail() {
+		return trainerEmail;
+	}
+
+	public void setTrainerEmail(String trainerEmail) {
+		this.trainerEmail = trainerEmail;
+	}
+
+	public void setVeteran(boolean isVeteran) {
 		this.isVeteran = isVeteran;
 	}
 
