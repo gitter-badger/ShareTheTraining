@@ -8,21 +8,31 @@
 			@trainersidebar()
 			<!-- Main -->
 				<div class="col-sm-9 col-md-9" id="all courses">
-					<div class="col-sm-12 col-md-12">
-						<div class="col-sm-8 col-md-8">
-							<h2>My Courses History</h2>
-						</div>
-						<a href="TrainerAddCourse.html" class="btn btn-primary btn-lg">Add New Course</a>
+					<div class="col-sm-8 col-md-8">
+						<h2>My Courses History</h2>
 					</div>
+					<a href="@routes.Application.traineraddcourse()" class="btn btn-primary btn-lg">Add New Course</a>
 					<hr>
-					<div class="col-sm-12 col-md-11" >
+					<div class="col-sm-8 col-md-8">
 						<h3 class="headline">All Courses:</h3>
+					</div>
+					<h3><div class="col-sm-3 col-md-3">
+						<select name="sort" id="sort" class="form-control" data-style="btn-primary">
+							<option>Sort Courses By ...</option>
+							<option>Catagory</option>
+							<option>New</option>
+							<option>A->Z</option>
+							<option>Z->A</option>
+						</select>
+					</div></h3>
+					<div class="col-sm-11 col-md-11" >
+						@for(c <- course){
 						<div class="panel panel-success">
 							<div class="col-sm-12 col-md-7 panel-heading">
-								<h3 class="panel-title">Oct.19, 2014</h3>
+								<h3 class="panel-title">@c.getEarliestDate()</h3>
 							</div>
 							<div class="col-sm-12 col-md-5 panel-heading ">
-								<h3 class="panel-title">Order Number: 1234567</h3>
+								<h3 class="panel-title">Course Id: @c.getId()</h3>
 							</div>
 							
 							<div class="panel-body">
@@ -30,45 +40,46 @@
 									<h4></h4>
 								</div>
 								<div class="col-sm-8 col-md-9">
-									<h4><a href="#">Assertive Communication to Reach Your Goals</a></h4>
+									<h4><a href="#">@c.getCourseName()</a></h4>
 									<div class="col-sm-5 col-md-4">
 										<a href="item_page.html"><img class="img-responsive img-thumbnail" src="assets/img/item-large.jpg"></a>
 									</div><!-- /.col -->
 									<div class="col-sm-7 col-md-8">
 										<ul class="list-unstyled">
 											<i class="fa fa-fw fa-female"></i>Trainer: 
-												<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">Sinclair Rimmon</button>
+												<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
+												@c.getTrainer().getName()</button>
 											</li>
-											<li><i class="fa fa-fw fa-columns"></i>Start Time: 10:00 AM, Wed, Oct.22</li>
-											<li><i class="fa fa-fw fa-truck"></i>Location: Downtown, Los Angeles</li>
-											<li><i class="fa fa-fw fa-money"></i>Price: $150</li>
+											<li><i class="fa fa-fw fa-columns"></i>Start Time: @c.getEarliestDate()</li>
+											<li><i class="fa fa-fw fa-truck"></i>Location: </li>
+											
 										</ul>
 
 										
 									</div>
 								</div>
 								<div class="col-sm-2 col-md-3 ">
-									<p>Status: <span class="btn btn-success">Approved</span></p>
-									<p><a href="item_page.html" class="btn btn-primary">View Detail ��</a></p>
+									<p>Status: <span class="btn btn-success">@c.getStatus()</span></p>
+									<p><a href="#" class="btn btn-primary">View Detail >></a></p>
 								</div>
 							</div><!-- /.panel-body -->
 						</div><!-- /.panel -->
 
-						
+						}
 
 						
 						<!-- Pagination -->
 						<div class="row">
 							<div class="col-sm-12 col-md-9 col-md-push-3">
 								<ul class="pagination pagination-lg">
-									<li><a href="#">��</a></li>
+									<li><a href="#"><<</a></li>
 									<li class="active"><a href="#">1</a></li>
 									<li><a href="#">2</a></li>
 									<li><a href="#">3</a></li>
 									<li><a href="#">4</a></li>
 									<li><a href="#">...</a></li>
 									<li><a href="#">10</a></li>
-									<li><a href="#">��</a></li>
+									<li><a href="#">>></a></li>
 								</ul><!-- /.pagination -->
 							</div><!-- /.col -->
 						</div><!-- /.row --> <!-- End of pagination -->

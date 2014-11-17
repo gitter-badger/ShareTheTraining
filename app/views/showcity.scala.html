@@ -1,0 +1,22 @@
+<script>
+	function showCity(value){
+	    $.post("@routes.Application.showCity()",{name:value} ,function(data,textStatuts){
+             //alert(data);
+             var dataObj=eval("("+data+")");
+             //alert(dataObj);
+             
+             //删除城市
+             $("select[name='location.city'] option[value!='']").remove();
+             
+             // <select name="city" style="width:90%">
+                 //<option value="">--------</option>
+             //</select>
+             for(var i=0;i<dataObj.length;i++){
+                   var $option=$("<option></option>");
+                   $option.attr("value",dataObj[i]);
+                   $option.text(dataObj[i]);
+                   $("select[name='location.city']").append($option);
+             }
+        });
+	}
+</script>

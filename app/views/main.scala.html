@@ -17,6 +17,9 @@
 	<link rel="stylesheet" href="@routes.Assets.at("css/bootstrap-select.min.css")">
 	<link rel="stylesheet" href="@routes.Assets.at("css/prism.css")">
 	<link rel="stylesheet" href="@routes.Assets.at("css/prism-line-numbers.css")">
+	<link rel='stylesheet' href="@routes.Assets.at("css/jquery-ui.min.css")"/>
+	<link href="@routes.Assets.at("css/fullcalendar.css")" rel='stylesheet' />
+	<link href="@routes.Assets.at("css/fullcalendar.print.css")" rel='stylesheet' media='print' />
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<script src="assets/js/respond.min.js"></script>
@@ -60,7 +63,7 @@
 						<h1><p>ShareTheTraining</p></h1>
 					</div><!-- /.col -->
 					<div class="col-md-3">
-						<a class="btn btn-primary" href="@routes.Application.cusprofile()">My Account</a>
+						<a class="btn btn-primary" href="@routes.Application.profile()">My Account</a>
 						<a class="btn btn-primary" href="@routes.Application.logout()">Log Out</a>
 						
 					</div>
@@ -205,7 +208,14 @@
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 	<script src="@routes.Assets.at("js/validate-ex.js")"></script>
 	<script src="@routes.Assets.at("js/holder.js")"></script>
-	@validation()
+	<script src="@routes.Assets.at("js/moment.min.js")"></script>
+	<script src="@routes.Assets.at("js/jquery.min.js")"></script>
+	<script src="@routes.Assets.at("js/jquery-ui.custom.min.js")"></script>
+	<script src="@routes.Assets.at("js/fullcalendar.js")"></script>
+	<script src="@routes.Assets.at("js/calendar.js")"></script>
+	@calendarscript()
+	<!-- @validation() -->
+	@showcity()
 
 	
 </body>

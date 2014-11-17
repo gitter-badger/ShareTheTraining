@@ -1,11 +1,11 @@
 @import models.users._
-@(cus: Customer)
+@(trainer: Trainer)
 
-@main("customer-basic-info"){
-<section class="wrapper-sm bg-highlight">
+@main("trainerbasicinfo"){
+	<section class="wrapper-sm bg-highlight">
 		<div class="container">
 			<div class="row">
-			@cussidebar()
+			@trainersidebar()
 			<!-- Main -->
 				<div class="col-sm-12 col-md-9" id="basic info">
 					<div class="col-sm-12 col-md-12">
@@ -34,37 +34,37 @@
 										<div class="col-md-4">
 											<h4>Name:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getName()</span></h4>
+										 <h4><span class="text-primary">@trainer.getName()</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
 											<h4>Email:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getEmail()</span></h4>
+										 <h4><span class="text-primary">@trainer.getEmail()</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
 											<h4>Phone:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getPhone()</span></h4>
+										 <h4><span class="text-primary">@trainer.getPhone</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
 											<h4>Address:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getLocation().getDetailedLoc()</span></h4>
+										 <h4><span class="text-primary">@trainer.getLocation().getDetailedLoc()</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
 											<h4>State:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getLocation().getRegion()</span></h4>
+										 <h4><span class="text-primary">@trainer.getLocation().getRegion()</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
 											<h4>City:</h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getLocation().getCity()</span></h4>
+										 <h4><span class="text-primary">@trainer.getLocation().getCity()</span></h4>
 									</li>
 									<li class="list-group-item">
 										<div class="col-md-4">
@@ -76,7 +76,7 @@
 										<div class="col-md-6">
 											<h4>Username: </h4>
 										</div>
-										 <h4><span class="text-primary">@cus.getUsername</span></h4>
+										 <h4><span class="text-primary">@trainer.getUsername</span></h4>
 									</li>
 								</ul>
 							</div>

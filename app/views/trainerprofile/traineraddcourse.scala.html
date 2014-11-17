@@ -1,0 +1,101 @@
+@main("trianeraddcourse"){
+
+<section class="wrapper-sm bg-highlight">
+	<div class="container">
+		<div class="row">
+			@trainersidebar()
+			<!-- Main -->
+			<div class="col-sm-12 col-md-9" id="all courses">
+				<h2>Add a New Course</h2>
+				<hr>
+				<div class="col-sm-12 col-md-10">
+				<form role="form" action="@routes.Application.traineraddcoursesubmit()"
+							 method="post">
+					<div class="panel panel-success">
+							<div class="panel-heading">
+								<h4 class="panel-title">Course Name</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="name" class="form-control"
+									name="courseName" id="courseName" placeholder="Your course name">
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Key Learning Points</h4>
+							</div>
+							<div class="panel-body text-default">
+								<textarea name="keyPoints" id="keyPoints" class="form-control" cols="30"
+									rows="3"
+									placeholder="Please list some key learning points from your course for course attendees"></textarea>
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Course Overview &amp; Style</h4>
+							</div>
+							<div class="panel-body text-default">
+								<textarea name="courseDesc" id="courseDesc" class="form-control" cols="30"
+									rows="3"
+									placeholder="Please introduce your course and define its style..."></textarea>
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Duration</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="text" name="courses.length" id="courses.length" class="form-control"
+									id="exmaple-contact-company"
+									placeholder="What is the duration for your course?">
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Price</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="text" name="price" id="price" class="form-control"
+									id="exmaple-contact-company"
+									placeholder="price for per attendees">
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Minimum attendees</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="text" name="courses.minimum" id="courses.minimum" class="form-control"
+									id="exmaple-contact-company"
+									placeholder="Please input the minimum attendees necessary to run the course">
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Maximum attendees</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="text" name="courses.maximum" id="courses.maximum" class="form-control"
+									id="exmaple-contact-company"
+									placeholder="Please define the maximum attendees that the course can hold">
+							</div>
+							<div class="panel-heading">
+								<h4 class="panel-title">Room set up(optional)</h4>
+							</div>
+							<div class="panel-body text-default">
+								<input type="name" class="form-control"
+									id="exmaple-contact-company"
+									placeholder="Please specify the rooms">
+							</div>
+							
+						
+					</div>
+					<!-- /.panel -->
+					</form>
+					<div class="col-sm-12 col-md-12">
+								<div class="col-sm-6 col-md-4 col-md-push-2">
+									<button class="btn btn-success btn-lg">Submit</button>
+								</div>
+								<div class="col-sm-6 col-md-5">
+									<button class="btn btn-default btn-lg">Cancel</button>
+								</div>
+							</div>
+				</div>
+
+			</div>
+			<!-- /.col -->
+			<!-- End of main -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+</section>
+}

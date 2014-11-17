@@ -4,8 +4,12 @@ package controllers;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import net.sf.json.JSONArray;
@@ -28,14 +32,19 @@ import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.DateFilterHandler;
 import models.filters.OrderFilterBuilder;
+import models.forms.CalendarForm;
 import models.forms.CourseFilterForm;
+import models.forms.CourseForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.forms.TrainerForm;
+import models.forms.UserForm;
 import models.locations.Geolocation;
 import models.locations.Location;
 import models.users.Customer;
+import models.users.Trainer;
 import models.users.User;
+import models.users.UserAction;
 import models.users.UserRole;
 import play.*;
 import play.data.Form;
@@ -95,9 +104,6 @@ public class Application extends Controller {
 
 	}
 	
-	public static Result addCourse(){
-		return TODO;
-	}
 	
 	@Transactional
 	public static Result welcome() {
@@ -134,14 +140,18 @@ public class Application extends Controller {
 	}
 	
 	@Transactional
-	public static Result activate(){
+	public static Result activate(String token){
 		AuthenticationHandler ah = new AuthenticationHandler();
-//		ah.activateUser(token, userHandler);
+		IUserHandler uh = new UserHandler();
+		ah.activateUser(token, uh);
 		return TODO;
 	}
 	
 	@Transactional
-	public static Result resetpsw(){
+	public static Result resetpsw(String token){
+		AuthenticationHandler ah = new AuthenticationHandler();
+		IUserHandler uh = new UserHandler();
+//		ah.doResetPassword(token, newPassword, userHandler);
 		return TODO;
 	}
 	
@@ -188,6 +198,7 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get().getCfb()
 				, null, 1, 10);
 		Logger.info("course" + course.size());
+		
 		return ok(searchindex.render(course));
 	}
 	
@@ -209,14 +220,19 @@ public class Application extends Controller {
 	@Transactional
 	public static Result signupcus() {
 		Logger.info(session().get("connected"));
-		return ok(customersignup.render());
+		LocationHandler lh = new LocationHandler();
+		List<String> stateList = LocationHandler.getStateList();
+		return ok(customersignup.render(stateList));
 	}
 	
 	@Transactional
 	public static Result signuptrainer() {
-		return ok(trainersignup.render());
+		LocationHandler lh = new LocationHandler();
+		List<String> stateList = LocationHandler.getStateList();
+		return ok(trainersignup.render(stateList));
 	}
 	
+	@Transactional
 	public static Result signuptrainersubmit(){
 		Form<TrainerForm> trainerForm = form(TrainerForm.class).bindFromRequest();
 		AuthenticationHandler ah = new AuthenticationHandler();
@@ -224,15 +240,32 @@ public class Application extends Controller {
 		IMailHandler mh = new MailHandler();
 		ah.doRegister(trainerForm.get().getEmail(), trainerForm.get().getName(), trainerForm.get().getPassword(),
 				UserRole.values()[2], uh, mh);
-		return ok(signupmail.render());
+		return ok(signupemail.render());
 	}
 
 	@Transactional
-	public static Result cusprofile() {
-		OrderHandler oh = new OrderHandler();
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
-		System.out.print(order.size());
-		return ok(cuscoursehistory.render(order));
+	public static Result profile() {
+		UserHandler uh = new UserHandler();
+		User user=uh.getUserByEmail(session().get("connected"));
+		if(user.getUserRole().ordinal()==1){
+			OrderHandler oh = new OrderHandler();
+			Collection<CourseOrder> order = oh.getCourseOrderByCustomer(session().get("connected"));
+			System.out.print(order.size());
+			return ok(cuscoursehistory.render(order));
+		}
+		if(user.getUserRole().ordinal()==2){
+			CourseHandler ch = new CourseHandler();
+			Collection<Course> course = ch.getCourseByTrainer(session().get("connected"), 1, 10, null);
+			System.out.print(course.size());
+			return ok(trainercoursehistory.render(course));
+		}
+		
+		return null;
+	}
+	
+	@Transactional
+	public static Result trainerschedule(){
+		return ok(trainerschedule.render());
 	}
 
 	@Transactional
@@ -291,8 +324,7 @@ public class Application extends Controller {
 		UserHandler uh = new UserHandler();
 		Customer customer = (Customer) uh.getUserByEmail(session().get("connected"));
 		LocationHandler lh = new LocationHandler();
-		List<String> stateList = lh.getStateList();
-		
+		List<String> stateList = LocationHandler.getStateList();
 		return ok(cusinfoedit.render(customer, stateList));
 	}
 	
@@ -301,6 +333,7 @@ public class Application extends Controller {
 	public static Result cusinfoeditsubmit(){
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		IUserHandler uh = new UserHandler();	
+		uh.updateProfile(session().get("connected"), cusForm.get());
 		return redirect(routes.Application.cusinfo());
 	}
 
@@ -313,7 +346,7 @@ public class Application extends Controller {
 	public static Result itempage(Integer id){
 		CourseHandler ch = new CourseHandler();
 		Course course=ch.getCourseById(id);
-		Collection<Course> similarcourse = ch.getCourseByCategory(course.getCourseCategory(), 1, 3);
+		Collection<Course> similarcourse = ch.getCourseByCategory(course.getCourseCategory(), 1, 3, null);
 		
 	
 //		Collection<ConcreteCourse> cc=c.getCourses();
@@ -331,7 +364,7 @@ public class Application extends Controller {
 		System.out.print(stateName);
 		if(stateName!=null){
 			
-			List<String> cityList = LocationHandler.getLocationByStateName(stateName);
+			List<String> cityList = LocationHandler.getCitiesByState(stateName);
 			System.out.print(cityList.iterator().next());
 			JSONArray jsonArray=JSONArray.fromObject(cityList);
 			return ok(jsonArray.toString());
@@ -341,11 +374,33 @@ public class Application extends Controller {
 	}
 	
 	@Transactional
-	public static Result trainerprofile(){
-		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByTrainer(session().get("connected"), 1, 10);
-		return ok(trainercoursehistory.render(course));
+	public static Result addschedule() throws ParseException, SQLException{
+//		String start = form().bindFromRequest().get("start");
+//		Logger.info(start);
+//		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
+//		
+//		UserHandler uh = new UserHandler();
+//		User user = uh.getUserByEmail(session().get("connected"));
+//		CalendarHandler ch = new CalendarHandler();
+//		ch.addCalendar(user.getId(), date);
+		return ok("lala");
 	}
+	
+	@Transactional
+	public static Result getschedule(){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = uh.getTrainerByEmail(session().get("connected"));
+		List<Date> date=(List<Date>) trainer.getAvailableDates();
+		return ok(date.toString());
+	}
+	
+	@Transactional
+	public static Result deleteschedule(){
+		return TODO;
+	}
+	
+	
+	
 	
 	@Transactional
 	public static Result trainercourseapproved(){
@@ -353,23 +408,80 @@ public class Application extends Controller {
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder fb = new CourseFilterBuilder();
 		fb.setCourseStatus(CourseStatus.APPROVED.ordinal());
+		fb.setTrainerEmail(session().get("connected"));
 		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+
 		return ok(trainercoursehistory.render(course));
 	}
 	
 	@Transactional
-	public static Result trainercoursepending(){
-		return TODO;
+	public static Result trainercourseverifying(){
+
+		CourseHandler ch = new CourseHandler();
+		CourseFilterBuilder fb = new CourseFilterBuilder();
+		fb.setCourseStatus(CourseStatus.VERIFYING.ordinal());
+		fb.setTrainerEmail(session().get("connected"));
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+
+		return ok(trainercoursehistory.render(course));
 	}
 	
 	@Transactional
 	public static Result trainercoursecompleted(){
-		return TODO;
+
+		CourseHandler ch = new CourseHandler();
+		CourseFilterBuilder fb = new CourseFilterBuilder();
+		fb.setCourseStatus(CourseStatus.COMPLETED.ordinal());
+		fb.setTrainerEmail(session().get("connected"));
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+
+		return ok(trainercoursehistory.render(course));
 	}
 	
 	@Transactional
 	public static Result trainercoursecanceled(){
-		return TODO;
+
+		CourseHandler ch = new CourseHandler();
+		CourseFilterBuilder fb = new CourseFilterBuilder();
+		fb.setCourseStatus(CourseStatus.CANCELLED.ordinal());
+		fb.setTrainerEmail(session().get("connected"));
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+
+		return ok(trainercoursehistory.render(course));
 	}
+	
+	@Transactional
+	public static Result trainerbasicinfo(){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session().get("connected"));
+		return ok(trainerbasicinfo.render(trainer));
+	}
+	
+	@Transactional
+	public static Result trainerinfo(){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session().get("connected"));
+
+		return ok(trainerinfo.render(trainer));
+	}
+	
+	@Transactional
+	public static Result traineraddcourse(){
+		return ok(traineraddcourse.render());
+	}
+	
+	@Transactional
+	public static Result trainerchangepsw(){
+		return ok(trainerchangepsw.render());
+	}
+	
+	@Transactional
+	public static Result traineraddcoursesubmit(){
+		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest(); 
+		CourseHandler ch = new CourseHandler();
+		ch.addNewCourse(session().get("connected"), courseForm.get());
+		return ok();
+	}
+	
 
 }

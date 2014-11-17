@@ -5,20 +5,20 @@
 							<h3 class="panel-title">My Course History</h3>
 						</div>
 						<div class="list-group text-default">
-							<a href="AccountTrainer.html" class="list-group-item">All courses</a>
-							<a href="userCourseConfirmed.html" class="list-group-item">&nbsp;&nbsp;&nbsp;Approved</a>
-							<a href="userCourseOrdered.html" class="list-group-item ">&nbsp;&nbsp;&nbsp;Verifying</a>
-							<a href="userCourseDone.html" class="list-group-item ">&nbsp;&nbsp;&nbsp;Completed</a>
-							<a href="userCourseCanceled.html" class="list-group-item ">&nbsp;&nbsp;&nbsp;Canceled</a>
+							<a href="@routes.Application.profile()" class="list-group-item">All courses</a>
+							<a href="@routes.Application.trainercourseapproved()" class="list-group-item">&nbsp;&nbsp;&nbsp;Approved</a>
+							<a href="@routes.Application.trainercourseverifying()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Verifying</a>
+							<a href="@routes.Application.trainercoursecompleted()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Completed</a>
+							<a href="@routes.Application.trainercoursecanceled()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Canceled</a>
 						</div>
 						<div class="panel-heading ">
 							<h3 class="panel-title">Account Profile</h3>
 						</div>
 						<div class="list-group text-default">
-							<a href="trainerBasicInfo.html" class="list-group-item ">&nbsp;&nbsp;&nbsp;Basic info</a>
-							<a href="userTrainerInfo.html" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer info</a>
-							<a href="userTrainerSchedule.html" class="list-group-item active">&nbsp;&nbsp;&nbsp;Trainer Schedule</a>
-							<a href="trainerChangePass.html" class="list-group-item ">&nbsp;&nbsp;&nbsp;Change password</a>
+							<a href="@routes.Application.trainerbasicinfo()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Basic info</a>
+							<a href="@routes.Application.trainerinfo()" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer info</a>
+							<a href="@routes.Application.trainerschedule()" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer Schedule</a>
+							<a href="@routes.Application.trainerchangepsw()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Change password</a>
 						</div>
 						
 					</div><!-- /.panel -->

@@ -59,6 +59,17 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
+	public Trainer getTrainerByEmail(String userEmail) {
+		String hql = "from Trainer t where t.email= :userEmail";
+		Query query = em.createQuery(hql).setParameter("userEmail", userEmail);
+		Collection result = query.getResultList();
+		if (result.size() > 0) {
+			return (Trainer) result.iterator().next();
+		}
+		return null;
+	}
+	
+	@Override
 	public User createNewUser(String userEmail, String userName,
 			String password, UserRole userRole) {
 		if (getUserByEmail(userEmail) != null)

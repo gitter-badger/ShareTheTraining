@@ -1,4 +1,8 @@
 @import url(http://fonts.googleapis.com/css?family=Enriqueta:400,700);
+#calendar {
+		max-width: 900px;
+		margin: 0 auto;
+	}
 .alert{
 	padding:15px;
 	border-radius:0
@@ -167,7 +171,11 @@ body a:focus{
 .bg-secondary .h6{
 	color:#fff
 }
-.bg-secondary h1.headline:after,.bg-secondary .h1.headline:after,.bg-secondary h2.headline:after,.bg-secondary .h2.headline:after,.bg-secondary h3.headline:after,.bg-secondary .h3.headline:after,.bg-secondary h4.headline:after,.bg-secondary .h4.headline:after,.bg-secondary h5.headline:after,.bg-secondary .h5.headline:after,.bg-secondary h6.headline:after,.bg-secondary .h6.headline:after{
+.bg-secondary h1.headline:after,
+.bg-secondary .h1.headline:after,
+.bg-secondary h2.headline:after,
+.bg-secondary .h2.headline:after,
+.bg-secondary h3.headline:after,.bg-secondary .h3.headline:after,.bg-secondary h4.headline:after,.bg-secondary .h4.headline:after,.bg-secondary h5.headline:after,.bg-secondary .h5.headline:after,.bg-secondary h6.headline:after,.bg-secondary .h6.headline:after{
 	background:#fff
 }
 .bg-secondary hr{

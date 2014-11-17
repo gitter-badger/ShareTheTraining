@@ -162,4 +162,6 @@ public class Trainer extends User {
 	public void setLocation(Location location) {
 		this.location = location;
 	}
+	
+	
 }

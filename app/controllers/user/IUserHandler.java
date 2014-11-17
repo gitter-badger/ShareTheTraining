@@ -6,6 +6,7 @@ import models.courses.ConcreteCourse;
 import models.courses.OrderStatus;
 import models.forms.UserForm;
 import models.users.Customer;
+import models.users.Trainer;
 import models.users.User;
 import models.users.UserRole;
 
@@ -28,5 +29,7 @@ public interface IUserHandler {
 	public Customer getCusByEmail(String userEmail);
 
 	public User getUserById(int userId);
+
+	public Trainer getTrainerByEmail(String userEmail);
 
 }
