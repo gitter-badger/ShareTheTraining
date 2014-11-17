@@ -12,20 +12,20 @@ import common.BaseModelObject;
 @Entity
 public class Review extends BaseModelObject {
 
-	public static Review create(Customer author, Course course,
+	public static Review create(Customer author,ConcreteCourse concreteCourse,
 			int courseRating, int trainerRating, EntityManager em) {
-		Review review = new Review(author, course, courseRating, trainerRating);
+		Review review = new Review(author, concreteCourse, courseRating, trainerRating);
 		em.persist(review);
 		author.addReview(review);
-		course.addReview(review);
+		concreteCourse.getCourseInfo().addReview(review);
 		review.putSolrDoc();
 		return null;
 	}
 
-	protected Review(Customer author, Course course, int courseRating,
+	protected Review(Customer author, ConcreteCourse concreteCourse, int courseRating,
 			int trainerRating) {
 		this.author = author;
-		this.course = course;
+		this.concreteCourse = concreteCourse;
 		this.courseRating = courseRating;
 		this.trainerRating = trainerRating;
 		this.date = new Date();
@@ -36,7 +36,7 @@ public class Review extends BaseModelObject {
 	private Customer author;
 
 	@ManyToOne
-	private Course course;
+	private ConcreteCourse concreteCourse;
 
 	private int courseRating;
 
@@ -44,12 +44,12 @@ public class Review extends BaseModelObject {
 
 	private Date date;
 
-	public Course getCourse() {
-		return course;
+	public ConcreteCourse getConcreteCourse() {
+		return concreteCourse;
 	}
 
-	public void setCourse(Course course) {
-		this.course = course;
+	public void setConcreteCourse(ConcreteCourse concreteCourse) {
+		this.concreteCourse = concreteCourse;
 	}
 
 	public int getCourseRating() {

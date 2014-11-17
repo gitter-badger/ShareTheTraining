@@ -65,7 +65,7 @@ public class Course extends BaseModelObject {
 
 	private Date latestDate;
 
-	@OneToMany(mappedBy = "course", cascade = { CascadeType.ALL })
+	@OneToMany
 	private Collection<Review> reviews = new ArrayList<Review>();
 
 	@OneToMany(mappedBy = "courseInfo", cascade = { CascadeType.ALL })
