@@ -38,7 +38,9 @@ public class LocationHandler {
 				String city = rs.getString("city");
 				double lat = rs.getDouble("lat");
 				double lng = rs.getDouble("lng");
-				return new Location(state, city, null, lng, lat);
+				Location location = new Location(state, city, null, lng, lat);
+				location.setZipCode(zipcode);
+				return location;
 			}
 		} catch (SQLException e) {
 			Logger.info(e.toString());
@@ -93,4 +95,5 @@ public class LocationHandler {
 	public static List<String> getCitiesByState(String state){
 		return cityMap.get(state);
 	}
+	
 }

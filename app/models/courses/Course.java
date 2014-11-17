@@ -83,14 +83,16 @@ public class Course extends BaseModelObject {
 
 	public void addConcreteCourse(ConcreteCourse concreteCourse) {
 		this.courses.add(concreteCourse);
-		if (this.earliestDate == null
-				|| this.earliestDate.after(concreteCourse.getCourseDate()))
-			this.setEarliestDate(concreteCourse.getCourseDate());
-		if (this.latestDate == null
-				|| this.latestDate.before(concreteCourse.getCourseDate()))
-			this.setLatestDate(concreteCourse.getCourseDate());
-		if(this.courses.size() == 1 && this.status == CourseStatus.APPROVED)
-			this.status = CourseStatus.OPEN;
+		/*
+		 * if (this.earliestDate == null ||
+		 * this.earliestDate.after(concreteCourse.getCourseDate()))
+		 * this.setEarliestDate(concreteCourse.getCourseDate()); if
+		 * (this.latestDate == null ||
+		 * this.latestDate.before(concreteCourse.getCourseDate()))
+		 * this.setLatestDate(concreteCourse.getCourseDate());
+		 * if(this.courses.size() == 1 && this.status == CourseStatus.APPROVED)
+		 * this.status = CourseStatus.OPEN;
+		 */
 	}
 
 	public static List<Selection> getSelections(Path path) {
@@ -112,12 +114,32 @@ public class Course extends BaseModelObject {
 	}
 
 	public boolean removeConcreteCourse(ConcreteCourse c) {
-		if (this.courses.remove(c)) {
-			if (this.courses.size() == 0 && this.status == CourseStatus.OPEN)
-				this.setStatus(CourseStatus.APPROVED);
-			return true;
+		return this.courses.remove(c);
+		/*
+		 * if (this.courses.remove(c)) { if (this.courses.size() == 0 &&
+		 * this.status == CourseStatus.OPEN)
+		 * this.setStatus(CourseStatus.APPROVED); return true; } return false;
+		 */
+	}
+
+	public void updateDate() {
+		Date earliestDate = null, latestDate = null;
+		for (ConcreteCourse concreteCourse : this.courses) {
+			if (concreteCourse.getStatus() != ConcreteCourseStatus.VERIFYING
+					&& concreteCourse.getCourseDate() != null) {
+				if (earliestDate == null
+						|| earliestDate.after(concreteCourse.getCourseDate())) {
+					earliestDate = concreteCourse.getCourseDate();
+				}
+				
+				if(latestDate == null
+						||latestDate.before(concreteCourse.getCourseDate())){
+					latestDate = concreteCourse.getCourseDate();
+				}
+			}
 		}
-		return false;
+		this.setEarliestDate(earliestDate);
+		this.setLatestDate(latestDate);
 	}
 
 	public String getCourseName() {

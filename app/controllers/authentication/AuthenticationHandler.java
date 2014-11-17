@@ -36,14 +36,14 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	}
 
 	@Override
-	public User doLogin(String userEmail, String password, 
-			Context context, IUserHandler userHandler) {
+	public User doLogin(String userEmail, String password, Context context,
+			IUserHandler userHandler) {
 		Logger.info(userEmail);
 		Logger.info(password);
 		User u = userHandler.getUserByEmail(userEmail);
 		if (u != null && Password.check(password, u.getPassword())) {
 			context.session().put("connected", u.getEmail());
-			
+
 			return u;
 		}
 		return null;
@@ -54,10 +54,9 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 			String password, UserRole userRole, IUserHandler userHandler,
 			IMailHandler mailHandler) {
 		try {
-			User user = userHandler.createNewUser(userEmail, userName, password,
-					userRole);
+			User user = userHandler.createNewUser(userEmail, userName,
+					password, userRole);
 			if (user != null) {
-				//TODO update profile here?
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);

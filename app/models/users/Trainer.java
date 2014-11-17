@@ -46,6 +46,10 @@ public class Trainer extends User {
 	private String experience;
 
 	private String certification;
+	
+	private String company;
+	
+	private String howFar;
 
 	private double rating;
 
@@ -79,6 +83,21 @@ public class Trainer extends User {
 		this.rating = (this.rating * this.rateCount) / this.rateCount;
 	}
 
+	
+	public boolean addAvailableDate(Date date){
+		if(availableDates.contains(date))
+			return false;
+		availableDates.add(date);
+		return true;
+	}
+	
+	public boolean removeAvailableDate(Date date){
+		if(!availableDates.contains(date))
+			return false;
+		availableDates.remove(date);
+		return true;
+	}
+	
 	public Collection<Course> getCourses() {
 		return courses;
 	}
@@ -165,5 +184,29 @@ public class Trainer extends User {
 
 	public void setLocation(Location location) {
 		this.location = location;
+	}
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
+
+	public String getHowFar() {
+		return howFar;
+	}
+
+	public void setHowFar(String howFar) {
+		this.howFar = howFar;
+	}
+
+	public Veteran getVeteranRole() {
+		return veteranRole;
+	}
+
+	public void setVeteranRole(Veteran veteranRole) {
+		this.veteranRole = veteranRole;
 	}
 }

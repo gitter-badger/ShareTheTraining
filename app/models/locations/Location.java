@@ -21,6 +21,7 @@ public class Location {
 	private String region;
 	private String city;
 	private String detailedLoc = "";
+	private int zipCode;
 
 	@Type(type = "org.hibernate.spatial.GeometryType")
 	private Point point;
@@ -95,6 +96,14 @@ public class Location {
 
 	public void setPoint(Point point) {
 		this.point = point;
+	}
+
+	public int getZipCode() {
+		return zipCode;
+	}
+
+	public void setZipCode(int zipCode) {
+		this.zipCode = zipCode;
 	}
 
 }

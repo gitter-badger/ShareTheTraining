@@ -33,7 +33,7 @@ public class ConcreteCourseForm {
 
 	private String eventbriteId;
 
-	private ConcreteCourseStatus status = ConcreteCourseStatus.UNSTARTED;
+	private ConcreteCourseStatus status = ConcreteCourseStatus.VERIFYING;
 
 	public Collection<Customer> getSelectedCustomers() {
 		return selectedCustomers;

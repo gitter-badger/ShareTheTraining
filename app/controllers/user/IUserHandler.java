@@ -1,9 +1,11 @@
 package controllers.user;
 
+import java.util.Collection;
 import java.util.Date;
 
 import models.courses.ConcreteCourse;
 import models.courses.OrderStatus;
+import models.filters.FilterBuilder;
 import models.forms.UserForm;
 import models.users.Admin;
 import models.users.Customer;
@@ -34,5 +36,13 @@ public interface IUserHandler {
 	public Admin getAdminByEmail(String userEmail);
 
 	public User getUserById(int userId);
+
+	public Collection<User> getUserByCustomeRule(FilterBuilder cb,
+			String orderByColumn, boolean ascending, int pageNumber,
+			int pageSize);
+
+	public boolean addAvailableDate(Date date, Trainer trainer);
+
+	public boolean removeAvailableDate(Date date, Trainer trainer);
 
 }

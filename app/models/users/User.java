@@ -16,22 +16,20 @@ import common.Password;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public  abstract class User extends BaseModelObject implements Subject{
+public abstract class User extends BaseModelObject implements Subject {
 
 	@Column(unique = true)
 	private String email;
-	
+
 	private String name;
 
 	private String username;
-	
+
 	private String password;
-	
+
 	private UserRole userRole;
-	
+
 	private UserStatus userStatus;
-	
-	
 
 	protected User(String email, String username, String password) {
 		this.email = email;
@@ -43,11 +41,11 @@ public  abstract class User extends BaseModelObject implements Subject{
 			Logger.error(e.toString());
 		}
 	}
-	
-	public User(){
-		
+
+	public User() {
+
 	}
-	
+
 	@Override
 	public String getIdentifier() {
 		return email;
@@ -60,7 +58,6 @@ public  abstract class User extends BaseModelObject implements Subject{
 
 	@Override
 	public abstract List<? extends Role> getRoles();
-
 
 	public String getEmail() {
 		return email;
@@ -87,7 +84,8 @@ public  abstract class User extends BaseModelObject implements Subject{
 			this.password = Password.getSaltedHash(password);
 		} catch (Exception e) {
 			Logger.error(e.toString());
-		};
+		}
+		;
 	}
 
 	public UserRole getUserRole() {
@@ -113,11 +111,5 @@ public  abstract class User extends BaseModelObject implements Subject{
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	
-
-	
-
-	
 
 }
