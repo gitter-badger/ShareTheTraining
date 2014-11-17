@@ -44,6 +44,7 @@ GET    /traineraddcoursesubmit      controllers.Application.traineraddcoursesubm
 
 #calendar
 POST  /addschedule                  controllers.Application.addschedule()
+GET   /getcalendar                  controllers.Application.getschedule()
 
 #mail
 GET    /activate                    controllers.Application.activate(token: String)
