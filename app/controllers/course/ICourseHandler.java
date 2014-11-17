@@ -50,4 +50,12 @@ public interface ICourseHandler {
 			ConcreteCourseForm courseForm);
 	
 	public boolean activateCourse(int courseId);
+
+	public boolean confirmConcreteCourse(ConcreteCourse concreteCourse);
+
+	public boolean activateConcreteCourse(ConcreteCourse concreteCourse);
+	
+	public boolean deactivateCourse(Course course);
+	
+	public boolean deactivateConcreteCourse(ConcreteCourse concreteCourse);
 }

@@ -13,4 +13,16 @@ public enum UserRole implements Role
     {
         return name();
     }
+    
+    public static UserRole fromInteger(int x) {
+		switch (x) {
+		case 0:
+			return ADMIN;
+		case 1:
+			return CUSTOMER;
+		case 2:
+			return TRAINER;
+		}
+		return null;
+	}
 }

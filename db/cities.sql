@@ -1,3 +1,41 @@
+-- phpMyAdmin SQL Dump
+-- version 3.3.9
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost
+-- Generation Time: Mar 26, 2013 at 07:28 PM
+-- Server version: 5.5.8
+-- PHP Version: 5.3.5
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Database: `us_cities`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `zips`
+--
+
+CREATE TABLE IF NOT EXISTS `zips` (
+  `zip` int(5) DEFAULT NULL,
+  `state` varchar(2) DEFAULT NULL,
+  `city` varchar(16) DEFAULT NULL,
+  `lat` decimal(8,6) DEFAULT NULL,
+  `lng` decimal(10,6) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `zips`
+--
 
 INSERT INTO `zips` (`zip`, `state`, `city`, `lat`, `lng`) VALUES
 (35004, 'AL', 'Acmar', 33.584132, -86.515570),

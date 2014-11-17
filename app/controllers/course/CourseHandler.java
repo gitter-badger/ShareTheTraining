@@ -70,11 +70,6 @@ public class CourseHandler implements ICourseHandler {
 	@Override
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
 			int pageSize, String orderByColumn, boolean ascending) {
-		/*
-		 * String hql = "from Course c where c.courseCategory= :category"; Query
-		 * query = em.createQuery(hql).setParameter("category", category);
-		 * return getCourseByQuery(query, pageNumber, pageSize);
-		 */
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		cfb.setCategory(category);
 		return this.getCourseByCustomRule(cfb, orderByColumn, ascending,
@@ -85,11 +80,6 @@ public class CourseHandler implements ICourseHandler {
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
 			int pageNumber, int pageSize, String orderByColumn,
 			boolean ascending) {
-		/*
-		 * String hql = "from Course c where c.trainer.email= :trainerEmail";
-		 * Query query = em.createQuery(hql).setParameter("trainerEmail",
-		 * trainerEmail); return getCourseByQuery(query, pageNumber, pageSize);
-		 */
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		cfb.setTrainerEmail(trainerEmail);
 		return this.getCourseByCustomRule(cfb, orderByColumn, ascending,
@@ -247,6 +237,7 @@ public class CourseHandler implements ICourseHandler {
 			this.dropCourse(customer, concreteCourse);
 		}
 		concreteCourse.getCourseInfo().removeConcreteCourse(concreteCourse);
+		concreteCourse.getCourseInfo().updateDate();
 		em.remove(concreteCourse);
 		return true;
 	}
@@ -278,5 +269,55 @@ public class CourseHandler implements ICourseHandler {
 			Logger.error(e.toString());
 			return false;
 		}
+	}
+
+	@Override
+	public boolean confirmConcreteCourse(ConcreteCourse concreteCourse) {
+		if (concreteCourse.getStatus() != ConcreteCourseStatus.VERIFYING)
+			return false;
+		concreteCourse.setStatus(ConcreteCourseStatus.APPROVED);
+		Course course = concreteCourse.getCourseInfo();
+		if (course.getStatus() == CourseStatus.APPROVED)
+			course.setStatus(CourseStatus.OPEN);
+		if (concreteCourse.getCourseDate() != null) {
+			if (course.getEarliestDate() == null
+					|| course.getEarliestDate().after(
+							concreteCourse.getCourseDate()))
+				course.setEarliestDate(concreteCourse.getCourseDate());
+			if (course.getLatestDate() == null
+					|| course.getLatestDate().before(
+							concreteCourse.getCourseDate()))
+				course.setLatestDate(concreteCourse.getCourseDate());
+		}
+		return true;
+	}
+
+	@Override
+	public boolean activateConcreteCourse(ConcreteCourse concreteCourse) {
+		if (concreteCourse.getStatus() != ConcreteCourseStatus.APPROVED)
+			return false;
+		concreteCourse.setStatus(ConcreteCourseStatus.STARTED);
+		// TODO MAYBE ORDER STATUS SHOULD BE CHANGED HERE
+		return true;
+	}
+
+	@Override
+	public boolean deactivateCourse(Course course) {
+		// TODO How to handle order
+		for (ConcreteCourse concreteCourse : course.getCourses()) {
+			deactivateConcreteCourse(concreteCourse);
+		}
+		course.setStatus(CourseStatus.VERIFYING);
+		return false;
+	}
+
+	@Override
+	public boolean deactivateConcreteCourse(ConcreteCourse concreteCourse) {
+		// TODO How to handle order
+		if (concreteCourse.getStatus() == ConcreteCourseStatus.VERIFYING)
+			return false;
+		concreteCourse.setStatus(ConcreteCourseStatus.VERIFYING);
+		concreteCourse.getCourseInfo().updateDate();
+		return true;
 	}
 }

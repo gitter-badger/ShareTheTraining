@@ -1,9 +1,12 @@
 package controllers.user;
 
+import java.util.Collection;
 import java.util.Date;
 
 import models.courses.ConcreteCourse;
+import models.courses.CourseOrder;
 import models.courses.OrderStatus;
+import models.filters.FilterBuilder;
 import models.forms.UserForm;
 import models.users.Admin;
 import models.users.Customer;
@@ -24,7 +27,7 @@ public interface IUserHandler {
 	public boolean deactiveUser(String userEmail);
 
 
-	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
+	public CourseOrder registerCourse(Customer customer, ConcreteCourse concreteCourse,
 			String orderId, Date orderDate, OrderStatus orderStatus);
 
 	public Customer getCustomerByEmail(String userEmail);
@@ -35,5 +38,12 @@ public interface IUserHandler {
 
 	public User getUserById(int userId);
 
+	public Collection<User> getUserByCustomeRule(FilterBuilder cb,
+			String orderByColumn, boolean ascending, int pageNumber,
+			int pageSize);
+
+	public boolean addAvailableDate(Date date, Trainer trainer);
+
+	public boolean removeAvailableDate(Date date, Trainer trainer);
 
 }

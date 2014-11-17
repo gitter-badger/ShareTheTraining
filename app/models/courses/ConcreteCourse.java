@@ -64,7 +64,7 @@ public class ConcreteCourse extends BaseModelObject {
 
 	private String eventbriteId;
 
-	private ConcreteCourseStatus status = ConcreteCourseStatus.UNSTARTED;
+	private ConcreteCourseStatus status = ConcreteCourseStatus.VERIFYING;
 
 	public void enrollCustomer(Customer customer) {
 		this.selectedCustomers.add(customer);
