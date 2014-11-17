@@ -40,8 +40,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private String keyword;
 	private String trainerEmail;
 	private List<Location> locations = new ArrayList<Location>();
-	private int courseRating = -1;
-	private int trainerRating = -1;
+	private double courseRating = -1;
+	private double trainerRating = -1;
 	private Date startDate;
 	private Date endDate;
 	private double lowPrice = -1;
@@ -76,7 +76,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 			predicates.add(cb.equal(
 					entityRoot.<ConcreteCourseStatus> get("status"),
 					ConcreteCourseStatus.fromInteger(courseStatus)));
-		if (keyword != null) {
+		if (keyword != null && !keyword.equals("")) {
 			// keyword = SolrSuggestions.getSuggestions(keyword);
 			keyword = keyword.replaceAll("\\s+", "%");
 			Predicate keyWordConditions = cb.disjunction();
@@ -105,10 +105,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 		}
 		if (courseRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					courseInfoRoot.<Integer> get("rating"), courseRating));
+					courseInfoRoot.<Double> get("rating"), courseRating));
 		if (trainerRating != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					trainerRoot.<Integer> get("rating"), trainerRating));
+					trainerRoot.<Double> get("rating"), trainerRating));
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(
 					entityRoot.<Date> get("courseDate"), startDate));
@@ -184,17 +184,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.locations = locations;
 	}
 
-	public int getCourseRating() {
-		return courseRating;
-	}
-
-	public void setCourseRating(int courseRating) {
-		this.courseRating = courseRating;
-	}
-
-	public int getTrainerRating() {
-		return trainerRating;
-	}
 
 	public void setTrainerRating(int trainerRating) {
 		this.trainerRating = trainerRating;
@@ -294,6 +283,22 @@ public class CourseFilterBuilder implements FilterBuilder {
 
 	public void setVeteran(boolean isVeteran) {
 		this.isVeteran = isVeteran;
+	}
+
+	public double getCourseRating() {
+		return courseRating;
+	}
+
+	public void setCourseRating(double courseRating) {
+		this.courseRating = courseRating;
+	}
+
+	public double getTrainerRating() {
+		return trainerRating;
+	}
+
+	public void setTrainerRating(double trainerRating) {
+		this.trainerRating = trainerRating;
 	}
 
 }

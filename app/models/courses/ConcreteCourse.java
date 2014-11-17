@@ -25,24 +25,13 @@ import common.BaseModelObject;
 @Entity
 public class ConcreteCourse extends BaseModelObject {
 
-	public static ConcreteCourse create(Course courseInfo, String eventbriteId,
-			Location location, List<Date> dates, int maximum, int minimum,
-			EntityManager em) {
+	public static ConcreteCourse create(Course courseInfo, EntityManager em) {
 		ConcreteCourse concreteCourse = new ConcreteCourse();
 		concreteCourse.setConcreteCourseId(courseInfo.getId() + "-"
 				+ Integer.toString(courseInfo.getConcreteCourseCount()));
 		courseInfo
 				.setConcreteCourseCount(courseInfo.getConcreteCourseCount() + 1);
 		concreteCourse.setCourseInfo(courseInfo);
-		concreteCourse.setEventbriteId(eventbriteId);
-		concreteCourse.setLocation(location);
-		concreteCourse.setMaximum(maximum);
-		concreteCourse.setMinimum(minimum);
-		if (dates.size() > 0) {
-			Collections.sort(dates);
-			concreteCourse.setCourseDates(dates);
-			concreteCourse.setCourseDate(dates.get(0));
-		}
 		courseInfo.addConcreteCourse(concreteCourse);
 		em.persist(concreteCourse);
 		concreteCourse.putSolrDoc();
@@ -63,15 +52,15 @@ public class ConcreteCourse extends BaseModelObject {
 	private Date courseDate;
 
 	@ElementCollection
-	private Collection<Date> courseDates = new ArrayList<Date>();
+	private List<Date> courseDates = new ArrayList<Date>();
 
 	private Time length;
 
-	private Location location = new Location(null,null, "", 0, 0);
+	private Location location = new Location(null, null, "", 0, 0);
 
-	private int minimum;
+	private int minimum = -1;
 
-	private int maximum;
+	private int maximum = -1;
 
 	private String eventbriteId;
 
@@ -79,9 +68,10 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void enrollCustomer(Customer customer) {
 		this.selectedCustomers.add(customer);
+		this.courseInfo.setPopularity(this.courseInfo.getPopularity() + 1);
 	}
-	
-	public void removeCustomer(Customer customer){
+
+	public void removeCustomer(Customer customer) {
 		this.selectedCustomers.remove(customer);
 	}
 
@@ -174,8 +164,12 @@ public class ConcreteCourse extends BaseModelObject {
 		return courseDates;
 	}
 
-	public void setCourseDates(Collection<Date> courseDates) {
+	public void setCourseDates(List<Date> courseDates) {
 		this.courseDates = courseDates;
+		if (courseDates.size() > 0) {
+			Collections.sort(courseDates);
+			this.setCourseDate(courseDates.get(0));
+		}
 	}
 
 	public String getConcreteCourseId() {

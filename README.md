@@ -3,4 +3,7 @@ ShareTheTraining
 
 ## Todo
 * non-blocking action
-* course handler
+* user filter
+* form bind 
+* model to json 
+* handler testcases

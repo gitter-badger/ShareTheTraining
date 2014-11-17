@@ -70,6 +70,10 @@ public class Trainer extends User {
 	@ElementCollection
 	private Set<Date> availableDates = new HashSet<Date>();
 
+	public Course createNewCourse(String courseName, EntityManager em){
+		return Course.create(courseName, this, em);
+	}
+	
 	public void updateRating(double rating) {
 		this.rateCount += 1;
 		this.rating = (this.rating * this.rateCount) / this.rateCount;

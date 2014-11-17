@@ -5,6 +5,7 @@ import java.util.Date;
 import models.courses.ConcreteCourse;
 import models.courses.OrderStatus;
 import models.forms.UserForm;
+import models.users.Admin;
 import models.users.Customer;
 import models.users.Trainer;
 import models.users.User;
@@ -26,10 +27,13 @@ public interface IUserHandler {
 	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
 			String orderId, Date orderDate, OrderStatus orderStatus);
 
-	public Customer getCusByEmail(String userEmail);
+	public Customer getCustomerByEmail(String userEmail);
+	
+	public Trainer getTrainerByEmail(String userEmail);
+	
+	public Admin getAdminByEmail(String userEmail);
 
 	public User getUserById(int userId);
 
-	public Trainer getTrainerByEmail(String userEmail);
 
 }

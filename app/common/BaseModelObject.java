@@ -53,7 +53,6 @@ public abstract class BaseModelObject implements IModelObject,
 
 	@Override
 	public SolrInputDocument getSolrDoc() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

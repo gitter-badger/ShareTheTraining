@@ -114,6 +114,14 @@ public class ConcreteCourseForm {
 	public void setCourseInfoId(int courseInfoId) {
 		this.courseInfoId = courseInfoId;
 	}
+	
+	public String getConcreteCourseId() {
+		return concreteCourseId;
+	}
+
+	public void setConcreteCourseId(String concreteCourseId) {
+		this.concreteCourseId = concreteCourseId;
+	}
 
 	public boolean bindConcreteCourse(ConcreteCourse concreteCourse){
 		if(concreteCourse == null ||concreteCourse.getConcreteCourseId()!=this.concreteCourseId)

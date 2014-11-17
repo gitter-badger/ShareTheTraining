@@ -1,7 +1,7 @@
 package models.courses;
 
 public enum CourseStatus {
-	VERIFYING, APPROVED, COMPLETED, CANCELLED;
+	VERIFYING, APPROVED, OPEN, COMPLETED, CANCELLED;
 	
 	public static CourseStatus fromInteger(int x) {
         switch(x) {
@@ -10,8 +10,10 @@ public enum CourseStatus {
         case 1:
             return APPROVED;
         case 2:
-        	return COMPLETED;
+        	return OPEN;
         case 3:
+        	return COMPLETED;
+        case 4:
         	return CANCELLED;
         }
         return null;

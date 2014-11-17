@@ -14,19 +14,19 @@ public interface ICourseHandler {
 	public Course getCourseById(Integer courseId);
 
 	public Collection<Course> getCourseByCategory(int category, int pageNumber,
-			int pageSize, String orderByColumn);
+			int pageSize, String orderByColumn, boolean ascending);
 
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize, String orderByColumn);
+			int pageNumber, int pageSize, String orderByColumn, boolean ascending);
 
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
-			String orderByColumn, int pageNumber, int pageSize);
+			String orderByColumn, boolean ascending, int pageNumber, int pageSize);
 
 	public boolean modifyMaximum(String courseId, int maximum);
 
 	public boolean modifyMinimum(String courseId, int minimum);
 
-	public boolean addNewCourse(String trainerEmail, CourseForm courseForm);
+	public Course addNewCourse(String trainerEmail, CourseForm courseForm);
 
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
@@ -43,9 +43,11 @@ public interface ICourseHandler {
 
 	public boolean deleteCourse(int courseId);
 
-	public boolean addNewConcreteCourse(String trainerEmail,
+	public ConcreteCourse addNewConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm);
 
 	public boolean updateConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm);
+	
+	public boolean activateCourse(int courseId);
 }

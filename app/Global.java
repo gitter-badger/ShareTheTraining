@@ -20,6 +20,7 @@ public class Global extends GlobalSettings {
 	public void onStart(Application app) {
 		//Logger.info("Three tomatoes are walking down the street- a poppa tomato, a momma tomato, and a little baby tomato. ");
 		Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
+		Logger.info("I have the feeling that I'm gonna flunk this class. That's why they say 'never taking SE' you dumb ass.'");
 		LocationHandler.initialize();
 	}
 

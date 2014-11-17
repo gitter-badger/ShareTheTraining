@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JsonConfig;
 import controllers.authentication.AuthenticationHandler;
@@ -32,7 +31,6 @@ import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.DateFilterHandler;
 import models.filters.OrderFilterBuilder;
-import models.forms.CalendarForm;
 import models.forms.CourseFilterForm;
 import models.forms.CourseForm;
 import models.forms.CustomerForm;
@@ -97,7 +95,7 @@ public class Application extends Controller {
 	public static Result testAuth() {
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
-		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
+		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",true,
 				2, 2);
 		Logger.info("course" + course.size());
 		return ok(home.render(course));
@@ -111,9 +109,7 @@ public class Application extends Controller {
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 //		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
 //				2, 2);
-		Collection<Course> course = ch.getCourseByCustomRule(cfb,
-				null, 1, 10);
-	
+		Collection<Course> course = ch.getCourseByCustomRule(cfb,null,true, 1, 10);
 		Logger.info("course" + course.size());
 		return ok(home.render(course));
 
@@ -196,7 +192,7 @@ public class Application extends Controller {
 		
 		CourseHandler ch = new CourseHandler();
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get().getCfb()
-				, null, 1, 10);
+				, null,true, 1, 10);
 		Logger.info("course" + course.size());
 		
 		return ok(searchindex.render(course));
@@ -255,7 +251,7 @@ public class Application extends Controller {
 		}
 		if(user.getUserRole().ordinal()==2){
 			CourseHandler ch = new CourseHandler();
-			Collection<Course> course = ch.getCourseByTrainer(session().get("connected"), 1, 10, null);
+			Collection<Course> course = ch.getCourseByTrainer(session().get("connected"), 1, 10, null,true);
 			System.out.print(course.size());
 			return ok(trainercoursehistory.render(course));
 		}
@@ -316,16 +312,19 @@ public class Application extends Controller {
 	public static Result cusinfo() {
 		UserHandler uh = new UserHandler();
 		Customer customer = (Customer) uh.getUserByEmail(session().get("connected"));
+
 		return ok(cusinfo.render(customer));
 	}
 
 	@Transactional
 	public static Result cusinfoedit() {
 		UserHandler uh = new UserHandler();
+
 		Customer customer = (Customer) uh.getUserByEmail(session().get("connected"));
 		LocationHandler lh = new LocationHandler();
 		List<String> stateList = LocationHandler.getStateList();
 		return ok(cusinfoedit.render(customer, stateList));
+
 	}
 	
 	
@@ -346,7 +345,7 @@ public class Application extends Controller {
 	public static Result itempage(Integer id){
 		CourseHandler ch = new CourseHandler();
 		Course course=ch.getCourseById(id);
-		Collection<Course> similarcourse = ch.getCourseByCategory(course.getCourseCategory(), 1, 3, null);
+		Collection<Course> similarcourse = ch.getCourseByCategory(course.getCourseCategory(), 1, 3, null,true);
 		
 	
 //		Collection<ConcreteCourse> cc=c.getCourses();
@@ -409,7 +408,7 @@ public class Application extends Controller {
 		CourseFilterBuilder fb = new CourseFilterBuilder();
 		fb.setCourseStatus(CourseStatus.APPROVED.ordinal());
 		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null,true, 1, 10);
 
 		return ok(trainercoursehistory.render(course));
 	}
@@ -421,7 +420,7 @@ public class Application extends Controller {
 		CourseFilterBuilder fb = new CourseFilterBuilder();
 		fb.setCourseStatus(CourseStatus.VERIFYING.ordinal());
 		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true,1, 10);
 
 		return ok(trainercoursehistory.render(course));
 	}
@@ -433,7 +432,7 @@ public class Application extends Controller {
 		CourseFilterBuilder fb = new CourseFilterBuilder();
 		fb.setCourseStatus(CourseStatus.COMPLETED.ordinal());
 		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null,true, 1, 10);
 
 		return ok(trainercoursehistory.render(course));
 	}
@@ -445,7 +444,7 @@ public class Application extends Controller {
 		CourseFilterBuilder fb = new CourseFilterBuilder();
 		fb.setCourseStatus(CourseStatus.CANCELLED.ordinal());
 		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null,true, 1, 10);
 
 		return ok(trainercoursehistory.render(course));
 	}
