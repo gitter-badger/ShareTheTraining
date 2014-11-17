@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Date;
 
 import models.courses.ConcreteCourse;
+import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
 import models.forms.UserForm;
@@ -26,7 +27,7 @@ public interface IUserHandler {
 	public boolean deactiveUser(String userEmail);
 
 
-	public boolean registerCourse(Customer customer, ConcreteCourse concreteCourse,
+	public CourseOrder registerCourse(Customer customer, ConcreteCourse concreteCourse,
 			String orderId, Date orderDate, OrderStatus orderStatus);
 
 	public Customer getCustomerByEmail(String userEmail);

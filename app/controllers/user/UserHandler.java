@@ -13,6 +13,7 @@ import play.Logger;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
 import models.forms.UserForm;
@@ -124,11 +125,13 @@ public class UserHandler implements IUserHandler {
 	}
 
 	@Override
-	public boolean registerCourse(Customer customer,
+	public CourseOrder registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId, Date orderDate,
 			OrderStatus orderStatus) {
-		// TODO Generate order
-		return false;
+		if(concreteCourse.getSelectedCustomers().contains(customer))
+			return null;
+		customer.registerCourse(concreteCourse);
+		return CourseOrder.create(orderId, concreteCourse, customer, new Date(), orderStatus, em);
 	}
 
 	@Override
