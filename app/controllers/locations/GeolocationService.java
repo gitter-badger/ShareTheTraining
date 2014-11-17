@@ -73,7 +73,7 @@ public class GeolocationService {
   }
 
   private static Geolocation withFreegeoip(String ip) {
-    String url = String.format("http://freegeoip.net/json/%s", ip);
+    String url = String.format("http://127.0.0.1:8080/json/%s", ip);
     
     try {
       if (debug) logger.debug(String.format("requesting %s using freegeoip...", ip));
