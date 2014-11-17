@@ -77,6 +77,7 @@ public class UserHandler implements IUserHandler {
 		return null;
 	}
 
+	
 	@Override
 	public User createNewUser(String userEmail, String userName,
 			String password, UserRole userRole) {

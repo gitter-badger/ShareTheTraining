@@ -17,9 +17,11 @@ GET    /logout                      controllers.Application.logout()
 GET    /signupcus                   controllers.Application.signupcus()
 POST   /signupcus                   controllers.Application.signupcussubmit()
 GET    /signuptrainer               controllers.Application.signuptrainer()
+POST   /signuptrainer               controllers.Application.signuptrainersubmit()
 
 #profile
-GET    /cusprofile                  controllers.Application.cusprofile()
+GET    /profile                     controllers.Application.profile()
+#profile-cus
 GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
 GET    /cuscourseordered            controllers.Application.cuscourseordered()
 GET    /cuscoursedone               controllers.Application.cuscoursedone()
@@ -27,19 +29,38 @@ GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
 GET    /cusinfo                     controllers.Application.cusinfo()
 GET    /cusinfoedit                 controllers.Application.cusinfoedit()
 GET    /cuschangepsw                controllers.Application.cuschangepsw()
+#profile-trainer
+GET    /trainerschedule             controllers.Application.trainerschedule()
+GET    /trainercourseapproved       controllers.Application.trainercourseapproved()
+GET    /trainercourseverifying      controllers.Application.trainercourseverifying()
+GET    /trainercoursecompleted      controllers.Application.trainercoursecompleted()
+GET    /trainercoursecanceled       controllers.Application.trainercoursecanceled()
+GET    /trainerbasicinfo            controllers.Application.trainerbasicinfo()
+GET    /trainerinfo                 controllers.Application.trainerinfo()
+GET    /traineraddcourse            controllers.Application.traineraddcourse()
+GET    /trainerchangepsw            controllers.Application.trainerchangepsw()
+GET    /traineraddcoursesubmit      controllers.Application.traineraddcoursesubmit()
+
+
+#calendar
+POST  /addschedule                  controllers.Application.addschedule()
 
 #mail
-GET    /activate                    controllers.Application.activate()
-GET    /resetpsw                    controllers.Application.resetpsw()
+GET    /activate                    controllers.Application.activate(token: String)
+GET    /resetpsw                    controllers.Application.resetpsw(token: String)
 
 #search
 GET 	/search						controllers.Application.search()
 POST    /search  	                controllers.Application.search()
 
+#itempage
+GET    /itempage/:id                controllers.Application.itempage(id: Integer)
+
+#state&city
+POST   /showcity                    controllers.Application.showCity()
+
 #test
-
 GET		/test						controllers.Application.test()
-
 GET		/testAuth					controllers.Application.testAuth()
 
 # Map static resources from the /public folder to the /assets URL path

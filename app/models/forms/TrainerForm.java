@@ -25,7 +25,7 @@ public class TrainerForm extends UserForm {
 
 	// how far are you willing to travel to deliver a course without travel
 	// reimbursement
-	private int howfar;
+	private String howfar;
 
 	public String getName() {
 		return name;
@@ -75,11 +75,11 @@ public class TrainerForm extends UserForm {
 		this.certification = certification;
 	}
 
-	public int getHowfar() {
+	public String getHowfar() {
 		return howfar;
 	}
 
-	public void setHowfar(int howfar) {
+	public void setHowfar(String howfar) {
 		this.howfar = howfar;
 	}
 

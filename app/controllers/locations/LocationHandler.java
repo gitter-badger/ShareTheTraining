@@ -48,6 +48,7 @@ public class LocationHandler {
 		}
 		return null;
 	}
+	
 
 	public static List<String> getStateList() {
 		Connection connection = DB.getConnection();

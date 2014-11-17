@@ -1,4 +1,8 @@
+@(states: List[String])
+
 @main("signupcus"){	
+
+
 	<section class="wrapper-md bg-custom-home">
 		<div class="container">
 			<div class="row ">
@@ -30,12 +34,21 @@
 							<input type="text" name="address" class="form-control required" id="address" placeholder="Your address">
 						</div>
 						<div class="form-group">
-							<label for="city">City <span class="text-primary">(*)</span></label>
-							<input type="text" name="city" class="form-control required" id="city" placeholder="Your city">
+							<label for="state">State <span class="text-primary">(*)</span></label>
+							<select onchange="showCity(this.value)"  class="form-control show-tick" title='Choose One' data-style="btn-primary" name="location.region" id="location.region">
+												<optgroup label="State:">
+													<option value="CA" selected>CA</option>
+												@for(s <- states){
+													<option value="@s">@s</option>
+													}
+												</optgroup>
+							</select> 
 						</div>
 						<div class="form-group">
-							<label for="state">State <span class="text-primary">(*)</span></label>
-							<input type="text" name="state" class="form-control required" id="state" placeholder="Your state">
+							<label for="state">City <span class="text-primary">(*)</span></label>
+							<select class="form-control show-tick"  data-style="btn-primary " name="location.city" id="location.city">
+									
+							</select>
 						</div>
 						<div class="form-group">
 							<label for="zipcode">Zipcode <span class="text-primary">(*)</span></label>

@@ -1,0 +1,134 @@
+	<script>
+		$(document).ready(function(){
+			var dropId = 20;
+			$('#external-events .fc-event').each(function() {
+				// create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+				// it doesn't need to have a start or end
+				var eventObject = {
+					title: $.trim("Free Day") 
+				};
+				
+				// store the Event Object in the DOM element so we can get to it later
+				$(this).data('eventObject', eventObject);
+				
+				// make the event draggable using jQuery UI
+				$(this).draggable({
+					zIndex: 999,
+					revert: true,      // will cause the event to go back to its
+					revertDuration: 0  //  original position after the drag
+				});
+				
+			});
+			$('#calendar').fullCalendar({
+				theme: true,
+				header: {
+					left: 'prev,next today',
+					center: 'title',
+					right: 'month'
+				},
+				//editable: true,
+				droppable: true, // this allows things to be dropped onto the calendar !!!
+				eventMouseover: function( event, jsEvent, view ) {
+					//event.title = "Click to delete";
+					$(this).css('border-color', 'red');
+					//$('#calendar').fullCalendar('updateEvent', event);
+				},
+				eventMouseout: function( event, jsEvent, view ) {
+					//event.title = "Free Day";
+					$(this).css('border-color', '');
+       				//$('#calendar').fullCalendar('updateEvent', event);
+				},
+				eventClick: function(calEvent, jsEvent, view) {
+			        if (calEvent.url) {
+	            		window.open(event.url);
+	            		return false;
+	        		}
+			        if(confirm('Do you really want to delete this event?'))
+			        {
+			        	$('#calendar').fullCalendar( 'removeEvents',calEvent.id);
+			        	
+			        	//var eventid = $("#eventid").val(); 
+			            $.post("do.php?action=del",{id:calEvent.id},function(msg){ 
+			                if(msg==1){//delete success 
+			                    $('#calendar').fullCalendar('refetchEvents'); 
+			                }else{ 
+			                    alert(msg);     
+			                } 
+			            }); 
+			        	 //alert(calEvent.id);
+			        	 //$(this).css('border-color', 'yellow');
+			        }
+			       
+			    },
+				drop: function(date) { // this function is called when something is dropped
+
+					// retrieve the dropped element's stored Event Object
+					var originalEventObject = $(this).data('eventObject');
+					
+					// we need to copy it, so that multiple events don't have a reference to the same object
+					var copiedEventObject = $.extend({}, originalEventObject);
+					
+					// assign it the date that was reported
+					copiedEventObject.start = date;
+					copiedEventObject.id = dropId++;
+					
+					// render the event on the calendar
+					// the last `true` argument determines if the event "sticks" (http://arshaw.com/fullcalendar/docs/event_rendering/renderEvent/)
+					var cache = new Array();
+					cache = $('#calendar').fullCalendar( 'clientEvents');
+					//alert(cache[4].start);
+					var same = false;
+					for (i=0; i<cache.length; i++) {
+						if (!(cache[i].start < copiedEventObject.start)&&(!(cache[i].start > copiedEventObject.start)))
+						{
+							same = true;
+							//alert('same');
+							break;
+						}
+					}
+					if(!same)
+					{
+						$('#calendar').fullCalendar('renderEvent', copiedEventObject, true);
+						$.post("@routes.Application.addschedule()",{start:copiedEventObject.start.toISOString()},function(msg){ 
+				            if(msg!=1){ 
+				               // alert(msg); 
+				                revertFunc(); //恢复原状 
+				            } 
+				        }); 
+					}
+					
+					// is the "remove after drop" checkbox checked?
+					if ($('#drop-remove').is(':checked')) {
+						// if so, remove the element from the "Draggable Events" list
+						$(this).remove();
+					}
+					
+				},
+				eventLimit: true // allow "more" link when too many events
+				
+			});
+			
+			// dismiss alerts
+			$(".alert").alert();
+			// toggle open and close icon for collapse (accordions)
+			// set initial content
+			$('[data-state]').each(function () {
+				if ($(this).attr('data-state') == "open") {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+			// toggle content on click
+			$('[data-state]').click(function () {
+				// toggle state
+				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
+				// toggle content based on state
+				if ($(this).attr('data-state') == 'open') {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+		});   
+	</script>
