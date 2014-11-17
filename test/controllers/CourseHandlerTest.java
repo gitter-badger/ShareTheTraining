@@ -9,10 +9,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.filters.CourseFilterBuilder;
 import models.locations.Location;
+import models.users.Customer;
 
 import org.junit.Test;
 
@@ -24,6 +27,7 @@ import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
 import controllers.course.CourseHandler;
+import controllers.user.UserHandler;
 
 public class CourseHandlerTest extends BaseTest {
 	@Test
@@ -37,7 +41,8 @@ public class CourseHandlerTest extends BaseTest {
 	@Test
 	public void testGetCourseByCategory() {
 		CourseHandler courseHandler = new CourseHandler();
-		assertThat(courseHandler.getCourseByCategory(1, 1, 10, null, true).size())
+		assertThat(
+				courseHandler.getCourseByCategory(1, 1, 10, null, true).size())
 				.isEqualTo(1);
 	}
 
@@ -166,4 +171,20 @@ public class CourseHandlerTest extends BaseTest {
 		assertThat(result.size()).isEqualTo(1);
 	}
 
+	@Test
+	public void testCourseRegisteration() {
+		CourseOrder courseOrder = new CourseHandler().registerCourse(
+				this.initData.customer1, this.initData.concreteCourse1, "hehe");
+		Customer customer = new UserHandler()
+				.getCustomerByEmail(this.initData.customer1.getEmail());
+		ConcreteCourse concreteCourse = new CourseHandler()
+				.getCourseByConcreteCourseId(this.initData.concreteCourse1
+						.getConcreteCourseId());
+		assertThat(concreteCourse.getSelectedCustomers().contains(customer))
+				.isTrue();
+		assertThat(customer.getSelectedCourses().contains(concreteCourse))
+				.isTrue();
+		assertThat(courseOrder.getOrderId()).isEqualTo("hehe");
+		this.getmEm().remove(courseOrder);
+	}
 }

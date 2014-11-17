@@ -10,6 +10,7 @@ import javax.persistence.EntityManager;
 
 import play.Logger;
 import models.courses.ConcreteCourse;
+import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
 import models.courses.CourseStatus;
 import models.locations.Location;
@@ -48,6 +49,7 @@ public class Initialization {
 		concreteCourse1.setCourseDates(dates);
 		concreteCourse1.setMinimum(1);
 		concreteCourse1.setMaximum(2);
+		concreteCourse1.setStatus(ConcreteCourseStatus.APPROVED);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
 		concreteCourse2 = ConcreteCourse.create(course1, em);

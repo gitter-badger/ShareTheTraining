@@ -27,9 +27,6 @@ public interface IUserHandler {
 	public boolean deactiveUser(String userEmail);
 
 
-	public CourseOrder registerCourse(Customer customer, ConcreteCourse concreteCourse,
-			String orderId, Date orderDate, OrderStatus orderStatus);
-
 	public Customer getCustomerByEmail(String userEmail);
 	
 	public Trainer getTrainerByEmail(String userEmail);
