@@ -1,0 +1,108 @@
+@import models.users._
+@(trainer: Trainer)(states: List[String])
+
+
+
+@main("course-info-edit"){
+
+
+<section class="wrapper-sm bg-highlight">
+		<div class="container">
+			<div class="row">
+			@trainersidebar()
+			<!-- Main -->
+				<div class="col-sm-12 col-md-9" id="basic edit">
+					<div class="col-sm-12 col-md-12">
+						<div class="col-sm-12 col-md-8">
+							<h2>Basic Information</h2>
+						</div>
+						<form role="form" action="@routes.Application.trainerbasicinfoeditsubmit()" id="edit" method="post">
+						<button type="submit" class="btn btn-primary btn-md">Confirm</button>
+						<a href="userBasicInfo.html "class="btn btn-default btn-md">Cancel</a>
+					</div>
+					<hr>
+
+					<div class="col-sm-12 col-md-12">
+						<div class="row" >
+							<div class="col-sm-12 col-md-4">
+								<div class="panel panel-secondary">
+									<div class="panel-heading">
+										<h3 class="panel-title">Photo</h3>
+									</div>
+									<div class="panel-body">
+										<img class="img-responsive img-rounded" src="assets/img/user-1.jpg">
+										<input type="file" id="exampleInputFile">
+										
+									</div>
+								</div><!-- /.panel -->
+							</div>
+							<div class="col-sm-12 col-md-6">
+								
+									<ul class="list-group">
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Name:</h4>
+											</div>
+											 <h4><span class="text-primary"><input value="@trainer.getName()" type="text" name="name" id="name" placeholder="@trainer.getName()"></span></h4>
+										</li>
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Email:</h4>
+											</div>
+											 <h4><span class="text-primary"><input value="@trainer.getEmail()" type="email" name="email" id="email" placeholder="@trainer.getEmail()" readonly></span></h4>
+										</li>
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Phone:</h4>
+											</div>
+											 <h4><span class="text-primary"><input value="@trainer.getPhone()" type="tel" name="phone" id="phone" placeholder="@trainer.getPhone()"></span></h4>
+										</li>
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Address:</h4>
+											</div>
+											 <h4><span class="text-primary"><input value="@trainer.getLocation().getDetailedLoc()" name="location.detailedLoc" id="location.detailedLoc" placeholder="@trainer.getLocation().getDetailedLoc()"></span></h4>
+										</li>
+										<li class="list-group-item form-group">
+										<div class="col-md-4">
+												<h4>State:</h4>
+											</div>
+											<select onchange="showCity(this.value)" style="max-width:50%;" class="form-control show-tick" title='Choose One' data-style="btn-primary" name="location.region" id="location.region">
+												<optgroup label="State:">
+													<option value="@trainer.getLocation().getRegion()" selected>@trainer.getLocation().getRegion()</option>
+												@for(s <- states){
+													<option value="@s">@s</option>
+													}
+												</optgroup>
+											</select> 
+										</li>
+										<li class="list-group-item form-group">
+										<div class="col-md-4">
+												<h4>City:</h4>
+											</div>
+											<select class="form-control show-tick" style="max-width:50%;" data-style="btn-primary " name="location.city" id="location.city">
+												<option value="@trainer.getLocation().getCity()" selected>@trainer.getLocation().getCity()</option>
+											</select> 
+										</li>
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Zipcode:</h4>
+											</div>
+											 <h4><span class="text-primary"><input name="zipcode" id="zipcode" placeholder=""></span></h4>
+										</li>
+										<li class="list-group-item form-group">
+											<div class="col-md-4">
+												<h4>Username:</h4>
+											</div>
+											 <h4><span class="text-primary"><input value="@trainer.getUsername" name="username" id="username" placeholder="@trainer.getUsername"></span></h4>
+										</li>
+									</ul>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.col --><!-- End of main -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+}

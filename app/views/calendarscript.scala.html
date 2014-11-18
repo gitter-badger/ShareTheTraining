@@ -1,3 +1,4 @@
+	
 	<script>
 		$(document).ready(function(){
 			var dropId = 20;
@@ -104,8 +105,16 @@
 					}
 					
 				},
-				eventLimit: true // allow "more" link when too many events
-				
+				eventLimit: true, // allow "more" link when too many events
+				events: 
+							{
+								url: '@routes.Application.getschedule()',
+								error: function() {
+									$('#script-warning').show();
+								}
+							},
+
+						
 			});
 			
 			// dismiss alerts

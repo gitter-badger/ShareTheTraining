@@ -16,7 +16,8 @@
 						<div class="col-sm-12 col-md-8">
 							<h2>Basic Information</h2>
 						</div>
-						<button class="btn btn-primary btn-md">Confirm</button>
+						<form role="form" action="@routes.Application.cusinfoeditsubmit()" id="edit" method="post">
+						<button type="submit" class="btn btn-primary btn-md">Confirm</button>
 						<a href="userBasicInfo.html "class="btn btn-default btn-md">Cancel</a>
 					</div>
 					<hr>
@@ -36,19 +37,19 @@
 								</div><!-- /.panel -->
 							</div>
 							<div class="col-sm-12 col-md-6">
-								<form role="form" action="#" id="edit" method="post">
+								
 									<ul class="list-group">
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Name:</h4>
 											</div>
-											 <h4><span class="text-primary"><input type="text" name="name" id="name" placeholder="@cus.getName()"></span></h4>
+											 <h4><span class="text-primary"><input value="@cus.getName()" type="text" name="name" id="name" placeholder="@cus.getName()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Email:</h4>
 											</div>
-											 <h4><span class="text-primary"><input type="email" name="email" id="email" placeholder="@cus.getEmail()"></span></h4>
+											 <h4><span class="text-primary"><input value="@cus.getEmail()" type="email" name="email" id="email" placeholder="@cus.getEmail()" readonly></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
@@ -60,7 +61,7 @@
 											<div class="col-md-4">
 												<h4>Address:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="address" id="address" placeholder=""></span></h4>
+											 <h4><span class="text-primary"><input name="location.detailedLoc" id="location.detailedLoc" placeholder="@cus.getLocation().getDetailedLoc()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 										<div class="col-md-4">

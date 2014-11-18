@@ -13,7 +13,7 @@
 						<div class="col-sm-12 col-md-8">
 							<h2>Trainer Information</h2>
 						</div>
-						<a href="userTrainerEdit.html" class="btn btn-primary btn-md">Edit</a>
+						<a href="@routes.Application.trainerinfoedit()" class="btn btn-primary btn-md">Edit</a>
 					</div>
 					<hr>
 					<div class="col-sm-12 col-md-12">
@@ -24,7 +24,7 @@
 										<h4 class="panel-title">Company Name</h4>
 									</div>
 									<div class="panel-body text-default">
-										<p>USC</p>
+										<p>@trainer.getCompany()</p>
 									</div>
 									<div class="panel-heading">
 										<h4 class="panel-title">Education</h4>
@@ -48,7 +48,7 @@
 										<h4 class="panel-title">Distance to deliever a course</h4>
 									</div>
 									<div class="panel-body text-default">
-										<p>100 miles</p>
+										<p>@trainer.getHowFar()</p>
 									</div>
 								</div><!-- /.panel -->
 							</div>

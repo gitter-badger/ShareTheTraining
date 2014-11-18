@@ -29,6 +29,8 @@ GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
 GET    /cusinfo                     controllers.Application.cusinfo()
 GET    /cusinfoedit                 controllers.Application.cusinfoedit()
 GET    /cuschangepsw                controllers.Application.cuschangepsw()
+POST   /cusinfoeditsubmit           controllers.Application.cusinfoeditsubmit()
+POST   /cuschangepswsubmit          controllers.Application.cuschangepswsubmit()
 #profile-trainer
 GET    /trainerschedule             controllers.Application.trainerschedule()
 GET    /trainercourseapproved       controllers.Application.trainercourseapproved()
@@ -36,14 +38,22 @@ GET    /trainercourseverifying      controllers.Application.trainercourseverifyi
 GET    /trainercoursecompleted      controllers.Application.trainercoursecompleted()
 GET    /trainercoursecanceled       controllers.Application.trainercoursecanceled()
 GET    /trainerbasicinfo            controllers.Application.trainerbasicinfo()
+GET    /traienrbasicinfoedit        controllers.Application.trainerbasicinfoedit()
 GET    /trainerinfo                 controllers.Application.trainerinfo()
+GET    /trainerinfoedit             controllers.Application.trainerinfoedit()
 GET    /traineraddcourse            controllers.Application.traineraddcourse()
 GET    /trainerchangepsw            controllers.Application.trainerchangepsw()
-GET    /traineraddcoursesubmit      controllers.Application.traineraddcoursesubmit()
+POST   /traineraddcoursesubmit      controllers.Application.traineraddcoursesubmit()
+POST   /trainerinfoeditsubmit       controllers.Application.trainerinfoeditsubmit()
+POST   /trainerbasicinfoeditsubmit  controllers.Application.trainerbasicinfoeditsubmit()
+
+#order
+GET    /createorder                 controllers.Application.createOrder(orderId: String ?= null, eventbriteId: String ?= null)
 
 
 #calendar
 POST  /addschedule                  controllers.Application.addschedule()
+GET   /getcalendar                  controllers.Application.getschedule()
 
 #mail
 GET    /activate                    controllers.Application.activate(token: String)
