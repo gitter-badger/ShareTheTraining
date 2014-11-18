@@ -197,9 +197,12 @@ public class CourseHandler implements ICourseHandler {
 	public CourseOrder registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId) {
 		try {
-			if (concreteCourse.getStatus() != ConcreteCourseStatus.STARTED
+			if (concreteCourse.getStatus() == ConcreteCourseStatus.VERIFYING
+					|| concreteCourse.getStatus() == ConcreteCourseStatus.FINISHED
 					|| concreteCourse.getSelectedCustomers().size() == concreteCourse
 							.getMaximum())
+				return null;
+			if (concreteCourse.getSelectedCustomers().contains(customer))
 				return null;
 			if (customer.registerCourse(concreteCourse)) {
 				return CourseOrder.create(orderId, concreteCourse, customer,

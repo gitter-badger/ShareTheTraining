@@ -124,15 +124,7 @@ public class UserHandler implements IUserHandler {
 		return true;
 	}
 
-	@Override
-	public CourseOrder registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId, Date orderDate,
-			OrderStatus orderStatus) {
-		if(concreteCourse.getSelectedCustomers().contains(customer))
-			return null;
-		customer.registerCourse(concreteCourse);
-		return CourseOrder.create(orderId, concreteCourse, customer, new Date(), orderStatus, em);
-	}
+
 
 	@Override
 	public Collection<User> getUserByCustomeRule(FilterBuilder cb,
