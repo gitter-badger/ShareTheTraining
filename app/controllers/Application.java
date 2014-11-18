@@ -76,6 +76,7 @@ import views.html.customerprofile.*;
 import views.html.login.*;
 import views.html.itempage.*;
 import views.html.trainerprofile.*;
+import views.html.dashboard.*;
 import static play.data.Form.form;
 
 public class Application extends Controller {
@@ -364,7 +365,8 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cusinfoeditsubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
-		Logger.info(cusForm.get().getName());
+		Logger.info(cusForm.get().getPhone());
+		Logger.info(cusForm.get().getEmail());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
 		return redirect(routes.Application.cusinfo());
@@ -607,9 +609,17 @@ public class Application extends Controller {
 	@Transactional
 	public static Result traineraddcoursesubmit() {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
-		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm.get());
+		courseForm.get();
+		Logger.info("papapalala");
+//		CourseHandler ch = new CourseHandler();
+//		ch.addNewCourse(session().get("connected"), courseForm.get());
+//		Logger.info("heheheheh");
 		return redirect(routes.Application.trainercourseverifying());
+	}
+	
+	@Transactional
+	public static Result dashCourseRequest() {
+		return ok(Course_request.render());
 	}
 
 }

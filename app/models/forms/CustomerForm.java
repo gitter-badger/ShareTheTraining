@@ -1,5 +1,6 @@
 package models.forms;
 
+import play.Logger;
 import models.locations.Location;
 import models.users.Customer;
 import models.users.User;
@@ -64,7 +65,7 @@ public class CustomerForm extends UserForm {
 	@Override
 	public boolean bindUser(User user) {
 		if (user == null || user.getUserRole() != UserRole.CUSTOMER
-				|| user.getEmail() != this.getEmail())
+				|| !user.getEmail().equals(this.getEmail()))
 			return false;
 		Customer customer = (Customer) user;
 		customer.setCellPhone(cellPhone);
