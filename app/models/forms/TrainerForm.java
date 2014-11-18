@@ -110,7 +110,7 @@ public class TrainerForm extends UserForm {
 	@Override
 	public boolean bindUser(User user) {
 		if (user == null || user.getUserRole() != UserRole.CUSTOMER
-				|| user.getEmail() != this.getEmail())
+				|| !user.getEmail().equals(this.getEmail()))
 			return false;
 		Trainer trainer = (Trainer) user;
 		trainer.setCellPhone(cellPhone);
