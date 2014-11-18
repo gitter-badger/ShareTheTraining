@@ -20,20 +20,16 @@ public class AuthenticationHandlerTest extends BaseTest {
 	public void testRegister() {
 		AuthenticationHandler authenticationHandler = new AuthenticationHandler();
 		UserHandler userHandler = new UserHandler();
-		boolean reigsterResult = authenticationHandler.doRegister(
+		String confirmToken = authenticationHandler.doRegister(
 				"wjf3121@gmail.com", "hehe", "123", UserRole.CUSTOMER,
 				userHandler, new MailHandler());
-		assertThat(reigsterResult).isEqualTo(true);
+		assertThat(confirmToken).isNotNull();
 		User u = userHandler.getUserByEmail("wjf3121@gmail.com");
 		assertThat(u.getUserRole()).isEqualTo(UserRole.CUSTOMER);
 		assertThat(u.getUserStatus()).isEqualTo(UserStatus.INACTIVE);
-		ActionToken at = authenticationHandler.findToken("wjf3121@gmail.com",
-				UserAction.REGISTER);
-		String confirmToken = authenticationHandler.generateConfirmToken(at);
 		authenticationHandler.activateUser(confirmToken, userHandler);
 		u = userHandler.getUserByEmail("wjf3121@gmail.com");
 		assertThat(u.getUserStatus()).isEqualTo(UserStatus.ACTIVE);
-		this.getmEm().remove(at);
 		this.getmEm().remove(u);
 	}
 

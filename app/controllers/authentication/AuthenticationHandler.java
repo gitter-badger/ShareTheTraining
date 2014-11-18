@@ -38,19 +38,17 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	@Override
 	public User doLogin(String userEmail, String password, Context context,
 			IUserHandler userHandler) {
-		Logger.info(userEmail);
-		Logger.info(password);
 		User u = userHandler.getUserByEmail(userEmail);
 		if (u != null && Password.check(password, u.getPassword())) {
-			context.session().put("connected", u.getEmail());
-
+			if(u.getUserStatus() != UserStatus.ACTIVE)
+				context.session().put("connected", u.getEmail());
 			return u;
 		}
 		return null;
 	}
 
 	@Override
-	public boolean doRegister(String userEmail, String userName,
+	public String doRegister(String userEmail, String userName,
 			String password, UserRole userRole, IUserHandler userHandler,
 			IMailHandler mailHandler) {
 		try {
@@ -62,13 +60,13 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 				String confirmToken = generateConfirmToken(actionToken);
 				mailHandler.sendMailWithToken(userName, userEmail,
 						confirmToken, UserAction.REGISTER);
-				return true;
+				return confirmToken;
 			}
 		} catch (Exception e) {
 			Logger.error(e.toString());
-			return false;
+			return null;
 		}
-		return true;
+		return null;
 	}
 
 	@Override
@@ -133,11 +131,13 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 	}
 
 	private boolean vaildateToken(ActionToken actionToken) {
-		return actionToken != null
+		boolean result = actionToken != null
 				&& actionToken.getExpireDate().after(new Date());
+		em.remove(actionToken);
+		return result;
 	}
 
-	public String generateConfirmToken(ActionToken actionToken) {
+	private String generateConfirmToken(ActionToken actionToken) {
 		return actionToken.getToken()
 				+ "*"
 				+ Base64.encodeBase64URLSafeString(actionToken.getUserEmail()

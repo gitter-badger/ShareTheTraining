@@ -197,6 +197,8 @@ public class CourseHandler implements ICourseHandler {
 	public CourseOrder registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId) {
 		try {
+			if(concreteCourse == null || customer == null)
+				return null;
 			if (concreteCourse.getStatus() == ConcreteCourseStatus.VERIFYING
 					|| concreteCourse.getStatus() == ConcreteCourseStatus.FINISHED
 					|| concreteCourse.getSelectedCustomers().size() == concreteCourse

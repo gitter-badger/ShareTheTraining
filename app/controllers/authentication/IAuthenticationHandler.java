@@ -10,7 +10,7 @@ public interface IAuthenticationHandler {
 	public User doLogin(String userEmail, String password,
 			Context context, IUserHandler userHandler);
 
-	public boolean doRegister(String userEmail, String userName,
+	public String doRegister(String userEmail, String userName,
 			String password, UserRole userRole, IUserHandler userHandler,
 			IMailHandler mailHandler);
 

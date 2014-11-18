@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Lob;
@@ -55,7 +56,8 @@ public class Course extends BaseModelObject {
 
 	private String methods;
 
-	private String keyPoints;
+	@ElementCollection
+	private List<String> keyPoints;
 
 	private int popularity = 0;
 
@@ -214,13 +216,6 @@ public class Course extends BaseModelObject {
 		this.methods = methods;
 	}
 
-	public String getKeyPoints() {
-		return keyPoints;
-	}
-
-	public void setKeyPoints(String keyPoints) {
-		this.keyPoints = keyPoints;
-	}
 
 	public int getPopularity() {
 		return popularity;
@@ -268,6 +263,14 @@ public class Course extends BaseModelObject {
 
 	public void setReviews(Collection<Review> reviews) {
 		this.reviews = reviews;
+	}
+
+	public List<String> getKeyPoints() {
+		return keyPoints;
+	}
+
+	public void setKeyPoints(List<String> keyPoints) {
+		this.keyPoints = keyPoints;
 	}
 
 }
