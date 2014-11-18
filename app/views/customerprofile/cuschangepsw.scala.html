@@ -9,20 +9,21 @@
 					<hr>
 
 					<div class="col-sm-12 col-md-8 col-md-push-1">
-						<form role="form" action="#" method="post" id="changePass">
+						<form role="form" action="@routes.Application.cuschangepswsubmit()" method="post" id="changePass">
+						@flash.get("error")
 							<div class="form-group">
 								<label for="oldPass">Original password</label>
-								<input type="password" name="oldPass" class="form-control required" id="oldPass" placeholder="">
+								<input type="password" name="oldpsw" class="form-control required" id="oldpsw" placeholder="">
 							</div>
 							<div class="form-group">
 								<label for="newPass">New password</label>
-								<input type="password" name="newPass" class="form-control required" id="newPass">
+								<input type="password" name="newpass" class="form-control required" id="newpass">
 							</div>
 							<div class="form-group">
 								<label for="reNewPass">Confirm New password</label>
-								<input type="password" name="reNewPass" class="form-control required" id="reNewPass">
+								<input type="password" name="renewpass" class="form-control required" id="renewpass">
 							</div>
-						</form>
+						
 					</div>
 					<div class="col-sm-12 col-md-12">
 						<div class="col-sm-6 col-md-4 col-md-push-2">
@@ -32,6 +33,7 @@
 							<button class="btn btn-default btn-lg">Cancel</button>
 						</div>
 					</div>
+					</form>
 				</div><!-- /.col --><!-- End of main -->
 			</div><!-- /.row -->
 		</div><!-- /.container -->

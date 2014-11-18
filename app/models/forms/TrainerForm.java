@@ -26,6 +26,18 @@ public class TrainerForm extends UserForm {
 	// how far are you willing to travel to deliver a course without travel
 	// reimbursement
 	private String howfar;
+	
+	private String company;
+	
+	
+
+	public String getCompany() {
+		return company;
+	}
+
+	public void setCompany(String company) {
+		this.company = company;
+	}
 
 	public String getName() {
 		return name;

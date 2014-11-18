@@ -34,6 +34,16 @@ public class ConcreteCourseForm {
 	private String eventbriteId;
 
 	private ConcreteCourseStatus status = ConcreteCourseStatus.VERIFYING;
+	
+	private String roomset;
+
+	public String getRoomset() {
+		return roomset;
+	}
+
+	public void setRoomset(String roomset) {
+		this.roomset = roomset;
+	}
 
 	public Collection<Customer> getSelectedCustomers() {
 		return selectedCustomers;

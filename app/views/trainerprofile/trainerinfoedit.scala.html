@@ -1,1 +1,68 @@
+@import models.users._
+@(trainer: Trainer)
 
+@main("trianerinfoedit"){
+<section class="wrapper-sm bg-highlight">
+		<div class="container">
+			<div class="row">
+				@trainersidebar()
+				<form action="@routes.Application.trainerinfoeditsubmit()" method="post">
+				<!-- Main -->
+				<div class="col-sm-12 col-md-9" id="basic info">
+					<div class="col-sm-12 col-md-12">
+						<div class="col-sm-12 col-md-7">
+							<h2>Trainer Information</h2>
+						</div>
+						<button class="btn btn-primary btn-md">Confirm</button>
+						<a href="userTrainerInfo.html "class="btn btn-default btn-md">Cancel</a>
+					</div>
+					<hr>
+					<div class="col-sm-12 col-md-12">
+						<div class="row" >
+							<div class="col-sm-12 col-md-8 col-md-push-1">
+								<form role="form" action="#" id="edit" method="post">
+									<ul class="list-group">
+										<div class="panel panel-secondary">
+											<div class="panel-heading">
+												<h4 class="panel-title">Company Name</h4>
+											</div>
+											<li class="list-group-item form-group">
+												<input value="@trainer.getCompany()" class="form-control required" type="text" name="company" id="company" placeholder="@trainer.getCompany()" size="67">
+											</li>
+											<div class="panel-heading">
+												<h4 class="panel-title">Education</h4>
+											</div>
+											<li class="list-group-item form-group">
+												<textarea value="@trainer.getEducation()" name="education" id="education" class="form-control" cols="30" rows="3" placeholder="@trainer.getEducation()"></textarea>
+											</li>
+											<div class="panel-heading">
+												<h4 class="panel-title">Working Experience</h4>
+											</div>
+											<li class="list-group-item form-group">
+												<textarea value="@trainer.getExperience" name="experience" id="experience" class="form-control" cols="30" rows="3" placeholder="@trainer.getExperience"></textarea>
+											</li>
+											<div class="panel-heading">
+												<h4 class="panel-title">Certifications</h4>
+											</div>
+											<li class="list-group-item form-group">
+												<textarea value="@trainer.getCertification()" name="certification" id="certification" class="form-control" cols="30" rows="3" placeholder="@trainer.getCertification()"></textarea>
+											</li>
+											<div class="panel-heading">
+												<h4 class="panel-title">Distance to deliever a course</h4>
+											</div>
+											<li class="list-group-item form-group">
+												<input value="@trainer.getHowFar()" class="form-control required" type="text" name="far" id="far" size="67" placeholder="@trainer.getHowFar()">
+											</li>
+										</div><!-- /.panel -->
+									</ul>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div><!-- /.col --><!-- End of main -->
+				</form>
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+
+}

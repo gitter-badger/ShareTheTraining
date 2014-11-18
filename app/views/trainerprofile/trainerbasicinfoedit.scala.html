@@ -1,5 +1,5 @@
 @import models.users._
-@(cus: Customer)(states: List[String])
+@(trainer: Trainer)(states: List[String])
 
 
 
@@ -9,14 +9,14 @@
 <section class="wrapper-sm bg-highlight">
 		<div class="container">
 			<div class="row">
-			@cussidebar()
+			@trainersidebar()
 			<!-- Main -->
 				<div class="col-sm-12 col-md-9" id="basic edit">
 					<div class="col-sm-12 col-md-12">
 						<div class="col-sm-12 col-md-8">
 							<h2>Basic Information</h2>
 						</div>
-						<form role="form" action="@routes.Application.cusinfoeditsubmit()" id="edit" method="post">
+						<form role="form" action="@routes.Application.trainerbasicinfoeditsubmit()" id="edit" method="post">
 						<button type="submit" class="btn btn-primary btn-md">Confirm</button>
 						<a href="userBasicInfo.html "class="btn btn-default btn-md">Cancel</a>
 					</div>
@@ -43,25 +43,25 @@
 											<div class="col-md-4">
 												<h4>Name:</h4>
 											</div>
-											 <h4><span class="text-primary"><input value="@cus.getName()" type="text" name="name" id="name" placeholder="@cus.getName()"></span></h4>
+											 <h4><span class="text-primary"><input value="@trainer.getName()" type="text" name="name" id="name" placeholder="@trainer.getName()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Email:</h4>
 											</div>
-											 <h4><span class="text-primary"><input value="@cus.getEmail()" type="email" name="email" id="email" placeholder="@cus.getEmail()" readonly></span></h4>
+											 <h4><span class="text-primary"><input value="@trainer.getEmail()" type="email" name="email" id="email" placeholder="@trainer.getEmail()" readonly></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Phone:</h4>
 											</div>
-											 <h4><span class="text-primary"><input type="tel" name="phone" id="phone" placeholder="@cus.getPhone()"></span></h4>
+											 <h4><span class="text-primary"><input value="@trainer.getPhone()" type="tel" name="phone" id="phone" placeholder="@trainer.getPhone()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 											<div class="col-md-4">
 												<h4>Address:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="location.detailedLoc" id="location.detailedLoc" placeholder="@cus.getLocation().getDetailedLoc()"></span></h4>
+											 <h4><span class="text-primary"><input value="@trainer.getLocation().getDetailedLoc()" name="location.detailedLoc" id="location.detailedLoc" placeholder="@trainer.getLocation().getDetailedLoc()"></span></h4>
 										</li>
 										<li class="list-group-item form-group">
 										<div class="col-md-4">
@@ -69,7 +69,7 @@
 											</div>
 											<select onchange="showCity(this.value)" style="max-width:50%;" class="form-control show-tick" title='Choose One' data-style="btn-primary" name="location.region" id="location.region">
 												<optgroup label="State:">
-													<option value="@cus.getLocation().getRegion()" selected>@cus.getLocation().getRegion()</option>
+													<option value="@trainer.getLocation().getRegion()" selected>@trainer.getLocation().getRegion()</option>
 												@for(s <- states){
 													<option value="@s">@s</option>
 													}
@@ -81,7 +81,7 @@
 												<h4>City:</h4>
 											</div>
 											<select class="form-control show-tick" style="max-width:50%;" data-style="btn-primary " name="location.city" id="location.city">
-												<option value="@cus.getLocation().getCity()" selected>@cus.getLocation().getCity()</option>
+												<option value="@trainer.getLocation().getCity()" selected>@trainer.getLocation().getCity()</option>
 											</select> 
 										</li>
 										<li class="list-group-item form-group">
@@ -94,7 +94,7 @@
 											<div class="col-md-4">
 												<h4>Username:</h4>
 											</div>
-											 <h4><span class="text-primary"><input name="username" id="username" placeholder="@cus.getUsername"></span></h4>
+											 <h4><span class="text-primary"><input value="@trainer.getUsername" name="username" id="username" placeholder="@trainer.getUsername"></span></h4>
 										</li>
 									</ul>
 								</form>

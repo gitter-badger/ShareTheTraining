@@ -1,290 +1,350 @@
-@import models.courses._
-@(course: Course)
-
-
+@import models.courses._ 
+@(course: Course) 
 
 @main("item page"){
 <section class="wrapper-sm bg-highlight">
-		<div class="container">
-			<div class="row">
-				@searchview.searchsidebar()
+	<div class="container">
+		<div class="row">
+			@searchview.searchsidebar()
 
-<!-- Main -->
-				<!-- Main -->
-				<div class="col-sm-12 col-md-9">
-					<article class="post">
-						<h2>Assertive Communication to Reach Your Goals</h2>
-						<hr>
-
-						<div class="row">
-							<div class="col-sm-12 col-md-5">
-								<ul class="list-unstyled">
-									
-									<li><h4><i class="fa fa-fw fa-dollar"></i> Price: <span class="text-primary">@course.getPrice()</span></h4></li>
-									<li><h4><i class="fa fa-fw fa-location-arrow"></i> From: 
-										<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">XXX company</a></h4>
-									</li>
-									<li><h4><i class="fa fa-fw fa-male"></i>Trainer: 
-										<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">Sinclair Rimmon</a></h4>
-									</li>
-									<li><h4><i class="fa fa-fw fa-signal"></i>Location: <span class="text-primary">
-										<ul class="tags">
-											<li><a href="#link">Downtown LA</a></li>
-											<li><a href="#link">Santa Monica LA</a></li>
-											<li><a href="#link">San Gaberiel Valley LA</a></li>
-										</ul></span></h4>
-									</li>
-								</ul>
-								<button type="submit" class="btn btn-primary btn-lg btn-block">Book Online</button>
-
-							</div>
-							<div class="col-sm-12 col-md-5 col-md-push-2">
-								<div class="panel panel-secondary">
-									<div class="panel-heading">
-										<h3 class="panel-title">Share with Friends</h3>
-									</div>
-									@socialshare(course)
-								</div><!-- /.panel -->
-								<h4><i class="fa fa-fw fa-list"></i> Note: <span class="text-primary">Include lunch</span></h4>
-							</div>
-						</div>
-
-						<hr>
-
-						<div class="row">
-							<div class="col-sm-12 col-md-12">
-								<ul class="nav nav-tabs">
-									<li><a href="#tab-5" data-toggle="tab">Overview &amp; Style</a></li>
-									<li><a href="#tab-6" data-toggle="tab">Key Points</a></li>
-									<li  class="active"><a href="#tab-7" data-toggle="tab">Schedules</a></li>
-								</ul>
-
-								<div id="myTabContent" class="tab-content">
-									<div class="tab-pane fade  in" id="tab-5">
-										<h3 class="headline">Overview &amp; Style:</h3>
-										<!-- Carousel -->
-										<div id="my-carousel" class="carousel slide">
-											<!-- indicators -->
-											<ol class="carousel-indicators">
-												<li data-target="#my-carousel" data-slide-to="0" class="active"></li>
-												<li data-target="#my-carousel" data-slide-to="1"></li>
-											</ol>
-											<!-- carousel -->
-											<div class="carousel-inner">
-												<div class="item active">
-													<img class="img-responsive" src="assets/img/slide-1.jpg" alt="1200x500" >
-												</div><!-- /.item -->
-												<div class="item">
-													<img class="img-responsive" src="assets/img/slide-1.jpg" alt="1200x500" >
-												</div><!-- /.item -->
-											</div><!-- /.carousel-inner -->
-											<!-- Controls -->
-											<a class="left carousel-control" href="#my-carousel" data-slide="prev">
-												<span class="glyphicon glyphicon-chevron-left"></span>
-											</a>
-											<a class="right carousel-control" href="#my-carousel" data-slide="next">
-												<span class="glyphicon glyphicon-chevron-right"></span>
-											</a>
-										</div><!-- /.carousel -->
-										<p>What you'll learn in this business management course:
-										Our goal, at Illuminata Global(IG), is to enhance your individual Executive Presence. In this communication skills workshop, we do not provide our clients with acting techniques. Rather, we firmly believe that effective communication skills workshops focus on tangible business appropriate skills, tools and techniques that will solidify a Presence that is uniquely your own, ensuring that your message will always resonate with your audience and, more importantly, always be acted upon.</p>
-										<p>Do you need to improve your ability to: handle hostile or challenging questions; off-topic discussions; and/or your ability to "think-on-your-feet"? If so, our publicly held Executive Presence perfect for you!</p>
-										<p>Every experienced presenter has at some point in their careers lost control of their presentation. By participating in one of IG’s publicly held Executive Presence workshops, IG’s exceptional Trainers will provide you with real-world tested techniques that ensure you will always effectively respond to any challenging situation, while always remaining in control of the presentation.</p>
-
-										<h4><i class="fa fa-fw fa-signal"></i>Method:</h4>
-										<h5>lecture. discussion. large group exercises. individual exercises.</h5>
-									</div>
-									<div class="tab-pane fade" id="tab-6">
-										<h3 class="headline">Key Points:</h3>
-										<ul class="list-unstyled">
-											<li><i class="fa fa-fw fa-th"></i> <strong>Property:</strong> 1.460 Ft<sup>2</sup></li>
-											<li><i class="fa fa-fw fa-calendar"></i> <strong>Year Built:</strong> 1890</li>
-											<li><i class="fa fa-fw fa-columns"></i> <strong>Bedrooms:</strong> 2</li>
-											<li><i class="fa fa-fw fa-female"></i> <strong>Bathrooms:</strong> 1.5</li>
-											<li><i class="fa fa-fw fa-truck"></i> <strong>Garage:</strong> 2 Spots</li>
-											<li><i class="fa fa-fw fa-signal"></i> <strong>Internet:</strong> Wireless</li>
-											<li><i class="fa fa-fw fa-fire"></i> <strong>Heating Type:</strong> Forced air</li>
-											<li><i class="fa fa-fw fa-briefcase"></i> <strong>Last Sold:</strong> May 2006, for $106.000</li>
-										</ul>
-									</div>
-									@schedule(course)
-									
-								</div>
-							</div>
-						</div><!-- /.row -->
-					</article><!-- /.post -->
-
-					<div class="widget padding-sm bg-dark">
-						<h2 class="heading-md text-center text-light">Interest to this class?</h2>
-						<br class="spacer-md">
-						<form action="" class="form-inline">
-							<div class="row">
-								<div class="col-md-4 col-md-push-1">
-									<button class="btn btn-success btn-block btn-md" data-toggle="modal" data-target=".bs-modal-share"> Share with Friends
-									</button>
-								</div><!-- /.col -->
-								
-								<div class="col-md-4 col-md-push-3">
-									<button class="btn btn-primary btn-block btn-md">Book Online</button>
-								</div>
-							</div>
-						</form>
-					</div><!-- /.widget -->
-
-					<!-- Modal Share-->
-					<div class="modal fade bs-modal-share" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog ">
-					    	<div class="modal-content ">
-					      		<div class="modal-header">
-					      			<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					        		<h2 class="modal-title text-primary" id="myModalLabel">Share with Friends</h2>
-					      		</div>
-					      		<div class="modal-body">
-					      			<div class="col-md-3 col-md-push-1">
-					      				<a class="btn btn-default" href="#"><i class="fa fa-fw fa-envelope"></i></a>
-					      			</div>
-									<div class="col-md-2">
-										<a class="btn btn-facebook" href="#"><i class="fa fa-fw fa-facebook"></i></a>
-									</div>
-									<div class="col-md-2">
-										<a class="btn btn-pinterest" href="#"><i class="fa fa-fw fa-linkedin"></i></a>
-									</div>
-								</div>
-								<br/>
-								<div class="modal-footer">
-					        		<button type="button" class="btn btn-primary">Need help?</button>
-					        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					     		 </div>
-					    	</div>
-					  	</div>
-					</div>
-					<!-- Modal email-->
-					<div class="modal fade bs-modal-email" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-						<div class="modal-dialog ">
-					    	<div class="modal-content ">
-					      		<div class="modal-header">
-					        		<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-					        		<h3 class="modal-title text-primary" id="myModalLabel">Share via Email</h3>
-					      		</div>
-						      	<div class="modal-body">
-						      		<form role="form">
-						      			<div class="form-group">
-											<label for="example-contact-name">Your name</label>
-											<input type="password" class="form-control" id="example-contact-password" placeholder="Your name">
-										</div>
-										<div class="form-group">
-											<label for="exmaple-contact-email">Email address</label>
-											<input type="email" class="form-control" id="exmaple-contact-email" placeholder="Enter your friends' email">
-											<p>(Separate multiple email addresses with commas.)</p>
-										</div>
-										
-										<div>
-											<label for="example-contact-text">Text</label>
-												<textarea class="col-md-12 col-sm-12">Hey, I picked out a class on ShareTheTraining, I plan on taking sometime soon. Care to join in? &#13;&#10;Link:xxxx
-												</textarea>		
-										</div>
-										<br>
-										<div class="form-group">
-											<p><button type="submit" class="btn btn-success btn-lg btn-block">Send</button></p>
-										</div>
-									</form>
-								</div>
-								<br/>
-								<div class="modal-footer">
-					        		<button type="button" class="btn btn-primary">Need help?</button>
-					        		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					     		 </div>
-					    	</div>
-					  	</div>
-					</div>
+			<!-- Main -->
+			<!-- Main -->
+			<div class="col-sm-12 col-md-9">
+				<article class="post">
+					<h2>Assertive Communication to Reach Your Goals</h2>
 					<hr>
 
-					<!-- Suggestions -->
-					<h2>More suggestions:</h2>
-					<p class="lead">View similar items tailored for you</p>
+					<div class="row">
+						<div class="col-sm-12 col-md-5">
+							<ul class="list-unstyled">
+
+								<li><h4>
+										<i class="fa fa-fw fa-dollar"></i> Price: <span
+											class="text-primary">@course.getPrice()</span>
+									</h4></li>
+								<li><h4>
+										<i class="fa fa-fw fa-location-arrow"></i> From: <a title=""
+											data-container="body" data-toggle="popover"
+											data-placement="right"
+											data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+											data-original-title="Popover Title Here">XXX company</a>
+									</h4></li>
+								<li><h4>
+										<i class="fa fa-fw fa-male"></i>Trainer: <a title=""
+											data-container="body" data-toggle="popover"
+											data-placement="right"
+											data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
+											data-original-title="Popover Title Here">Sinclair Rimmon</a>
+									</h4></li>
+								<li><h4>
+										<i class="fa fa-fw fa-signal"></i>Location: <span
+											class="text-primary">
+											<ul class="tags">
+												<li><a href="#link">Downtown LA</a></li>
+												<li><a href="#link">Santa Monica LA</a></li>
+												<li><a href="#link">San Gaberiel Valley LA</a></li>
+											</ul>
+										</span>
+									</h4></li>
+							</ul>
+							<a onclick="window.open('http://www.eventbrite.com/event/13958679787?')" type="button" class="btn btn-primary btn-lg btn-block">Book
+								Online</a>
+
+						</div>
+						<div class="col-sm-12 col-md-5 col-md-push-2">
+							<div class="panel panel-secondary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Share with Friends</h3>
+								</div>
+								@socialshare(course)
+							</div>
+							<!-- /.panel -->
+							<h4>
+								<i class="fa fa-fw fa-list"></i> Note: <span
+									class="text-primary">Include lunch</span>
+							</h4>
+						</div>
+					</div>
+
+					<hr>
 
 					<div class="row">
-						<div class="col-sm-12 col-md-4">
-							<div class="thumbnail">
-								<div class="overlay-container">
-									<img src="assets/img/item-small.jpg">
-									<div class="overlay-content">
-										<h3 class="h4 headline">Overview &amp; Style</h3>
-										<p>So you know you're getting a top quality property from an experienced team.</p>
-									</div><!-- /.overlay-content -->
-								</div><!-- /.overlay-container -->
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-flag"></i> Presentation skills</p>
-								</div>
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101</p>
-									<p><i class="fa fa-fw fa-male"></i> Shamsian</p>
-								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to Oct. 29
-								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span> <a href="#link" class="btn btn-link pull-right">View <i class="fa fa-arrow-right"></i></a>
-								</div>
-							</div><!-- /.thumbnail -->
-						</div><!-- /.col -->
+						<div class="col-sm-12 col-md-12">
+							<ul class="nav nav-tabs">
+								<li><a href="#tab-5" data-toggle="tab">Overview &amp;
+										Style</a></li>
+								<li><a href="#tab-6" data-toggle="tab">Key Points</a></li>
+								<li class="active"><a href="#tab-7" data-toggle="tab">Schedules</a></li>
+							</ul>
 
-						<div class="col-sm-12 col-md-4">
-							<div class="thumbnail">
-								<div class="overlay-container">
-									<img src="assets/img/item-small.jpg">
-									<div class="overlay-content">
-										<h3 class="h4 headline">Overview &amp; Style</h3>
-										<p>So you know you're getting a top quality property from an experienced team.</p>
-									</div><!-- /.overlay-content -->
-								</div><!-- /.overlay-container -->
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-flag"></i> Presentation skills</p>
+							<div id="myTabContent" class="tab-content">
+								<div class="tab-pane fade  in" id="tab-5">
+									@course.getCourseDesc()
 								</div>
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101</p>
-									<p><i class="fa fa-fw fa-male"></i> Shamsian</p>
+								<div class="tab-pane fade" id="tab-6">
+									<h3 class="headline">Key Points:</h3>
+									<ul class="list-unstyled">
+										<li><i class="fa fa-fw fa-th"></i> <strong>KeyPoints:</strong>
+											@course.getKeyPoints</li>
+										
+									</ul>
 								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to Oct. 29
-								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span> <a href="#link" class="btn btn-link pull-right">View <i class="fa fa-arrow-right"></i></a>
-								</div>
-							</div><!-- /.thumbnail -->
-						</div><!-- /.col -->
+								@schedule(course)
 
-						<div class="col-sm-12 col-md-4">
-							<div class="thumbnail">
-								<div class="overlay-container">
-									<img src="assets/img/item-small.jpg">
-									<div class="overlay-content">
-										<h3 class="h4 headline">Overview &amp; Style</h3>
-										<p>So you know you're getting a top quality property from an experienced team.</p>
-									</div><!-- /.overlay-content -->
-								</div><!-- /.overlay-container -->
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-flag"></i> Presentation skills</p>
-								</div>
-								<div class="thumbnail-meta">
-									<p><i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101</p>
-									<p><i class="fa fa-fw fa-male"></i> Shamsian</p>
-								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to Oct. 29
-								</div>
-								<div class="thumbnail-meta">
-									<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span> <a href="#link" class="btn btn-link pull-right">View <i class="fa fa-arrow-right"></i></a>
-								</div>
-							</div><!-- /.thumbnail -->
-						</div><!-- /.col -->
-						
-					</div><!-- /.row --> <!-- End of suggestions -->
+							</div>
+						</div>
+					</div>
+					<!-- /.row -->
+				</article>
+				<!-- /.post -->
 
-				</div><!-- /.col -->
-				<!-- End of main -->
-				</div><!-- /.row -->
-		</div><!-- /.container -->
-	</section>
+				<div class="widget padding-sm bg-dark">
+					<h2 class="heading-md text-center text-light">Interest to this
+						class?</h2>
+					<br class="spacer-md">
+					<form action="" class="form-inline">
+						<div class="row">
+							<div class="col-md-4 col-md-push-1">
+								<button class="btn btn-success btn-block btn-md"
+									data-toggle="modal" data-target=".bs-modal-share">
+									Share with Friends</button>
+							</div>
+							<!-- /.col -->
+
+							<div class="col-md-4 col-md-push-3">
+								<button class="btn btn-primary btn-block btn-md">Book
+									Online</button>
+							</div>
+						</div>
+					</form>
+				</div>
+				<!-- /.widget -->
+
+				<!-- Modal Share-->
+				<div class="modal fade bs-modal-share" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog ">
+						<div class="modal-content ">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<h2 class="modal-title text-primary" id="myModalLabel">Share
+									with Friends</h2>
+							</div>
+							<div class="modal-body">
+								<div class="col-md-3 col-md-push-1">
+									<a class="btn btn-default" href="#" data-toggle="modal"
+										data-target=".bs-modal-email"><i
+										class="fa fa-fw fa-envelope"></i></a>
+								</div>
+								<div class="col-md-2">
+									<a class="btn btn-facebook" href="#"
+										onclick="window.open('https://www.facebook.com/dialog/feed?app_id=514941575275843&display=popup&caption=An%20example%20caption&link=https%3A%2F%2Fsina.com%2F@course.getId()&picture=http://d2wz2qkj9kqukm.cloudfront.net/images/course/1006/title/fusion_dance_studios_53ae81cadc96c.jpg&redirect_uri=https://www.facebook.com')">
+										<i class="fa fa-fw fa-facebook"></i>
+									</a>
+								</div>
+								<div class="col-md-2">
+									<a class="btn btn-pinterest"
+										onclick="window.open('http://www.linkedin.com/shareArticle?mini=true&url=http://localhost:9000/itempage/@course.getId()&title=@course.getCourseName&summary=aaa&source=stackoverflow.com','template_window','550','400','yes','center')"><i
+										class="fa fa-fw fa-linkedin"></i></a>
+								</div>
+							</div>
+							<br />
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary">Need
+									help?</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Modal email-->
+				<div class="modal fade bs-modal-email" tabindex="-1" role="dialog"
+					aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog ">
+						<div class="modal-content ">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal">
+									<span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+								</button>
+								<h3 class="modal-title text-primary" id="myModalLabel">Share
+									via Email</h3>
+							</div>
+							<div class="modal-body">
+								<form role="form">
+									<div class="form-group">
+										<label for="example-contact-name">Your name</label> <input
+											type="password" class="form-control"
+											id="example-contact-password" placeholder="Your name">
+									</div>
+									<div class="form-group">
+										<label for="exmaple-contact-email">Email address</label> <input
+											type="email" class="form-control" id="exmaple-contact-email"
+											placeholder="Enter your friends' email">
+										<p>(Separate multiple email addresses with commas.)</p>
+									</div>
+
+									<div>
+										<label for="example-contact-text">Text</label>
+										<textarea class="col-md-12 col-sm-12">Hey, I picked out a class on ShareTheTraining, I plan on taking sometime soon. Care to join in? &#13;&#10;Link:xxxx
+												</textarea>
+									</div>
+									<br>
+									<div class="form-group">
+										<p>
+											<button type="submit"
+												class="btn btn-success btn-lg btn-block">Send</button>
+										</p>
+									</div>
+								</form>
+							</div>
+							<br />
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary">Need
+									help?</button>
+								<button type="button" class="btn btn-default"
+									data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<hr>
+
+				<!-- Suggestions -->
+				<h2>More suggestions:</h2>
+				<p class="lead">View similar items tailored for you</p>
+
+				<div class="row">
+					<div class="col-sm-12 col-md-4">
+						<div class="thumbnail">
+							<div class="overlay-container">
+								<img src="assets/img/item-small.jpg">
+								<div class="overlay-content">
+									<h3 class="h4 headline">Overview &amp; Style</h3>
+									<p>So you know you're getting a top quality property from
+										an experienced team.</p>
+								</div>
+								<!-- /.overlay-content -->
+							</div>
+							<!-- /.overlay-container -->
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-flag"></i> Presentation skills
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101
+								</p>
+								<p>
+									<i class="fa fa-fw fa-male"></i> Shamsian
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to
+								Oct. 29
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span>
+								<a href="#link" class="btn btn-link pull-right">View <i
+									class="fa fa-arrow-right"></i></a>
+							</div>
+						</div>
+						<!-- /.thumbnail -->
+					</div>
+					<!-- /.col -->
+
+					<div class="col-sm-12 col-md-4">
+						<div class="thumbnail">
+							<div class="overlay-container">
+								<img src="assets/img/item-small.jpg">
+								<div class="overlay-content">
+									<h3 class="h4 headline">Overview &amp; Style</h3>
+									<p>So you know you're getting a top quality property from
+										an experienced team.</p>
+								</div>
+								<!-- /.overlay-content -->
+							</div>
+							<!-- /.overlay-container -->
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-flag"></i> Presentation skills
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101
+								</p>
+								<p>
+									<i class="fa fa-fw fa-male"></i> Shamsian
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to
+								Oct. 29
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span>
+								<a href="#link" class="btn btn-link pull-right">View <i
+									class="fa fa-arrow-right"></i></a>
+							</div>
+						</div>
+						<!-- /.thumbnail -->
+					</div>
+					<!-- /.col -->
+
+					<div class="col-sm-12 col-md-4">
+						<div class="thumbnail">
+							<div class="overlay-container">
+								<img src="assets/img/item-small.jpg">
+								<div class="overlay-content">
+									<h3 class="h4 headline">Overview &amp; Style</h3>
+									<p>So you know you're getting a top quality property from
+										an experienced team.</p>
+								</div>
+								<!-- /.overlay-content -->
+							</div>
+							<!-- /.overlay-container -->
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-flag"></i> Presentation skills
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<p>
+									<i class="fa fa-fw fa-map-marker"></i> San Diego, CA 92101
+								</p>
+								<p>
+									<i class="fa fa-fw fa-male"></i> Shamsian
+								</p>
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-info-circle"></i> Upcoming: Oct. 25 to
+								Oct. 29
+							</div>
+							<div class="thumbnail-meta">
+								<i class="fa fa-fw fa-dollar"></i> <span class="h3">350.000</span>
+								<a href="#link" class="btn btn-link pull-right">View <i
+									class="fa fa-arrow-right"></i></a>
+							</div>
+						</div>
+						<!-- /.thumbnail -->
+					</div>
+					<!-- /.col -->
+
+				</div>
+				<!-- /.row -->
+				<!-- End of suggestions -->
+
+			</div>
+			<!-- /.col -->
+			<!-- End of main -->
+		</div>
+		<!-- /.row -->
+	</div>
+	<!-- /.container -->
+</section>
 
 }

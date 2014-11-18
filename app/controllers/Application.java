@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
+import common.Password;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -46,6 +48,7 @@ import models.forms.CourseFilterForm;
 import models.forms.CourseForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
+import models.forms.NewPswForm;
 import models.forms.TrainerForm;
 import models.forms.UserForm;
 import models.locations.Geolocation;
@@ -155,6 +158,8 @@ public class Application extends Controller {
 		ah.activateUser(token, uh);
 		return TODO;
 	}
+	
+	
 
 	@Transactional
 	public static Result resetpsw(String token) {
@@ -272,6 +277,16 @@ public class Application extends Controller {
 
 		return null;
 	}
+	
+	@Transactional
+	public static Result createOrder(String orderId, String eventbriteId){
+		Logger.info(orderId);
+		Logger.info(eventbriteId);
+		CourseHandler ch = new CourseHandler();
+//		ch.registerCourse(customer, concreteCourse, orderId)
+		
+		return TODO;
+	}
 
 	@Transactional
 	public static Result trainerschedule() {
@@ -346,6 +361,7 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cusinfoeditsubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
+		Logger.info(cusForm.get().getName());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
 		return redirect(routes.Application.cusinfo());
@@ -354,6 +370,23 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cuschangepsw() {
 		return ok(cuschangepsw.render());
+	}
+	
+	@Transactional
+	public static Result cuschangepswsubmit() throws Exception{
+		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
+		Logger.info(npf.get().getOldpsw());
+		UserHandler uh = new UserHandler();
+		Customer customer = (Customer) uh.getUserByEmail(session().get("connected"));
+		String password = customer.getPassword();
+		
+		if(Password.check(npf.get().getOldpsw(), password)==false){
+			flash("error", "original password is incorrect");
+			return redirect(routes.Application.cuschangepsw());
+		}
+		customer.setPassword(npf.get().getNewpsw());
+		
+		return redirect(routes.Application.profile(null, null));
 	}
 
 	@Transactional
@@ -507,7 +540,29 @@ public class Application extends Controller {
 				.get("connected"));
 		return ok(trainerbasicinfo.render(trainer));
 	}
+	
+	
+	
+	@Transactional
+	public static Result trainerbasicinfoedit(){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session().get(
+				"connected"));
+		LocationHandler lh = new LocationHandler();
+		List<String> stateList = LocationHandler.getStateList();
 
+		return ok(trainerbasicinfoedit.render(trainer, stateList));
+	}
+	
+	@Transactional
+	public static Result trainerbasicinfoeditsubmit(){
+		Form<TrainerForm> trainerForm = form(TrainerForm.class).bindFromRequest();
+		Logger.info(trainerForm.get().getName());
+		IUserHandler uh = new UserHandler();
+		uh.updateProfile(session().get("connected"), trainerForm.get());
+		return redirect(routes.Application.trainerbasicinfo());
+	}
+	
 	@Transactional
 	public static Result trainerinfo() {
 		UserHandler uh = new UserHandler();
@@ -516,6 +571,29 @@ public class Application extends Controller {
 
 		return ok(trainerinfo.render(trainer));
 	}
+	
+	@Transactional
+	public static Result trainerinfoedit(){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session().get(
+				"connected"));
+		return ok(trainerinfoedit.render(trainer));
+	}
+	
+	@Transactional
+	public static Result trainerinfoeditsubmit(){
+		Form<TrainerForm> trainerForm = form(TrainerForm.class).bindFromRequest();
+		Logger.info(trainerForm.get().getName());
+		IUserHandler uh = new UserHandler();
+		uh.updateProfile(session().get("connected"), trainerForm.get());
+		return redirect(routes.Application.trainerinfo());
+	}
+	
+	
+	
+	
+
+	
 
 	@Transactional
 	public static Result traineraddcourse() {
@@ -532,7 +610,7 @@ public class Application extends Controller {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
 		CourseHandler ch = new CourseHandler();
 		ch.addNewCourse(session().get("connected"), courseForm.get());
-		return ok();
+		return redirect(routes.Application.trainercourseverifying());
 	}
 
 }
