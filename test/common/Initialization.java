@@ -16,6 +16,7 @@ import models.courses.CourseStatus;
 import models.locations.Location;
 import models.users.Customer;
 import models.users.Trainer;
+import models.users.UserStatus;
 
 public class Initialization {
 	public Initialization(EntityManager entityManager) {
@@ -69,6 +70,7 @@ public class Initialization {
 		concreteCourse3.setMinimum(1);
 		concreteCourse3.setMaximum(2);
 		customer1 = Customer.create("qnmb", "xixihaha", "lala", em);
+		customer1.setUserStatus(UserStatus.ACTIVE);
 		
 	}
 
