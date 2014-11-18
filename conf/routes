@@ -48,7 +48,7 @@ POST   /trainerinfoeditsubmit       controllers.Application.trainerinfoeditsubmi
 POST   /trainerbasicinfoeditsubmit  controllers.Application.trainerbasicinfoeditsubmit()
 
 #order
-GET    /createorder                 controllers.Application.createorder(orderId: String ?= null, eventbriteId: String ?= null)
+GET    /createorder                 controllers.Application.createOrder(orderId: String ?= null, eventbriteId: String ?= null)
 
 
 #calendar

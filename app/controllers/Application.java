@@ -158,8 +158,6 @@ public class Application extends Controller {
 		ah.activateUser(token, uh);
 		return TODO;
 	}
-	
-	
 
 	@Transactional
 	public static Result resetpsw(String token) {
@@ -277,15 +275,20 @@ public class Application extends Controller {
 
 		return null;
 	}
-	
+
 	@Transactional
-	public static Result createOrder(String orderId, String eventbriteId){
+	public static Result createOrder(String orderId, String eventbriteId) {
 		Logger.info(orderId);
 		Logger.info(eventbriteId);
+		if(session().get("connected")==null){
+			flash("error", "your order is failed because you log out");
+		}
 		CourseHandler ch = new CourseHandler();
-//		ch.registerCourse(customer, concreteCourse, orderId)
-		
-		return TODO;
+		ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
+				"connected")), ch.getCourseByEventbriteId(eventbriteId),
+				orderId);
+
+		return redirect(routes.Application.profile());
 	}
 
 	@Transactional
@@ -371,22 +374,24 @@ public class Application extends Controller {
 	public static Result cuschangepsw() {
 		return ok(cuschangepsw.render());
 	}
-	
+
 	@Transactional
-	public static Result cuschangepswsubmit() throws Exception{
+	public static Result cuschangepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
-		Logger.info(npf.get().getOldpsw());
+		Logger.info(npf.get().getOldpsw()+"nimabi");
+		Logger.info(npf.get().getNewpsw()+"nimabi");
 		UserHandler uh = new UserHandler();
-		Customer customer = (Customer) uh.getUserByEmail(session().get("connected"));
+		Customer customer = (Customer) uh.getUserByEmail(session().get(
+				"connected"));
 		String password = customer.getPassword();
-		
-		if(Password.check(npf.get().getOldpsw(), password)==false){
+
+		if (Password.check(npf.get().getOldpsw(), password) == false) {
 			flash("error", "original password is incorrect");
 			return redirect(routes.Application.cuschangepsw());
 		}
 		customer.setPassword(npf.get().getNewpsw());
-		
-		return redirect(routes.Application.profile(null, null));
+
+		return redirect(routes.Application.profile());
 	}
 
 	@Transactional
@@ -456,7 +461,7 @@ public class Application extends Controller {
 		mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
 		String json = "";
 		List<Map<String, String>> result = new ArrayList<Map<String, String>>();
-		
+
 		for (int i = 0; i < sdates.size(); i++) {
 			Map<String, String> map = new HashMap<String, String>();
 			map.put("title", "available day");
@@ -540,29 +545,28 @@ public class Application extends Controller {
 				.get("connected"));
 		return ok(trainerbasicinfo.render(trainer));
 	}
-	
-	
-	
+
 	@Transactional
-	public static Result trainerbasicinfoedit(){
+	public static Result trainerbasicinfoedit() {
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session().get(
-				"connected"));
+		Trainer trainer = (Trainer) uh.getUserByEmail(session()
+				.get("connected"));
 		LocationHandler lh = new LocationHandler();
 		List<String> stateList = LocationHandler.getStateList();
 
 		return ok(trainerbasicinfoedit.render(trainer, stateList));
 	}
-	
+
 	@Transactional
-	public static Result trainerbasicinfoeditsubmit(){
-		Form<TrainerForm> trainerForm = form(TrainerForm.class).bindFromRequest();
+	public static Result trainerbasicinfoeditsubmit() {
+		Form<TrainerForm> trainerForm = form(TrainerForm.class)
+				.bindFromRequest();
 		Logger.info(trainerForm.get().getName());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), trainerForm.get());
 		return redirect(routes.Application.trainerbasicinfo());
 	}
-	
+
 	@Transactional
 	public static Result trainerinfo() {
 		UserHandler uh = new UserHandler();
@@ -571,29 +575,24 @@ public class Application extends Controller {
 
 		return ok(trainerinfo.render(trainer));
 	}
-	
+
 	@Transactional
-	public static Result trainerinfoedit(){
+	public static Result trainerinfoedit() {
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session().get(
-				"connected"));
+		Trainer trainer = (Trainer) uh.getUserByEmail(session()
+				.get("connected"));
 		return ok(trainerinfoedit.render(trainer));
 	}
-	
+
 	@Transactional
-	public static Result trainerinfoeditsubmit(){
-		Form<TrainerForm> trainerForm = form(TrainerForm.class).bindFromRequest();
+	public static Result trainerinfoeditsubmit() {
+		Form<TrainerForm> trainerForm = form(TrainerForm.class)
+				.bindFromRequest();
 		Logger.info(trainerForm.get().getName());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), trainerForm.get());
 		return redirect(routes.Application.trainerinfo());
 	}
-	
-	
-	
-	
-
-	
 
 	@Transactional
 	public static Result traineraddcourse() {

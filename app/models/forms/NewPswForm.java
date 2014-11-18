@@ -3,7 +3,16 @@ package models.forms;
 public class NewPswForm {
 	private String oldpsw;
 	private String newpsw;
+	private String renewpass;
 	
+	
+	
+	public String getRenewpass() {
+		return renewpass;
+	}
+	public void setRenewpass(String renewpass) {
+		this.renewpass = renewpass;
+	}
 	public String getOldpsw() {
 		return oldpsw;
 	}
