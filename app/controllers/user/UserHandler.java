@@ -96,11 +96,6 @@ public class UserHandler implements IUserHandler {
 		}
 	}
 
-	@Override
-	public boolean writeReview() {
-		//TODO review stuff
-		return false;
-	}
 
 	@Override
 	public boolean updateProfile(String userEmail, UserForm form) {
