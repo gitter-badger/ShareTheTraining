@@ -157,7 +157,7 @@ public class Application extends Controller {
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
 		ah.activateUser(token, uh);
-		return TODO;
+		return ok(activatesuccess.render());
 	}
 
 	@Transactional

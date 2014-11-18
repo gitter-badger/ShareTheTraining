@@ -106,7 +106,6 @@ public class UserHandler implements IUserHandler {
 	public boolean updateProfile(String userEmail, UserForm form) {
 		try {
 			User user = this.getUserByEmail(form.getEmail());
-			
 			if (!userEmail.equals(form.getEmail()))
 				return false;
 			Logger.info(form.getEmail());
