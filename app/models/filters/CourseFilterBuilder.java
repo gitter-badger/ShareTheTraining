@@ -124,17 +124,22 @@ public class CourseFilterBuilder implements FilterBuilder {
 		if (locations.size() > 0) {
 			List<Predicate> locationQueries = new ArrayList<Predicate>();
 			for (Location location : locations) {
-				if (location.getCity() == null||location.getCity().equals("")) {
-					locationQueries.add(cb.equal(
-							locationRoot.<String> get("region"),
-							location.getRegion()));
-				} else {
-					Predicate q1 = cb.equal(
-							locationRoot.<String> get("region"),
-							location.getRegion());
-					Predicate q2 = cb.equal(locationRoot.<String> get("city"),
-							location.getCity());
-					locationQueries.add(cb.and(q1, q2));
+				if (location.getRegion() != null
+						&& !location.getRegion().equals("")) {
+					if (location.getCity() == null
+							|| location.getCity().equals("")) {
+						locationQueries.add(cb.equal(
+								locationRoot.<String> get("region"),
+								location.getRegion()));
+					} else {
+						Predicate q1 = cb.equal(
+								locationRoot.<String> get("region"),
+								location.getRegion());
+						Predicate q2 = cb.equal(
+								locationRoot.<String> get("city"),
+								location.getCity());
+						locationQueries.add(cb.and(q1, q2));
+					}
 				}
 			}
 			predicates.add(cb.or(locationQueries.toArray(new Predicate[] {})));
@@ -183,7 +188,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 	public void setLocations(List<Location> locations) {
 		this.locations = locations;
 	}
-
 
 	public void setTrainerRating(int trainerRating) {
 		this.trainerRating = trainerRating;
