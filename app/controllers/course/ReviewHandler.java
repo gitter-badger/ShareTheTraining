@@ -26,4 +26,5 @@ public class ReviewHandler implements IReviewHandler{
 			return (Review) result.iterator().next();
 		return null;
 	}
+	//TODO WRITE REVIEW, REVIEW SEARCH(?)
 }

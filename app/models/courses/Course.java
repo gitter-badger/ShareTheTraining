@@ -66,6 +66,8 @@ public class Course extends BaseModelObject {
 	private Date earliestDate;
 
 	private Date latestDate;
+	
+	private boolean displayRating;
 
 	@OneToMany
 	private Collection<Review> reviews = new ArrayList<Review>();
