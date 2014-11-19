@@ -42,6 +42,7 @@ public class Review extends BaseModelObject {
 
 	private int trainerRating;
 
+	
 	private Date date;
 
 	public ConcreteCourse getConcreteCourse() {
