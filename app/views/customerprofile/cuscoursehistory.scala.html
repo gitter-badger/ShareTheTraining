@@ -14,7 +14,14 @@
 				<div class="col-sm-12 col-md-11">
 					<h3 class="headline">All Courses:</h3>
 					@for(o <- order){
-					<div class="panel panel-success">
+					@if(o.getOrderStatus()=="DONE"){
+					<div class="panel panel-primary">
+					}@if(o.getOrderStatus()=="CANCELED"){
+					<div class="panel panel-secondary">
+					}@if(o.getOrderStatus()=="ORDERED"){
+					<div class="panel panel-warning">
+					}else{
+					<div class="panel panel-success">}
 						<div class="col-sm-12 col-md-7 panel-heading">
 							<h3 class="panel-title">@o.getOrderDate()</h3>
 						</div>
@@ -44,12 +51,15 @@
 											data-placement="top"
 											data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus."
 											data-original-title="Popover Title Here">
-											@o.getConcreteCourse().getCourseInfo().getTrainer()</button>
+											@o.getConcreteCourse().getCourseInfo().getTrainer().getName()</button>
 										</li>
 										<li><i class="fa fa-fw fa-columns"></i>Start Time: 
-										@o.getConcreteCourse().getCourseDates()</li>
+										@o.getConcreteCourse().getCourseDate()</li>
 										<li><i class="fa fa-fw fa-truck"></i>Location: 
-										@o.getConcreteCourse().getLocation()</li>
+										@o.getConcreteCourse().getLocation().getDetailedLoc(),
+										@o.getConcreteCourse().getLocation().getCity(), 
+										@o.getConcreteCourse().getLocation().getRegion()
+										</li>
 										<li><i class="fa fa-fw fa-money"></i>Price: 
 										@o.getConcreteCourse().getCourseInfo().getPrice()</li>
 									</ul>

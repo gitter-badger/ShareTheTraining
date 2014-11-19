@@ -18,7 +18,7 @@
 				<tbody>
 					@for(c <- course.getCourses()){
 					<tr class="success">
-						<td>@c.getCourseDate().getDate()
+						<td>@c.getCourseDate()
 							<ul>
 								<li>(Meets:@for(d <- c.getCourseDates()){
 									@d.getMonth()/@d.getDate(), } )</li>

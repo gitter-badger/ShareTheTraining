@@ -1,11 +1,15 @@
 package models.filters;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 
 import play.data.Form;
+import models.courses.ConcreteCourse;
+import models.courses.Course;
 import models.forms.CourseFilterForm;
 
 
@@ -23,16 +27,25 @@ public class DateFilterHandler {
 			filterForm.get().getCfb().setEndDate(cal.getTime());
 		}
 		if(datec==2){
-			cal.add(Calendar.MONTH, 2);
+			cal.add(Calendar.MONTH, 1);
 			filterForm.get().getCfb().setStartDate(cal.getTime());
 			cal.add(Calendar.MONTH, 2);
 			filterForm.get().getCfb().setEndDate(cal.getTime());
 		}
 		if(datec==3){
-			cal.add(Calendar.MONTH, 4);
-			filterForm.get().getCfb().setStartDate(cal.getTime());
+			filterForm.get().getCfb().setStartDate(current);
 		}
 		return filterForm;
 	}
 		
+	public Course changeDateFormat(Course course) throws ParseException{
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyy.MMMMM.dd GGG hh:mm aaa");
+		for(ConcreteCourse cc:course.getCourses()){
+			String s = formatter.format(cc.getCourseDate());
+			cc.setCourseDate(formatter.parse(s));
+		}
+		return course;
+	}
+	
+	
 }

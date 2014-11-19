@@ -20,33 +20,48 @@
 											<optgroup label="Show All">
 												<option value="-1" selected="selected">Show All</option>
 											</optgroup>
-											<optgroup label="Computer Science:">
-												<option value="1">algorithm</option>
-												<option value="2">database system</option>
+											<optgroup label="Business:">
+												<option value="1">communication skill</option>
+												<option value="2">presentation skill</option>
 											</optgroup>
 										</select>
 								</div><!-- /.col -->
 								
 								<div class="col-md-12">
-									<label for="">City:</label>
-									<select class="form-control selectpicker show-tick" title='Choose One' data-live-search="true" data-style="btn-primary">
-										<optgroup label="City:">
-											<option>Los Angeles</option>
-											<option>Stockholm</option>
-											<option>Changai</option>
-											<option>Paris</option>
+									<label for="">State:</label>
+									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
+										<optgroup label="Show All">
+												<option value="-1" selected="selected">Show All</option>
+											</optgroup>
+										<optgroup label="State:">
+											<option value="CA">CA</option>
 										</optgroup>
+										
+									</select>
+								</div><!-- /.col -->
+									
+									<div class="col-md-12">
+									<label for="">City:</label>
+									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].city" id="cfb.locations[0].city" data-live-search="true" data-style="btn-primary">
+										<optgroup label="Show All">
+												<option value="-1" selected="selected">Show All</option>
+											</optgroup>
+										<optgroup label="City:">
+											<option value="Los Angeles">Los Angeles</option>
+											<option value="Santa Monica">Santa Monica</option>
+										</optgroup>
+										
 									</select>
 								</div><!-- /.col -->
 								<div class="col-md-12">
-									<label for="">Price:</label>
-									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary">
-										<optgroup label="Price:">
-											<option>Up to $5.000</option>
-											<option>Up to $10.000</option>
-											<option>Up to $20.000</option>
+									<label for="">Date:</label>
+									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.dataChoice" id="cfb.dataChoice">
+										<optgroup label="Date:">
+											<option value="1">Next 30 days</option>
+											<option value="2">Next 2 to 3 months</option>
+											<option value="3">All dates</option>
 										</optgroup>
-									</select>
+									</select> 
 								</div><!-- /.col -->
 								<div class="col-md-12">
 									<label for="">Ready?</label>
@@ -92,55 +107,62 @@
 			<div class="row">
 				<article class="post">
 				@for(c <- course) {
-					<div class="panel panel-primary">
-						<div class="panel-body bg-highlight">
-							<div class="col-sm-12 col-md-4">
-								<a href="#link"><img class="img-responsive img-thumbnail" src="assets/img/item-large.jpg"></a>
-							</div><!-- /.col -->
-							<div class="col-sm-12 col-md-6">
-								<h3><a href="item_page.html">Assertive Communication to Reach Your Goals</a></h3>
+					<div class="panel panel-secondary">
+				<div class="panel-heading">
+					<h3 class="panel-title">Search Result</h3>
+				</div>
+				<div class="panel-body">
+					<div class="col-sm-5 col-md-4">
+						<a href="item_page.html"><img class="img-responsive img-thumbnail" src="assets/img/item-large.jpg"></a>
+						
+					</div><!-- /.col -->
+					<div class="col-sm-7 col-md-6">
+						<h4><a href="@routes.Application.itempage(c.getId())">@c.getCourseName()</a></h4>
+						<ul class="list-unstyled">
+							<li><i class="fa fa-fw fa-th"></i> From: 
+								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
+								@c.getFromCompany()</button>
+								<i class="fa fa-fw fa-columns"></i>Trainer: 
+								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
+								@c.getTrainer().getName()</button>
+							</li>
+							<li><i class="fa fa-fw fa-female"></i>Course Rating: <span id="courseRating" >
+							<input id="courseRating" value="@c.getRating()" type="number" class="rating " min=0 max=7 step=0.5 data-size="xs" data-stars="7" readonly></span></li>
+							<li><i class="fa fa-fw fa-truck"></i>Trainer Rating: <span id="trainerRating" class="text-danger">
+							<input id="trainerRating" value="@c.getTrainer.getRating()" type="number" class="rating " min=0 max=7 step=0.5 data-size="xs" data-stars="7" readonly><span></li>
+							<li><i class="fa fa-fw fa-signal"></i>Key points:<br>@for(k <- c.getKeyPoints()){@k<br>}
+							</li>
+						</ul>
+					</div><!-- /.col -->
+					<div class="col-sm-2 col-md-2 ">
+						<p><span class="btn btn-danger">@c.getPrice()</span></p>
+						<div class="col-md-12"><h4></h4></div>
+						
+					</div>
+					<div class="col-sm-5 col-md-4">
+					</div>
+					<div class="col-sm-7 col-md-6">
+										<ul class="list-unstyled">
+											<li><i class="fa fa-fw fa-truck"></i>Methods: lecture. discussion. large group exercises. individual exercises.</li>
+											<li><i class="fa fa-fw fa-truck"></i>Upcoming dates: 
+												<ul clas="list-unstyled">
+												@for(cc <- c.getCourses()){
+													<li>@cc.getCourseDate() &amp; @cc.getLocation().getCity(), @cc.getLocation().getRegion()</li>
+													}
+													<a href="@routes.Application.itempage(c.getId())">More Dates <i class="fa fa-arrow-right"></i></a>
 
-								<ul class="list-unstyled">
-									<li><i class="fa fa-fw fa-th"></i> From: 
-										<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
-										@c.getCourseName()</button>
-									<i class="fa fa-fw fa-columns"></i>Trainer: 
-										<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
-										@c.getCourseName()</button>
-									</li>
-									<li><i class="fa fa-fw fa-female"></i>Course Rating: <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star-o"></i><i class="fa fa-fw fa-star-o"></i> </li>
-									<li><i class="fa fa-fw fa-truck"></i>Trainer Rating: <i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i></li>
-									<li><i class="fa fa-fw fa-truck"></i>Key Learning Points: @c.getCourseName()</li>
-									<li><i class="fa fa-fw fa-truck"></i>Methods: @c.getCourseName()</li>
-							</div><!-- /.col -->
-							<div class="col-sm-12 col-md-2">
-								<p><span class="btn btn-danger">PRICE</span> @c.getCourseName()</p>
-								<p><span class="btn btn-success">Max Attendees</span> @c.getCourseName()</p>
-								
-							</div>
-							<div class="col-sm-12 col-md-6">
-								<ul class="list-unstyled">
-									<li><i class="fa fa-fw fa-signal"></i>Location:
-										<ul class="tags btn-sm">
-											<li><a href="#link">Downtown LA</a></li>
-											<li><a href="#link">Santa Monica LA</a></li>
+												</ul>
+
+											</li>
+											<li></li>
 										</ul>
-									</li>
-									<li><i class="fa fa-fw fa-truck"></i>Upcoming dates: 
-										<ul clas="list-unstyled">
-											<li>Su. Oct 26th, 1pm&amp;Downtown LA</li>
-											<li>Mon. Oct 27th, 1pm&amp;Santa Monica LA</li>
-										</ul>
-									</li>
-								</ul>
-								<p><a href="item_page.html" class="btn btn-primary">View More »</a></p>
-							</div>
-							<div class="col-sm-12 col-md-2">
-								<button class="btn btn-primary btn-lg">Book NOW</button>
-							</div>
-							
-						</div><!-- /.panel-body -->
-					</div><!-- /.panel -->
+										<p><a href="@routes.Application.itempage(c.getId())" class="btn btn-primary">View More Details»</a></p>
+									</div>
+					<div class="col-sm-2 col-md-2 ">
+						<button class="btn btn-primary btn-lg">Book NOW</button>
+					</div>
+				</div><!-- /.panel-body -->
+			</div><!-- /.panel -->
 					}
 				</article><!-- /.post -->
 			</div><!-- /.row -->

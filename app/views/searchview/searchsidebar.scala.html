@@ -1,4 +1,5 @@
-
+@import helper._
+@import models.forms._
 <!-- Sidebar -->
 				<div class="col-sm-4 col-md-3">
 					<div class="panel panel-secondary">
@@ -10,23 +11,39 @@
 								<div class="row">
 									<div class="col-md-12">
 										<label for="">Course Catagories:</label>
-										<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.category" id="cfb.dataChoice">
+										<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.category" id="cfb.category">
 											<optgroup label="Show All">
 												<option value="-1" selected="selected">Show All</option>
 											</optgroup>
-											<optgroup label="Computer Science:">
-												<option value="1">algorithm</option>
-												<option value="2">database system</option>
+											<optgroup label="Business:">
+												<option value="1">communication skill</option>
+												<option value="2">presentation skill</option>
 											</optgroup>
 										</select>
 									</div><!-- /.col -->
 									
 									<div class="col-md-12">
-									<label for="">Location:</label>
-									<select  class="form-control selectpicker show-tick" data-live-search="true" data-style="btn-primary">
+									<label for="">State:</label>
+									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
+										<optgroup label="Show All">
+												<option value="-1" selected="selected">Show All</option>
+											</optgroup>
+										<optgroup label="State:">
+											<option value="CA">CA</option>
+										</optgroup>
+										
+									</select>
+								</div><!-- /.col -->
+									
+									<div class="col-md-12">
+									<label for="">City:</label>
+									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].city" id="cfb.locations[0].city" data-live-search="true" data-style="btn-primary">
+										<optgroup label="Show All">
+												<option value="-1" selected="selected">Show All</option>
+											</optgroup>
 										<optgroup label="City:">
-											<option value="1">Los Angeles</option>
-											<option value="2">San Diego</option>
+											<option value="Los Angeles">Los Angeles</option>
+											<option value="Santa Monica">Santa Monica</option>
 										</optgroup>
 										
 									</select>
@@ -35,16 +52,16 @@
 									<label for="">Date:</label>
 									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.dataChoice" id="cfb.dataChoice">
 										<optgroup label="Date:">
-											<option value="1">Next month</option>
-											<option value="2">Next 2 to 4 months</option>
-											<option value="3">4 months later</option>
+											<option value="1">Next 30 days</option>
+											<option value="2">Next 2 to 3 months</option>
+											<option value="3">All dates</option>
 										</optgroup>
 									</select> 
 								</div><!-- /.col -->
-									<!-- <div class="col-md-12">
+									<div class="col-md-12">
 											<label for="exmaple-contact-email">Key words</label>
 											<input type="text" class="form-control" name="cfb.keyword" id="cfb.keyword" placeholder="">
-									</div> -->
+									</div> 
 									<div class="col-md-12">
 										<label for="">Ready?</label>
 										<button type="submit" class="btn btn-primary btn-block">Search</button>
