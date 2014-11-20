@@ -203,7 +203,8 @@ public class Application extends Controller {
 		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
 				.bindFromRequest();
 		Logger.info("keyword" + filterForm.get().getCfb().getKeyword());
-		Logger.info("city"+filterForm.get().getCfb().getLocations().size());
+		Logger.info("city"+filterForm.get().getCfb().getLocations().iterator().next().getCity());
+		Logger.info("region"+filterForm.get().getCfb().getLocations().iterator().next().getRegion());
 		Logger.info("category"+filterForm.get().getCfb().getCategory());
 
 		int datec = filterForm.get().getCfb().getDataChoice();
