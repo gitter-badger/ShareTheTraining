@@ -142,8 +142,9 @@ public class CourseFilterBuilder implements FilterBuilder {
 					}
 				}
 			}
-			if(locationQueries.size()>0)
-				predicates.add(cb.or(locationQueries.toArray(new Predicate[] {})));
+			if (locationQueries.size() > 0)
+				predicates.add(cb.or(locationQueries
+						.toArray(new Predicate[] {})));
 		}
 		if (curentLocation != null) {
 			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
