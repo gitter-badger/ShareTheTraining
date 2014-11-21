@@ -109,7 +109,7 @@ public class LocationHandler {
 	}
 	
 	public static Collection<String> getAvailableCity(String state, EntityManager em){
-		String hql = " select distinct c.location.region from ConcreteCourse c where c.location.region= :state";
+		String hql = " select distinct c.location.city from ConcreteCourse c where c.location.region= :state";
 		Query query = em.createQuery(hql).setParameter("state",
 				state);
 		Collection result = query.getResultList();

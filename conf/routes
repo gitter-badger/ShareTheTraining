@@ -70,6 +70,7 @@ GET    /viewdetaillocation/:id      controllers.Application.viewdetaillocation(i
 
 #state&city
 POST   /showcity                    controllers.Application.showCity()
+POST   /showSiderbarCity            controllers.Application.showSiderbarCity()
 
 #test
 GET		/test						controllers.Application.test()

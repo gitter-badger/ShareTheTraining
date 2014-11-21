@@ -1,11 +1,11 @@
-@import models.courses._ 
-@(course: Course) 
+@import models.courses._
+@(course: Course)(states: Collection[String])
 
 @main("item page"){
 <section class="wrapper-sm bg-highlight">
 	<div class="container">
 		<div class="row">
-			@searchview.searchsidebar()
+			@searchview.searchsidebar(states)
 
 			<!-- Main -->
 			<!-- Main -->

@@ -64,6 +64,7 @@ import models.users.UserAction;
 import models.users.UserRole;
 import play.*;
 import play.data.Form;
+import play.db.jpa.JPA;
 import play.db.jpa.Transactional;
 import play.libs.F.Function;
 import play.libs.F.Function0;
@@ -119,7 +120,10 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(cfb, "popularity",
 				true, 2, 2);
 		Logger.info("course" + course.size());
-		return ok(home.render(course));
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		
+		return ok(home.render(course, states));
 
 	}
 
@@ -133,8 +137,11 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(cfb, null, true,
 				1, 10);
 		Logger.info("course" + course.size());
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 		
-		return ok(home.render(course));
+		
+		return ok(home.render(course,states));
 		
 		
 
@@ -222,9 +229,11 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get()
 				.getCfb(), null, true, 1, 10);
 		Logger.info("course" + course.size());
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 		
 
-		return ok(searchindex.render(course));
+		return ok(searchindex.render(course, states));
 	}
 	
 	@Transactional
@@ -236,8 +245,10 @@ public class Application extends Controller {
 				.getCfb(), null, true, 1, 10);
 		Logger.info("course" + course.size());
 		
-
-		return ok(searchindex.render(course));
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		
+		return ok(searchindex.render(course,states));
 	}
 	
 	@Transactional
@@ -254,8 +265,10 @@ public class Application extends Controller {
 		CourseHandler ch = new CourseHandler();
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm
 				.getCfb(), null, true, 1, 10);
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 		
-		return ok(searchindex.render(course));
+		return ok(searchindex.render(course,states));
 	}
 	
 	
@@ -450,12 +463,15 @@ public class Application extends Controller {
 				course.getCourseCategory(), 1, 3, null, true);
 		DateFilterHandler dfh = new DateFilterHandler();
 		Course c = dfh.changeDateFormat(course);
+		LocationHandler lh = new LocationHandler();
+		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		
 
 		// Collection<ConcreteCourse> cc=c.getCourses();
 		//
 		// cc.iterator().next().getMaximum()
 
-		return ok(itempage.render(c));
+		return ok(itempage.render(c,states));
 	}
 	
 	@Transactional
@@ -463,6 +479,18 @@ public class Application extends Controller {
 		return TODO;
 	}
 
+	@Transactional
+	public static Result showSiderbarCity(){
+		String stateName = form().bindFromRequest().get("name");
+		System.out.print(stateName);
+		if (stateName != null) {
+			Collection<String> cityList = LocationHandler.getAvailableCity(stateName, JPA.em());
+			return ok(Json.toJson(cityList).toString());
+
+		}
+		return null;
+	}
+	
 	@Transactional
 	public static Result showCity() {
 

@@ -1,5 +1,7 @@
 @import helper._
 @import models.forms._
+@(states: Collection[String])
+
 <!-- Sidebar -->
 				<div class="col-sm-4 col-md-3">
 					<div class="panel panel-secondary">
@@ -24,12 +26,14 @@
 									
 									<div class="col-md-12">
 									<label for="">State:</label>
-									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
+									<select  onchange="showSidebarCity(this.value)" class="form-control selectpicker show-tick" name="cfb.locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
 											</optgroup>
 										<optgroup label="State:">
-											<option value="CA">CA</option>
+											@for(s <- states){
+													<option value="@s">@s</option>
+													}
 										</optgroup>
 										
 									</select>
@@ -41,10 +45,7 @@
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
 											</optgroup>
-										<optgroup label="City:">
-											<option value="Los Angeles">Los Angeles</option>
-											<option value="Santa Monica">Santa Monica</option>
-										</optgroup>
+										
 										
 									</select>
 								</div><!-- /.col -->
