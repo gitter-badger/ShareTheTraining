@@ -6,9 +6,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
-
+import java.text.*;
 import common.Password;
 
 import java.io.IOException;
@@ -24,8 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.sf.json.JSONArray;
-import net.sf.json.JsonConfig;
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
@@ -37,6 +36,7 @@ import controllers.user.MailHandler;
 import controllers.user.UserHandler;
 import be.objectify.deadbolt.java.actions.Group;
 import be.objectify.deadbolt.java.actions.Restrict;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.CourseStatus;
@@ -76,7 +76,9 @@ import views.html.customerprofile.*;
 import views.html.login.*;
 import views.html.itempage.*;
 import views.html.trainerprofile.*;
+import views.html.dashboard.*;
 import static play.data.Form.form;
+
 
 public class Application extends Controller {
 	public static Form<Customer> signupForm = form(Customer.class);
@@ -156,7 +158,7 @@ public class Application extends Controller {
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
 		ah.activateUser(token, uh);
-		return TODO;
+		return ok(activatesuccess.render());
 	}
 
 	@Transactional
@@ -201,6 +203,9 @@ public class Application extends Controller {
 		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
 				.bindFromRequest();
 		Logger.info("keyword" + filterForm.get().getCfb().getKeyword());
+		Logger.info("city"+filterForm.get().getCfb().getLocations().iterator().next().getCity());
+		Logger.info("region"+filterForm.get().getCfb().getLocations().iterator().next().getRegion());
+		Logger.info("category"+filterForm.get().getCfb().getCategory());
 
 		int datec = filterForm.get().getCfb().getDataChoice();
 		DateFilterHandler dfh = new DateFilterHandler();
@@ -210,6 +215,7 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get()
 				.getCfb(), null, true, 1, 10);
 		Logger.info("course" + course.size());
+		
 
 		return ok(searchindex.render(course));
 	}
@@ -364,7 +370,8 @@ public class Application extends Controller {
 	@Transactional
 	public static Result cusinfoeditsubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
-		Logger.info(cusForm.get().getName());
+		Logger.info(cusForm.get().getPhone());
+		Logger.info(cusForm.get().getEmail());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
 		return redirect(routes.Application.cusinfo());
@@ -395,17 +402,19 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result itempage(Integer id) {
+	public static Result itempage(Integer id) throws ParseException {
 		CourseHandler ch = new CourseHandler();
 		Course course = ch.getCourseById(id);
 		Collection<Course> similarcourse = ch.getCourseByCategory(
 				course.getCourseCategory(), 1, 3, null, true);
+		DateFilterHandler dfh = new DateFilterHandler();
+		Course c = dfh.changeDateFormat(course);
 
 		// Collection<ConcreteCourse> cc=c.getCourses();
 		//
 		// cc.iterator().next().getMaximum()
 
-		return ok(itempage.render(course));
+		return ok(itempage.render(c));
 	}
 
 	@Transactional
@@ -414,11 +423,8 @@ public class Application extends Controller {
 		String stateName = form().bindFromRequest().get("name");
 		System.out.print(stateName);
 		if (stateName != null) {
-
 			List<String> cityList = LocationHandler.getCitiesByState(stateName);
-			System.out.print(cityList.iterator().next());
-			JSONArray jsonArray = JSONArray.fromObject(cityList);
-			return ok(jsonArray.toString());
+			return ok(Json.toJson(cityList).toString());
 
 		}
 		return null;
@@ -607,9 +613,22 @@ public class Application extends Controller {
 	@Transactional
 	public static Result traineraddcoursesubmit() {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
-		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm.get());
+		courseForm.get();
+		Logger.info("papapalala");
+//		CourseHandler ch = new CourseHandler();
+//		ch.addNewCourse(session().get("connected"), courseForm.get());
+//		Logger.info("heheheheh");
 		return redirect(routes.Application.trainercourseverifying());
+	}
+	
+	@Transactional
+	public static Result review(){
+		return TODO;
+	}
+	
+	@Transactional
+	public static Result dashCourseRequest() {
+		return ok(Course_request.render());
 	}
 
 }

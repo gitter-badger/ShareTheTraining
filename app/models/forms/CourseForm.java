@@ -10,7 +10,7 @@ import models.users.Trainer;
 
 public class CourseForm {
 	
-	private int courseId;
+	private Integer courseId;
 
 	private String courseName;
 	
@@ -18,7 +18,7 @@ public class CourseForm {
 
 	private int courseCategory;
 	
-	private double price;
+	private Double price;
 
 	private String fromCompany;
 	
@@ -34,11 +34,11 @@ public class CourseForm {
 	
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 
-	public int getCourseId() {
+	public Integer getCourseId() {
 		return courseId;
 	}
 
-	public void setCourseId(int courseId) {
+	public void setCourseId(Integer courseId) {
 		this.courseId = courseId;
 	}
 
@@ -66,11 +66,11 @@ public class CourseForm {
 		this.courseCategory = courseCategory;
 	}
 
-	public double getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

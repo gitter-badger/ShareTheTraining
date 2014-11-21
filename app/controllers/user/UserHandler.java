@@ -103,6 +103,9 @@ public class UserHandler implements IUserHandler {
 			User user = this.getUserByEmail(form.getEmail());
 			if (!userEmail.equals(form.getEmail()))
 				return false;
+			Logger.info(form.getEmail());
+			Logger.info(userEmail);
+			
 			return form.bindUser(user);
 		} catch (Exception e) {
 			Logger.error(e.toString());

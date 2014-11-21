@@ -22,15 +22,15 @@
 				</div>
 				<div class="panel-body">
 					<div class="col-sm-5 col-md-4">
-						<a href="item_page.html"><img class="img-responsive img-thumbnail" src="assets/img/item-large.jpg"></a>
-						<i class="fa fa-fw fa-signal"></i>Host Locations:
+						<a href="@routes.Application.itempage(c.getId())"><img class="img-responsive img-thumbnail" width="350" height="100" src="https://farm8.staticflickr.com/7473/15635897598_ea456c1f69_s.jpg"></a>
+						<!-- <i class="fa fa-fw fa-signal"></i>Host Locations:
 						<ul class="tags btn-sm">
 							<li><a href="#link">@c.getCourseDesc()</a></li>
 							<li><a href="#link">@c.getCourseName()</a></li>
-						</ul>
+						</ul> -->
 					</div><!-- /.col -->
 					<div class="col-sm-7 col-md-6">
-						<h4><a href="@routes.Application.itempage(c.getId())">Assertive Communication to Reach Your Goals</a></h4>
+						<h4><a href="@routes.Application.itempage(c.getId())">@c.getCourseName()</a></h4>
 						<ul class="list-unstyled">
 							<li><i class="fa fa-fw fa-th"></i> From: 
 								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
@@ -39,24 +39,38 @@
 								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
 								@c.getTrainer().getName()</button>
 							</li>
-							<li><i class="fa fa-fw fa-female"></i>Course Rating: <span id="courseRating" ><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star"></i><i class="fa fa-fw fa-star-o"></i><i class="fa fa-fw fa-star-o"></i><i class="fa fa-fw fa-star-o"></i>
-							@c.getCourseName()</span></li>
+							<li><i class="fa fa-fw fa-female"></i>Course Rating: <span id="courseRating" >
+							<input id="courseRating" value="@c.getRating()" type="number" class="rating " min=0 max=7 step=0.5 data-size="xs" data-stars="7" readonly></span></li>
 							<li><i class="fa fa-fw fa-truck"></i>Trainer Rating: <span id="trainerRating" class="text-danger">
-							@c.getCourseName()<span></li>
-							<li><i class="fa fa-fw fa-signal"></i>Key points:
-							@c.getCourseName()
+							<input id="trainerRating" value="@c.getTrainer.getRating()" type="number" class="rating " min=0 max=7 step=0.5 data-size="xs" data-stars="7" readonly><span></li>
+							<li><i class="fa fa-fw fa-signal"></i>Key points:<br>@for(k <- c.getKeyPoints()){@k<br>}
 							</li>
 						</ul>
 					</div><!-- /.col -->
 					<div class="col-sm-2 col-md-2 ">
-						<p><span class="btn btn-danger">@c.getCourseName()</span></p>
-						<p><span class="btn btn-info btn-sm">@c.getCourseName()</span></p>
+						<p><span class="btn btn-danger">$@c.getPrice()</span></p>
 						<div class="col-md-12"><h4></h4></div>
 						
 					</div>
 					<div class="col-sm-5 col-md-4">
 					</div>
-					
+					<div class="col-sm-7 col-md-6">
+										<ul class="list-unstyled">
+											<li><i class="fa fa-fw fa-truck"></i>Methods: lecture. discussion. large group exercises. individual exercises.</li>
+											<li><i class="fa fa-fw fa-truck"></i>Upcoming dates: 
+												<ul clas="list-unstyled">
+												@for(cc <- c.getCourses()){
+													<li>@cc.getCourseDate() &amp; @cc.getLocation().getCity(), @cc.getLocation().getRegion()</li>
+													}
+													<a href="@routes.Application.itempage(c.getId())">More Dates <i class="fa fa-arrow-right"></i></a>
+
+												</ul>
+
+											</li>
+											<li></li>
+										</ul>
+										<p><a href="@routes.Application.itempage(c.getId())" class="btn btn-primary">View More Details»</a></p>
+									</div>
 					<div class="col-sm-2 col-md-2 ">
 						<button class="btn btn-primary btn-lg">Book NOW</button>
 					</div>
@@ -86,5 +100,7 @@
 		</div>
 		</div>
 	</section>
+	
+	
 
 }

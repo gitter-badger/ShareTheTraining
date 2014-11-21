@@ -1,5 +1,6 @@
 package models.forms;
 
+import play.Logger;
 import models.locations.Location;
 import models.users.Customer;
 import models.users.User;

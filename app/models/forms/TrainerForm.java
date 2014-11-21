@@ -2,6 +2,7 @@ package models.forms;
 
 import java.util.List;
 
+import play.Logger;
 import models.locations.Location;
 import models.users.Trainer;
 import models.users.User;
@@ -29,7 +30,17 @@ public class TrainerForm extends UserForm {
 	
 	private String company;
 	
+	private String email;
 	
+	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
 	public String getCompany() {
 		return company;
