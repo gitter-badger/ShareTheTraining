@@ -1,45 +1,88 @@
 function initCourseRequestPage() {
-    $.getJSON('../test_json/request.json', function (data) {
+jsRoutes.controllers.Application.dashConcreteCourseRequest().ajax({
+    success :function (data) {
+    	console.log(data);
         var t = $('#requestTable').DataTable();
         $.each(data, function (i, item) {
 
             if ('approved' == item.status) {
                 t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.coursename,
-                item.trainer,
+                '<input type="checkbox" name="chkItem" value="' + item.concreteCourseId + '">',
+                item.concreteCourseId,
+                item.courseName,
+                item.trainerName,
                 item.price,
                 '<span class="label-success label">' + item.status + '</span>',
-            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+            '<a class="viewbtn btn btn-success" value="' + item.concreteCourseId + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
             }
 
             if ('rejected' == item.status) {
                 t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.coursename,
-                item.trainer,
+                '<input type="checkbox" name="chkItem" value="' + item.concreteCourseId + '">',
+                item.concreteCourseId,
+                item.courseName,
+                item.trainerName,
                 item.price,
                 '<span class="label-danger label">' + item.status + '</span>',
-            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+            '<a class="viewbtn btn btn-success" value="' + item.concreteCourseId + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
             }
 
-            if ('pending' == item.status) {
+            if (0 == item.status) {
                 t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.coursename,
-                item.trainer,
+                '<input type="checkbox" name="chkItem" value="' + item.concreteCourseId + '">',
+                item.concreteCourseId,
+                item.courseName,
+                item.trainerName,
                 item.price,
                 '<span class="label-warning label">' + item.status + '</span>',
-            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+            '<a class="viewbtn btn btn-success" value="' + item.concreteCourseId + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
             }
         });
 
-    });
-
+    }});
 }
+//function initCourseRequestPage() {
+//    $.getJSON('../test_json/request.json', function (data) {
+//        var t = $('#requestTable').DataTable();
+//        $.each(data, function (i, item) {
+//
+//            if ('approved' == item.status) {
+//                t.row.add([
+//                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
+//                item.courseId,
+//                item.coursename,
+//                item.trainerName,
+//                item.price,
+//                '<span class="label-success label">' + item.status + '</span>',
+//            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+//            }
+//
+//            if ('rejected' == item.status) {
+//                t.row.add([
+//                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
+//                item.id,
+//                item.coursename,
+//                item.trainer,
+//                item.price,
+//                '<span class="label-danger label">' + item.status + '</span>',
+//            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+//            }
+//
+//            if ('pending' == item.status) {
+//                t.row.add([
+//                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
+//                item.id,
+//                item.coursename,
+//                item.trainer,
+//                item.price,
+//                '<span class="label-warning label">' + item.status + '</span>',
+//            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+//            }
+//        });
+//
+//    });
+//
+//}
 
 
 

@@ -40,14 +40,18 @@
 										<i class="fa fa-fw fa-signal"></i>Location: <span
 											class="text-primary">
 											<ul class="tags">
-												<li><a href="#link">Downtown LA</a></li>
-												<li><a href="#link">Santa Monica LA</a></li>
-												<li><a href="#link">San Gaberiel Valley LA</a></li>
+												@for(c <- course.getCourses()){
+												<li><a href="@routes.Application.searchloc(c.getLocation().getCity(),c.getLocation().getRegion())">
+												@c.getLocation().getCity() @c.getLocation().getRegion()
+												</a></li>
+												}
 											</ul>
 										</span>
 									</h4></li>
 							</ul>
-							<a onclick="window.open('http://www.eventbrite.com/event/13958679787')" type="button" class="btn btn-primary btn-lg btn-block">Book
+							<!-- <a onclick="window.open('http://www.eventbrite.com/event/13958679787')" type="button" class="btn btn-primary btn-lg btn-block">Book
+								Online</a> -->
+								<a href="@routes.Application.itempage(course.getId())#schedule" type="button" class="btn btn-primary btn-lg btn-block">choose schedule
 								Online</a>
 
 						</div>
@@ -59,16 +63,16 @@
 								@socialshare(course)
 							</div>
 							<!-- /.panel -->
-							<h4>
+							<!-- <h4>
 								<i class="fa fa-fw fa-list"></i> Note: <span
 									class="text-primary">Include lunch</span>
-							</h4>
+							</h4> -->
 						</div>
 					</div>
 
 					<hr>
 
-					<div class="row">
+					<div class="row" id="schedule">
 						<div class="col-sm-12 col-md-12">
 							<ul class="nav nav-tabs">
 								<li><a href="#tab-5" data-toggle="tab">Overview &amp;
@@ -84,8 +88,10 @@
 								<div class="tab-pane fade" id="tab-6">
 									<h3 class="headline">Key Points:</h3>
 									<ul class="list-unstyled">
-										<li><i class="fa fa-fw fa-th"></i> <strong>KeyPoints:</strong>
-											@course.getKeyPoints</li>
+										<li><i class="fa fa-fw fa-th"></i> <strong>KeyPoints:</strong></li>
+											@for(k <- course.getKeyPoints()){
+												<li>@k</li>
+											}
 										
 									</ul>
 								</div>
@@ -212,7 +218,7 @@
 				</div>
 				<hr>
 
-				<!-- Suggestions -->
+				<!-- <!-- Suggestions
 				<h2>More suggestions:</h2>
 				<p class="lead">View similar items tailored for you</p>
 
@@ -226,9 +232,9 @@
 									<p>So you know you're getting a top quality property from
 										an experienced team.</p>
 								</div>
-								<!-- /.overlay-content -->
+								/.overlay-content
 							</div>
-							<!-- /.overlay-container -->
+							/.overlay-container
 							<div class="thumbnail-meta">
 								<p>
 									<i class="fa fa-fw fa-flag"></i> Presentation skills
@@ -252,9 +258,9 @@
 									class="fa fa-arrow-right"></i></a>
 							</div>
 						</div>
-						<!-- /.thumbnail -->
+						/.thumbnail
 					</div>
-					<!-- /.col -->
+					/.col
 
 					<div class="col-sm-12 col-md-4">
 						<div class="thumbnail">
@@ -265,9 +271,9 @@
 									<p>So you know you're getting a top quality property from
 										an experienced team.</p>
 								</div>
-								<!-- /.overlay-content -->
+								/.overlay-content
 							</div>
-							<!-- /.overlay-container -->
+							/.overlay-container
 							<div class="thumbnail-meta">
 								<p>
 									<i class="fa fa-fw fa-flag"></i> Presentation skills
@@ -291,9 +297,9 @@
 									class="fa fa-arrow-right"></i></a>
 							</div>
 						</div>
-						<!-- /.thumbnail -->
+						/.thumbnail
 					</div>
-					<!-- /.col -->
+					/.col
 
 					<div class="col-sm-12 col-md-4">
 						<div class="thumbnail">
@@ -304,9 +310,9 @@
 									<p>So you know you're getting a top quality property from
 										an experienced team.</p>
 								</div>
-								<!-- /.overlay-content -->
+								/.overlay-content
 							</div>
-							<!-- /.overlay-container -->
+							/.overlay-container
 							<div class="thumbnail-meta">
 								<p>
 									<i class="fa fa-fw fa-flag"></i> Presentation skills
@@ -330,13 +336,13 @@
 									class="fa fa-arrow-right"></i></a>
 							</div>
 						</div>
-						<!-- /.thumbnail -->
+						/.thumbnail
 					</div>
-					<!-- /.col -->
+					/.col
 
 				</div>
-				<!-- /.row -->
-				<!-- End of suggestions -->
+				/.row
+				End of suggestions --> 
 
 			</div>
 			<!-- /.col -->

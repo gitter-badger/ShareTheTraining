@@ -35,6 +35,7 @@ public class Course extends BaseModelObject {
 		return course;
 	}
 
+	
 	private String courseName;
 
 	private int concreteCourseCount = 0;

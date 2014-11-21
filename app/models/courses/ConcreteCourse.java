@@ -17,6 +17,8 @@ import javax.persistence.OneToMany;
 
 import org.apache.solr.common.SolrInputDocument;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import models.locations.Location;
 import models.spellchecker.SolrDao;
 import models.users.Customer;
@@ -38,6 +40,7 @@ public class ConcreteCourse extends BaseModelObject {
 		return concreteCourse;
 	}
 
+	@JsonIgnore
 	@ManyToOne
 	private Course courseInfo;
 
@@ -50,6 +53,8 @@ public class ConcreteCourse extends BaseModelObject {
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
 	private Date courseDate;
+	
+	private String dateDisplay;
 
 	@ElementCollection
 	private List<Date> courseDates = new ArrayList<Date>();
@@ -61,6 +66,8 @@ public class ConcreteCourse extends BaseModelObject {
 	private int minimum = -1;
 
 	private int maximum = -1;
+	
+	private int soldSeat;
 
 	private String eventbriteId;
 
@@ -179,5 +186,23 @@ public class ConcreteCourse extends BaseModelObject {
 	public void setConcreteCourseId(String concreteCourseId) {
 		this.concreteCourseId = concreteCourseId;
 	}
+	
+	public String getDateDisplay() {
+		return dateDisplay;
+	}
+
+	public void setDateDisplay(String dateDisplay) {
+		this.dateDisplay = dateDisplay;
+	}
+
+	public int getSoldSeat() {
+		return soldSeat;
+	}
+
+	public void setSoldSeat(int soldSeat) {
+		this.soldSeat = soldSeat;
+	}
+	
+	
 
 }

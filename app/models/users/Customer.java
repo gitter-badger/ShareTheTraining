@@ -10,6 +10,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import play.Logger;
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.ConcreteCourse;
@@ -71,15 +73,19 @@ public class Customer extends User {
 		return list;
 	}
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "selectedCustomers", cascade = { CascadeType.ALL })
 	private Collection<ConcreteCourse> selectedCourses = new ArrayList<ConcreteCourse>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer", cascade = { CascadeType.ALL })
 	private Collection<CourseOrder> courseOrders = new ArrayList<CourseOrder>();
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "author", cascade = { CascadeType.ALL })
 	private Collection<Review> reviews = new ArrayList<Review>();
 

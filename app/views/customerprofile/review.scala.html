@@ -1,0 +1,269 @@
+@import models.courses._
+@(order: CourseOrder)
+
+@main("review"){
+	<section class="wrapper-sm bg-highlight">
+		<div class="container">
+			<div class="row">
+				@cussidebar()
+				<!-- Main -->
+				<div class="col-sm-8 col-md-8" id="writeComment">
+					<div class="col-sm-12 col-md-12">
+						<div class="col-sm-9 col-md-9">
+							<h2>Course Evaluation</h2>
+						</div>
+						<!-- <button type="reset "class="btn btn-primary btn-md">Reset</button>
+						<a href="userTrainerInfo.html "class="btn btn-default btn-md">Cancel</a> -->
+					</div>
+
+					<hr>
+					<div class="col-sm-12 col-md-12">
+						<p class="leading"> Note: Please complete this evaluation as quickly after the course as possible.  We encourage feedback, so please include any additional comments or suggestions you have so we can continue to improve.  Thank you!</p>
+						<form role="form" action="#" id="signup2" method="post">
+							<div class="panel panel-primary">
+								<div class="col-sm-12 col-md-7 panel-heading">
+									<h3 class="panel-title">Order Date: @order.getOrderDate()</h3>
+								</div>
+								<div class="col-sm-12 col-md-5 panel-heading ">
+									<h3 class="panel-title">Order Number: @order.getOrderId()</h3>
+								</div>
+								
+								<div class="panel-body">
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+									<div class="col-sm-12 col-md-12">
+										<h4><a href="#">@order.getConcreteCourse().getCourseInfo().getCourseName()</a></h4>
+										<div class="col-sm-5 col-md-4">
+											<a href="item_page.html"><img class="img-responsive img-thumbnail" src="assets/img/item-large.jpg"></a>
+										</div><!-- /.col -->
+										<div class="col-sm-7 col-md-7 col-md-push-1 col-sm-push-1">
+											<ul class="list-unstyled">
+												<li><i class="fa fa-fw fa-columns"></i>Trainer: 
+													<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="trainer introduction" data-original-title="Sinclair Rimmon">
+													@order.getConcreteCourse().getCourseInfo().getTrainer().getName()</a>
+												</li>
+												<li><i class="fa fa-fw fa-columns"></i>Start Time: @order.getConcreteCourse().getDateDisplay()</li>
+												<li><i class="fa fa-fw fa-truck"></i>Location: 
+												@order.getConcreteCourse().getLocation().getDetailedLoc(),
+												@order.getConcreteCourse().getLocation().getCity(), 
+												@order.getConcreteCourse().getLocation().getRegion()
+												</li>
+												<li><i class="fa fa-fw fa-money"></i>Price: 
+												$@order.getConcreteCourse().getCourseInfo().getPrice()</li>
+											</ul>
+										</div>
+									</div>
+								</div><!-- /.panel-body -->
+							</div><!-- /.panel -->
+
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Course</h3>
+								</div>
+								
+								<div class="panel-body">
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q1. </p>
+										<div class="col-md-7">
+											<p>The learning objectives and key points were clear.</p>
+										</div>
+										<div class="form-group">
+											<input id="course1" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q2. </p>
+										<div class="col-md-7">
+											<p>The structure was logical and flowed well.</p>
+										</div>
+										<div class="form-group">
+											<input id="course2" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q3. </p>
+										<div class="col-md-7">
+											<p>The content and examples were targeted and current.</p>
+										</div>
+										<div class="form-group">
+											<input id="course3" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q4. </p>
+										<div class="col-md-7">
+											<p>The exercises (individual and group) were effective and had clear directions.</p>
+										</div>
+										<div class="form-group">
+											<input id="course4" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q5. </p>
+										<div class="col-md-7">
+											<p>The visual aids supported the content.</p>
+										</div>
+										<div class="form-group">
+											<input id="course5" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q6. </p>
+										<div class="col-md-12 col-sm-12">
+											<p>What did you like most about this course?</p>
+										</div>
+										<div class="form-group">
+											<textarea name="most" id="most" class="form-control" cols="30" rows="3" placeholder=""></textarea>
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q7. </p>
+										<div class="col-md-12 col-sm-12">
+											<p>Any areas that could be improved or removed?</p>
+										</div>
+										<div class="form-group">
+											<textarea name="area" id="area" class="form-control" cols="30" rows="3" placeholder=""></textarea>
+										</div>
+									</div>
+								</div><!-- /.panel-body -->
+							</div><!-- /.panel -->
+
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Trainer</h3>
+								</div>
+								
+								<div class="panel-body">
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q1. </p>
+										<div class="col-md-7">
+											<p>The trainer was clear and engaging.</p>
+										</div>
+										<div class="form-group">
+											<input id="trainer1" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q2. </p>
+										<div class="col-md-7">
+											<p>The trainer handled questions appropriately.</p>
+										</div>
+										<div class="form-group">
+											<input id="trainer2" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q3. </p>
+										<div class="col-md-7">
+											<p>The trainer made good use of visual aids.</p>
+										</div>
+										<div class="form-group">
+											<input id="trainer3" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q4. </p>
+										<div class="col-md-7">
+											<p>The trainer was current and gave real life examples.</p>
+										</div>
+										<div class="form-group">
+											<input id="trainer4" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12">
+										<h4></h4>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q5. </p>
+										<div class="col-md-7">
+											<p>The trainer was comfortable with the technology used.</p>
+										</div>
+										<div class="form-group">
+											<input id="trainer5" value="0" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5">
+										</div>
+									</div>
+
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q6. </p>
+										<div class="col-md-12 col-sm-12">
+											<p>What did you like most about this trainer?</p>
+										</div>
+										<div class="form-group">
+											<textarea name="most_trainer" id="most_trainer" class="form-control" cols="30" rows="3" placeholder=""></textarea>
+										</div>
+									</div>
+
+									<div class="col-sm-12 col-md-12 form-group">
+										<p>Q7. </p>
+										<div class="col-md-12 col-sm-12">
+											<p>Any areas that the trainer could improve upon?</p>
+										</div>
+										<div class="form-group">
+											<textarea name="area_trainer" id="area_trainer" class="form-control" cols="30" rows="3" placeholder=""></textarea>
+										</div>
+									</div>
+								</div><!-- /.panel-body -->
+							</div><!-- /.panel -->
+
+							<div class="panel panel-primary">
+								<div class="panel-heading">
+									<h3 class="panel-title">Comment</h3>
+								</div>
+								
+								<div class="panel-body form-group">
+									<textarea name="education" id="education" class="form-control" cols="30" rows="3" placeholder="Do you have any comment to this course or trainer?"></textarea>
+								</div>
+							</div><!-- /.panel -->
+							<div class="col-sm-6 col-md-6 col-md-push-3 ">
+								<button type="submit" class="btn btn-primary btn-md">Submit</button>
+							</div>
+							<div class="col-sm-6 col-md-6">
+								<a href="userAccount.html "class="btn btn-default btn-md">Cancel</a>
+							</div>
+						</form>
+					</div>
+				</div><!-- /.col --><!-- End of main -->
+			</div><!-- /.row -->
+		</div><!-- /.container -->
+	</section>
+}
