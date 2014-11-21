@@ -105,7 +105,6 @@ public class CourseHandler implements ICourseHandler {
 			tq.setFirstResult(pageSize * (pageNumber - 1));
 		}
 		Collection<Course> result = new ArrayList<Course>();
-		System.out.println(result.size());
 		for (Tuple t : tq.getResultList()) {
 			result.add((Course) t.get(0));
 		}

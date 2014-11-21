@@ -1,9 +1,15 @@
 package common;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import models.spellchecker.SolrDao;
 
@@ -20,6 +26,13 @@ public abstract class BaseModelObject implements IModelObject,
 	@Column(name = "ID")
 	private Integer id;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date created;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date updated;
+
+	
 	public Integer getId() {
 		return id;
 	}
@@ -62,4 +75,32 @@ public abstract class BaseModelObject implements IModelObject,
 			new SolrDao().putDoc(doc);
 	}
 
+	@PrePersist
+	protected void onCreate() {
+		created = new Date();
+	}
+	
+	@PreUpdate
+    protected void onUpdate() {
+    updated = new Date();
+    }
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	
+	
 }

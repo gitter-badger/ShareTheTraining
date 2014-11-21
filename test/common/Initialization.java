@@ -45,7 +45,7 @@ public class Initialization {
 		dates.add(date);
 		concreteCourse1 = ConcreteCourse.create(course1, em);
 		concreteCourse1.setEventbriteId("123");
-		concreteCourse1.setLocation(new Location("qunimaba",
+		concreteCourse1.setLocation(new Location("qunimabi",
 				"gun", "", -118.14, 34.03));
 		concreteCourse1.setCourseDates(dates);
 		concreteCourse1.setMinimum(1);
@@ -55,7 +55,7 @@ public class Initialization {
 		dates.add(new Date());
 		concreteCourse2 = ConcreteCourse.create(course1, em);
 		concreteCourse2.setEventbriteId("234");
-		concreteCourse2.setLocation(new Location("qunimaba",
+		concreteCourse2.setLocation(new Location("qunimabi",
 				"gun","", -118.14, 34.03));
 		concreteCourse2.setCourseDates(dates);
 		concreteCourse2.setMinimum(1);
