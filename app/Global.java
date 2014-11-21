@@ -46,7 +46,8 @@ public class Global extends GlobalSettings {
 	/* intercept request, need modification later */
 	public Action onRequest(Request request, Method actionMethod) {
 		Logger.info("before each request..." + request.toString());
-		Logger.info("Naw man. I'm pretty fuckin' far from okay.");
+		//Logger.info("Naw man. I'm pretty fuckin' far from okay.");
+		Logger.info("You met me at a very strange time in my life.");
 		return super.onRequest(request, actionMethod);
 	}
 

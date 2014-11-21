@@ -1,6 +1,8 @@
 package controllers;
 
 import static org.fest.assertions.Assertions.assertThat;
+
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -34,5 +36,18 @@ public class LocationHandlerTest extends BaseTest {
 			count+=cityMap.get(key).size();
 		}
 		assertThat(count).isEqualTo(25818);
+	}
+	
+	
+	@Test
+	public void testAvailableState(){
+		Collection<String> stateList = LocationHandler.getAvailableState(this.getmEm());
+		assertThat(stateList.size()).isEqualTo(2);
+	}
+	
+	@Test
+	public void testAvailableCity(){
+		Collection<String> stateList = LocationHandler.getAvailableCity("qunimabi",this.getmEm());
+		assertThat(stateList.size()).isEqualTo(1);
 	}
 }

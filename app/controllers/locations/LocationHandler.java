@@ -5,14 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.sql.DataSource;
 
 import play.Logger;
 import play.db.DB;
+import models.courses.ConcreteCourse;
 import models.locations.Location;
 
 public class LocationHandler {
@@ -95,6 +99,21 @@ public class LocationHandler {
 	
 	public static List<String> getCitiesByState(String state){
 		return cityMap.get(state);
+	}
+	
+	public static Collection<String> getAvailableState(EntityManager em){
+		String hql = " select distinct c.location.region from ConcreteCourse c";
+		Query query = em.createQuery(hql);
+		Collection result = query.getResultList();
+		return result;
+	}
+	
+	public static Collection<String> getAvailableCity(String state, EntityManager em){
+		String hql = " select distinct c.location.region from ConcreteCourse c where c.location.region= :state";
+		Query query = em.createQuery(hql).setParameter("state",
+				state);
+		Collection result = query.getResultList();
+		return result;
 	}
 	
 }
