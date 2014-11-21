@@ -10,12 +10,18 @@ import models.users.Trainer;
 
 public class CourseForm {
 	
+	
+	
 	private Integer courseId;
 
 	private String courseName;
 	
-	private Trainer trainer;
+	private String trainerId;
 
+	private String trainerName;
+	
+	private String trianerEmail;
+	
 	private int courseCategory;
 	
 	private Double price;
@@ -50,12 +56,13 @@ public class CourseForm {
 		this.courseName = courseName;
 	}
 
-	public Trainer getTrainer() {
-		return trainer;
+
+	public String getTrainerId() {
+		return trainerId;
 	}
 
-	public void setTrainer(Trainer trainer) {
-		this.trainer = trainer;
+	public void setTrainerId(String trainerId) {
+		this.trainerId = trainerId;
 	}
 
 	public int getCourseCategory() {

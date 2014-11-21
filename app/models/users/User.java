@@ -17,6 +17,7 @@ import common.Password;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class User extends BaseModelObject implements Subject {
+	
 
 	@Column(unique = true)
 	private String email;

@@ -39,10 +39,10 @@ public class DateFilterHandler {
 	}
 		
 	public Course changeDateFormat(Course course) throws ParseException{
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyy.MMMMM.dd GGG hh:mm aaa");
+		SimpleDateFormat formatter = new SimpleDateFormat("EEE, MMM d, yyyy");
 		for(ConcreteCourse cc:course.getCourses()){
 			String s = formatter.format(cc.getCourseDate());
-			cc.setCourseDate(formatter.parse(s));
+			cc.setDateDisplay(s);
 		}
 		return course;
 	}

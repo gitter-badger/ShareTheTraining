@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import be.objectify.deadbolt.core.models.Role;
 import models.courses.Course;
 import models.locations.Location;
@@ -68,6 +70,7 @@ public class Trainer extends User {
 		return list;
 	}
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "trainer", cascade = { CascadeType.ALL })
 	private Collection<Course> courses = new ArrayList<Course>();
 

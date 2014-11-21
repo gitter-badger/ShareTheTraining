@@ -9,6 +9,8 @@ import models.users.User;
 import models.users.UserRole;
 
 public class TrainerForm extends UserForm {
+	private int id;
+	
 	private String name;
 
 	private Location location;
@@ -129,5 +131,7 @@ public class TrainerForm extends UserForm {
 		return true;
 		
 	}
+	
+	
 
 }

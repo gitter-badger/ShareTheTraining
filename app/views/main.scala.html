@@ -26,6 +26,12 @@
 		<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
 	<link rel="shortcut icon" href="favicon.png">
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		CKEDITOR.replace( 'courseDesc' );
+	};
+	</script>
 	
 	
 </head>
@@ -88,9 +94,9 @@
 			<div class="collapse navbar-collapse navbar-main-collapse">
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="@routes.Application.welcome()">Home</a></li>
-					<li><a href="@routes.Application.search()" data-filter=".AllCourses">View All Courses</a></li>
-					<li><a href="#" data-filter=".ForCompanies">For Companies</a></li>
-					<li><a href="#" data-filter=".ForTrainers">For Trainers</a></li>
+					<li><a href="@routes.Application.searchall()"  data-filter=".AllCourses">View All Courses</a></li>
+					<li><a href="#" data-filter=".ForCompanies">For Trainers</a></li>
+					<li><a href="#" data-filter=".ForTrainers">Why Us</a></li>
 				</ul><!-- /.navbar-nav -->
 			</div><!-- /.collapse -->
 		</div><!-- /.container -->
@@ -207,6 +213,7 @@
 	<script src="@routes.Assets.at("js/prism-line-numbers.js")"></script>
 	<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.8/jquery.validate.min.js"></script>
 	<script src="@routes.Assets.at("js/validate-ex.js")"></script>
+	<script src="@routes.Assets.at("js/validate.js")"></script>
 	<script src="@routes.Assets.at("js/holder.js")"></script>
 	<script src="@routes.Assets.at("js/moment.min.js")"></script>
 	<script src="@routes.Assets.at("js/jquery.min.js")"></script>
@@ -214,10 +221,125 @@
 	<script src="@routes.Assets.at("js/fullcalendar.js")"></script>
 	<script src="@routes.Assets.at("js/calendar.js")"></script>
 	<script src="@routes.Assets.at("js/star-rating.js")"></script>
-	@calendarscript()
-<!-- 	 @validation() -->
-	@showcity()
+	<script src="@routes.Assets.at("js/ckeditor/ckeditor.js")"></script>
+	
+	<script>
+		$(document).ready(function(){
+					 
+			$("#signup").validate({
+				rules:{
+					name:{
+						required:true
+					},
+					email:{
+						required:true,
+						email:true
+					},
+					username:{
+						required:true,
+						minlength:3,
+						maxlength:15
+					},
+					password:{
+						required:true,
+						maxlength:16,
+						minlength:6
+					},
+					repass:{
+						required:true,
+						maxlength:16,
+						minlength:6,
+						equalTo:"#password"
+					},
+					address:{
+						required:true
+					},
+					city:{
+						required:true
+					},
+					state:{
+						required:true
+					},
+					zipcode:"isZipCode",
+					agree:{
+						required:true
+					}
+				},
+				messages:{
+					username:{
+						remote:"This username has already been registered, please change to another username！"
+					},
+					repass:{
+						equalTo:"Please input same password！"
+					},
+					address:"Please input valid street address",
+					agree:"please check the terms "
+				},
+				errorPlacement: function(error, element) {
+					if ( element.is(":radio") )
+						error.appendTo ( element.parent() );
+					else if ( element.is(":checkbox") )
+						error.appendTo ( element.parent() );
+					else
+						error.insertBefore(element);
+				},
+			    success: function(label) {
+				   label.html("&nbsp;").addClass("right").text("√");
+			    },	
+    			onfocusout: function(element){
+        			$("#name").valid();
+        			$("#email").valid();
+        			$("#username").valid();
+        			$("#pass").valid();
+        			$("#repass").valid();
+        			$("#address").valid();
+        			$("#city").valid();
+        			$("#state").valid();
+        			$("#zipcode").valid();
+        			$("#phone").valid();
+        			$("#agree").valid();
+   				}
 
+   			}); 
+			$('.selectpicker').selectpicker();
+			// tooltips
+			$('[data-toggle="tooltip"]').tooltip();
+			// popover demo
+			$('[data-toggle="popover"]').popover();
+			// dismiss alerts
+			$(".alert").alert();
+			// toggle open and close icon for collapse (accordions)
+			// set initial content
+			$('[data-state]').each(function () {
+				if ($(this).attr('data-state') == "open") {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+			// toggle content on click
+			$('[data-state]').click(function () {
+				// toggle state
+				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
+				// toggle content based on state
+				if ($(this).attr('data-state') == 'open') {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
+				} else {
+					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
+				}
+			});
+			
+			
+			
+		});
+	</script>
+	
+	
+    @validation() 
+	@showcity()
+	@timedirect()
+	@calendarscript()
+	
 	
 </body>
 </html>

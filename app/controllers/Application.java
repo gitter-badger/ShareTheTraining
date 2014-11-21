@@ -5,11 +5,14 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
+
 import java.text.*;
+
 import common.Password;
 
 import java.io.IOException;
@@ -44,6 +47,7 @@ import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
 import models.filters.DateFilterHandler;
 import models.filters.OrderFilterBuilder;
+import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
 import models.forms.CourseForm;
 import models.forms.CustomerForm;
@@ -129,7 +133,10 @@ public class Application extends Controller {
 		Collection<Course> course = ch.getCourseByCustomRule(cfb, null, true,
 				1, 10);
 		Logger.info("course" + course.size());
+		
 		return ok(home.render(course));
+		
+		
 
 	}
 
@@ -219,7 +226,41 @@ public class Application extends Controller {
 
 		return ok(searchindex.render(course));
 	}
+	
+	@Transactional
+	public static Result searchall() {
+		
+		CourseFilterForm filterForm = new CourseFilterForm();
+		CourseHandler ch = new CourseHandler();
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm
+				.getCfb(), null, true, 1, 10);
+		Logger.info("course" + course.size());
+		
 
+		return ok(searchindex.render(course));
+	}
+	
+	@Transactional
+	public static Result searchloc(String city, String region){
+		Logger.info(city);
+		Logger.info(region);
+		CourseFilterForm filterForm = new CourseFilterForm();
+		Location loc = new Location();
+		loc.setRegion(region);
+		loc.setCity(city);
+		ArrayList<Location> locationList = new ArrayList<Location>();
+		locationList.add(loc);
+		filterForm.getCfb().setLocations(locationList);;
+		CourseHandler ch = new CourseHandler();
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm
+				.getCfb(), null, true, 1, 10);
+		
+		return ok(searchindex.render(course));
+	}
+	
+	
+	
+	
 	@Transactional
 	public static Result signupcussubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
@@ -415,6 +456,11 @@ public class Application extends Controller {
 		// cc.iterator().next().getMaximum()
 
 		return ok(itempage.render(c));
+	}
+	
+	@Transactional
+	public static Result viewdetaillocation(Integer id){
+		return TODO;
 	}
 
 	@Transactional
@@ -615,20 +661,62 @@ public class Application extends Controller {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
 		courseForm.get();
 		Logger.info("papapalala");
-//		CourseHandler ch = new CourseHandler();
-//		ch.addNewCourse(session().get("connected"), courseForm.get());
-//		Logger.info("heheheheh");
+		CourseHandler ch = new CourseHandler();
+		ch.addNewCourse(session().get("connected"), courseForm.get());
+
 		return redirect(routes.Application.trainercourseverifying());
 	}
 	
 	@Transactional
-	public static Result review(){
+	public static Result review(String orderId){
+		OrderHandler oh = new OrderHandler();
+		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
+		return ok(review.render(courseOrder));
+	}
+	
+	@Transactional
+	public static Result reviewsubmit(){
 		return TODO;
 	}
 	
 	@Transactional
-	public static Result dashCourseRequest() {
-		return ok(Course_request.render());
+	public static Result concreteCourseDisplay(){
+		return ok(Course_list.render());
+	}
+	
+	@Transactional
+	public static Result dashConcreteCourseRequest() {
+		CourseHandler ch = new CourseHandler();
+		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4).getCourses();
+		Collection<ConcreteCourseForm> concreteCourseForms = new ArrayList<ConcreteCourseForm>();
+		for(ConcreteCourse cc:concreteCourse){
+			Logger.info(cc.getCourseInfo().getCourseName());
+			ConcreteCourseForm ccf = ConcreteCourseForm.bindConcreteCourseForm(cc);
+			concreteCourseForms.add(ccf);
+		}
+		System.out.print(Json.toJson(concreteCourseForms));
+		return ok(Json.toJson(concreteCourseForms));
+	}
+	
+	@Transactional
+	public static Result dashConcreteCourseRequestdetail(String concreteCourseId){
+		CourseHandler ch = new CourseHandler();
+		ConcreteCourse concreteCourse = ch.getCourseByConcreteCourseId(concreteCourseId);
+		ConcreteCourseForm ccf = ConcreteCourseForm.bindConcreteCourseForm(concreteCourse);
+		System.out.print(Json.toJson(ccf));
+		return ok(Json.toJson(ccf));
+	}
+	
+//	public static Result 
+	
+	public static Result javascriptRoutes() {
+	    response().setContentType("text/javascript");
+	    return ok(
+	        Routes.javascriptRouter("jsRoutes",
+	            routes.javascript.Application.dashConcreteCourseRequest(),
+	            routes.javascript.Application.dashConcreteCourseRequestdetail()
+	        )
+	    );
 	}
 
 }

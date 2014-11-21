@@ -60,11 +60,13 @@ GET    /activate                    controllers.Application.activate(token: Stri
 GET    /resetpsw                    controllers.Application.resetpsw(token: String)
 
 #search
-GET 	/search						controllers.Application.search()
+GET     /searchall                  controllers.Application.searchall()   
 POST    /search  	                controllers.Application.search()
+GET     /searchloc                  controllers.Application.searchloc(city: String, region: String)
 
 #itempage
 GET    /itempage/:id                controllers.Application.itempage(id: Integer)
+GET    /viewdetaillocation/:id      controllers.Application.viewdetaillocation(id: Integer)
 
 #state&city
 POST   /showcity                    controllers.Application.showCity()
@@ -73,8 +75,15 @@ POST   /showcity                    controllers.Application.showCity()
 GET		/test						controllers.Application.test()
 GET		/testAuth					controllers.Application.testAuth()
 
+#review
+GET     /review                     controllers.Application.review(orderId: String)
+
 #dashboard
-GET     /dashCourseRequest          controllers.Application.dashCourseRequest()
+GET     /dashConcreteCourseRequest  controllers.Application.dashConcreteCourseRequest()
+GET     /concreteCourseDisplay      controllers.Application.concreteCourseDisplay()
+GET     /dashConcreteCourseRequestdetail  controllers.Application.dashConcreteCourseRequestdetail(concreteCourseId: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)
+
+GET     /javascriptRoutes     		controllers.Application.javascriptRoutes

@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type;
 import play.Logger;
 import play.Play;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
@@ -23,6 +24,7 @@ public class Location {
 	private String detailedLoc = "";
 	private int zipCode;
 
+	@JsonIgnore
 	@Type(type = "org.hibernate.spatial.GeometryType")
 	private Point point;
 

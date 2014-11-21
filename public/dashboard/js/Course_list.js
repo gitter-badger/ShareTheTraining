@@ -1,149 +1,301 @@
+function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
+	$('#courseTable').DataTable().row
+			.add(
+					[
+							'<input type="checkbox" name="chkItem" value="'
+									+ v1 + '">',
+							v1,
+							v2,
+							v3,
+							v4,
+							v5,
+							v6,
+							v7,
+							v8,
+							'<a class="viewbtn btn btn-success" value="'
+									+ v1
+									+ '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>' ])
+			.draw();
+}
+
 function initCoursePage() {
-    $.getJSON('../test_json/course.json', function (data) {
+	console.log("hehe");
+	jsRoutes.controllers.Application.dashConcreteCourseRequest().ajax(
+			{
+				success : function(data) {
+					$.each(data,
+							function(i, item) {
+								addRow(item.concreteCourseId, item.courseName,
+										item.trainerName, item.trainerEmail,
+										item.location.city + ' '
+												+ item.location.region,
+										item.courseDate, item.soldSeat,
+										item.minimum);
+							});
+				},
+				error : function(data) {
+					$.each(data,
+							function(i, item) {
+								addRow(item.concreteCourseId, item.courseName,
+										item.trainerName, item.trainerEmail,
+										item.location.city + ' '
+												+ item.location.region,
+										item.courseDate, item.soldSeat,
+										item.minimum);
+							});
+				}
 
-        var t = $('#courseTable').DataTable();
-
-        $.each(data, function (i, item) {
-            t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.coursename,
-                item.trainer,
-                item.price,
-            '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-        });
-
-    });
+			});
 
 }
 
+function getItemsFromServer(concreteCourseId) {
+	jsRoutes.controllers.Application.dashConcreteCourseRequestdetail(concreteCourseId).ajax({
+		success : function(data) {
+			console.log(data);
+			setDetailPage(data);
+		}
+	})
+}
+function setDetailPage(item) {
+	$("#courseId").val(item.courseId);
+	$("#courseName").val(item.courseName);
+	$("#eventbriteId").val(item.eventbriteId);
+	$("#trainerId").val(item.trainerId);
+	$("#trainerName").val(item.trainerName);
+	$("#trainerEmail").val(item.trainerEmail);
+	$("#detailedLoc").val(item.detailedLoc);
+	$("#city").val(item.city);
+	$("#state").val(item.state);
+	$("#zipCode").val(item.zipCode);
+	$("#soldSeat").val(item.soldSeat);
+	$("#minimum").val(item.minimum);
+	$("#maximal").val(item.maximal);
+	$("#length").val(item.courseLength);
+	$("#courseDate").val(item.courseDate);
+	$("#status").val(item.status);
 
+	enableFields();
+}
 
-$(document).ready(function () {
-    initCoursePage();
-    var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+function disableFields() {
+	$("#courseId").attr("readonly", true);
+	$("#courseName").attr("readonly", true);
+	$("#eventbriteId").attr("readonly", true);
+	$("#trainerId").attr("readonly", true);
+	$("#trainerName").attr("readonly", true);
+	$("#trainerEmail").attr("readonly", true);
+	$("#detailedLoc").attr("readonly", true);
+	$("#city").attr("readonly", true);
+	$("#state").attr("readonly", true);
+	$("#zipCode").attr("readonly", true);
+	$("#soldSeat").attr("readonly", true);
+	$("#minimum").attr("readonly", true);
+	$("#maximal").attr("readonly", true);
+	$("#courseLength").attr("readonly", true);
+	$("#courseDate").attr("readonly", true);
+	$("#status").attr("readonly", true);
+}
 
-    //click function for every row
-    $("#courseTable").on('click', 'tr', function () {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-            $('td input', this).eq(0).prop("checked", false);
-            $('td input', this).eq(0).attr("checked", false);
-        } else {
-            $(this).addClass('selected');
-            $('td input', this).eq(0).prop("checked", true);
-            $('td input', this).eq(0).attr("checked", true);
-        }
-    });
+function enableFields() {
+	$("#courseId").attr("readonly", false);
+	$("#courseName").attr("readonly", false);
+	$("#eventbriteId").attr("readonly", false);
+	$("#trainerId").attr("readonly", false);
+	$("#trainerName").attr("readonly", false);
+	$("#trainerEmail").attr("readonly", false);
+	$("#detailedLoc").attr("readonly", false);
+	$("#city").attr("readonly", false);
+	$("#state").attr("readonly", false);
+	$("#zipCode").attr("readonly", false);
+	$("#soldSeat").attr("readonly", false);
+	$("#minimum").attr("readonly", false);
+	$("#maximal").attr("readonly", false);
+	$("#courseLength").attr("readonly", false);
+	$("#courseDate").attr("readonly", false);
+	$("#status").attr("readonly", false);
+}
 
-    //check all checkbox
-    $(document).on("click", ".chkAll", function () {
-        if (('true' == $(".chkAll").prop('checked')) || ('checked' == $(".chkAll").attr('checked'))) {
-            $(".chkAll").prop("checked", false);
-            $("[name = chkItem]:checkbox").prop("checked", false);
+function emptyDetailPage(item) {
+	$("#courseId").val('');
+	$("#courseName").val('');
+	$("#eventbriteId").val('');
+	$("#trainerId").val('');
+	$("#trainerName").val('');
+	$("#trainerEmail").val('');
+	$("#detailedLoc").val('');
+	$("#city").val('');
+	$("#state").val('');
+	$("#zipCode").val('');
+	$("#soldSeat").val('');
+	$("#minimum").val('');
+	$("#maximal").val('');
+	$("#courseLength").val('');
+	$("#courseDate").val('');
+	$("#status").val('');
+}
 
-            $(".chkAll").attr("checked", false);
-            $("[name = chkItem]:checkbox").attr("checked", false);
-            $("[name = chkItem]:checkbox").parents('tr').removeClass('selected');
-        } else {
-            $(".chkAll").prop("checked", true);
-            $("[name = chkItem]:checkbox").prop("checked", true);
+$(document)
+		.ready(
+				function() {
+					initCoursePage();
+					var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+					$(".btns").append(html);
 
-            $(".chkAll").attr("checked", true);
-            $("[name = chkItem]:checkbox").attr("checked", true);
-            $("[name = chkItem]:checkbox").parents('tr').addClass('selected');
-        }
-    });
+					// click function for every row
+					$("#courseTable").on('click', 'tr', function() {
+						if ($(this).hasClass('selected')) {
+							$(this).removeClass('selected');
+							$('td input', this).eq(0).prop("checked", false);
+							$('td input', this).eq(0).attr("checked", false);
+						} else {
+							$(this).addClass('selected');
+							$('td input', this).eq(0).prop("checked", true);
+							$('td input', this).eq(0).attr("checked", true);
+						}
+					});
 
-    //view button function
-    $(document).on("click", ".viewbtn", function () {
+					// check all checkbox
+					$(document)
+							.on(
+									"click",
+									".chkAll",
+									function() {
+										if (('true' == $(".chkAll").prop(
+												'checked'))
+												|| ('checked' == $(".chkAll")
+														.attr('checked'))) {
+											$(".chkAll").prop("checked", false);
+											$("[name = chkItem]:checkbox")
+													.prop("checked", false);
 
-        var courseId = $(this).parents('tr').children('td').eq(1).text();
-        var courseName = $(this).parents('tr').children('td').eq(2).text();
-        var trainer = $(this).parents('tr').children('td').eq(3).text();
-        var price = $(this).parents('tr').children('td').eq(4).text();
+											$(".chkAll").attr("checked", false);
+											$("[name = chkItem]:checkbox")
+													.attr("checked", false);
+											$("[name = chkItem]:checkbox")
+													.parents('tr').removeClass(
+															'selected');
+										} else {
+											$(".chkAll").prop("checked", true);
+											$("[name = chkItem]:checkbox")
+													.prop("checked", true);
 
-        //mark this row as edited
-        $('#courseTable').DataTable().$('tr.edited').removeClass('edited');
-        $(this).parents('tr').addClass('edited');
+											$(".chkAll").attr("checked", true);
+											$("[name = chkItem]:checkbox")
+													.attr("checked", true);
+											$("[name = chkItem]:checkbox")
+													.parents('tr').addClass(
+															'selected');
+										}
+									});
 
-        $("#courseEdit").text("Edit");
-        $("#courseDelete").text("Delete");
-        if ('' != courseId) {
-            $("#courseId").val(courseId);
-            $("#courseName").val(courseName);
-            $("#trainerName").val(trainer);
-            $("#coursePrice").val(price);
+					// view button function
+					$(document).on(
+							"click",
+							".viewbtn",
+							function() {
+								// mark this row as edited
+								$('#courseTable').DataTable().$('tr.edited')
+										.removeClass('edited');
+								$(this).parents('tr').addClass('edited');
 
-            $("#courseInfo").modal('toggle');
-            $("#courseId").attr("readonly", true);
-            $("#courseName").attr("readonly", true);
-            $("#trainerName").attr("readonly", true);
-            $("#coursePrice").attr("readonly", true);
-        }
-    });
+								$("#courseEdit").text("Edit");
+								$("#courseDelete").text("Delete");
 
-    //edit button function
-    $(document).on("click", "#courseEdit", function () {
-        if ("Add" == $("#courseEdit").text()) {
+								// set detail infomation into detail page
+								var courseId = $(this).parents('tr').children(
+										'td').eq(1).text();
+								getItemsFromServer(courseId);
 
-            $('#courseTable').DataTable().row.add([
-                '<input type="checkbox" name="chkItem" value="' + $("#courseId").val() + '">',
-                $("#courseId").val(),
-                $("#courseName").val(),
-                $("#trainerName").val(),
-                $("#coursePrice").val(),
-            '<a class="viewbtn btn btn-success" value="' + $("#courseId").val() + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+								disableFields();
+								$("#courseInfo").modal('toggle');
+							});
 
-            $("#courseInfo").modal('toggle');
-        }
-        if ("Update" == $("#courseEdit").text()) {
+					// edit button function
+					$(document).on(
+							"click",
+							"#courseEdit",
+							function() {
+								if ("Add" == $("#courseEdit").text()) {
 
-            $('#courseTable').DataTable().$('td', 'tr.edited').eq(1).text($("#courseId").val());
-            $('#courseTable').DataTable().$('td', 'tr.edited').eq(2).text($("#courseName").val());
-            $('#courseTable').DataTable().$('td', 'tr.edited').eq(3).text($("#trainerName").val());
-            $('#courseTable').DataTable().$('td', 'tr.edited').eq(4).text($("#coursePrice").val());
+									addRow($("#courseId").val(), $(
+											"#courseName").val(), $(
+											"#trainerName").val(), $(
+											"#trainerEmail").val(), $("#city")
+											.val()
+											+ $("#state").val(), $(
+											"#courseDate").val(),
+											$("#soldSeat").val(), $("#minimum")
+													.val());
+									$("#courseInfo").modal('toggle');
+								}
+								if ("Update" == $("#courseEdit").text()) {
 
-            $("#courseInfo").modal('toggle');
-        }
-        if ("Edit" == $("#courseEdit").text()) {
-            $("#courseId").attr("readonly", false);
-            $("#courseName").attr("readonly", false);
-            $("#trainerName").attr("readonly", false);
-            $("#coursePrice").attr("readonly", false);
-            $("#courseEdit").text("Update");
-        }
-    });
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(1).text(
+											$("#courseId").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(2).text(
+											$("#courseName").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(3).text(
+											$("#trainerName").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(4).text(
+											$("#trainerEmail").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(5).text(
+											$("#city").val()
+													+ $("#state").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(6).text(
+											$("#courseDate").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(7).text(
+											$("#soldSeat").val());
+									$('#courseTable').DataTable().$('td',
+											'tr.edited').eq(8).text(
+											$("#minimum").val());
 
-    //delete button on detail page
-    $(document).on("click", "#courseDelete", function () {
-        if ("Cancel" == $("#courseDelete").text()) {
-            $("#courseInfo").modal('toggle');
+									$("#courseInfo").modal('toggle');
+								}
+								if ("Edit" == $("#courseEdit").text()) {
+									enableFields();
+									$("#courseEdit").text("Update");
+								}
+							});
 
-        } else {
-            $('#courseTable').DataTable().row('.edited').remove().draw(false);
-            $("#courseInfo").modal('toggle');
-        }
-    });
+					// delete button on detail page
+					$(document).on(
+							"click",
+							"#courseDelete",
+							function() {
+								if ("Cancel" == $("#courseDelete").text()) {
+									$("#courseInfo").modal('toggle');
 
-    //add button function
-    $(document).on("click", ".btnadd", function () {
-        $("#courseInfo").modal('toggle');
-        $("#courseId").attr("readonly", false);
-        $("#courseName").attr("readonly", false);
-        $("#trainerName").attr("readonly", false);
-        $("#coursePrice").attr("readonly", false);
-        $("#courseId").val("");
-        $("#courseName").val("");
-        $("#trainerName").val("");
-        $("#coursePrice").val("");
-        $("#courseEdit").text("Add");
-        $("#courseDelete").text("Cancel");
-    });
-    
-    //delete button function
-    $(document).on("click", ".btndelete", function () {
-        $('#courseTable').DataTable().row('.selected').remove().draw(false);
-    });   
-});
+								} else {
+									$('#courseTable').DataTable()
+											.row('.edited').remove()
+											.draw(false);
+									$("#courseInfo").modal('toggle');
+								}
+							});
+
+					// add button function
+					$(document).on("click", ".btnadd", function() {
+						emptyDetailPage();
+						enableFields();
+						$("#courseInfo").modal('toggle');
+						$("#courseEdit").text("Add");
+						$("#courseDelete").text("Cancel");
+					});
+
+					// delete button function
+					$(document).on(
+							"click",
+							".btndelete",
+							function() {
+								$('#courseTable').DataTable().row('.selected')
+										.remove().draw(false);
+							});
+				})

@@ -18,19 +18,19 @@
 				<tbody>
 					@for(c <- course.getCourses()){
 					<tr class="success">
-						<td>@c.getCourseDate()
-							<ul>
+						<td>@c.getDateDisplay()<br>
+						
 								<li>(Meets:@for(d <- c.getCourseDates()){
 									@d.getMonth()/@d.getDate(), } )</li>
-							</ul>
+							
 						</td>
 						<td>@c.getLength()</td>
-						<td>@c.getLocation().getRegion(), @c.getLocation().getCity()</td>
-						<td>&lt;@c.getMaximum()</td>
+						<td>@c.getLocation().getCity(), @c.getLocation().getRegion()<!-- <br><a onclick="window.open('@routes.Application.viewdetaillocation(c.getId())','template_window','200','100','yes','center')" >view detail</a> --></td>
+						<td>@c.getMaximum()</td>
 						<td>&lt;@(c.getMaximum()-c.getMinimum())</td>
 						<td>$@course.getPrice()</td>
-						<td><button type="submit" class="btn btn-primary btn-sm">Book
-								Online</button>
+						<td><a onclick="window.open('http://www.eventbrite.com/event/@c.getEventbriteId()')" type="button" class="btn btn-primary btn-sm">Book
+								Online</a>
 							<button class="btn btn-success btn-sm" data-toggle="modal"
 								data-target=".bs-modal-share">Share</button></td>
 					</tr>

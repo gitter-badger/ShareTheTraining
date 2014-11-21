@@ -117,27 +117,6 @@
 						
 			});
 			
-			// dismiss alerts
-			$(".alert").alert();
-			// toggle open and close icon for collapse (accordions)
-			// set initial content
-			$('[data-state]').each(function () {
-				if ($(this).attr('data-state') == "open") {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
-			// toggle content on click
-			$('[data-state]').click(function () {
-				// toggle state
-				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
-				// toggle content based on state
-				if ($(this).attr('data-state') == 'open') {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
+			
 		});   
 	</script>
