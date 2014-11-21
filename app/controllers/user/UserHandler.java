@@ -135,7 +135,6 @@ public class UserHandler implements IUserHandler {
 			tq.setFirstResult(pageSize * (pageNumber - 1));
 		}
 		Collection<User> result = new ArrayList<User>();
-		System.out.println(result.size());
 		for (Tuple t : tq.getResultList()) {
 			result.add((User) t.get(0));
 		}
