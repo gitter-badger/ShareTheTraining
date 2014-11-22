@@ -147,6 +147,10 @@ public class Course extends BaseModelObject {
 		this.setLatestDate(latestDate);
 	}
 
+	public Collection<ConcreteCourse> getFilterCourse(){
+		return null;
+	}
+	
 	public String getCourseName() {
 		return courseName;
 	}

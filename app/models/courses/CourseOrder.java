@@ -44,6 +44,8 @@ public class CourseOrder extends BaseModelObject {
 
 	private OrderStatus orderStatus = OrderStatus.PENDING;
 
+	private double gross = -1;
+	
 	protected CourseOrder() {
 		super();
 	}
@@ -86,6 +88,14 @@ public class CourseOrder extends BaseModelObject {
 
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
+	}
+
+	public double getGross() {
+		return gross;
+	}
+
+	public void setGross(double gross) {
+		this.gross = gross;
 	}
 
 }
