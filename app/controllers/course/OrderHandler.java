@@ -143,7 +143,7 @@ public class OrderHandler implements IOrderHandler {
 		}
 	}
 
-	public static double getGrossFee(JSONObject orderDetails) {
+	public static double getGrossFee(JSONObject orderDetails) throws JSONException {
 		if (orderDetails != null)
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getJSONObject("costs").getJSONObject("gross")
@@ -151,7 +151,7 @@ public class OrderHandler implements IOrderHandler {
 		return -1;
 	}
 
-	public static String getEventbriteUserId(JSONObject orderDetails) {
+	public static String getEventbriteUserId(JSONObject orderDetails) throws JSONException {
 		if (orderDetails != null)
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getString("id");
@@ -160,7 +160,7 @@ public class OrderHandler implements IOrderHandler {
 
 	@Override
 	public CourseOrder newCourseOrder(String orderId,
-			ConcreteCourse concreteCourse, Customer customer) {
+			ConcreteCourse concreteCourse, Customer customer) throws JSONException {
 		CourseOrder courseOrder = CourseOrder.create(orderId, concreteCourse,
 				customer, new Date(), OrderStatus.CONFIRMED, em);
 		JSONObject orderDetails = getOrderDetails(orderId);

@@ -23,6 +23,8 @@ public class ImageHandler implements IImageHandler{
 			        return name.matches(fname);
 			    }
 			});
+			
+			
 			ImageResize imageResize = new ImageResize();
 			byte[] result = imageResize.setCropAndScaleAvatarUpload(picture, 600);
 			
