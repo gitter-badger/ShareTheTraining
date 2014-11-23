@@ -23,7 +23,6 @@ POST   /signuptrainer               controllers.Application.signuptrainersubmit(
 GET    /profile                     controllers.Application.profile()
 #profile-cus
 GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
-GET    /cuscourseordered            controllers.Application.cuscourseordered()
 GET    /cuscoursedone               controllers.Application.cuscoursedone()
 GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
 GET    /cusinfo                     controllers.Application.cusinfo()
@@ -54,6 +53,7 @@ GET    /createorder                 controllers.Application.createOrder(orderId:
 #calendar
 POST  /addschedule                  controllers.Application.addschedule()
 GET   /getcalendar                  controllers.Application.getschedule()
+POST  /deleteschedule               controllers.Application.deleteschedule()
 
 #mail
 GET    /activate                    controllers.Application.activate(token: String)

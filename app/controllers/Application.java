@@ -15,6 +15,8 @@ import java.text.*;
 
 import common.Password;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -31,6 +33,8 @@ import java.util.Set;
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
+import controllers.image.ImageHandler;
+import controllers.image.ImageResize;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 import controllers.user.IMailHandler;
@@ -72,6 +76,8 @@ import play.libs.F.Promise;
 import play.libs.Json;
 import play.mvc.*;
 import play.mvc.Http.Context;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
 import views.html.*;
@@ -281,7 +287,7 @@ public class Application extends Controller {
 		IUserHandler uh = new UserHandler();
 		IMailHandler mh = new MailHandler();
 		ah.doRegister(cusForm.get().getEmail(), cusForm.get().getName(),
-				cusForm.get().getPassword(), UserRole.values()[1], uh, mh);
+				cusForm.get().getPassword(), UserRole.values()[1],cusForm.get(), uh, mh);
 
 		return ok(signupemail.render());
 	}
@@ -310,7 +316,7 @@ public class Application extends Controller {
 		IMailHandler mh = new MailHandler();
 		ah.doRegister(trainerForm.get().getEmail(),
 				trainerForm.get().getName(), trainerForm.get().getPassword(),
-				UserRole.values()[2], uh, mh);
+				UserRole.values()[2],trainerForm.get(), uh, mh);
 		return ok(signupemail.render());
 	}
 
@@ -337,6 +343,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result createOrder(String orderId, String eventbriteId) {
 		Logger.info(orderId);
 		Logger.info(eventbriteId);
@@ -352,11 +359,13 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER") })
 	public static Result trainerschedule() {
 		return ok(trainerschedule.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscourseconfirmed() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -368,17 +377,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result cuscourseordered() {
-		OrderHandler oh = new OrderHandler();
-		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.ORDERED.ordinal());
-		fb.setUserEmail(session().get("connected"));
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb, null,
-				-1, -1);
-		return ok(cuscoursehistory.render(order));
-	}
-
-	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscoursedone() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -389,7 +388,9 @@ public class Application extends Controller {
 		return ok(cuscoursehistory.render(order));
 	}
 
+
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscoursecanceled() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -401,6 +402,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cusinfo() {
 		UserHandler uh = new UserHandler();
 		Customer customer = (Customer) uh.getUserByEmail(session().get(
@@ -410,6 +412,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cusinfoedit() {
 		UserHandler uh = new UserHandler();
 
@@ -422,21 +425,35 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result cusinfoeditsubmit() {
+	@Restrict({ @Group("CUSTOMER")})
+	public static Result cusinfoeditsubmit() throws IOException {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		Logger.info(cusForm.get().getPhone());
 		Logger.info(cusForm.get().getEmail());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
-		return redirect(routes.Application.cusinfo());
+		
+		//image processing
+		MultipartFormData body = request().body().asMultipartFormData();
+		FilePart picture = body.getFile("picture");
+		String name = uh.getUserByEmail(session().get("connected")).getId().toString();
+		ImageHandler ih = new ImageHandler();
+		if(ih.processImage(picture,name)){
+			return redirect(routes.Application.cusinfo());
+		}
+		 	flash("error", "Missing file");
+			return redirect(routes.Application.cusinfoedit());
+		  
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuschangepsw() {
 		return ok(cuschangepsw.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuschangepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
 		Logger.info(npf.get().getOldpsw()+"nimabi");
@@ -505,6 +522,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result addschedule() throws ParseException, SQLException {
 		String start = form().bindFromRequest().get("start");
 		Logger.info(start);
@@ -515,8 +533,22 @@ public class Application extends Controller {
 		trainer.getAvailableDates().add(date);
 		return ok("lala");
 	}
+	
+	@Transactional
+	@Restrict({ @Group("TRAINER")})
+	public static Result deleteschedule() throws ParseException{
+		String start = form().bindFromRequest().get("start");
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session()
+				.get("connected"));
+		uh.removeAvailableDate(date, trainer);
+		
+		return ok();
+	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result getschedule() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = uh.getTrainerByEmail(session().get("connected"));
@@ -561,12 +593,10 @@ public class Application extends Controller {
 
 	}
 
-	@Transactional
-	public static Result deleteschedule() {
-		return TODO;
-	}
+	
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercourseapproved() {
 
 		CourseHandler ch = new CourseHandler();
@@ -580,6 +610,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercourseverifying() {
 
 		CourseHandler ch = new CourseHandler();
@@ -593,6 +624,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercoursecompleted() {
 
 		CourseHandler ch = new CourseHandler();
@@ -606,6 +638,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercoursecanceled() {
 
 		CourseHandler ch = new CourseHandler();
@@ -619,6 +652,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfo() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -627,6 +661,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfoedit() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -638,6 +673,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfoeditsubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
@@ -648,6 +684,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfo() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -657,6 +694,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfoedit() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -665,6 +703,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfoeditsubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
@@ -675,16 +714,19 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result traineraddcourse() {
 		return ok(traineraddcourse.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerchangepsw() {
 		return ok(trainerchangepsw.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result traineraddcoursesubmit() {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
 		courseForm.get();

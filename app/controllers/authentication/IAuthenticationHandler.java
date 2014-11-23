@@ -3,6 +3,7 @@ package controllers.authentication;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
 import play.mvc.Http.Context;
+import models.forms.UserForm;
 import models.users.User;
 import models.users.UserRole;
 
@@ -11,7 +12,7 @@ public interface IAuthenticationHandler {
 			Context context, IUserHandler userHandler);
 
 	public String doRegister(String userEmail, String userName,
-			String password, UserRole userRole, IUserHandler userHandler,
+			String password, UserRole userRole,UserForm userform, IUserHandler userHandler,
 			IMailHandler mailHandler);
 
 	public boolean doLogout(Context context);

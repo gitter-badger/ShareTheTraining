@@ -29,16 +29,17 @@
 					address:{
 						required:true
 					},
-					city:{
+					zipcode:"isZipCode",
+					agree:{
 						required:true
 					},
 					state:{
 						required:true
 					},
-					zipcode:"isZipCode",
-					agree:{
+					city:{
 						required:true
 					}
+					
 				},
 				messages:{
 					username:{
@@ -65,17 +66,125 @@
         			$("#name").valid();
         			$("#email").valid();
         			$("#username").valid();
-        			$("#pass").valid();
+        			$("#password").valid();
         			$("#repass").valid();
         			$("#address").valid();
-        			$("#city").valid();
-        			$("#state").valid();
         			$("#zipcode").valid();
         			$("#phone").valid();
         			$("#agree").valid();
+        			$("#state").valid();
+        			$("#city").valid();
+        			
    				}
 
    			}); 
+			
+			$("#signup2").validate({
+				rules:{
+					name:{
+						required:true
+					},
+					email:{
+						required:true,
+						email:true
+					},
+					username:{
+						required:true,
+						minlength:3,
+						maxlength:15
+					},
+					password:{
+						required:true,
+						maxlength:16,
+						minlength:6
+					},
+					repass:{
+						required:true,
+						maxlength:16,
+						minlength:6,
+						equalTo:"#password"
+					},
+					address:{
+						required:true
+					},
+					zipcode:"isZipCode",
+					agree:{
+						required:true
+					},
+					company:{
+						required:true,
+						minlength:3,
+						maxlength:60
+					},
+					education:{
+						maxlength:300,
+						required:true
+					},
+					experience:{
+						maxlength:300,
+						required:true
+					},
+					certification:{
+						maxlength:300,
+						required:true
+					},
+					far:{
+						required:true,
+						minlength:1,
+						maxlength:150
+					},
+					state:{
+						required:true
+					},
+					city:{
+						required:true
+					}
+					
+				},
+				messages:{
+					username:{
+						remote:"This username has already been registered, please change to another username！"
+					},
+					repass:{
+						equalTo:"Please input same password！"
+					},
+					address:"Please input valid street address",
+					agree:"please check the terms "
+				},
+				errorPlacement: function(error, element) {
+					if ( element.is(":radio") )
+						error.appendTo ( element.parent() );
+					else if ( element.is(":checkbox") )
+						error.appendTo ( element.parent() );
+					else
+						error.insertBefore(element);
+				},
+			    success: function(label) {
+				   label.html("&nbsp;").addClass("right").text("√");
+			    },	
+    			onfocusout: function(element){
+        			$("#far").valid();
+        			$("#company").valid();
+        			$("#agree").valid();
+        			$("#name").valid();
+        			$("#email").valid();
+        			$("#username").valid();
+        			$("#password").valid();
+        			$("#repass").valid();
+        			$("#address").valid();
+        			$("#zipcode").valid();
+        			$("#phone").valid();
+        			$("#agree").valid();
+        			$("#experience").valid();
+        			$("#certification").valid();
+        			$("#education").valid();
+        			$("#state").valid();
+        			$("#city").valid();
+        			
+   				}
+
+   			}); 
+			
 			$('.selectpicker').selectpicker();
 			// tooltips
 			$('[data-toggle="tooltip"]').tooltip();

@@ -18,7 +18,6 @@ body .fc { /* extra precedence to overcome jqui */
 	font-size: 1em;
 }
 
-
 /* Colors
 --------------------------------------------------------------------------------------------------*/
 
@@ -291,6 +290,7 @@ previous button's border...
 
 .fc-bg table {
 	height: 100%; /* strech bg to bottom edge */
+	background-color: none;
 }
 
 
@@ -303,6 +303,7 @@ previous button's border...
 	border-collapse: collapse;
 	border-spacing: 0;
 	font-size: 1em; /* normalize cross-browser */
+	background-color: none;
 }
 
 .fc th {
@@ -366,6 +367,7 @@ previous button's border...
 
 .fc-row .fc-highlight-skeleton table {
 	height: 100%; /* stretch skeleton to bottom of row */
+	background-color: none;
 }
 
 .fc-row .fc-highlight-skeleton td {
@@ -383,10 +385,13 @@ temporary rendered events).
 	padding-bottom: 2px; /* matches the space above the events */
 }
 
+
 .fc-row .fc-helper-skeleton {
 	z-index: 4;
 }
-
+.fc-content-skeleton table{
+	background: none;
+}
 .fc-row .fc-content-skeleton td,
 .fc-row .fc-helper-skeleton td {
 	/* see-through to the background below */
@@ -873,7 +878,7 @@ be a descendant of the grid when it is being dragged.
 	white-space: nowrap;
 }
 
-.fc-time-grid-event .fc-bg {
+.fc-time-grid-event .fc-bg .fc-content-skeleton{
 	z-index: 1;
 	background: #fff;
 	opacity: .25;
@@ -931,3 +936,4 @@ be a descendant of the grid when it is being dragged.
 .fc-time-grid-event .fc-resizer:after {
 	content: "=";
 }
+

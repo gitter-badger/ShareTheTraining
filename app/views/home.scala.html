@@ -74,22 +74,29 @@
 					<h1 class="text-center text-primary">Share. &nbsp;&nbsp;&nbsp;Training. &nbsp;&nbsp;&nbsp;Enjoy.</h1>
 					<br class="spacer-lg">
 					<div class="row">
-						<div class="col-sm-12 col-md-4 text-center">
+						<div class="col-xs-4 col-sm-4 col-md-4 text-center">
 							<div class="widget padding-md bg-info">
-								<h2><i class="fa fa-list"></i> Listing</h2>
+								<h2><i class="fa fa-list"></i> Benifits</h2>
+								<ul class="lead list-unstyled">
+									<li>Lower cost,</li>
+									<li>Less time away from the office,</li>
+									<li>No travel cost,</li>
+									<li>More choice of specialty courses,</li>
+									<li>Wider variety.</li>
+								</ul>
+								</p>
+							</div>
+						</div><!-- /.col -->
+						<div class="col-xs-4 col-sm-4 col-md-4 text-center">
+							<div class="widget padding-sm bg-primary">
+								<h2><i class="fa fa-flag"></i> For Trainers</h2>
 								<p class="lead">We have already sold more than 5,000 Homes and we are still going at very good pace. </p>
 							</div>
 						</div><!-- /.col -->
-						<div class="col-sm-12 col-md-4 text-center">
-							<div class="widget padding-md bg-primary">
-								<h2><i class="fa fa-flag"></i> Advertise</h2>
-								<p class="lead">We have already sold more than 5,000 Homes and we are still going at very good pace. </p>
-							</div>
-						</div><!-- /.col -->
-						<div class="col-sm-12 col-md-4 text-center">
-							<div class="widget padding-md bg-success">
-								<h2><i class="fa fa-question-circle"></i> Consulting</h2>
-								<p class="lead">We have already sold more than 5,000 Homes and we are still going at very good pace. </p>
+						<div class="col-xs-4 col-sm-4 col-md-4 text-center">
+							<div class="widget padding-sm bg-success">
+								<h2><i class="fa fa-fw fa-signal"></i>Host a course to get course for free</h2>
+								<p class="lead">Additional revenue for unused meeting room space</p>
 							</div>
 						</div><!-- /.col -->
 					</div><!-- /.row -->
@@ -118,52 +125,99 @@
 							<li><a href="#link">@c.getCourseDesc()</a></li>
 							<li><a href="#link">@c.getCourseName()</a></li>
 						</ul> -->
+						<ul class="list-unstyled">
+					<li>
+							<div class="col-sm-12 col-md-12">
+								<i class="fa fa-fw fa-female"></i>Course Rating: 
+							</div>
+							<div class="col-sm-12 col-md-12 col-md-push-2">
+								<input id="courseRating" value="@c.getRating()" type="number" class="rating " min=0 max=5 step=0.1 data-size="sm" data-stars="5" data-show-clear="false" disabled>
+							</div>
+							</li>
+							<li>
+							<div class="col-sm-12 col-md-12">
+								<i class="fa fa-fw fa-female"></i>Trainer Rating: 
+							</div> 
+							<div class="col-sm-12 col-md-12 col-md-push-2">
+								<input id="trainerRating" value="@c.getTrainer.getRating()" type="number" class="rating " min=0 max=5 step=0.1 data-size="sm" data-stars="5" data-show-clear="false" disabled>
+							</div>
+							</li>
+					</ul>
 					</div><!-- /.col -->
 					<div class="col-sm-7 col-md-6">
 						<h4><a href="@routes.Application.itempage(c.getId())">@c.getCourseName()</a></h4>
 						<ul class="list-unstyled">
-							<li><i class="fa fa-fw fa-th"></i> From: 
+							<li>
+							<div class="col-sm-12 col-md-12"><i class="fa fa-fw fa-th"></i> From: 
 								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
 								@c.getFromCompany()</button>
+							</div>
+							</li>
+							<li>
+							<div class="col-sm-12 col-md-12">
 								<i class="fa fa-fw fa-columns"></i>Trainer: 
 								<button type="button" class="btn btn-primary btn-xs"  title="" data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus." data-original-title="Popover Title Here">
 								@c.getTrainer().getName()</button>
+							</div>
 							</li>
-							<li><i class="fa fa-fw fa-female"></i>Course Rating: 
-							<input id="courseRating" value="@c.getRating()" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5" data-show-clear="false" disabled></li>
-							<li><i class="fa fa-fw fa-truck"></i>Trainer Rating: 
-							<input id="trainerRating" value="@c.getTrainer.getRating()" type="number" class="rating " min=0 max=5 step=0.5 data-size="xs" data-stars="5" data-show-clear="false" disabled></li>
-							<li><i class="fa fa-fw fa-signal"></i>Key points:<br>@for(k <- c.getKeyPoints()){@k<br>}
+							<!-- >
+					<li>
+							<div class="col-sm-5 col-md-5">
+								<i class="fa fa-fw fa-female"></i>Course Rating: 
+							</div>
+							<div class="col-sm-7 col-md-7">
+								<input id="courseRating" value="@c.getRating()" type="number" class="rating " min=0 max=5 step=0.1 data-size="sm" data-stars="5" data-show-clear="false" disabled>
+							</div>
 							</li>
-						</ul>
+							<li>
+							<div class="col-sm-5 col-md-5">
+								<i class="fa fa-fw fa-female"></i>Trainer Rating: 
+							</div> 
+							<div class="col-sm-7 col-md-7">
+								<input id="trainerRating" value="@c.getTrainer.getRating()" type="number" class="rating " min=0 max=5 step=0.1 data-size="sm" data-stars="5" data-show-clear="false" disabled>
+							</div>
+							</li>
+					</ul> -->
+							<li>
+								<div class="col-sm-12 col-md-12">
+									<i class="fa fa-fw fa-signal"></i>Key points:<ul>@for(k <- c.getKeyPoints()){<li>@k<br></li>}
+								</div>
+							</li>
+						
 					</div><!-- /.col -->
 					<div class="col-sm-2 col-md-2 ">
 						<p><span class="btn btn-danger">$@c.getPrice()</span></p>
 						<div class="col-md-12"><h4></h4></div>
-						
+						<a type="button" href="@routes.Application.itempage(c.getId())" class="btn btn-primary btn-lg">Book NOW</a>
 					</div>
 					<div class="col-sm-5 col-md-4">
+					
 					</div>
 					<div class="col-sm-7 col-md-6">
 										<ul class="list-unstyled">
-											<li><i class="fa fa-fw fa-truck"></i>Methods: lecture. discussion. large group exercises. individual exercises.</li>
-											<li><i class="fa fa-fw fa-truck"></i>Upcoming dates: 
-												<ul class="list-unstyled">
+											<li>
+											<div class="col-sm-12 col-md-12">
+											<i class="fa fa-fw fa-truck"></i>Methods: lecture. discussion. large group exercises. individual exercises.
+											</div></li>
+											<li>
+											<div class="col-sm-12 col-md-12">
+											<i class="fa fa-fw fa-truck"></i>Upcoming dates: 
+												<ul>
 												@for(cc <- c.getCourses()){
 													<li>@cc.getDateDisplay() &amp; @cc.getLocation().getCity(), @cc.getLocation().getRegion()</li>
 													}
-													<a href="@routes.Application.itempage(c.getId())">More Dates <i class="fa fa-arrow-right"></i></a>
+													<a href="@routes.Application.itempage(c.getId())#tab-7">More Dates <i class="fa fa-arrow-right"></i></a>
 
 												</ul>
-
+											</div>
 											</li>
 											<li></li>
 										</ul>
-										<p><a href="@routes.Application.itempage(c.getId())" class="btn btn-primary">View More Details»</a></p>
+										<p><a href="@routes.Application.itempage(c.getId())#tab-5" class="btn btn-primary">View More Details»</a></p>
 									</div>
-					<div class="col-sm-2 col-md-2 ">
+					<!-- <div class="col-sm-2 col-md-2 ">
 						<a type="button" href="@routes.Application.itempage(c.getId())" class="btn btn-primary btn-lg">Book NOW</a>
-					</div>
+					</div> -->
 				</div><!-- /.panel-body -->
 			</div><!-- /.panel -->
 			}

@@ -7,6 +7,7 @@ import models.users.User;
 import models.users.UserRole;
 
 public class CustomerForm extends UserForm {
+	
 
 	private String name;
 
@@ -70,6 +71,8 @@ public class CustomerForm extends UserForm {
 		Customer customer = (Customer) user;
 		customer.setCellPhone(cellPhone);
 		customer.setPhone(phone);
+		customer.setLocation(location);
+		
 		return true;
 	}
 
