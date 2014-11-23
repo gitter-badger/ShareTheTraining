@@ -149,7 +149,9 @@ public class Course extends BaseModelObject {
 	}
 
 	public List<String> getKeyPointsAsList(){
-		List<String> keyPointsList = Arrays.asList(keyPoints.split(","));
+		List<String> keyPointsList = new ArrayList<String>();
+		if(keyPoints!=null)
+			keyPointsList = Arrays.asList(keyPoints.split(","));
 		return keyPointsList;
 	}
 	
