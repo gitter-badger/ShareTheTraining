@@ -11,6 +11,7 @@ import play.mvc.Http.Request;
 
 import java.lang.reflect.Method;
 
+import controllers.routes;
 import controllers.locations.LocationHandler;
 
 public class Global extends GlobalSettings {

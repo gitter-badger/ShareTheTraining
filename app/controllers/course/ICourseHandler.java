@@ -2,6 +2,7 @@ package controllers.course;
 
 import java.util.Collection;
 
+import controllers.user.IUserHandler;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
@@ -17,16 +18,18 @@ public interface ICourseHandler {
 			int pageSize, String orderByColumn, boolean ascending);
 
 	public Collection<Course> getCourseByTrainer(String trainerEmail,
-			int pageNumber, int pageSize, String orderByColumn, boolean ascending);
+			int pageNumber, int pageSize, String orderByColumn,
+			boolean ascending);
 
 	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
-			String orderByColumn, boolean ascending, int pageNumber, int pageSize);
+			String orderByColumn, boolean ascending, int pageNumber,
+			int pageSize);
 
 	public boolean modifyMaximum(String courseId, int maximum);
 
 	public boolean modifyMinimum(String courseId, int minimum);
 
-	public Course addNewCourse(String trainerEmail, CourseForm courseForm);
+	public Course addNewCourse(String trainerEmail, CourseForm courseForm, IUserHandler userHandler );
 
 	public ConcreteCourse getCourseByEventbriteId(String eventbriteId);
 
@@ -35,7 +38,8 @@ public interface ICourseHandler {
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse);
 
 	public CourseOrder registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId);
+			ConcreteCourse concreteCourse, String orderId,
+			IOrderHandler orderHandler);
 
 	public boolean updateCourseInfo(String trainerEmail, CourseForm courseForm);
 
@@ -48,14 +52,14 @@ public interface ICourseHandler {
 
 	public boolean updateConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm);
-	
+
 	public boolean activateCourse(int courseId);
 
 	public boolean confirmConcreteCourse(ConcreteCourse concreteCourse);
 
 	public boolean activateConcreteCourse(ConcreteCourse concreteCourse);
-	
+
 	public boolean deactivateCourse(Course course);
-	
+
 	public boolean deactivateConcreteCourse(ConcreteCourse concreteCourse);
 }

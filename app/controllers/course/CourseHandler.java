@@ -9,6 +9,7 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import controllers.user.IUserHandler;
 import controllers.user.UserHandler;
 import play.Logger;
 import play.db.jpa.JPA;
@@ -145,8 +146,8 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public Course addNewCourse(String trainerEmail, CourseForm courseForm) {
-		Trainer trainer = new UserHandler().getTrainerByEmail(trainerEmail);
+	public Course addNewCourse(String trainerEmail, CourseForm courseForm, IUserHandler userHandler) {
+		Trainer trainer = userHandler.getTrainerByEmail(trainerEmail);
 		if (trainer == null)
 			return null;
 		Course course = trainer.createNewCourse(courseForm.getCourseName(), em);
@@ -194,7 +195,7 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public CourseOrder registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId) {
+			ConcreteCourse concreteCourse, String orderId, IOrderHandler orderHandler) {
 		try {
 			if(concreteCourse == null || customer == null)
 				return null;
@@ -206,8 +207,7 @@ public class CourseHandler implements ICourseHandler {
 			if (concreteCourse.getSelectedCustomers().contains(customer))
 				return null;
 			if (customer.registerCourse(concreteCourse)) {
-				return CourseOrder.create(orderId, concreteCourse, customer,
-						new Date(), OrderStatus.CONFIRMED, em);
+				return orderHandler.newCourseOrder(orderId, concreteCourse, customer);
 			}
 			return null;
 		} catch (Exception e) {

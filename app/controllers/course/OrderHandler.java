@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -26,9 +27,11 @@ import org.json.JSONObject;
 import play.Logger;
 import play.Play;
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
+import models.users.Customer;
 
 public class OrderHandler implements IOrderHandler {
 	private EntityManager em;
@@ -88,8 +91,6 @@ public class OrderHandler implements IOrderHandler {
 		}
 		return result;
 	}
-	
-	//TODO new create function
 
 	public boolean updateOrderStatus(String orderId, OrderStatus s) {
 		CourseOrder order = this.getCourseOrderByOrderId(orderId);
@@ -121,7 +122,7 @@ public class OrderHandler implements IOrderHandler {
 		}
 	}
 
-	public static double getGrossFee(String orderId) {
+	public static JSONObject getOrderDetails(String orderId) {
 		try {
 			URIBuilder builder = new URIBuilder().setScheme("https").setHost(
 					"www.eventbriteapi.com/v3/orders/");
@@ -129,19 +130,43 @@ public class OrderHandler implements IOrderHandler {
 			builder.setParameter("token", Play.application().configuration()
 					.getString("token.eventbrite.oauth"));
 			HttpGet httpget = new HttpGet(builder.build().toString());
-			HttpResponse response=new DefaultHttpClient().execute(httpget);
-			if(response.getStatusLine().getStatusCode()==200){
-				String result=EntityUtils.toString(response.getEntity());
+			HttpResponse response = new DefaultHttpClient().execute(httpget);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				String result = EntityUtils.toString(response.getEntity());
 				JSONObject orderDetails = new JSONObject(result);
-				return orderDetails.getJSONArray("attendees").getJSONObject(0)
-						.getJSONObject("costs").getJSONObject("gross")
-						.getDouble("value");
+				return orderDetails;
 			}
-			return 0.0;
+			return null;
 		} catch (Exception e) {
 			Logger.error(e.toString());
-			return -1;
+			return null;
 		}
+	}
+
+	public static double getGrossFee(JSONObject orderDetails) {
+		if (orderDetails != null)
+			return orderDetails.getJSONArray("attendees").getJSONObject(0)
+					.getJSONObject("costs").getJSONObject("gross")
+					.getDouble("value");
+		return -1;
+	}
+
+	public static String getEventbriteUserId(JSONObject orderDetails) {
+		if (orderDetails != null)
+			return orderDetails.getJSONArray("attendees").getJSONObject(0)
+					.getString("id");
+		return null;
+	}
+
+	@Override
+	public CourseOrder newCourseOrder(String orderId,
+			ConcreteCourse concreteCourse, Customer customer) {
+		CourseOrder courseOrder = CourseOrder.create(orderId, concreteCourse,
+				customer, new Date(), OrderStatus.CONFIRMED, em);
+		JSONObject orderDetails = getOrderDetails(orderId);
+		courseOrder.setGross(getGrossFee(orderDetails));
+		courseOrder.setEventbriteUserId(getEventbriteUserId(orderDetails));
+		return courseOrder;
 	}
 
 }

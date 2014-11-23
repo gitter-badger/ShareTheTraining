@@ -12,13 +12,16 @@ import play.twirl.api.Html;
 import com.typesafe.plugin.MailerAPI;
 import com.typesafe.plugin.MailerPlugin;
 
+import controllers.routes;
+import controllers.authentication.IAuthenticationHandler;
 import models.users.UserAction;
 import views.html.email.*;
 
 public class MailHandler implements IMailHandler {
 	@Override
 	public boolean sendMailWithToken(String userName, String email,
-			String token, UserAction action) {
+			String token, UserAction action,
+			IAuthenticationHandler authenticationHandler) {
 		Html content = null;
 		switch (action) {
 		case REGISTER:
@@ -31,6 +34,26 @@ public class MailHandler implements IMailHandler {
 			return true;
 		default:
 			return false;
+		}
+	}
+
+	private String generateURL(String token, UserAction action) {
+		try {
+			URIBuilder builder = new URIBuilder().setScheme("http").setHost(
+					Play.application().configuration().getString("url.base"));
+			String url = builder.build().toString();
+			switch (action) {
+			case PASSWORDRESET:
+				url += routes.Application.resetpsw(token).url();
+				break;
+			case REGISTER:
+				url += routes.Application.activate(token).url();
+				break;
+			}
+			return url;
+		} catch (URISyntaxException e) {
+			Logger.error(e.toString());
+			return null;
 		}
 	}
 
@@ -49,25 +72,4 @@ public class MailHandler implements IMailHandler {
 		return true;
 	}
 
-	private String generateURL(String token, UserAction action) {
-		URIBuilder builder = new URIBuilder().setScheme("http").setHost(
-				Play.application().configuration().getString("url.base"));
-		switch(action){
-		case PASSWORDRESET:
-			builder.setPath("resetpsw");
-			break;
-		case REGISTER:
-			builder.setPath("activate");
-			break;
-		}
-		builder.setParameter("token", token);
-		URI uri;
-		try {
-			uri = builder.build();
-		} catch (URISyntaxException e) {
-			Logger.error(e.toString());
-			return null;
-		}
-		return uri.toString();
-	}
 }

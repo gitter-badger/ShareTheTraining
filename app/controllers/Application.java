@@ -346,7 +346,7 @@ public class Application extends Controller {
 		CourseHandler ch = new CourseHandler();
 		ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
 				"connected")), ch.getCourseByEventbriteId(eventbriteId),
-				orderId);
+				orderId, new OrderHandler());
 
 		return redirect(routes.Application.profile());
 	}
@@ -690,7 +690,7 @@ public class Application extends Controller {
 		courseForm.get();
 		Logger.info("papapalala");
 		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm.get());
+		ch.addNewCourse(session().get("connected"), courseForm.get(), new UserHandler());
 
 		return redirect(routes.Application.trainercourseverifying());
 	}

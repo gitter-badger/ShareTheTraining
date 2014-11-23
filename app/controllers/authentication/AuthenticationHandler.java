@@ -1,5 +1,7 @@
 package controllers.authentication;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
@@ -9,8 +11,10 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.http.client.utils.URIBuilder;
 
 import common.Password;
+import controllers.routes;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
 import models.users.ActionToken;
@@ -40,9 +44,9 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 			IUserHandler userHandler) {
 		User u = userHandler.getUserByEmail(userEmail);
 		if (u != null && Password.check(password, u.getPassword())) {
-			if(u.getUserStatus() == UserStatus.ACTIVE)
+			if (u.getUserStatus() == UserStatus.ACTIVE)
 				context.session().put("connected", u.getEmail());
-			
+
 		}
 		return u;
 	}
@@ -59,7 +63,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);
 				mailHandler.sendMailWithToken(userName, userEmail,
-						confirmToken, UserAction.REGISTER);
+						confirmToken, UserAction.REGISTER, this);
 				return confirmToken;
 			}
 		} catch (Exception e) {
@@ -103,7 +107,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 					UserAction.PASSWORDRESET);
 			String confirmToken = generateConfirmToken(actionToken);
 			mailHandler.sendMailWithToken(userName, userEmail, confirmToken,
-					UserAction.PASSWORDRESET);
+					UserAction.PASSWORDRESET, this);
 		} catch (Exception e) {
 			Logger.error(e.getMessage());
 			return false;
@@ -118,7 +122,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		if (tokenAndEmail.length == 2) {
 			String userEmail = new String(Base64.decodeBase64(tokenAndEmail[1]));
 			ActionToken actionToken = findToken(userEmail,
-					UserAction.PASSWORDRESET);
+					UserAction.NEWPASSWORD);
 			if (vaildateToken(actionToken)) {
 				User user = userHandler.getUserByEmail(userEmail);
 				if (user != null) {
@@ -129,6 +133,8 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		}
 		return false;
 	}
+
+	
 
 	private boolean vaildateToken(ActionToken actionToken) {
 		boolean result = actionToken != null

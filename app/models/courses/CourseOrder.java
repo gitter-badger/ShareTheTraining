@@ -46,6 +46,8 @@ public class CourseOrder extends BaseModelObject {
 
 	private double gross = -1;
 	
+	private String eventbriteUserId;
+	
 	protected CourseOrder() {
 		super();
 	}
@@ -96,6 +98,14 @@ public class CourseOrder extends BaseModelObject {
 
 	public void setGross(double gross) {
 		this.gross = gross;
+	}
+
+	public String getEventbriteUserId() {
+		return eventbriteUserId;
+	}
+
+	public void setEventbriteUserId(String eventbriteUserId) {
+		this.eventbriteUserId = eventbriteUserId;
 	}
 
 }
