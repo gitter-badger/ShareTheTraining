@@ -39,7 +39,7 @@ public class Review extends BaseModelObject {
 			trainerSum += trainerRate;
 		this.courseRating = courseSum / ((double) courseRatings.size());
 		this.trainerRating = trainerSum / ((double) trainerRatings.size());
-		this.date = new Date();
+		this.createDate = new Date();
 
 	}
 
@@ -71,7 +71,7 @@ public class Review extends BaseModelObject {
 	@ElementCollection
 	private List<String> courseQuestions;
 
-	private Date date;
+	private Date createDate;
 
 	public ConcreteCourse getConcreteCourse() {
 		return concreteCourse;
@@ -89,12 +89,12 @@ public class Review extends BaseModelObject {
 		this.author = author;
 	}
 
-	public Date getDate() {
-		return date;
+	public Date getCreateDate() {
+		return createDate;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
 	}
 
 	public List<Integer> getTrainerRatings() {

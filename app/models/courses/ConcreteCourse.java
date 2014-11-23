@@ -53,8 +53,6 @@ public class ConcreteCourse extends BaseModelObject {
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
 	private Date courseDate;
-	
-	private String dateDisplay;
 
 	@ElementCollection
 	private List<Date> courseDates = new ArrayList<Date>();
@@ -185,14 +183,6 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setConcreteCourseId(String concreteCourseId) {
 		this.concreteCourseId = concreteCourseId;
-	}
-	
-	public String getDateDisplay() {
-		return dateDisplay;
-	}
-
-	public void setDateDisplay(String dateDisplay) {
-		this.dateDisplay = dateDisplay;
 	}
 
 	public int getSoldSeat() {
