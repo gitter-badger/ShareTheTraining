@@ -7,18 +7,23 @@ import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.users.Customer;
+import models.users.NotificationItem;
 import models.users.Trainer;
 
 public interface INotificationHandler {
 
-	Collection<Trainer> getNewTrainers(Date currentTime);
+	public Collection<Trainer> getNewTrainers(Date lastTime);
 
-	Collection<Customer> getNewCustomers(Date currentTime);
+	public Collection<Customer> getNewCustomers(Date lastTime);
 
-	Collection<Course> getNewCourses(Date currentTime);
+	public Collection<Course> getNewCourses(Date lastTime);
 
-	Collection<ConcreteCourse> getNewConcreteCourse(Date currentTime);
+	public Collection<ConcreteCourse> getNewConcreteCourse(Date lastTime);
 
-	Collection<CourseOrder> getNewCourseOrder(Date currentTime);
+	public Collection<CourseOrder> getNewCourseOrder(Date lastTime);
+
+	public void updateNotifiedDate(NotificationItem notificationItem, Date current);
+
+	public Date getLastNotifiedDate(NotificationItem notificationItem);
 	
 }

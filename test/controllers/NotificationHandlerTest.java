@@ -17,6 +17,7 @@ import play.Logger;
 
 public class NotificationHandlerTest extends BaseTest{
 
+	@SuppressWarnings("deprecation")
 	@Test
 	public void testGetNewItem(){
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
@@ -29,8 +30,10 @@ public class NotificationHandlerTest extends BaseTest{
 			Logger.error(e.toString());
 		}
 		NotificationHandler nfh = new NotificationHandler();
+		date1.setSeconds(date1.getSeconds()+1);
 		Collection<Trainer> list1 = nfh.getNewTrainers(date1);
 		Collection<Trainer> list2 = nfh.getNewTrainers(date2);
+		System.out.println(date1.toString());
 		assertThat(list1.size()).isEqualTo(0);
 		assertThat(list2.size()).isEqualTo(1);
 		assertThat(list2.iterator().next().getEmail()).isEqualTo("sda");

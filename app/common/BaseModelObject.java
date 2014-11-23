@@ -28,6 +28,7 @@ public abstract class BaseModelObject implements IModelObject,
 	private Integer id;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED")
 	private Date created;
 
 	
