@@ -60,7 +60,7 @@
 											<li><i class="fa fa-fw fa-truck"></i>Upcoming dates: 
 												<ul class="list-unstyled">
 												@for(cc <- c.getCourses()){
-													<li>@cc..getCourseDate().format("EEE, MMM d, yyyy") &amp; @cc.getLocation().getCity(), @cc.getLocation().getRegion()</li>
+													<li>@cc.getCourseDate().format("EEE, MMM d, yyyy") &amp; @cc.getLocation().getCity(), @cc.getLocation().getRegion()</li>
 													}
 													<a href="@routes.Application.itempage(c.getId())">More Dates <i class="fa fa-arrow-right"></i></a>
 
