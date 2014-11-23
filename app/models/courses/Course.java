@@ -1,6 +1,7 @@
 package models.courses;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -35,7 +36,6 @@ public class Course extends BaseModelObject {
 		return course;
 	}
 
-	
 	private String courseName;
 
 	private int concreteCourseCount = 0;
@@ -57,8 +57,7 @@ public class Course extends BaseModelObject {
 
 	private String methods;
 
-	@ElementCollection
-	private List<String> keyPoints;
+	private String keyPoints;
 
 	private int popularity = 0;
 
@@ -67,8 +66,10 @@ public class Course extends BaseModelObject {
 	private Date earliestDate;
 
 	private Date latestDate;
-	
+
 	private boolean displayRating;
+	
+	private int popular = 0;
 
 	@OneToMany
 	private Collection<Review> reviews = new ArrayList<Review>();
@@ -136,15 +137,24 @@ public class Course extends BaseModelObject {
 						|| earliestDate.after(concreteCourse.getCourseDate())) {
 					earliestDate = concreteCourse.getCourseDate();
 				}
-				
-				if(latestDate == null
-						||latestDate.before(concreteCourse.getCourseDate())){
+
+				if (latestDate == null
+						|| latestDate.before(concreteCourse.getCourseDate())) {
 					latestDate = concreteCourse.getCourseDate();
 				}
 			}
 		}
 		this.setEarliestDate(earliestDate);
 		this.setLatestDate(latestDate);
+	}
+
+	public List<String> getKeyPointsAsList(){
+		List<String> keyPointsList = Arrays.asList(keyPoints.split(","));
+		return keyPointsList;
+	}
+	
+	public Collection<ConcreteCourse> getFilterCourse() {
+		return null;
 	}
 
 	public String getCourseName() {
@@ -219,7 +229,6 @@ public class Course extends BaseModelObject {
 		this.methods = methods;
 	}
 
-
 	public int getPopularity() {
 		return popularity;
 	}
@@ -268,12 +277,28 @@ public class Course extends BaseModelObject {
 		this.reviews = reviews;
 	}
 
-	public List<String> getKeyPoints() {
+	public String getKeyPoints() {
 		return keyPoints;
 	}
 
-	public void setKeyPoints(List<String> keyPoints) {
+	public void setKeyPoints(String keyPoints) {
 		this.keyPoints = keyPoints;
+	}
+
+	public boolean isDisplayRating() {
+		return displayRating;
+	}
+
+	public void setDisplayRating(boolean displayRating) {
+		this.displayRating = displayRating;
+	}
+
+	public int getPopular() {
+		return popular;
+	}
+
+	public void setPopular(int popular) {
+		this.popular = popular;
 	}
 
 }

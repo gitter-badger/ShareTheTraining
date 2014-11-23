@@ -84,7 +84,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 					cb.like(courseInfoRoot.<String> get("courseName"), "%"
 							+ keyword + "%"));
 			keyWordConditions.getExpressions().add(
-					cb.like(courseInfoRoot.<String> get("courseDesc"), "%"
+					cb.like(courseInfoRoot.<String> get("keyPoints"), "%"
 							+ keyword + "%"));
 			keyWordConditions.getExpressions().add(
 					cb.like(trainerRoot.<String> get("username"), "%" + keyword

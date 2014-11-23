@@ -52,7 +52,7 @@
 											@o.getConcreteCourse().getCourseInfo().getTrainer().getName()</button>
 										</li>
 										<li><i class="fa fa-fw fa-columns"></i>Start Time: 
-										@o.getConcreteCourse().getDateDisplay()</li>
+										@o.getConcreteCourse().getCourseDate().format("EEE, MMM d, yyyy")</li>
 										<li><i class="fa fa-fw fa-truck"></i>Location: 
 										@o.getConcreteCourse().getLocation().getDetailedLoc(),
 										@o.getConcreteCourse().getLocation().getCity(), 

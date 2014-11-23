@@ -10,8 +10,6 @@ public enum ConcreteCourseStatus {
         case 1:
             return APPROVED;
         case 2:
-            return STARTED;
-        case 3:
             return FINISHED;
         }
         return null;

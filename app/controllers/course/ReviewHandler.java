@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import play.db.jpa.JPA;
 import models.courses.Course;
 import models.courses.Review;
+import models.forms.ReviewForm;
 
 public class ReviewHandler implements IReviewHandler{
 	private EntityManager em;
@@ -16,6 +17,7 @@ public class ReviewHandler implements IReviewHandler{
 		this.em = JPA.em();
 	}
 
+	@Override
 	public Review getReviewByCustomerAndCourse(String email,
 			String concreteCourseId) {
 		String hql = "from Review r where r.author.email= :email and r.concreteCourse.concreteCourseId= :concreteCourseId";
@@ -27,4 +29,9 @@ public class ReviewHandler implements IReviewHandler{
 		return null;
 	}
 	//TODO WRITE REVIEW, REVIEW SEARCH(?)
+	public Review writeReview(ReviewForm reviewForm){
+		
+		return null;
+	}
+	
 }

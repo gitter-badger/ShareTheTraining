@@ -8,10 +8,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 
 import models.courses.ConcreteCourse;
 import models.locations.Location;
 import models.users.Admin;
+import models.users.Customer;
 import models.users.Trainer;
 import models.users.User;
 import models.users.UserRole;
@@ -44,7 +46,7 @@ public class UserFilterBuilder implements FilterBuilder {
 						Trainer.class);
 			case CUSTOMER:
 				return buildQueryBySpecificRole(cb, orderByColumn, ascending,
-						Trainer.class);
+						Customer.class);
 			}
 		}
 		return null;
@@ -55,6 +57,10 @@ public class UserFilterBuilder implements FilterBuilder {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root<User> entityRoot = criteria.from(User.class);
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Selection> selections = new ArrayList<Selection>();
+		selections.add(0, entityRoot);
+		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
+				true);
 		if (keyword != null) {
 			keyword = keyword.replaceAll("\\s+", "%");
 			Predicate keyWordConditions = cb.disjunction();
@@ -80,7 +86,7 @@ public class UserFilterBuilder implements FilterBuilder {
 					.get(orderByColumn));
 			criteria.orderBy(order);
 		}
-		return null;
+		return criteria;
 	}
 
 	private CriteriaQuery<Tuple> buildQueryBySpecificRole(CriteriaBuilder cb,
@@ -88,6 +94,10 @@ public class UserFilterBuilder implements FilterBuilder {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
 		Root entityRoot = criteria.from(userClass);
 		List<Predicate> predicates = new ArrayList<Predicate>();
+		List<Selection> selections = new ArrayList<Selection>();
+		selections.add(0, entityRoot);
+		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
+				true);
 		if (userStatus != -1) {
 			predicates.add(cb.equal(entityRoot.<UserStatus> get("userStatus"),
 					UserStatus.fromInteger(userStatus)));
@@ -123,7 +133,88 @@ public class UserFilterBuilder implements FilterBuilder {
 					.get(orderByColumn));
 			criteria.orderBy(order);
 		}
-		return null;
+		criteria.where(predicates.toArray(new Predicate[] {}));
+		return criteria;
+	}
+
+	public UserRole getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
+	}
+
+	public boolean isVeteran() {
+		return isVeteran;
+	}
+
+	public void setVeteran(boolean isVeteran) {
+		this.isVeteran = isVeteran;
+	}
+
+	public Location getLocation() {
+		return location;
+	}
+
+	public void setLocation(Location location) {
+		this.location = location;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	public int getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(int userStatus) {
+		this.userStatus = userStatus;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public boolean isEducation() {
+		return education;
+	}
+
+	public void setEducation(boolean education) {
+		this.education = education;
+	}
+
+	public boolean isExperience() {
+		return experience;
+	}
+
+	public void setExperience(boolean experience) {
+		this.experience = experience;
+	}
+
+	public int getRegisterCourseCount() {
+		return registerCourseCount;
+	}
+
+	public void setRegisterCourseCount(int registerCourseCount) {
+		this.registerCourseCount = registerCourseCount;
 	}
 
 }

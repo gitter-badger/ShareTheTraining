@@ -27,6 +27,7 @@ import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
 import controllers.course.CourseHandler;
+import controllers.course.OrderHandler;
 import controllers.user.UserHandler;
 
 public class CourseHandlerTest extends BaseTest {
@@ -174,7 +175,7 @@ public class CourseHandlerTest extends BaseTest {
 	@Test
 	public void testCourseRegisteration() {
 		CourseOrder courseOrder = new CourseHandler().registerCourse(
-				this.initData.customer1, this.initData.concreteCourse1, "hehe");
+				this.initData.customer1, this.initData.concreteCourse1, "hehe", new OrderHandler());
 		Customer customer = new UserHandler()
 				.getCustomerByEmail(this.initData.customer1.getEmail());
 		ConcreteCourse concreteCourse = new CourseHandler()

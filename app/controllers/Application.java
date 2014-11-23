@@ -49,7 +49,6 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
-import models.filters.DateFilterHandler;
 import models.filters.OrderFilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
@@ -90,7 +89,6 @@ import views.html.trainerprofile.*;
 import views.html.dashboard.*;
 import static play.data.Form.form;
 
-
 public class Application extends Controller {
 	public static Form<Customer> signupForm = form(Customer.class);
 
@@ -128,7 +126,7 @@ public class Application extends Controller {
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
+
 		return ok(home.render(course, states));
 
 	}
@@ -145,11 +143,8 @@ public class Application extends Controller {
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
-		
-		return ok(home.render(course,states));
-		
-		
+
+		return ok(home.render(course, states));
 
 	}
 
@@ -223,42 +218,43 @@ public class Application extends Controller {
 		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
 				.bindFromRequest();
 		Logger.info("keyword" + filterForm.get().getCfb().getKeyword());
-		Logger.info("city"+filterForm.get().getCfb().getLocations().iterator().next().getCity());
-		Logger.info("region"+filterForm.get().getCfb().getLocations().iterator().next().getRegion());
-		Logger.info("category"+filterForm.get().getCfb().getCategory());
+		Logger.info("city"
+				+ filterForm.get().getCfb().getLocations().iterator().next()
+						.getCity());
+		Logger.info("region"
+				+ filterForm.get().getCfb().getLocations().iterator().next()
+						.getRegion());
+		Logger.info("category" + filterForm.get().getCfb().getCategory());
 
 		int datec = filterForm.get().getCfb().getDataChoice();
-		DateFilterHandler dfh = new DateFilterHandler();
-		filterForm = dfh.transferChoiceToRange(datec, filterForm);
-
 		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm.get()
-				.getCfb(), null, true, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(CourseFilterForm
+				.transferChoiceToRange(datec, filterForm.get()).getCfb(), null,
+				true, 1, 10);
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
 
 		return ok(searchindex.render(course, states));
 	}
-	
+
 	@Transactional
 	public static Result searchall() {
-		
+
 		CourseFilterForm filterForm = new CourseFilterForm();
 		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm
-				.getCfb(), null, true, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(
+				filterForm.getCfb(), null, true, 1, 10);
 		Logger.info("course" + course.size());
-		
+
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
-		return ok(searchindex.render(course,states));
+
+		return ok(searchindex.render(course, states));
 	}
-	
+
 	@Transactional
-	public static Result searchloc(String city, String region){
+	public static Result searchloc(String city, String region) {
 		Logger.info(city);
 		Logger.info(region);
 		CourseFilterForm filterForm = new CourseFilterForm();
@@ -267,19 +263,17 @@ public class Application extends Controller {
 		loc.setCity(city);
 		ArrayList<Location> locationList = new ArrayList<Location>();
 		locationList.add(loc);
-		filterForm.getCfb().setLocations(locationList);;
+		filterForm.getCfb().setLocations(locationList);
+		;
 		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm
-				.getCfb(), null, true, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(
+				filterForm.getCfb(), null, true, 1, 10);
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
-		return ok(searchindex.render(course,states));
+
+		return ok(searchindex.render(course, states));
 	}
-	
-	
-	
-	
+
 	@Transactional
 	public static Result signupcussubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
@@ -347,13 +341,13 @@ public class Application extends Controller {
 	public static Result createOrder(String orderId, String eventbriteId) {
 		Logger.info(orderId);
 		Logger.info(eventbriteId);
-		if(session().get("connected")==null){
+		if (session().get("connected") == null) {
 			flash("error", "your order is failed because you log out");
 		}
 		CourseHandler ch = new CourseHandler();
 		ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
 				"connected")), ch.getCourseByEventbriteId(eventbriteId),
-				orderId);
+				orderId, new OrderHandler());
 
 		return redirect(routes.Application.profile());
 	}
@@ -456,8 +450,8 @@ public class Application extends Controller {
 	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuschangepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
-		Logger.info(npf.get().getOldpsw()+"nimabi");
-		Logger.info(npf.get().getNewpsw()+"nimabi");
+		Logger.info(npf.get().getOldpsw() + "nimabi");
+		Logger.info(npf.get().getNewpsw() + "nimabi");
 		UserHandler uh = new UserHandler();
 		Customer customer = (Customer) uh.getUserByEmail(session().get(
 				"connected"));
@@ -478,36 +472,34 @@ public class Application extends Controller {
 		Course course = ch.getCourseById(id);
 		Collection<Course> similarcourse = ch.getCourseByCategory(
 				course.getCourseCategory(), 1, 3, null, true);
-		DateFilterHandler dfh = new DateFilterHandler();
-		Course c = dfh.changeDateFormat(course);
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		
 
 		// Collection<ConcreteCourse> cc=c.getCourses();
 		//
 		// cc.iterator().next().getMaximum()
 
-		return ok(itempage.render(c,states));
+		return ok(itempage.render(course, states));
 	}
-	
+
 	@Transactional
-	public static Result viewdetaillocation(Integer id){
+	public static Result viewdetaillocation(Integer id) {
 		return TODO;
 	}
 
 	@Transactional
-	public static Result showSiderbarCity(){
+	public static Result showSiderbarCity() {
 		String stateName = form().bindFromRequest().get("name");
 		System.out.print(stateName);
 		if (stateName != null) {
-			Collection<String> cityList = LocationHandler.getAvailableCity(stateName, JPA.em());
+			Collection<String> cityList = LocationHandler.getAvailableCity(
+					stateName, JPA.em());
 			return ok(Json.toJson(cityList).toString());
 
 		}
 		return null;
 	}
-	
+
 	@Transactional
 	public static Result showCity() {
 
@@ -732,61 +724,65 @@ public class Application extends Controller {
 		courseForm.get();
 		Logger.info("papapalala");
 		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm.get());
+		ch.addNewCourse(session().get("connected"), courseForm.get(),
+				new UserHandler());
 
 		return redirect(routes.Application.trainercourseverifying());
 	}
-	
+
 	@Transactional
-	public static Result review(String orderId){
+	public static Result review(String orderId) {
 		OrderHandler oh = new OrderHandler();
 		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
 		return ok(review.render(courseOrder));
 	}
-	
+
 	@Transactional
-	public static Result reviewsubmit(){
+	public static Result reviewsubmit() {
 		return TODO;
 	}
-	
+
 	@Transactional
-	public static Result concreteCourseDisplay(){
+	public static Result concreteCourseDisplay() {
 		return ok(Course_list.render());
 	}
-	
+
 	@Transactional
 	public static Result dashConcreteCourseRequest() {
 		CourseHandler ch = new CourseHandler();
-		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4).getCourses();
+		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4)
+				.getCourses();
 		Collection<ConcreteCourseForm> concreteCourseForms = new ArrayList<ConcreteCourseForm>();
-		for(ConcreteCourse cc:concreteCourse){
+		for (ConcreteCourse cc : concreteCourse) {
 			Logger.info(cc.getCourseInfo().getCourseName());
-			ConcreteCourseForm ccf = ConcreteCourseForm.bindConcreteCourseForm(cc);
+			ConcreteCourseForm ccf = ConcreteCourseForm
+					.bindConcreteCourseForm(cc);
 			concreteCourseForms.add(ccf);
 		}
 		System.out.print(Json.toJson(concreteCourseForms));
 		return ok(Json.toJson(concreteCourseForms));
 	}
-	
+
 	@Transactional
-	public static Result dashConcreteCourseRequestdetail(String concreteCourseId){
+	public static Result dashConcreteCourseRequestdetail(String concreteCourseId) {
 		CourseHandler ch = new CourseHandler();
-		ConcreteCourse concreteCourse = ch.getCourseByConcreteCourseId(concreteCourseId);
-		ConcreteCourseForm ccf = ConcreteCourseForm.bindConcreteCourseForm(concreteCourse);
+		ConcreteCourse concreteCourse = ch
+				.getCourseByConcreteCourseId(concreteCourseId);
+		ConcreteCourseForm ccf = ConcreteCourseForm
+				.bindConcreteCourseForm(concreteCourse);
 		System.out.print(Json.toJson(ccf));
 		return ok(Json.toJson(ccf));
 	}
-	
-//	public static Result 
-	
+
+	// public static Result
+
 	public static Result javascriptRoutes() {
-	    response().setContentType("text/javascript");
-	    return ok(
-	        Routes.javascriptRouter("jsRoutes",
-	            routes.javascript.Application.dashConcreteCourseRequest(),
-	            routes.javascript.Application.dashConcreteCourseRequestdetail()
-	        )
-	    );
+		response().setContentType("text/javascript");
+		return ok(Routes
+				.javascriptRouter("jsRoutes", routes.javascript.Application
+						.dashConcreteCourseRequest(),
+						routes.javascript.Application
+								.dashConcreteCourseRequestdetail()));
 	}
 
 }

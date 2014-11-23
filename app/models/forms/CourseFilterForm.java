@@ -1,5 +1,9 @@
 package models.forms;
 
+import java.util.Calendar;
+import java.util.Date;
+
+import play.data.Form;
 import models.filters.CourseFilterBuilder;
 
 public class CourseFilterForm {
@@ -34,5 +38,27 @@ public class CourseFilterForm {
 			this.pageSize = pageSize;
 		}
 		
+		public static CourseFilterForm transferChoiceToRange(int datec, CourseFilterForm filterForm){
+			
+			Calendar cal = Calendar.getInstance();
+			Date current = new Date();
+			cal.setTime(current);
+			if(datec==1){
+				cal.add(Calendar.MONTH, 1);
+				
+				filterForm.getCfb().setStartDate(current);
+				filterForm.getCfb().setEndDate(cal.getTime());
+			}
+			if(datec==2){
+				cal.add(Calendar.MONTH, 1);
+				filterForm.getCfb().setStartDate(cal.getTime());
+				cal.add(Calendar.MONTH, 2);
+				filterForm.getCfb().setEndDate(cal.getTime());
+			}
+			if(datec==3){
+				filterForm.getCfb().setStartDate(current);
+			}
+			return filterForm;
+		}
 		
 }

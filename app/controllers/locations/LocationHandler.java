@@ -31,11 +31,11 @@ public class LocationHandler {
 
 	public static Location getLocationByZipcode(int zipcode) {
 		Connection connection = DB.getConnection();
-		String selectSQL = "SELECT * FROM zips WHERE state = ? AND city = ?";
+		String selectSQL = "SELECT * FROM zips WHERE zip = ?";
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(selectSQL);
-			preparedStatement.setInt(1, 1001);
+			preparedStatement.setInt(1, zipcode);
 			ResultSet rs = preparedStatement.executeQuery(selectSQL);
 			if (rs.next()) {
 				String state = rs.getString("state");
@@ -48,7 +48,6 @@ public class LocationHandler {
 			}
 		} catch (SQLException e) {
 			Logger.info(e.toString());
-			return null;
 		}
 		return null;
 	}

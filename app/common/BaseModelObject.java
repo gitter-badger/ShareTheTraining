@@ -1,5 +1,6 @@
 package common;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -27,10 +28,8 @@ public abstract class BaseModelObject implements IModelObject,
 	private Integer id;
 
 	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name = "CREATED")
 	private Date created;
-
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;
 
 	
 	public Integer getId() {
@@ -79,11 +78,6 @@ public abstract class BaseModelObject implements IModelObject,
 	protected void onCreate() {
 		created = new Date();
 	}
-	
-	@PreUpdate
-    protected void onUpdate() {
-    updated = new Date();
-    }
 
 	public Date getCreated() {
 		return created;
@@ -93,13 +87,6 @@ public abstract class BaseModelObject implements IModelObject,
 		this.created = created;
 	}
 
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
 
 	
 	

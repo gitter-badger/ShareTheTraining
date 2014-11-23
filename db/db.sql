@@ -25,6 +25,11 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `zips`
 --
 
+CREATE TABLE IF NOT EXISTS `notification` (
+	`action` int(2) DEFAULT -1,
+	`action_timestamp` TIMESTAMP DEFAULT '1970-01-01 00:00:01'
+);
+
 CREATE TABLE IF NOT EXISTS `zips` (
   `zip` int(5) DEFAULT NULL,
   `state` varchar(2) DEFAULT NULL,

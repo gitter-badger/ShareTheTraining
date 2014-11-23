@@ -43,7 +43,7 @@
 													<a title="" data-container="body" data-toggle="popover" data-placement="right" data-content="trainer introduction" data-original-title="Sinclair Rimmon">
 													@order.getConcreteCourse().getCourseInfo().getTrainer().getName()</a>
 												</li>
-												<li><i class="fa fa-fw fa-columns"></i>Start Time: @order.getConcreteCourse().getDateDisplay()</li>
+												<li><i class="fa fa-fw fa-columns"></i>Start Time: @order.getConcreteCourse().getCourseDate().format("EEE, MMM d, yyyy")</li>
 												<li><i class="fa fa-fw fa-truck"></i>Location: 
 												@order.getConcreteCourse().getLocation().getDetailedLoc(),
 												@order.getConcreteCourse().getLocation().getCity(), 

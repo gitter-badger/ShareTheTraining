@@ -1,17 +1,37 @@
 package controllers.course;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import play.Logger;
+import play.Play;
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
 import models.filters.FilterBuilder;
+import models.users.Customer;
 
 public class OrderHandler implements IOrderHandler {
 	private EntityManager em;
@@ -76,6 +96,77 @@ public class OrderHandler implements IOrderHandler {
 		CourseOrder order = this.getCourseOrderByOrderId(orderId);
 		order.setOrderStatus(s);
 		return true;
+	}
+
+	private static String readAll(Reader rd) throws IOException {
+		StringBuilder sb = new StringBuilder();
+		int cp;
+		while ((cp = rd.read()) != -1) {
+			sb.append((char) cp);
+		}
+		System.out.println(sb.toString());
+		return sb.toString();
+	}
+
+	public static JSONObject readJsonFromUrl(String url) throws IOException,
+			JSONException {
+		InputStream is = new URL(url).openStream();
+		try {
+			BufferedReader rd = new BufferedReader(new InputStreamReader(is,
+					Charset.forName("UTF-8")));
+			String jsonText = readAll(rd);
+			JSONObject json = new JSONObject(jsonText);
+			return json;
+		} finally {
+			is.close();
+		}
+	}
+
+	public static JSONObject getOrderDetails(String orderId) {
+		try {
+			URIBuilder builder = new URIBuilder().setScheme("https").setHost(
+					"www.eventbriteapi.com/v3/orders/");
+			builder.setPath(orderId);
+			builder.setParameter("token", Play.application().configuration()
+					.getString("token.eventbrite.oauth"));
+			HttpGet httpget = new HttpGet(builder.build().toString());
+			HttpResponse response = new DefaultHttpClient().execute(httpget);
+			if (response.getStatusLine().getStatusCode() == 200) {
+				String result = EntityUtils.toString(response.getEntity());
+				JSONObject orderDetails = new JSONObject(result);
+				return orderDetails;
+			}
+			return null;
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return null;
+		}
+	}
+
+	public static double getGrossFee(JSONObject orderDetails) {
+		if (orderDetails != null)
+			return orderDetails.getJSONArray("attendees").getJSONObject(0)
+					.getJSONObject("costs").getJSONObject("gross")
+					.getDouble("value");
+		return -1;
+	}
+
+	public static String getEventbriteUserId(JSONObject orderDetails) {
+		if (orderDetails != null)
+			return orderDetails.getJSONArray("attendees").getJSONObject(0)
+					.getString("id");
+		return null;
+	}
+
+	@Override
+	public CourseOrder newCourseOrder(String orderId,
+			ConcreteCourse concreteCourse, Customer customer) {
+		CourseOrder courseOrder = CourseOrder.create(orderId, concreteCourse,
+				customer, new Date(), OrderStatus.CONFIRMED, em);
+		JSONObject orderDetails = getOrderDetails(orderId);
+		courseOrder.setGross(getGrossFee(orderDetails));
+		courseOrder.setEventbriteUserId(getEventbriteUserId(orderDetails));
+		return courseOrder;
 	}
 
 }
