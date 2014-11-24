@@ -91,9 +91,7 @@
 									<h3 class="headline">Key Points:</h3>
 									<ul class="list-unstyled">
 										<li><i class="fa fa-fw fa-th"></i> <strong>KeyPoints:</strong></li>
-											@for(k <- course.getKeyPointsAsList()){
-												<li>@k</li>
-											}
+											<ul>@for(k <- course.getKeyPointsAsList()){<li>@k</li>}</ul>
 										
 									</ul>
 								</div>

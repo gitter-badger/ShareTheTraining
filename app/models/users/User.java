@@ -31,6 +31,8 @@ public abstract class User extends BaseModelObject implements Subject {
 	private UserRole userRole;
 
 	private UserStatus userStatus;
+	
+	private String image;
 
 	protected User(String email, String username, String password) {
 		this.email = email;
@@ -112,5 +114,15 @@ public abstract class User extends BaseModelObject implements Subject {
 	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+	
+	
 
 }

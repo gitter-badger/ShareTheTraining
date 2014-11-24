@@ -50,7 +50,7 @@ function initCoursePage() {
 }
 
 function getItemsFromServer(concreteCourseId) {
-	jsRoutes.controllers.Application.dashConcreteCourseRequestdetail(concreteCourseId).ajax({
+	jsRoutes.controllers.Application.dashConcreteCourseRequestDetail(concreteCourseId).ajax({
 		success : function(data) {
 			console.log(data);
 			setDetailPage(data);

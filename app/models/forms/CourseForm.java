@@ -20,7 +20,7 @@ public class CourseForm {
 
 	private String trainerName;
 	
-	private String trianerEmail;
+	private String trainerEmail;
 	
 	private int courseCategory;
 	
@@ -36,9 +36,33 @@ public class CourseForm {
 	
 	private String keyPoints;
 	
+	private String companyInfo;
+	
+	private int minimum;
+
+	private int maximum;
+	
 	
 	
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
+	
+	
+
+	public String getTrainerName() {
+		return trainerName;
+	}
+
+	public void setTrainerName(String trainerName) {
+		this.trainerName = trainerName;
+	}
+
+	public String getTrainerEmail() {
+		return trainerEmail;
+	}
+
+	public void setTrainerEmail(String trainerEmail) {
+		this.trainerEmail = trainerEmail;
+	}
 
 	public Integer getCourseId() {
 		return courseId;
@@ -129,12 +153,72 @@ public class CourseForm {
 		this.courses = courses;
 	}
 	
-	public boolean bindCourse(Course course){
-		if(course == null ||course.getId()!=this.courseId)
+	
+	public String getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(String companyInfo) {
+		this.companyInfo = companyInfo;
+	}
+	
+
+	public int getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
+	}
+
+	public boolean bindCourse(Course course) {
+		if (course == null
+				|| course.getId() != this.courseId)
 			return false;
-		//TODO a lot of set here
+		//TODO popular
+		course.setCourseName(courseName);
+		course.setCourseCategory(courseCategory);
+		course.setPrice(price);
+		course.setCourseDesc(courseDesc);
+		course.setStatus(status);
+		course.setMaximum(maximum);
+		course.setMinimum(minimum);
+		
+		
 		return true;
 	}
 	
+	public static CourseForm bindCourseForm(
+			Course course) {
+		if (course == null)
+			return null;
+		CourseForm courseForm = new CourseForm();
+		courseForm.setCourseCategory(course.getCourseCategory());
+		courseForm.setCourseDesc(course.getCourseDesc());
+		courseForm.setCourseName(course.getCourseName());
+		courseForm.setKeyPoints(course.getKeyPoints());
+		courseForm.setMethods(course.getMethods());
+		courseForm.setPrice(course.getPrice());
+		courseForm.setStatus(course.getStatus());
+		courseForm.setFromCompany(course.getTrainer().getCompany());
+		courseForm.setTrainerEmail(course.getTrainer().getEmail());
+		courseForm.setTrainerName(course.getTrainer().getName());
+		courseForm.setCompanyInfo(course.getTrainer().getCompanyInfo());
+		courseForm.setMaximum(course.getMaximum());
+		courseForm.setMinimum(course.getMinimum());
+		courseForm.setCourseId(course.getId());
+		
+		
+		return courseForm;
+
+	}
 	
 }

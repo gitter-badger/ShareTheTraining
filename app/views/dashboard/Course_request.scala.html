@@ -173,9 +173,12 @@
                                             <th>
                                                 <input type="checkbox" class="chkAll">
                                             </th>
-                                            <th>ID</th>
+                                            <th>Course ID</th>
                                             <th>Course Name</th>
-                                            <th>Trainer</th>
+                                            <th>Trainer Name</th>
+                                            <th>Trainer Email</th>
+                                            <th>Minimum Seats</th>
+                                            <th>Maximal Seats</th>
                                             <th>Price</th>
                                             <th>Status</th>
                                             <th></th>
@@ -227,8 +230,42 @@
 
             </div>
 
-            <div id="requestInfo" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="confirmDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"></button>
+                            <h3>Confirm</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p>Do you want to delete the choosen Items?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-default confirmDelete" data-dismiss="modal">Delete</a>
+                            <a class="btn btn-primary confirmCancel" data-dismiss="modal">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="errorDialog" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-sm">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal"></button>
+                            <h3>Error</h3>
+                        </div>
+                        <div class="modal-body">
+                            <p class="errorMsg"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <a class="btn btn-primary" data-dismiss="modal">Ok</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="requestInfo" class="modal fade infoModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
@@ -237,44 +274,124 @@
                         </div>
                         <div class="modal-body">
                             <form role="form">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Course Id</label>
-                                    <input class="form-control" id="courseId" value="" placeholder="Course Id" readonly="true">
+                                    <input class="form-control" name="courseId" id="courseId" value="" placeholder="Course Id" readonly="true">
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Course Name</label>
-                                    <input class="form-control" id="courseName" value="" placeholder="Course Name" readonly="true">
+                                    <input class="form-control" name="courseName" id="courseName" value="" placeholder="Course Name" readonly="true">
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Trainer Name</label>
-                                    <input class="form-control" id="trainerName" value="" placeholder="Trainer Name" readonly="true">
+                                <div class="form-group col-md-4">
+                                    <label>Course Type</label>
+                                    <input class="form-control" name="courseCategory" id="courseCategory" value="" placeholder="Course Type" readonly="true">
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label>Price</label>
-                                    <input class="form-control" id="coursePrice" value="" placeholder="Course Price" readonly="true">
-                                </div>
+
                                 <div class="form-group col-md-12">
+                                    <label>Course Description</label>
+                                    <input class="form-control" name="courseDesc" id="courseDesc" value="" placeholder="Course Description" readonly="true">
+                                </div>
+
+
+                                <div class="form-group col-md-4">
+                                    <label>Trainer Id</label>
+                                    <input class="form-control" name="trainerId" id="trainerId" value="" placeholder="Trainer Id" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Trainer Name</label>
+                                    <input class="form-control" name="trainerName" id="trainerName" value="" placeholder="Trainer Name" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Trainer Email</label>
+                                    <input class="form-control" name="trainerEmail" id="trainerEmail" value="" placeholder="Trainer Email" readonly="true">
+                                </div>
+
+
+                                <div class="form-group col-md-12">
+                                    <label>Street</label>
+                                    <input class="form-control" name="detailedLoc" id="detailedLoc" value="" placeholder="Street" readonly="true">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>City</label>
+                                    <input class="form-control" name="city" id="city" value="" placeholder="City" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>State</label>
+                                    <input class="form-control" name="state" id="state" value="" placeholder="State" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>ZIP Code</label>
+                                    <input class="form-control" name="zipCode" id="zipCode" value="" placeholder="ZIP Code" readonly="true">
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Length</label>
+                                    <input class="form-control" name="courseLength" id="courseLength" value="" placeholder="Length" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Date</label>
+                                    <input class="form-control" name="courseDate" id="courseDate" value="" placeholder="Date" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Price</label>
+                                    <input class="form-control" name="price" id="price" value="" placeholder="Course Price" readonly="true">
+                                </div>
+
+
+                                <div class="form-group col-md-4">
+                                    <label>Minimum Seats</label>
+                                    <input class="form-control" name="minimum" id="minimum" value="" placeholder="Minimum Seats" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Maximal Seats</label>
+                                    <input class="form-control" name="maximal" id="maximal" value="" placeholder="Maximal Seats" readonly="true">
+                                </div>
+
+                                <!--
+                                <div class="form-group col-md-3">
                                     <label>Status</label>
-                                    <!-- <input class="form-control" id="requestStatus" value="" placeholder="Request Status" readonly="true">-->
-                                    <select id="requestStatus" class="form-control">
+                                    <input class="form-control" name="status" id="status" value="" placeholder="status" readonly="true">
+                                </div>
+-->
+
+                                <div class="form-group col-md-4">
+                                    <label>Status</label>
+                                    <select name="status" id="status" class="form-control">
                                         <option value="approved">approved</option>
                                         <option value="rejected">rejected</option>
                                         <option value="pending">pending</option>
                                     </select>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <input class="form-control" type="date" name="dates" id="datepicker" />
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a class="btn btn-success" id="addDates">add</a>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a class="btn btn-warning" id="clearDates">clear</a>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Dates</label>
+                                    <p id="dates"></p>                                    
+                                </div>
+                                
                             </form>
                         </div>
                         <div class="modal-footer">
                             <a class="btn btn-success" id="courseRequestApprove"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Approve</a>
                             <a class="btn btn-danger" id="courseRequestReject"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Reject</a>
+                            <a class="btn btn-warning" id="courseRequestPend"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Pend</a>
                             <a class="btn btn-info" id="courseRequestEdit"><i class="glyphicon glyphicon-edit icon-white"></i>Edit</a>
-                            <a class="btn btn-warning" id="courseRequestDelete"><i class="glyphicon glyphicon-trash icon-white"></i>Delete</a>
+                            <a class="btn btn-warning itemDelete" id="courseRequestDelete" data-dismiss="modal"><i class="glyphicon glyphicon-trash icon-white"></i>Delete</a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
         <!--/.fluid-container-->
+
 
 
         <!--myjs-->

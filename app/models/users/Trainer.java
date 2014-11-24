@@ -62,6 +62,8 @@ public class Trainer extends User {
 	private Veteran veteranRole = Veteran.NONE;
 
 	private Location location = new Location(null,null, "", 0, 0);
+	
+	private String companyInfo;
 
 	@Override
 	public List<? extends Role> getRoles() {
@@ -212,4 +214,14 @@ public class Trainer extends User {
 	public void setVeteranRole(Veteran veteranRole) {
 		this.veteranRole = veteranRole;
 	}
+
+	public String getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(String companyInfo) {
+		this.companyInfo = companyInfo;
+	}
+	
+	
 }

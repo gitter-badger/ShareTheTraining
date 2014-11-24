@@ -30,6 +30,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
@@ -49,6 +53,7 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
+import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
@@ -143,6 +148,8 @@ public class Application extends Controller {
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		
+		System.out.print(course.iterator().next().getKeyPointsAsList());
 
 		return ok(home.render(course, states));
 
@@ -430,9 +437,11 @@ public class Application extends Controller {
 		//image processing
 		MultipartFormData body = request().body().asMultipartFormData();
 		FilePart picture = body.getFile("picture");
-		String name = uh.getUserByEmail(session().get("connected")).getId().toString();
+		String oldpath = uh.getUserByEmail(session().get("connected")).getImage();
 		ImageHandler ih = new ImageHandler();
-		if(ih.processImage(picture,name)){
+		if(ih.processImage(picture,oldpath)!=null){
+			String imagePath = ih.processImage(picture, oldpath);
+			uh.getUserByEmail(session().get("connected")).setImage(imagePath);
 			return redirect(routes.Application.cusinfo());
 		}
 		 	flash("error", "Missing file");
@@ -747,9 +756,11 @@ public class Application extends Controller {
 		return ok(Course_list.render());
 	}
 
+	
 	@Transactional
 	public static Result dashConcreteCourseRequest() {
 		CourseHandler ch = new CourseHandler();
+		//TODO get all the concreteCourse
 		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4)
 				.getCourses();
 		Collection<ConcreteCourseForm> concreteCourseForms = new ArrayList<ConcreteCourseForm>();
@@ -763,8 +774,9 @@ public class Application extends Controller {
 		return ok(Json.toJson(concreteCourseForms));
 	}
 
+	//how to pass several dates and location
 	@Transactional
-	public static Result dashConcreteCourseRequestdetail(String concreteCourseId) {
+	public static Result dashConcreteCourseRequestDetail(String concreteCourseId) {
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch
 				.getCourseByConcreteCourseId(concreteCourseId);
@@ -773,16 +785,61 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(ccf));
 		return ok(Json.toJson(ccf));
 	}
+	
+	
+	@Transactional
+	public static Result courseDisplay() {
+		return ok(Course_list.render());
+	}
+	
+	@Transactional
+	public static Result dashCourse(){
+		CourseHandler ch = new CourseHandler();
+		FilterBuilder fb = new CourseFilterBuilder();
+		
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, -1, -1);
+		Collection<CourseForm> courseForm = new ArrayList<CourseForm>();
+		for(Course c:course){
+			Logger.info(c.getCourseName());
+			CourseForm cf = CourseForm.bindCourseForm(c);
+			courseForm.add(cf);
+		}
+		System.out.print(Json.toJson(courseForm));
+		return ok(Json.toJson(courseForm));
+	}
+	
+	@Transactional
+	public static Result dashCourseDetail(String courseId){
+		CourseHandler ch = new CourseHandler();
+		Course course = ch.getCourseById(Integer.parseInt(courseId));
+		CourseForm cf = CourseForm.bindCourseForm(course);
+		System.out.print(Json.toJson(cf));
+		return ok(Json.toJson(cf));
+	}
 
-	// public static Result
-
+	
+	@Transactional
+	public static Result trainerDisplay() {
+		return ok(User_trainer.render());
+	}
+	
+	@Transactional
+	public static Result dashTrainer(){
+		return ok(User_trainer.render());
+	}
+	
+	
+	
+	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
 		return ok(Routes
-				.javascriptRouter("jsRoutes", routes.javascript.Application
-						.dashConcreteCourseRequest(),
-						routes.javascript.Application
-								.dashConcreteCourseRequestdetail()));
+				.javascriptRouter("jsRoutes", 
+						routes.javascript.Application.dashConcreteCourseRequest(),
+						routes.javascript.Application.dashConcreteCourseRequestDetail(),
+						routes.javascript.Application.dashCourse(),
+						routes.javascript.Application.dashCourseDetail()
+						));
 	}
 
 }

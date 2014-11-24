@@ -26,8 +26,9 @@
 						</td>
 						<td>@c.getLength()</td>
 						<td>@c.getLocation().getCity(), @c.getLocation().getRegion()<!-- <br><a onclick="window.open('@routes.Application.viewdetaillocation(c.getId())','template_window','200','100','yes','center')" >view detail</a> --></td>
-						<td>@c.getMaximum()</td>
-						<td>&lt;@(c.getMaximum()-c.getMinimum())</td>
+						<td>@course.getMaximum()</td>
+						<!-- TODO, fix, notright -->
+						<td>&lt;@(course.getMaximum()-course.getMinimum())</td>
 						<td>$@course.getPrice()</td>
 						<td><a onclick="window.open('http://www.eventbrite.com/event/@c.getEventbriteId()')" type="button" class="btn btn-primary btn-sm">Book
 								Online</a>

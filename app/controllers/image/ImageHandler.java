@@ -6,24 +6,22 @@ import java.io.FilenameFilter;
 import java.io.IOException;
 
 import controllers.routes;
+import controllers.user.UserHandler;
 import play.Play;
 import play.mvc.Http.MultipartFormData.FilePart;
 
 public class ImageHandler implements IImageHandler{
 
 	@Override
-	public boolean processImage(FilePart picture,final String fname) throws IOException {
+	public String processImage(FilePart picture, String oldpath) throws IOException {
 		if (picture != null) {
-			String myUploadPath = Play.application().configuration().getString("myUploadPath");
-			String directory = myUploadPath;
-			File dir = new File(directory);
-			String[] oldFilePath = dir.list(new FilenameFilter() {
-			    @Override
-			    public boolean accept(File dir, String name) {
-			        return name.matches(fname);
-			    }
-			});
 			
+			if(oldpath!=null){
+				File f = new File(oldpath);
+				if(f.exists()){
+					f.delete();
+				}
+			}
 			
 			ImageResize imageResize = new ImageResize();
 			byte[] result = imageResize.setCropAndScaleAvatarUpload(picture, 600);
@@ -33,15 +31,16 @@ public class ImageHandler implements IImageHandler{
 		    File file = picture.getFile();
 		    
 		    //added lines
-		    
+		    String myUploadPath = Play.application().configuration().getString("myUploadPath");
 //		    file.renameTo(new File(myUploadPath, fileName));
-		    FileOutputStream fos = new FileOutputStream(myUploadPath+fileName);
+		    String imagePath = myUploadPath+fileName;
+		    FileOutputStream fos = new FileOutputStream(imagePath);
 		    fos.write(result);
 		    fos.close();
-	
-	        return true;
+		    
+	        return imagePath;
 		  } else {
-			 return false;
+			 return null;
 		  }
 		
 	}

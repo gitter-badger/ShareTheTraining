@@ -60,16 +60,16 @@ public class ConcreteCourse extends BaseModelObject {
 	private Time length;
 
 	private Location location = new Location(null, null, "", 0, 0);
-
-	private int minimum = -1;
-
-	private int maximum = -1;
 	
 	private int soldSeat;
 
 	private String eventbriteId;
 
 	private ConcreteCourseStatus status = ConcreteCourseStatus.VERIFYING;
+	
+	private int minimum = -1;
+
+	private int maximum = -1;
 
 	public void enrollCustomer(Customer customer) {
 		this.selectedCustomers.add(customer);
@@ -128,21 +128,6 @@ public class ConcreteCourse extends BaseModelObject {
 		this.waitListRecords = waitListRecords;
 	}
 
-	public int getMinimum() {
-		return minimum;
-	}
-
-	public void setMinimum(int minimum) {
-		this.minimum = minimum;
-	}
-
-	public int getMaximum() {
-		return maximum;
-	}
-
-	public void setMaximum(int maximum) {
-		this.maximum = maximum;
-	}
 
 	public ConcreteCourseStatus getStatus() {
 		return status;
@@ -191,6 +176,22 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setSoldSeat(int soldSeat) {
 		this.soldSeat = soldSeat;
+	}
+
+	public int getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
 	}
 	
 	

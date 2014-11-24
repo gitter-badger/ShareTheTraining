@@ -4,6 +4,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatTypes;
@@ -52,6 +53,8 @@ public class ConcreteCourseForm {
 	private ConcreteCourseStatus status = ConcreteCourseStatus.VERIFYING;
 
 	private String roomset;
+	
+	private List<Date> courseDates;
 
 	public String getRoomset() {
 		return roomset;
@@ -183,6 +186,14 @@ public class ConcreteCourseForm {
 
 	
 	
+	public List<Date> getCourseDates() {
+		return courseDates;
+	}
+
+	public void setCourseDates(Collection<Date> collection) {
+		this.courseDates = (List<Date>) collection;
+	}
+
 	public ConcreteCourseForm() {
 
 	}
@@ -222,9 +233,9 @@ public class ConcreteCourseForm {
 		concreteCourseForm.setConcreteCourseId(concreteCourse.getConcreteCourseId());
 		concreteCourseForm.setTrainerEmail(concreteCourse.getCourseInfo().getTrainer().getEmail());
 		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
-		concreteCourseForm.setMinimum(concreteCourse.getMinimum());
 		concreteCourseForm.setSoldSeat(concreteCourse.getSoldSeat());
-
+		concreteCourseForm.setCourseDates(concreteCourse.getCourseDates());
+		
 		return concreteCourseForm;
 
 	}
