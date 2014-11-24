@@ -9,9 +9,9 @@ import javax.persistence.TypedQuery;
 import models.filters.FilterBuilder;
 
 public class Utility {
-	public static  List<Tuple> findBaseModelObject(FilterBuilder fb,
+	public static List<Tuple> findBaseModelObject(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
-			int pageSize, EntityManager em){
+			int pageSize, EntityManager em) {
 		TypedQuery<Tuple> tq = em.createQuery(fb.buildeQuery(
 				em.getCriteriaBuilder(), orderByColumn, ascending));
 		if (pageNumber != -1 && pageSize != -1) {
@@ -19,5 +19,10 @@ public class Utility {
 			tq.setFirstResult(pageSize * (pageNumber - 1));
 		}
 		return tq.getResultList();
+	}
+
+	public static String getQueryString(String url) {
+		String[] splits = url.split("\\?");
+		return splits.length > 1 ? splits[1] : "";
 	}
 }

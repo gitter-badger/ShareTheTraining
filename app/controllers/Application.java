@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.text.*;
 
 import common.Password;
+import common.Utility;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -72,6 +73,7 @@ import play.libs.F.Function;
 import play.libs.F.Function0;
 import play.libs.F.Promise;
 import play.libs.Json;
+import play.libs.ws.WS;
 import play.mvc.*;
 import play.mvc.Http.Context;
 import play.mvc.Http.MultipartFormData;
@@ -218,7 +220,7 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result search(Integer pageNumber) {
-		Logger.info(request().uri());
+		Logger.info(Utility.getQueryString(request().uri()));
 		CourseFilterForm filterForm = form(CourseFilterForm.class)
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
