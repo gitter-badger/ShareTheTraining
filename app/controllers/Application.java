@@ -8,15 +8,11 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.typesafe.plugin.MailerAPI;
-import com.typesafe.plugin.MailerPlugin;
 
 import java.text.*;
 
 import common.Password;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -30,15 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.persistence.Tuple;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
 import controllers.image.ImageHandler;
-import controllers.image.ImageResize;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 import controllers.user.IMailHandler;
@@ -185,11 +176,11 @@ public class Application extends Controller {
 		ah.doResetPassword(token, newPassword, uh);
 		return TODO;
 	}
-	
-	//TODO show password form here
+
+	// TODO show password form here
 	@Transactional
-	public static Result authorizeResetPassword(String token){
-		
+	public static Result authorizeResetPassword(String token) {
+
 		return TODO;
 	}
 
@@ -229,12 +220,12 @@ public class Application extends Controller {
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		filterForm.transferChoiceToRange();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm,
-				 null, true, pageNumber < 1 ? 1:pageNumber, Play.application()
-				.configuration().getInt("page.size.search"));
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm, null,
+				true, pageNumber < 1 ? 1 : pageNumber, Play.application()
+						.configuration().getInt("page.size.search"));
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
-		//TODO cache
+		// TODO cache
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 
 		return ok(searchindex.render(course, states));
@@ -255,7 +246,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	//TODO test
+	// TODO test
 	public static Result searchloc(String city, String region) {
 		CourseFilterBuilder filter = new CourseFilterBuilder();
 		Location loc = new Location();
@@ -265,8 +256,8 @@ public class Application extends Controller {
 		locationList.add(loc);
 		filter.setLocations(locationList);
 		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(
-				filter, null, true, 1, 10);
+		Collection<Course> course = ch.getCourseByCustomRule(filter, null,
+				true, 1, 10);
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 
@@ -302,7 +293,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	//TODO write together?
+	// TODO write together?
 	public static Result signuptrainersubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
@@ -360,7 +351,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	//TODO together
+	// TODO together
 	@Restrict({ @Group("CUSTOMER") })
 	public static Result cuscourseconfirmed() {
 		OrderHandler oh = new OrderHandler();
@@ -396,7 +387,7 @@ public class Application extends Controller {
 		return ok(cuscoursehistory.render(order));
 	}
 
-	//TODO together
+	// TODO together
 	@Transactional
 	@Restrict({ @Group("CUSTOMER") })
 	public static Result cusinfo() {
@@ -452,7 +443,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	//TODO ALSO TRAINER
+	// TODO ALSO TRAINER
 	@Restrict({ @Group("CUSTOMER") })
 	public static Result cuschangepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
@@ -585,7 +576,7 @@ public class Application extends Controller {
 
 	}
 
-	//TODO writetogether
+	// TODO writetogether
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainercourseapproved() {
@@ -642,8 +633,7 @@ public class Application extends Controller {
 		return ok(trainercoursehistory.render(course));
 	}
 
-	
-	//TODO write together
+	// TODO write together
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerbasicinfo() {
@@ -705,7 +695,8 @@ public class Application extends Controller {
 		uh.updateProfile(session().get("connected"), trainerForm.get());
 		return redirect(routes.Application.trainerinfo());
 	}
-//END
+
+	// END
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcourse() {
