@@ -17,6 +17,7 @@ import common.Password;
 import controllers.routes;
 import controllers.user.IMailHandler;
 import controllers.user.IUserHandler;
+import models.forms.UserForm;
 import models.users.ActionToken;
 import models.users.User;
 import models.users.UserAction;
@@ -53,12 +54,13 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 
 	@Override
 	public String doRegister(String userEmail, String userName,
-			String password, UserRole userRole, IUserHandler userHandler,
+			String password, UserRole userRole,UserForm userform ,IUserHandler userHandler,
 			IMailHandler mailHandler) {
 		try {
 			User user = userHandler.createNewUser(userEmail, userName,
 					password, userRole);
 			if (user != null) {
+				userform.bindUser(user);
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);

@@ -1,4 +1,7 @@
-@main("trianeraddcourse"){
+@tail = {
+	
+}
+@main("trianeraddcourse",tail){
 
 <section class="wrapper-sm bg-highlight">
 	<div class="container">
@@ -22,11 +25,11 @@
 							<div class="panel-heading">
 								<h4 class="panel-title">Key Learning Points</h4>
 							</div>
-							<div class="panel-body text-default">
-								<textarea name="keyPoints" id="keyPoints" class="form-control" cols="30"
-									rows="3"
-									placeholder="Please list some key learning points from your course for course attendees"></textarea>
-							</div>
+							
+								<li class="list-group-item form-group">
+									<input  class="form-control required" data-role="tagsinput" name="key" id="key" placeholder="Please seperate different key points with a comma"></input>
+								</li>
+							
 							<div class="panel-heading">
 								<h4 class="panel-title">Price</h4>
 							</div>
@@ -74,6 +77,5 @@
 	</div>
 	<!-- /.container -->
 </section>
-
 
 }

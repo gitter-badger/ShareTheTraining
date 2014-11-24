@@ -9,13 +9,10 @@ public enum OrderStatus {
         case 0:
             return CONFIRMED;
         case 1:
-            return ORDERED;
-        case 2:
             return DONE;
-        case 3:
+        case 2:
             return CANCELLED;
-        case 4:
-            return PENDING;
+        
         }
         return null;
     }

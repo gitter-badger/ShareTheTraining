@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String, tail: Html=Html(""))(content: Html)
 
 
 
@@ -21,17 +21,18 @@
 	<link href="@routes.Assets.at("css/fullcalendar.css")" rel='stylesheet' />
 	<link href="@routes.Assets.at("css/fullcalendar.print.css")" rel='stylesheet' media='print' />
 	<link href="@routes.Assets.at("css/star-rating.css")" media="all" rel='stylesheet' media='print' />
+	 <link rel="stylesheet" href="@routes.Assets.at("/css/bootstrap-tagsinput.css")">
 	<!--[if lt IE 9]>
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<script src="assets/js/respond.min.js"></script>
 	<![endif]-->
 	<link rel="shortcut icon" href="favicon.png">
-	<script type="text/javascript">
+	 <script type="text/javascript">
 	window.onload = function()
 	{
 		CKEDITOR.replace( 'courseDesc' );
 	};
-	</script>
+	</script> 
 	
 	
 </head>
@@ -44,10 +45,10 @@
 			<section class="wrapper-xs bg-primary">
 				<div class="container">
 					<div class="row"> 
-						<div class="col-sm-12 col-md-9">
-							<h1><p>ShareTheTraining</p></h1>
+						<div class="col-sm-8 col-md-8">
+							<a href="@routes.Application.welcome()"><h1><p>ShareTheTraining</p></h1></a>
 						</div><!-- /.col -->
-						<div class="col-md-3">
+						<div class="col-sm-4 col-md-4">
 							<!-- Button trigger modal -->
 							<button class="btn btn-primary" data-toggle="modal" data-target=".bs-modal-signup"> Sign up
 							</button>
@@ -68,7 +69,7 @@
 			<div class="container">
 				<div class="row"> 
 					<div class="col-sm-12 col-md-9">
-						<h1><p>ShareTheTraining</p></h1>
+						<a href="@routes.Application.welcome()"><h1><p>ShareTheTraining</p></h1></a>
 					</div><!-- /.col -->
 					<div class="col-md-3">
 						<a class="btn btn-primary" href="@routes.Application.profile()">My Account</a>
@@ -216,129 +217,22 @@
 	<script src="@routes.Assets.at("js/validate.js")"></script>
 	<script src="@routes.Assets.at("js/holder.js")"></script>
 	<script src="@routes.Assets.at("js/moment.min.js")"></script>
-	<script src="@routes.Assets.at("js/jquery.min.js")"></script>
+	<!-- <script src="@routes.Assets.at("js/jquery.min.js")"></script> -->
 	<script src="@routes.Assets.at("js/jquery-ui.custom.min.js")"></script>
 	<script src="@routes.Assets.at("js/fullcalendar.js")"></script>
 	<script src="@routes.Assets.at("js/calendar.js")"></script>
 	<script src="@routes.Assets.at("js/star-rating.js")"></script>
 	<script src="@routes.Assets.at("js/ckeditor/ckeditor.js")"></script>
-	
-	<script>
-		$(document).ready(function(){
-					 
-			$("#signup").validate({
-				rules:{
-					name:{
-						required:true
-					},
-					email:{
-						required:true,
-						email:true
-					},
-					username:{
-						required:true,
-						minlength:3,
-						maxlength:15
-					},
-					password:{
-						required:true,
-						maxlength:16,
-						minlength:6
-					},
-					repass:{
-						required:true,
-						maxlength:16,
-						minlength:6,
-						equalTo:"#password"
-					},
-					address:{
-						required:true
-					},
-					city:{
-						required:true
-					},
-					state:{
-						required:true
-					},
-					zipcode:"isZipCode",
-					agree:{
-						required:true
-					}
-				},
-				messages:{
-					username:{
-						remote:"This username has already been registered, please change to another username！"
-					},
-					repass:{
-						equalTo:"Please input same password！"
-					},
-					address:"Please input valid street address",
-					agree:"please check the terms "
-				},
-				errorPlacement: function(error, element) {
-					if ( element.is(":radio") )
-						error.appendTo ( element.parent() );
-					else if ( element.is(":checkbox") )
-						error.appendTo ( element.parent() );
-					else
-						error.insertBefore(element);
-				},
-			    success: function(label) {
-				   label.html("&nbsp;").addClass("right").text("√");
-			    },	
-    			onfocusout: function(element){
-        			$("#name").valid();
-        			$("#email").valid();
-        			$("#username").valid();
-        			$("#pass").valid();
-        			$("#repass").valid();
-        			$("#address").valid();
-        			$("#city").valid();
-        			$("#state").valid();
-        			$("#zipcode").valid();
-        			$("#phone").valid();
-        			$("#agree").valid();
-   				}
-
-   			}); 
-			$('.selectpicker').selectpicker();
-			// tooltips
-			$('[data-toggle="tooltip"]').tooltip();
-			// popover demo
-			$('[data-toggle="popover"]').popover();
-			// dismiss alerts
-			$(".alert").alert();
-			// toggle open and close icon for collapse (accordions)
-			// set initial content
-			$('[data-state]').each(function () {
-				if ($(this).attr('data-state') == "open") {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
-			// toggle content on click
-			$('[data-state]').click(function () {
-				// toggle state
-				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
-				// toggle content based on state
-				if ($(this).attr('data-state') == 'open') {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
-			
-			
-			
-		});
-	</script>
+	<script type="text/javascript" src="@routes.Assets.at("js/bootstrap-tagsinput-angular.js")"></script>
+	<script type="text/javascript" src="@routes.Assets.at("js/bootstrap-tagsinput.js")"></script> 
 	
 	
-    @validation() 
-	@showcity()
-	@timedirect()
-	@calendarscript()
+	 @tail
+	 @calendarscript() 
+     @validation() 
+	 @showcity()
+	 @timedirect() 
+	
 	
 	
 </body>

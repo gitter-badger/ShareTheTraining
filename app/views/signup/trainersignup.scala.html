@@ -7,7 +7,7 @@
 				<div class="col-sm-12 col-md-6 col-md-offset-3 widget padding-lg bg-dark">
 					<h2 class="text-center">Basic Information</h2>
 					<p class="text-primary"><strong>Note: (*) denotes required item.</strong></p>
-					<form role="form" action="@routes.Application.signuptrainersubmit()" id="signup" method="post">
+					<form role="form" action="@routes.Application.signuptrainersubmit()" id="signup2" method="post">
 						<div class="form-group">
 							<label for="name">Name <span class="text-primary">(*)</span></label>
 							<input type="text" name="name" class="form-control required" size="25" id="name" placeholder="Your name">
@@ -36,7 +36,7 @@
 							<label for="state">State <span class="text-primary">(*)</span></label>
 							<select onchange="showCity(this.value)"  class="form-control show-tick" title='Choose One' data-style="btn-primary" name="location.region" id="location.region">
 												<optgroup label="State:">
-													<option value="CA" selected>CA</option>
+													<option value="" selected></option>
 												@for(s <- states){
 													<option value="@s">@s</option>
 													}
@@ -62,17 +62,17 @@
 							<input type="text" name="company" id="company" class="form-control required">
 						</div>
 						<div class="form-group">
-							<label for="education">Education</label>
-							<textarea name="education" id="education" class="form-control" cols="30" rows="3"></textarea>
+							<label for="education">Education <span class="text-primary">(*)</span></label>
+							<textarea name="education" id="education" class="form-control required" cols="30" rows="3"></textarea>
 						</div>
 						<div class="form-group">
-							<label for="workExperience">Work Experience</label>
+							<label for="workExperience">Work Experience <span class="text-primary">(*)</span></label>
 							
-							<textarea name="experience" id="experience" class="form-control" cols="30" rows="3"></textarea>
+							<textarea name="experience" id="experience" class="form-control required" cols="30" rows="3"></textarea>
 						</div>
 						<div class="form-group">
-							<label for="certification">Certifications </label>
-							<textarea name="certification" id="certification" class="form-control" cols="30" rows="3"></textarea>
+							<label for="certification">Certifications <span class="text-primary">(*)</span></label>
+							<textarea name="certification" id="certification" class="form-control required" cols="30" rows="3"></textarea>
 						</div>
 						<div class="form-group">
 							<label for="far">How far are you willing to travel to deliver a course without travel reimbursement? <span class="text-primary">(*)</span></label>

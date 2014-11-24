@@ -1,6 +1,8 @@
 package controllers;
 
 import static org.fest.assertions.Assertions.assertThat;
+import models.forms.CustomerForm;
+import models.forms.UserForm;
 import models.users.ActionToken;
 import models.users.User;
 import models.users.UserAction;
@@ -21,14 +23,14 @@ public class AuthenticationHandlerTest extends BaseTest {
 		AuthenticationHandler authenticationHandler = new AuthenticationHandler();
 		UserHandler userHandler = new UserHandler();
 		String confirmToken = authenticationHandler.doRegister(
-				"wjf3121@gmail.com", "hehe", "123", UserRole.CUSTOMER,
-				userHandler, new MailHandler());
+				"lazzy4869@gmail.com", "hehe", "123", UserRole.CUSTOMER,
+				new CustomerForm(), userHandler, new MailHandler());
 		assertThat(confirmToken).isNotNull();
-		User u = userHandler.getUserByEmail("wjf3121@gmail.com");
+		User u = userHandler.getUserByEmail("lazzy4869@gmail.com");
 		assertThat(u.getUserRole()).isEqualTo(UserRole.CUSTOMER);
 		assertThat(u.getUserStatus()).isEqualTo(UserStatus.INACTIVE);
 		authenticationHandler.activateUser(confirmToken, userHandler);
-		u = userHandler.getUserByEmail("wjf3121@gmail.com");
+		u = userHandler.getUserByEmail("lazzy4869@gmail.com");
 		assertThat(u.getUserStatus()).isEqualTo(UserStatus.ACTIVE);
 		this.getmEm().remove(u);
 	}

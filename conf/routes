@@ -23,7 +23,6 @@ POST   /signuptrainer               controllers.Application.signuptrainersubmit(
 GET    /profile                     controllers.Application.profile()
 #profile-cus
 GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
-GET    /cuscourseordered            controllers.Application.cuscourseordered()
 GET    /cuscoursedone               controllers.Application.cuscoursedone()
 GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
 GET    /cusinfo                     controllers.Application.cusinfo()
@@ -54,6 +53,7 @@ GET    /createorder                 controllers.Application.createOrder(orderId:
 #calendar
 POST  /addschedule                  controllers.Application.addschedule()
 GET   /getcalendar                  controllers.Application.getschedule()
+POST  /deleteschedule               controllers.Application.deleteschedule()
 
 #mail
 GET    /activate                    controllers.Application.activate(token: String)
@@ -82,7 +82,10 @@ GET     /review                     controllers.Application.review(orderId: Stri
 #dashboard
 GET     /dashConcreteCourseRequest  controllers.Application.dashConcreteCourseRequest()
 GET     /concreteCourseDisplay      controllers.Application.concreteCourseDisplay()
-GET     /dashConcreteCourseRequestdetail  controllers.Application.dashConcreteCourseRequestdetail(concreteCourseId: String)
+GET     /dashConcreteCourseRequestDetail  controllers.Application.dashConcreteCourseRequestDetail(concreteCourseId: String)
+GET     /courseDisplay              controllers.Application.courseDisplay()
+GET     /dashCourse                 controllers.Application.dashCourse()
+GET     /dashCourseDetail           controllers.Application.dashCourseDetail(courseId: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

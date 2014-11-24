@@ -25,11 +25,11 @@ public class MailHandler implements IMailHandler {
 		Html content = null;
 		switch (action) {
 		case REGISTER:
-			content = reset_content.render(generateURL(token, action));
+			content = register_content.render(generateURL(token, action));
 			sendEmail(email, "hehe", content);
 			return true;
 		case PASSWORDRESET:
-			content = register_content.render(generateURL(token, action));
+			content = reset_content.render(generateURL(token, action));
 			sendEmail(email, "hehe", content);
 			return true;
 		default:

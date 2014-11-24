@@ -24,7 +24,7 @@ public class TrainerForm extends UserForm {
 	private String experience;
 
 	// certification, image?
-	private List<String> certification;
+	private String certification;
 
 	// how far are you willing to travel to deliver a course without travel
 	// reimbursement
@@ -92,11 +92,12 @@ public class TrainerForm extends UserForm {
 		this.experience = experience;
 	}
 
-	public List<String> getCertification() {
+
+	public String getCertification() {
 		return certification;
 	}
 
-	public void setCertification(List<String> certification) {
+	public void setCertification(String certification) {
 		this.certification = certification;
 	}
 
@@ -128,6 +129,16 @@ public class TrainerForm extends UserForm {
 		Trainer trainer = (Trainer) user;
 		trainer.setCellPhone(cellPhone);
 		trainer.setPhone(phone);
+		trainer.setEducation(education);
+		trainer.setCompany(company);
+		trainer.setExperience(experience);
+		trainer.setHowFar(howfar);
+		trainer.setCertification(certification);
+		trainer.setLocation(location);
+		trainer.setName(name);
+		
+	
+	
 		return true;
 		
 	}

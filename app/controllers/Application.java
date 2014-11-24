@@ -15,6 +15,8 @@ import java.text.*;
 
 import common.Password;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
@@ -28,9 +30,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.Tuple;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
+import controllers.image.ImageHandler;
+import controllers.image.ImageResize;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 import controllers.user.IMailHandler;
@@ -45,6 +53,7 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.filters.CourseFilterBuilder;
+import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
@@ -71,6 +80,8 @@ import play.libs.F.Promise;
 import play.libs.Json;
 import play.mvc.*;
 import play.mvc.Http.Context;
+import play.mvc.Http.MultipartFormData;
+import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Http.Request;
 import play.mvc.Http.Response;
 import views.html.*;
@@ -137,6 +148,7 @@ public class Application extends Controller {
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		
 
 		return ok(home.render(course, states));
 
@@ -275,7 +287,7 @@ public class Application extends Controller {
 		IUserHandler uh = new UserHandler();
 		IMailHandler mh = new MailHandler();
 		ah.doRegister(cusForm.get().getEmail(), cusForm.get().getName(),
-				cusForm.get().getPassword(), UserRole.values()[1], uh, mh);
+				cusForm.get().getPassword(), UserRole.values()[1],cusForm.get(), uh, mh);
 
 		return ok(signupemail.render());
 	}
@@ -304,7 +316,7 @@ public class Application extends Controller {
 		IMailHandler mh = new MailHandler();
 		ah.doRegister(trainerForm.get().getEmail(),
 				trainerForm.get().getName(), trainerForm.get().getPassword(),
-				UserRole.values()[2], uh, mh);
+				UserRole.values()[2],trainerForm.get(), uh, mh);
 		return ok(signupemail.render());
 	}
 
@@ -331,6 +343,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result createOrder(String orderId, String eventbriteId) {
 		Logger.info(orderId);
 		Logger.info(eventbriteId);
@@ -346,11 +359,13 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER") })
 	public static Result trainerschedule() {
 		return ok(trainerschedule.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscourseconfirmed() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -362,17 +377,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result cuscourseordered() {
-		OrderHandler oh = new OrderHandler();
-		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.ORDERED.ordinal());
-		fb.setUserEmail(session().get("connected"));
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb, null,
-				-1, -1);
-		return ok(cuscoursehistory.render(order));
-	}
-
-	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscoursedone() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -383,7 +388,9 @@ public class Application extends Controller {
 		return ok(cuscoursehistory.render(order));
 	}
 
+
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuscoursecanceled() {
 		OrderHandler oh = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
@@ -395,6 +402,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cusinfo() {
 		UserHandler uh = new UserHandler();
 		Customer customer = (Customer) uh.getUserByEmail(session().get(
@@ -404,6 +412,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cusinfoedit() {
 		UserHandler uh = new UserHandler();
 
@@ -416,21 +425,37 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result cusinfoeditsubmit() {
+	@Restrict({ @Group("CUSTOMER")})
+	public static Result cusinfoeditsubmit() throws IOException {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		Logger.info(cusForm.get().getPhone());
 		Logger.info(cusForm.get().getEmail());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
-		return redirect(routes.Application.cusinfo());
+		
+		//image processing
+		MultipartFormData body = request().body().asMultipartFormData();
+		FilePart picture = body.getFile("picture");
+		String oldpath = uh.getUserByEmail(session().get("connected")).getImage();
+		ImageHandler ih = new ImageHandler();
+		if(ih.processImage(picture,oldpath)!=null){
+			String imagePath = ih.processImage(picture, oldpath);
+			uh.getUserByEmail(session().get("connected")).setImage(imagePath);
+			return redirect(routes.Application.cusinfo());
+		}
+		 	flash("error", "Missing file");
+			return redirect(routes.Application.cusinfoedit());
+		  
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuschangepsw() {
 		return ok(cuschangepsw.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER")})
 	public static Result cuschangepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
 		Logger.info(npf.get().getOldpsw() + "nimabi");
@@ -497,6 +522,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result addschedule() throws ParseException, SQLException {
 		String start = form().bindFromRequest().get("start");
 		Logger.info(start);
@@ -507,8 +533,22 @@ public class Application extends Controller {
 		trainer.getAvailableDates().add(date);
 		return ok("lala");
 	}
+	
+	@Transactional
+	@Restrict({ @Group("TRAINER")})
+	public static Result deleteschedule() throws ParseException{
+		String start = form().bindFromRequest().get("start");
+		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session()
+				.get("connected"));
+		uh.removeAvailableDate(date, trainer);
+		
+		return ok();
+	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result getschedule() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = uh.getTrainerByEmail(session().get("connected"));
@@ -553,12 +593,10 @@ public class Application extends Controller {
 
 	}
 
-	@Transactional
-	public static Result deleteschedule() {
-		return TODO;
-	}
+	
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercourseapproved() {
 
 		CourseHandler ch = new CourseHandler();
@@ -572,6 +610,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercourseverifying() {
 
 		CourseHandler ch = new CourseHandler();
@@ -585,6 +624,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercoursecompleted() {
 
 		CourseHandler ch = new CourseHandler();
@@ -598,6 +638,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainercoursecanceled() {
 
 		CourseHandler ch = new CourseHandler();
@@ -611,6 +652,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfo() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -619,6 +661,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfoedit() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -630,6 +673,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerbasicinfoeditsubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
@@ -640,6 +684,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfo() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -649,6 +694,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfoedit() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
@@ -657,6 +703,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerinfoeditsubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
@@ -667,16 +714,19 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result traineraddcourse() {
 		return ok(traineraddcourse.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result trainerchangepsw() {
 		return ok(trainerchangepsw.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("TRAINER")})
 	public static Result traineraddcoursesubmit() {
 		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
 		courseForm.get();
@@ -705,9 +755,11 @@ public class Application extends Controller {
 		return ok(Course_list.render());
 	}
 
+	
 	@Transactional
 	public static Result dashConcreteCourseRequest() {
 		CourseHandler ch = new CourseHandler();
+		//TODO get all the concreteCourse
 		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4)
 				.getCourses();
 		Collection<ConcreteCourseForm> concreteCourseForms = new ArrayList<ConcreteCourseForm>();
@@ -721,8 +773,9 @@ public class Application extends Controller {
 		return ok(Json.toJson(concreteCourseForms));
 	}
 
+	//how to pass several dates and location
 	@Transactional
-	public static Result dashConcreteCourseRequestdetail(String concreteCourseId) {
+	public static Result dashConcreteCourseRequestDetail(String concreteCourseId) {
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch
 				.getCourseByConcreteCourseId(concreteCourseId);
@@ -731,16 +784,61 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(ccf));
 		return ok(Json.toJson(ccf));
 	}
+	
+	
+	@Transactional
+	public static Result courseDisplay() {
+		return ok(Course_list.render());
+	}
+	
+	@Transactional
+	public static Result dashCourse(){
+		CourseHandler ch = new CourseHandler();
+		FilterBuilder fb = new CourseFilterBuilder();
+		
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, -1, -1);
+		Collection<CourseForm> courseForm = new ArrayList<CourseForm>();
+		for(Course c:course){
+			Logger.info(c.getCourseName());
+			CourseForm cf = CourseForm.bindCourseForm(c);
+			courseForm.add(cf);
+		}
+		System.out.print(Json.toJson(courseForm));
+		return ok(Json.toJson(courseForm));
+	}
+	
+	@Transactional
+	public static Result dashCourseDetail(String courseId){
+		CourseHandler ch = new CourseHandler();
+		Course course = ch.getCourseById(Integer.parseInt(courseId));
+		CourseForm cf = CourseForm.bindCourseForm(course);
+		System.out.print(Json.toJson(cf));
+		return ok(Json.toJson(cf));
+	}
 
-	// public static Result
-
+	
+	@Transactional
+	public static Result trainerDisplay() {
+		return ok(User_trainer.render());
+	}
+	
+	@Transactional
+	public static Result dashTrainer(){
+		return ok(User_trainer.render());
+	}
+	
+	
+	
+	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
 		return ok(Routes
-				.javascriptRouter("jsRoutes", routes.javascript.Application
-						.dashConcreteCourseRequest(),
-						routes.javascript.Application
-								.dashConcreteCourseRequestdetail()));
+				.javascriptRouter("jsRoutes", 
+						routes.javascript.Application.dashConcreteCourseRequest(),
+						routes.javascript.Application.dashConcreteCourseRequestDetail(),
+						routes.javascript.Application.dashCourse(),
+						routes.javascript.Application.dashCourseDetail()
+						));
 	}
 
 }

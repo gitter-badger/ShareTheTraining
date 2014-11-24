@@ -46,15 +46,12 @@
 	        		}
 			        if(confirm('Do you really want to delete this event?'))
 			        {
-			        	$('#calendar').fullCalendar( 'removeEvents',calEvent.id);
 			        	
 			        	//var eventid = $("#eventid").val(); 
-			            $.post("do.php?action=del",{id:calEvent.id},function(msg){ 
-			                if(msg==1){//delete success 
-			                    $('#calendar').fullCalendar('refetchEvents'); 
-			                }else{ 
-			                    alert(msg);     
-			                } 
+			            $.post("@routes.Application.deleteschedule()",{start:calEvent.start.toISOString()}).done(function(msg){ 
+			                alert('hehe');
+			                console.log(calEvent);	
+			            	$('#calendar').fullCalendar( 'removeEvents',calEvent._id);
 			            }); 
 			        	 //alert(calEvent.id);
 			        	 //$(this).css('border-color', 'yellow');

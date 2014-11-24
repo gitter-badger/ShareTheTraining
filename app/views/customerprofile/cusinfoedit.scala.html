@@ -16,7 +16,7 @@
 						<div class="col-sm-12 col-md-8">
 							<h2>Basic Information</h2>
 						</div>
-						<form role="form" action="@routes.Application.cusinfoeditsubmit()" id="edit" method="post">
+						<form role="form" action="@routes.Application.cusinfoeditsubmit()" id="edit" method="post" enctype="multipart/form-data">
 						<button type="submit" class="btn btn-primary btn-md">Confirm</button>
 						<a href="userBasicInfo.html "class="btn btn-default btn-md">Cancel</a>
 					</div>
@@ -31,7 +31,7 @@
 									</div>
 									<div class="panel-body">
 										<img class="img-responsive img-rounded" src="assets/img/user-1.jpg">
-										<input type="file" id="exampleInputFile">
+										<input type="file" id="picture" name="picture">
 										
 									</div>
 								</div><!-- /.panel -->
