@@ -61,7 +61,7 @@ GET    /resetpsw                    controllers.Application.resetpsw(token: Stri
 
 #search
 GET     /searchall                  controllers.Application.searchall()   
-POST    /search  	                controllers.Application.search()
+GET    /search  	                controllers.Application.search()
 GET     /searchloc                  controllers.Application.searchloc(city: String, region: String)
 
 #itempage
@@ -86,6 +86,7 @@ GET     /dashConcreteCourseRequestDetail  controllers.Application.dashConcreteCo
 GET     /courseDisplay              controllers.Application.courseDisplay()
 GET     /dashCourse                 controllers.Application.dashCourse()
 GET     /dashCourseDetail           controllers.Application.dashCourseDetail(courseId: String)
+POST    /dashCourseDelete           controllers.Application.dashCourseDelete()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

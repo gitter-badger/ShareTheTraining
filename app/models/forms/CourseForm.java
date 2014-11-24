@@ -30,7 +30,7 @@ public class CourseForm {
 	
 	private String courseDesc;
 
-	private CourseStatus status = CourseStatus.VERIFYING;
+	private int status = CourseStatus.VERIFYING.ordinal();
 	
 	private String methods;
 	
@@ -121,11 +121,13 @@ public class CourseForm {
 		this.courseDesc = courseDesc;
 	}
 
-	public CourseStatus getStatus() {
+
+
+	public int getStatus() {
 		return status;
 	}
 
-	public void setStatus(CourseStatus status) {
+	public void setStatus(int status) {
 		this.status = status;
 	}
 
@@ -188,7 +190,7 @@ public class CourseForm {
 		course.setCourseCategory(courseCategory);
 		course.setPrice(price);
 		course.setCourseDesc(courseDesc);
-		course.setStatus(status);
+		course.setStatus(CourseStatus.fromInteger(status));
 		course.setMaximum(maximum);
 		course.setMinimum(minimum);
 		
@@ -207,7 +209,7 @@ public class CourseForm {
 		courseForm.setKeyPoints(course.getKeyPoints());
 		courseForm.setMethods(course.getMethods());
 		courseForm.setPrice(course.getPrice());
-		courseForm.setStatus(course.getStatus());
+		courseForm.setStatus(course.getStatus().ordinal());
 		courseForm.setFromCompany(course.getTrainer().getCompany());
 		courseForm.setTrainerEmail(course.getTrainer().getEmail());
 		courseForm.setTrainerName(course.getTrainer().getName());

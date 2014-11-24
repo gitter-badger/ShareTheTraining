@@ -1,32 +1,46 @@
 function deleteEditedItem() {
     var Items = new Array;
+    Items.push($('.datatable').DataTable().$('td', 'tr.edited').eq(1).text());
     deleteItems(Items);
 }
-function deleteSelectedItems(){
-       var Items = new Array;
+
+function deleteSelectedItems() {
+    var Items = new Array;
+    var selectedItemsNum = $('.datatable').DataTable().row('.selected').length;
+    for(var i=0;i<selectedItemsNum;i++)
+        Items.push($('.datatable').DataTable().$('td', 'tr.selected').eq(1+i*10).text());
     deleteItems(Items);
 }
-function deleteItems(Items){
-	
+
+function deleteItems(Items) {
+    alert("hehe");
+    getJsonData();
+    jsRoutes.controllers.Application.dashCourseDelete().ajax({
+        data : JsonData,
+        success : {}
+    });
+    
+    
 }
-function updateItem(){}
+
+function updateItem() {}
 
 function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
-    if ('VERIFYING' == v8) {
+    if ('0' == v8) {
         $('#requestTable').DataTable().row.add([
                 '<input type="checkbox" name="chkItem" value="' + v1 + '">',
                 v1, v2, v3, v4, v5, v6, v7,
             '<span class="label-warning label">Pending</span>',
             '<a class="viewbtn btn btn-success" value="' + v1 + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
     }
-    if ('APPROVED' == v8) {
+    if ('1' == v8) {
         $('#requestTable').DataTable().row.add([
                 '<input type="checkbox" name="chkItem" value="' + v1 + '">',
                 v1, v2, v3, v4, v5, v6, v7,
             '<span class="label-success label">Approved</span>',
             '<a class="viewbtn btn btn-success" value="' + v1 + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
     }
-    if ('CANCELLED' == v8) {
+    if ('2' == v8) {
         $('#requestTable').DataTable().row.add([
                 '<input type="checkbox" name="chkItem" value="' + v1 + '">',
                 v1, v2, v3, v4, v5, v6, v7,
@@ -36,19 +50,19 @@ function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
 }
 
 function initCourseRequestPage() {
-	console.log("hehe");
+    console.log("hehe");
     jsRoutes.controllers.Application.dashCourse().ajax(
         {
             success :  function (data) {
-            	
+               console.log(data);
             $.each(data, function (i, item) {
                 addRow(
-                	item.courseId,
+                    item.courseId,
                     item.courseName,
                     item.trainerName,
                     item.trainerEmail,
-                    item.courses.minimum,
-                    item.courses.maximal,
+                    item.minimum,
+                    item.maximum,
                     item.price, 
                     item.status);
             });
@@ -56,12 +70,12 @@ function initCourseRequestPage() {
 }
 
 function getItemFromServer(courseId) {
-	jsRoutes.controllers.Application.dashCourseDetail(courseId).ajax({
-		success : function(data) {
-			console.log(data);
-			setDetailPage(data);
-		}
-	})
+    jsRoutes.controllers.Application.dashCourseDetail(courseId).ajax({
+        success : function(data) {
+            console.log(data);
+            setDetailPage(data);
+        }
+    });
 }
 
 function setDetailPage(item) {
@@ -71,7 +85,7 @@ function setDetailPage(item) {
     $("#courseDesc").val(item.courseDesc);
     $("#trainerId").val(item.trainerId);
     $("#trainerName").val(item.trainerName);
-    $("#trainerEmail").val(item.trainerEmail);
+    $("#methods").val(item.methods);
     $("#detailedLoc").val(item.detailedLoc);
     $("#city").val(item.city);
     $("#state").val(item.state);
@@ -93,7 +107,7 @@ function disableFields() {
     $("#courseDesc").attr("readonly", true);
     $("#trainerId").attr("readonly", true);
     $("#trainerName").attr("readonly", true);
-    $("#trainerEmail").attr("readonly", true);
+    $("#methods").attr("readonly", true);
     $("#detailedLoc").attr("readonly", true);
     $("#city").attr("readonly", true);
     $("#state").attr("readonly", true);
@@ -113,7 +127,7 @@ function enableFields() {
     $("#courseDesc").attr("readonly", false);
     $("#trainerId").attr("readonly", false);
     $("#trainerName").attr("readonly", false);
-    $("#trainerEmail").attr("readonly", false);
+    $("#methods").attr("readonly", false);
     $("#detailedLoc").attr("readonly", false);
     $("#city").attr("readonly", false);
     $("#state").attr("readonly", false);
@@ -133,7 +147,7 @@ function emptyDetailPage(item) {
     $("#courseDesc").val('');
     $("#trainerId").val('');
     $("#trainerName").val('');
-    $("#trainerEmail").val('');
+    $("#methods").val('');
     $("#detailedLoc").val('');
     $("#city").val('');
     $("#state").val('');
@@ -210,8 +224,8 @@ $(document).ready(function () {
         $('#requestTable').DataTable().$('td', 'tr.edited').eq(8).html('<span class="label-danger label">rejected</span>');
         $("#requestInfo").modal('toggle');
     });
-    
-     $(document).on("click", "#courseRequestPend", function () {
+
+    $(document).on("click", "#courseRequestPend", function () {
         $('#requestTable').DataTable().$('td', 'tr.edited').eq(8).html('<span class="label-warning label">Pending</span>');
         $("#requestInfo").modal('toggle');
     });
@@ -225,11 +239,11 @@ $(document).ready(function () {
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(1).text($("#courseId").val());
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(2).text($("#courseName").val());
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(3).text($("#trainerName").val());
-            $('#requestTable').DataTable().$('td', 'tr.edited').eq(4).text($("#trainerEmail").val());
+            $('#requestTable').DataTable().$('td', 'tr.edited').eq(4).text($("#courseCategory").val());
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(5).text($("#minimum").val());
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(6).text($("#maximal").val());
             $('#requestTable').DataTable().$('td', 'tr.edited').eq(7).text($("#price").val());
-            
+
             if ("approved" == $("#requestStatus").val())
                 $('#requestTable').DataTable().$('td', 'tr.edited').eq(8).html('<span class="label-success label">approved</span>');
             if ("rejected" == $("#requestStatus").val())
@@ -237,33 +251,24 @@ $(document).ready(function () {
             if ("pending" == $("#requestStatus").val())
                 $('#requestTable').DataTable().$('td', 'tr.edited').eq(8).html('<span class="label-warning label">pending</span>');
             $("#requestInfo").modal('toggle');
-            
+
             $("#courseRequestEdit").text("Edit");
             updateItem();
         }
     });
-    
-    
 
-//    //delete button on detail page
-//    $(document).on("click", "#courseRequestDelete", function () {
-//        $('#requestTable').DataTable().row('.edited').remove().draw(false);
-//        $("#requestInfo").modal('toggle');
-//    });
-//
-//
-//    //delete button function
-//    $(document).on("click", ".btndelete", function () {
-//        $('#requestTable').DataTable().row('.selected').remove().draw(false);
-//    });
-    
-     $(document).on("click", "#addDates", function () {
-         $("#dates").append($("#datepicker").val()+" ");
-         if ('' != $("#datepicker").val())
-            dates.push($("#datepicker").val());
-    });
-    $(document).on("click", "#clearDates", function () {
-         $("#dates").text("");
-    });
-    
+
+
+    //    //delete button on detail page
+    //    $(document).on("click", "#courseRequestDelete", function () {
+    //        $('#requestTable').DataTable().row('.edited').remove().draw(false);
+    //        $("#requestInfo").modal('toggle');
+    //    });
+    //
+    //
+    //    //delete button function
+    //    $(document).on("click", ".btndelete", function () {
+    //        $('#requestTable').DataTable().row('.selected').remove().draw(false);
+    //    });
+
 });
