@@ -20,10 +20,10 @@ public class OrderHandlerTest extends BaseTest {
 	public void testFilterCourseByMultiOption() {
 		CourseOrder order = CourseOrder.create("123",
 				this.initData.concreteCourse1, this.initData.customer1,
-				new Date(), OrderStatus.ORDERED, this.getmEm());
+				new Date(), OrderStatus.CONFIRMED, this.getmEm());
 		OrderHandler orderHandler = new OrderHandler();
 		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.ORDERED.ordinal());
+		fb.setOrderStatus(OrderStatus.CONFIRMED.ordinal());
 		fb.setUserEmail(this.initData.customer1.getEmail());
 		Collection<CourseOrder> result = orderHandler
 				.getCourseOrderByCustomRule(fb, null, -1,

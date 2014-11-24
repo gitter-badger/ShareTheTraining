@@ -48,7 +48,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private double highPrice = -1;
 	private int category = -1;
 	private Location curentLocation;
-	private int dataChoice = -1;
 	private int courseStatus = -1;
 	private int concreteCourseStatus = -1;
 	private boolean isVeteran = false;
@@ -148,7 +147,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		}
 		if (curentLocation != null) {
 			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
-					locationRoot.<Point> get("point"), createCircle(
+					locationRoot.<Point> get("point"), createTriangle(
 							curentLocation.getPoint(), 0.36)));
 		}
 		// TODO add more filter here
@@ -163,7 +162,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 		return criteria;
 	}
 
-	private static Geometry createCircle(Point point, final double RADIUS) {
+	public static Geometry createTriangle(Point point, final double RADIUS) {
 		Coordinate[] coordinates = new Coordinate[5];
 		double x = 0.3 + Math.abs(point.getX() / 180 * 0.5);
 		coordinates[0] = new Coordinate(point.getX() + x, point.getY() + 0.3);
@@ -251,13 +250,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.category = category;
 	}
 
-	public int getDataChoice() {
-		return dataChoice;
-	}
-
-	public void setDataChoice(int dataChoice) {
-		this.dataChoice = dataChoice;
-	}
 
 	public int getCourseStatus() {
 		return courseStatus;

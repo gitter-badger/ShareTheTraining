@@ -1,6 +1,8 @@
 package controllers.course;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 import controllers.user.IUserHandler;
 import models.courses.ConcreteCourse;
@@ -21,7 +23,7 @@ public interface ICourseHandler {
 			int pageNumber, int pageSize, String orderByColumn,
 			boolean ascending);
 
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+	public Collection<Course> getCourseByCustomRule(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
 			int pageSize);
 
@@ -62,4 +64,8 @@ public interface ICourseHandler {
 	public boolean deactivateCourse(Course course);
 
 	public boolean deactivateConcreteCourse(ConcreteCourse concreteCourse);
+
+	public Map<Integer, List<ConcreteCourse>> getConcreteCourseMap(FilterBuilder fb,
+			String orderByColumn, boolean ascending, int pageNumber,
+			int pageSize);
 }

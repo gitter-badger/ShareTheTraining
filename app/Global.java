@@ -18,13 +18,15 @@ public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
 		// Logger.info("Three tomatoes are walking down the street- a poppa tomato, a momma tomato, and a little baby tomato. ");
-		Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
+		//Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
+		Logger.info("Play it, Sam. Play \"As Time Goes By.\"");
 		LocationHandler.initialize();
 	}
 
 	public void onStop(Application app) {
 		// Logger.info("Baby tomato starts lagging behind. Poppa tomato gets angry, goes over to the baby tomato, and smooshes him... and says, Catch up.");
-		Logger.info("The other one says, \"Yeah, I know; and such small portions.\"");
+		//Logger.info("The other one says, \"Yeah, I know; and such small portions.\"");
+		Logger.info("Play it once, Sam. For old times' sake.");
 	}
 
 	/* 500, need modification */

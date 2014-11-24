@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -23,6 +24,8 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import common.Utility;
 
 import play.Logger;
 import play.Play;
@@ -77,16 +80,12 @@ public class OrderHandler implements IOrderHandler {
 	}
 
 	@Override
-	public Collection<CourseOrder> getCourseOrderByCustomRule(FilterBuilder cb,
+	public Collection<CourseOrder> getCourseOrderByCustomRule(FilterBuilder fb,
 			String orderByColumn, int pageNumber, int pageSize) {
-		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
-				em.getCriteriaBuilder(), orderByColumn, true));
-		if (pageNumber != -1 && pageSize != -1) {
-			tq.setMaxResults(pageSize);
-			tq.setFirstResult(pageSize * (pageNumber - 1));
-		}
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
+				true, pageNumber, pageSize, em);
 		Collection<CourseOrder> result = new ArrayList<CourseOrder>();
-		for (Tuple t : tq.getResultList()) {
+		for (Tuple t : tupleList) {
 			result.add((CourseOrder) t.get(0));
 		}
 		return result;

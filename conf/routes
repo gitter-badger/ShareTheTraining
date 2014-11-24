@@ -57,11 +57,11 @@ POST  /deleteschedule               controllers.Application.deleteschedule()
 
 #mail
 GET    /activate                    controllers.Application.activate(token: String)
-GET    /resetpsw                    controllers.Application.resetpsw(token: String)
+POST    /resetpsw                    controllers.Application.authorizeResetPassword(token: String)
 
 #search
 GET     /searchall                  controllers.Application.searchall()   
-GET    /search  	                controllers.Application.search()
+GET    /search/:pageNumber  	                controllers.Application.search(pageNumber: Integer )
 GET     /searchloc                  controllers.Application.searchloc(city: String, region: String)
 
 #itempage

@@ -12,11 +12,11 @@
 					<div class="widget padding-lg bg-dark">
 						<h3 class="heading text-light">What would you like to be amazing at:</h3>
 						<br class="spacer-lg">
-						<form action="@routes.Application.search()" role="form" method="get">
+						<form action="@routes.Application.search(1)" role="form" method="get">
 							<div class="row">
 								<div class="col-md-12">
 									<label for="">Course Catagories:</label>
-									<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.category" id="cfb.dataChoice">
+									<select default class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="category" id="cfb.dataChoice">
 											<optgroup label="Show All">
 												<option value="-1" selected="selected">Show All</option>
 											</optgroup>
@@ -29,7 +29,7 @@
 								
 								<div class="col-md-12">
 									<label for="">State:</label>
-									<select  onchange="showSidebarCity(this.value)" class="form-control selectpicker show-tick" name="cfb.locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
+									<select  onchange="showSidebarCity(this.value)" class="form-control selectpicker show-tick" name="locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
 											</optgroup>
@@ -44,7 +44,7 @@
 									
 									<div class="col-md-12">
 									<label for="">City:</label>
-									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].city" id="cfb.locations[0].city" data-live-search="true" data-style="btn-primary">
+									<select  class="form-control selectpicker show-tick" name="locations[0].city" id="cfb.locations[0].city" data-live-search="true" data-style="btn-primary">
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
 											</optgroup>
@@ -54,7 +54,7 @@
 								</div><!-- /.col -->
 								<div class="col-md-12">
 									<label for="">Date:</label>
-									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="cfb.dataChoice" id="cfb.dataChoice">
+									<select class="form-control selectpicker show-tick" title='Choose One' data-style="btn-primary" name="dataChoice" id="cfb.dataChoice">
 										<optgroup label="Date:">
 											<option value="1">Next 30 days</option>
 											<option value="2">Next 2 to 3 months</option>
@@ -62,6 +62,7 @@
 										</optgroup>
 									</select> 
 								</div><!-- /.col -->
+								<input type="hidden" name="pageNumber" value = 1 />
 								<div class="col-md-12">
 									<label for="">Ready?</label>
 									<button class="btn btn-primary btn-block" type="submit">Search</button>

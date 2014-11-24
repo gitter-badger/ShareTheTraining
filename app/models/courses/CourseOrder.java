@@ -42,7 +42,7 @@ public class CourseOrder extends BaseModelObject {
 
 	private Date orderDate;
 
-	private OrderStatus orderStatus = OrderStatus.PENDING;
+	private OrderStatus orderStatus = OrderStatus.CONFIRMED;
 
 	private double gross = -1;
 	

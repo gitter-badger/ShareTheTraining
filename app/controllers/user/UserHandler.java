@@ -3,11 +3,14 @@ package controllers.user;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
+
+import common.Utility;
 
 import play.Logger;
 import play.db.jpa.JPA;
@@ -125,17 +128,13 @@ public class UserHandler implements IUserHandler {
 
 
 	@Override
-	public Collection<User> getUserByCustomeRule(FilterBuilder cb,
+	public Collection<User> getUserByCustomeRule(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
 			int pageSize) {
-		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
-				em.getCriteriaBuilder(), orderByColumn, ascending));
-		if (pageNumber != -1 && pageSize != -1) {
-			tq.setMaxResults(pageSize);
-			tq.setFirstResult(pageSize * (pageNumber - 1));
-		}
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
+				ascending, pageNumber, pageSize, em);
 		Collection<User> result = new ArrayList<User>();
-		for (Tuple t : tq.getResultList()) {
+		for (Tuple t : tupleList) {
 			result.add((User) t.get(0));
 		}
 		return result;

@@ -2,7 +2,7 @@ package models.courses;
 
 public enum OrderStatus {
 	
-	CONFIRMED,ORDERED,DONE,CANCELLED,PENDING;
+	CONFIRMED,DONE,CANCELLED;
 	
 	public static OrderStatus fromInteger(int x) {
         switch(x) {

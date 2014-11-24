@@ -7,12 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.CourseStatus;
+import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.locations.Location;
 import models.users.Customer;
@@ -172,6 +176,27 @@ public class CourseHandlerTest extends BaseTest {
 		assertThat(result.size()).isEqualTo(1);
 	}
 
+	@Test
+	public void testGetConcreteCourseMap(){
+		CourseHandler courseHandler = new CourseHandler();
+		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.setKeyword("xingbuxin");
+		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,
+				null, true, 1, 10);
+		assertThat(result.size()).isEqualTo(1);
+		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
+		ccfb.setCfb(cb);
+		ccfb.setCourseList(result);
+		Map<Integer,List<ConcreteCourse>> map = courseHandler.getConcreteCourseMap(ccfb, null, true, -1, -1);
+		int count = 0;
+		Iterator<Entry<Integer, List<ConcreteCourse>>> it = map.entrySet().iterator();
+	    while (it.hasNext()) {
+	        Map.Entry pairs = (Map.Entry)it.next();
+	        count+=((List<ConcreteCourse>)pairs.getValue()).size();
+	    }
+	    assertThat(count).isEqualTo(2);
+	}
+	
 	@Test
 	public void testCourseRegisteration() {
 		CourseOrder courseOrder = new CourseHandler().registerCourse(

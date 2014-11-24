@@ -116,7 +116,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean doResetPassword(String token, String newPassword,
 			IUserHandler userHandler) {
@@ -124,7 +124,7 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		if (tokenAndEmail.length == 2) {
 			String userEmail = new String(Base64.decodeBase64(tokenAndEmail[1]));
 			ActionToken actionToken = findToken(userEmail,
-					UserAction.NEWPASSWORD);
+					UserAction.PASSWORDRESET);
 			if (vaildateToken(actionToken)) {
 				User user = userHandler.getUserByEmail(userEmail);
 				if (user != null) {
@@ -136,7 +136,6 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 		return false;
 	}
 
-	
 
 	private boolean vaildateToken(ActionToken actionToken) {
 		boolean result = actionToken != null

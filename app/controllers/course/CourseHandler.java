@@ -3,12 +3,16 @@ package controllers.course;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import common.Utility;
 import controllers.user.IUserHandler;
 import controllers.user.UserHandler;
 import play.Logger;
@@ -95,19 +99,32 @@ public class CourseHandler implements ICourseHandler {
 		return result;
 	}
 
+	
 	@Override
-	public Collection<Course> getCourseByCustomRule(FilterBuilder cb,
+	public Collection<Course> getCourseByCustomRule(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
 			int pageSize) {
-		TypedQuery<Tuple> tq = em.createQuery(cb.buildeQuery(
-				em.getCriteriaBuilder(), orderByColumn, ascending));
-		if (pageNumber != -1 && pageSize != -1) {
-			tq.setMaxResults(pageSize);
-			tq.setFirstResult(pageSize * (pageNumber - 1));
-		}
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
+				ascending, pageNumber, pageSize, em);
 		Collection<Course> result = new ArrayList<Course>();
-		for (Tuple t : tq.getResultList()) {
+		for (Tuple t : tupleList) {
 			result.add((Course) t.get(0));
+		}
+		return result;
+	}
+
+	@Override
+	public Map<Integer,List<ConcreteCourse>> getConcreteCourseMap(
+			FilterBuilder fb, String orderByColumn, boolean ascending,
+			int pageNumber, int pageSize) {
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
+				ascending, pageNumber, pageSize, em);
+		Map<Integer,List<ConcreteCourse>> result = new HashMap<Integer,List<ConcreteCourse>>();
+		for (Tuple t : tupleList) {
+			ConcreteCourse concreteCourse = (ConcreteCourse) t.get(0);
+			if(!result.containsKey(concreteCourse.getCourseInfo().getId()))
+				result.put(concreteCourse.getCourseInfo().getId(), new ArrayList<ConcreteCourse>());
+			result.get(concreteCourse.getCourseInfo().getId()).add(concreteCourse);
 		}
 		return result;
 	}
@@ -136,7 +153,9 @@ public class CourseHandler implements ICourseHandler {
 	public boolean modifyMinimum(int courseId, int minimum) {
 		try {
 			Course course = this.getCourseById(courseId);
-			if(course == null || minimum < 0|| (course.getMaximum() != -1 && course.getMaximum() < minimum))
+			if (course == null
+					|| minimum < 0
+					|| (course.getMaximum() != -1 && course.getMaximum() < minimum))
 				return false;
 			course.setMaximum(minimum);
 			return true;
@@ -204,8 +223,8 @@ public class CourseHandler implements ICourseHandler {
 				return null;
 			if (concreteCourse.getStatus() == ConcreteCourseStatus.VERIFYING
 					|| concreteCourse.getStatus() == ConcreteCourseStatus.FINISHED
-					|| concreteCourse.getSelectedCustomers().size() == concreteCourse.getCourseInfo()
-							.getMaximum())
+					|| concreteCourse.getSelectedCustomers().size() == concreteCourse
+							.getCourseInfo().getMaximum())
 				return null;
 			if (concreteCourse.getSelectedCustomers().contains(customer))
 				return null;

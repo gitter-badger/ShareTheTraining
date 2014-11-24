@@ -44,7 +44,7 @@ public class MailHandler implements IMailHandler {
 			String url = builder.build().toString();
 			switch (action) {
 			case PASSWORDRESET:
-				url += routes.Application.resetpsw(token).url();
+				url += routes.Application.authorizeResetPassword(token).url();
 				break;
 			case REGISTER:
 				url += routes.Application.activate(token).url();
