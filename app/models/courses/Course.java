@@ -322,7 +322,5 @@ public class Course extends BaseModelObject {
 	public void setMaximum(int maximum) {
 		this.maximum = maximum;
 	}
-	
-	
 
 }

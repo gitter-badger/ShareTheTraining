@@ -27,11 +27,15 @@ public class Initialization {
 		course1.setCourseDesc("xixihaha");
 		course1.setCourseCategory(1);
 		course1.setStatus(CourseStatus.OPEN);
+		course1.setMinimum(1);
+		course1.setMaximum(2);
 		course2 = Course.create("fubai", trainer1, em);
 		course2.setCourseDesc("xixilala");
 		course2.setCourseCategory(2);
 		course2.setStatus(CourseStatus.OPEN);
 		course2.setRating(5);
+		course2.setMinimum(1);
+		course2.setMaximum(2);
 		List<Date> dates = new ArrayList<Date>();
 		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
 		String dateInString = "06-04-1989";
@@ -48,8 +52,6 @@ public class Initialization {
 		concreteCourse1.setLocation(new Location("qunimabi",
 				"gun", "", -118.14, 34.03));
 		concreteCourse1.setCourseDates(dates);
-		concreteCourse1.setMinimum(1);
-		concreteCourse1.setMaximum(2);
 		concreteCourse1.setStatus(ConcreteCourseStatus.APPROVED);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
@@ -58,8 +60,6 @@ public class Initialization {
 		concreteCourse2.setLocation(new Location("qunimabi",
 				"gun","", -118.14, 34.03));
 		concreteCourse2.setCourseDates(dates);
-		concreteCourse2.setMinimum(1);
-		concreteCourse2.setMaximum(2);
 		dates = new ArrayList<Date>();
 		dates.add(new Date());
 		concreteCourse3 = ConcreteCourse.create(course2, em);
@@ -67,8 +67,6 @@ public class Initialization {
 		concreteCourse3.setLocation(new Location("nimabi",
 				"gun", "", 121.28, 31.10));
 		concreteCourse3.setCourseDates(dates);
-		concreteCourse3.setMinimum(1);
-		concreteCourse3.setMaximum(2);
 		customer1 = Customer.create("qnmb", "xixihaha", "lala", em);
 		customer1.setUserStatus(UserStatus.ACTIVE);
 		

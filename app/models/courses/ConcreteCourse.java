@@ -60,8 +60,6 @@ public class ConcreteCourse extends BaseModelObject {
 	private Time length;
 
 	private Location location = new Location(null, null, "", 0, 0);
-	
-	private int soldSeat;
 
 	private String eventbriteId;
 
@@ -128,7 +126,6 @@ public class ConcreteCourse extends BaseModelObject {
 		this.waitListRecords = waitListRecords;
 	}
 
-
 	public ConcreteCourseStatus getStatus() {
 		return status;
 	}
@@ -168,14 +165,6 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setConcreteCourseId(String concreteCourseId) {
 		this.concreteCourseId = concreteCourseId;
-	}
-
-	public int getSoldSeat() {
-		return soldSeat;
-	}
-
-	public void setSoldSeat(int soldSeat) {
-		this.soldSeat = soldSeat;
 	}
 
 	public int getMinimum() {

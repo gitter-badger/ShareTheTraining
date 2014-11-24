@@ -207,7 +207,6 @@ public class ConcreteCourseForm {
 		concreteCourse.setCourseDate(courseDate);
 		concreteCourse.setEventbriteId(eventbriteId);
 		concreteCourse.setLocation(location);
-		concreteCourse.setSoldSeat(soldSeat);
 		concreteCourse.setStatus(status);
 		
 		
@@ -233,7 +232,7 @@ public class ConcreteCourseForm {
 		concreteCourseForm.setConcreteCourseId(concreteCourse.getConcreteCourseId());
 		concreteCourseForm.setTrainerEmail(concreteCourse.getCourseInfo().getTrainer().getEmail());
 		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
-		concreteCourseForm.setSoldSeat(concreteCourse.getSoldSeat());
+		concreteCourseForm.setSoldSeat(concreteCourse.getSelectedCustomers().size());
 		concreteCourseForm.setCourseDates(concreteCourse.getCourseDates());
 		
 		return concreteCourseForm;

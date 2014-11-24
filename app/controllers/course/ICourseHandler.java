@@ -25,9 +25,9 @@ public interface ICourseHandler {
 			String orderByColumn, boolean ascending, int pageNumber,
 			int pageSize);
 
-	public boolean modifyMaximum(String courseId, int maximum);
+	public boolean modifyMaximum(int courseId, int maximum);
 
-	public boolean modifyMinimum(String courseId, int minimum);
+	public boolean modifyMinimum(int courseId, int minimum);
 
 	public Course addNewCourse(String trainerEmail, CourseForm courseForm, IUserHandler userHandler );
 

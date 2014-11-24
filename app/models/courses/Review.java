@@ -15,11 +15,8 @@ import common.BaseModelObject;
 public class Review extends BaseModelObject {
 
 	public static Review create(Customer author, ConcreteCourse concreteCourse,
-			List<Integer> courseRatings, List<Integer> trainerRatings,
-			List<String> courseQuestions, List<String> trainerQuestions,
 			EntityManager em) {
-		Review review = new Review(author, concreteCourse, courseRatings,
-				trainerRatings, courseQuestions, trainerQuestions);
+		Review review = new Review(author, concreteCourse);
 		em.persist(review);
 		author.addReview(review);
 		concreteCourse.getCourseInfo().addReview(review);
@@ -27,26 +24,34 @@ public class Review extends BaseModelObject {
 		return null;
 	}
 
-	protected Review(Customer author, ConcreteCourse concreteCourse,
-			List<Integer> courseRatings, List<Integer> trainerRatings,
-			List<String> courseQuestions, List<String> trainerQuestions) {
+	protected Review(Customer author, ConcreteCourse concreteCourse) {
 		this.author = author;
 		this.concreteCourse = concreteCourse;
-		double courseSum = 0.0, trainerSum = 0.0;
-		for (Integer courseRate : courseRatings)
-			courseSum += courseRate;
-		for (Integer trainerRate : trainerRatings)
-			trainerSum += trainerRate;
-		this.courseRating = courseSum / ((double) courseRatings.size());
-		this.trainerRating = trainerSum / ((double) trainerRatings.size());
 		this.createDate = new Date();
 
 	}
 
-	public void updateRatingsAndQuestions(List<Integer> courseRatings,
-			List<Integer> trainerRatings, List<String> courseQuestions,
-			List<String> trainerQuestions) {
+	public boolean updateTrainerRatings(List<Integer> trainerRatings) {
+		if (trainerRatings == null)
+			return false;
+		this.setTrainerRatings(trainerRatings);
+		double trainerSum = 0.0;
+		for (Integer trainerRate : trainerRatings)
+			trainerSum += trainerRate;
+		this.trainerRating = trainerSum / ((double) trainerRatings.size());
+		return false;
 
+	}
+
+	public boolean updateCourseRatings(List<Integer> courseRatings) {
+		if (courseRatings == null)
+			return false;
+		this.setCourseRatings(courseRatings);
+		double courseSum = 0.0;
+		for (Integer courseRate : courseRatings)
+			courseSum += courseRate;
+		this.courseRating = courseSum / ((double) courseRatings.size());
+		return false;
 	}
 
 	@ManyToOne
