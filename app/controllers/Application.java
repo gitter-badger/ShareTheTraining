@@ -149,7 +149,6 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 		
-		System.out.print(course.iterator().next().getKeyPointsAsList());
 
 		return ok(home.render(course, states));
 

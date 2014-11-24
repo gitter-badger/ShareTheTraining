@@ -1,178 +1,176 @@
-@(title: String)(content: Html)
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Reset Password</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="">
-	<meta name="author" content="">
-	<link rel="stylesheet" href="@routes.Assets.at("css/bootstrap.min.css")">
-	<link rel="stylesheet" href="@routes.Assets.at("css/theme.css")">
-	<link rel="stylesheet" href="@routes.Assets.at("css/font-awesome.min.css")">
-	<link rel="stylesheet" href="@routes.Assets.at("css/bootstrap-select.min.css")">
-	<link rel="stylesheet" href="@routes.Assets.at("css/prism.css")">
-	<link rel="stylesheet" href="@routes.Assets.at("css/prism-line-numbers.css")">
-	<!--[if lt IE 9]>
-		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-		<script src="assets/js/respond.min.js"></script>
-	<![endif]-->
-	<link rel="shortcut icon" href="favicon.png">
-</head>
-
-<body>
+@(content: Html)
+<div style="color: #454c54;font-family: Arial,Helvetica,sans-serif;font-size: 15px;line-height: 1.5;font-weight: normal;-webkit-font-smoothing: antialiased;margin: 0;box-sizing: border-box;">
 	<!-- Main Navbar -->
 	
-	<nav class="navbar navbar-default" role="navigation">
-		<section class="wrapper-xs bg-primary">
-			<div class="container">
-				<div class="row"> 
-					<div class="col-xs-9 col-sm-9 col-md-9">
-						<h1><p>ShareTheTraining</p></h1>
+		<div class="wrapper-xs bg-primary" style="background:#37a0c2;color:#fff;padding: 1em 0;display: block;box-sizing: border-box;">
+			<div class="container"  style="width: 800px;padding-right: 15px;
+			  padding-left: 15px;
+			  margin-right: auto;
+			  margin-left: auto;box-sizing: border-box;display: block;">
+					<div class="col-xs-9 col-sm-9 col-md-9" style="width: 60%;float: left;position: relative;
+						min-height: 1px;
+						padding-right: 15px;
+						padding-left: 15px;box-sizing: border-box;display: block;">
+						<h1 style="color: #fff;margin-top: 0;font-size: 36px;margin-bottom: 10px;box-sizing: border-box;
+							font-family: Enriqueta,Helvetica,Arial,sans-serif;
+							font-weight: bold;
+							text-transform: capitalize;">
+							<p style="margin: 0 0 10px;box-sizing: border-box;display: block;
+							">ShareTheTraining</p>
+						</h1>
 					</div><!-- /.col -->
-					<div class="col-xs-3 col-sm-3 col-md-3">
-						<a class="btn btn-md btn-primary" href="#link"><i class="fa fa-envelope"></i> Contact Us</a>
-						<a class="btn btn-md btn-primary" href="#link">FAQ</a>
+					<div class="col-xs-3 col-sm-3 col-md-3" style="width: 40%;float: left;position: relative;
+						min-height: 1px;
+						padding-right: 15px;
+						padding-left: 15px;box-sizing: border-box;display: block;">
+						<a class="btn btn-md btn-primary" href="#link" style="color: #fff;
+							background-color: #37a0c2;
+							border-color: #37a0c2;
+							text-shadow: 0 -1px 0 #2c7f9a;font-weight: bold;border-radius: 0;background-clip: padding-box;display: inline-block;
+							padding: 6px 12px;
+							margin-bottom: 0;
+							font-size: 16px;
+							line-height: 1.428571429;
+							text-align: center;
+							white-space: nowrap;
+							vertical-align: middle;
+							cursor: pointer;
+							background-image: none;
+							border: 1px solid transparent;
+							-webkit-user-select: none;text-decoration: none;background: transparent;">
+							<i class="fa fa-envelope" style="display: inline-block;
+							font-family: FontAwesome;
+							font-style: normal;
+							font-weight: normal;
+							line-height: 1;
+							-webkit-font-smoothing: antialiased;content: '\f0e0';"></i> Contact Us
+						</a>
+						<a class="btn btn-md btn-primary" href="#link" style="color: #fff;
+							background-color: #37a0c2;
+							border-color: #37a0c2;
+							text-shadow: 0 -1px 0 #2c7f9a;font-weight: bold;border-radius: 0;background-clip: padding-box;display: inline-block;
+							padding: 6px 12px;
+							margin-bottom: 0;
+							font-size: 16px;
+							line-height: 1.428571429;
+							text-align: center;
+							white-space: nowrap;
+							vertical-align: middle;
+							cursor: pointer;
+							background-image: none;
+							border: 1px solid transparent;
+							-webkit-user-select: none;text-decoration: none;background: transparent;">FAQ
+						</a>
 					</div>
-				</div><!-- /.row -->
 			</div><!-- /.container -->
-		</section><!-- /.wrapper -->
-		
-	</nav><!-- /.navbar -->
+		</div><!-- /.wrapper -->
 
-
-	<section class="wrapper-md  bg-highlight">
-		<div class="container">
-			@content
-		</div><!-- /.container -->
-	</section>
-
-	
-	<section class="wrapper-xs bg-primary">
-			<div class="container">
-				<div class="text-center">
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<h4><i class="fa fa-question-circle"></i> Need help finding a class? Call <i class="fa fa-phone"></i><span class="text-danger"> XXX-XXX-XXXX </span>or email us at <i class="fa fa-envelope"></i> <a href="#link"><span class="text-danger">huhuhaha@@ShareTheTraining.com</span></a></h4>
+		<div class="wrapper-xs bg-primary" style="background:#37a0c2;color:#fff;padding: 1em 0;display: block;box-sizing: border-box;">
+			<div class="container"  style="width: 800px;padding-right: 15px;
+			  padding-left: 15px;
+			  margin-right: auto;
+			  margin-left: auto;box-sizing: border-box;display: block;">
+				<div class="text-left" style="text-align: left;box-sizing: border-box;display: block;">
+					<div class="col-xs-12 col-sm-12 col-md-12" style="width: 100%;position: relative;
+						min-height: 1px;
+						padding-right: 15px;
+						padding-left: 15px;box-sizing: border-box;display: block;">
+						<h4 style="color: #fff;margin-top: 0;
+							font-family: Enriqueta,Helvetica,Arial,sans-serif;
+							font-weight: bold;
+							text-transform: capitalize;font-size: 18px;margin-bottom: 10px;line-height: 1.1;box-sizing: border-box;display: block;
+							-webkit-margin-before: 1.33em;
+							-webkit-margin-after: 1.33em;
+							-webkit-margin-start: 0px;
+							-webkit-margin-end: 0px;">
+							<i class="fa fa-question-circle"></i> </h4>
 					</div><!-- /.col -->
 				</div><!-- /.row -->
 			</div><!-- /.container -->
 		</div>
-	</section>
-	<!-- Footer -->
-	<footer class="footer-container">
-		<section class="footer-primary">
-			<div class="container">
-				<div class="row">
-					<div class="col-xs-12 col-sm-12 col-md-10 col-md-push-1">
-						<div class="row">
-							<div class="row page-header">
-								<div class="col-xs-6 col-sm-6 col-md-6 col-sm-push-1 col-md-push-2">
-									<p><a class="btn btn-lg btn-highlight" href="#link"><i class="fa fa-envelope"></i> Contact Us</a></p>
-								</div>
-								<div class="col-xs-6 col-sm-6 col-md-6 col-md-push-2">
-									<p><a class="btn btn-lg btn-highlight" href="#link"> FAQ</a></p>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-xs-3 col-sm-3 col-md-3">
-									<h4>Discover</h4>
-									<ul class="list-unstyled">
-										<li><i class="fa fa-angle-right"></i> <a href="#link ">Featured</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Art</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Acting</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Cooking</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Dance</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Fitness</a></li>
-									</ul>
-								</div><!-- /.col -->
-								<div class="col-xs-3 col-sm-3 col-md-3">
-									<h4>Cities</h4>
-									<ul class="list-unstyled">
-										<li><i class="fa fa-angle-right"></i> <a href="#link">New York</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Los Angeles</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Chicago</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">More Cities <i class="fa fa-arrow-right"></i></a></li>
-									</ul>
-								</div><!-- /.col -->
+		<div class="wrapper-md  bg-highlight" style="background: #e8e8e8;color: #454c54;padding: 1em 0;display: block;position: relative;min-height: 1px;display: block;">
+		<div class="container"  style="width: 800px;padding-right: 15px;
+			  padding-left: 15px;
+			  margin-right: auto;
+			  margin-left: auto;box-sizing: border-box;display: block;">
+			<h2 class="headline" style="color: #2f353e; position: relative;
+				margin-bottom: 1em;margin-top: 0;
+				font-family: Enriqueta,Helvetica,Arial,sans-serif;
+				font-weight: bold;
+				text-transform: capitalize;font-size: 30px;box-sizing: border-box;display: block;-webkit-margin-before: 0.83em;
+				-webkit-margin-after: 0.83em;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;">Hi, XXX
+			</h2>
+			<div class="lead" style="font-size: 21px;margin-bottom: 20px;
+				font-weight: 200;
+				line-height: 1.4;margin: 0 0 10px;display: block;
+				-webkit-margin-before: 1em;
+				-webkit-margin-after: 1em;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;box-sizing: border-box;">
+				@content
+			</div>
 
-								<div class="col-xs-3 col-sm-3 col-md-3">
-									<h4>About</h4>
-									<ul class="list-unstyled">
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Our Promise</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Corporate Program</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Blog</a></li>
-										<li><i class="fa fa-angle-right"></i> <a href="#link">Term &amp; Policy</a></li>
-									</ul>
-								</div><!-- /.col -->
-							
-								<div class="col-xs-3 col-sm-3 col-md-3">
-									<h4>Our Community</h4>
-									<ul class="social-networks">
-										<li><a class="btn btn-twitter" href="#"><i class="fa fa-fw fa-twitter"></i></a></li>
-										<li><a class="btn btn-facebook" href="#"><i class="fa fa-fw fa-facebook"></i></a></li>
-										<li><a class="btn btn-google-plus" href="#"><i class="fa fa-fw fa-google-plus"></i></a></li>
-										<li><a class="btn btn-pinterest" href="#"><i class="fa fa-fw fa-pinterest"></i></a></li>
-									</ul>
-									<p>We are friendly. Give us a ding!</p>
-								</div><!-- /.col -->
-						</div>
-					</div>
-				</div><!-- /.row -->
-			</div><!-- /.container -->
-		</section><!-- /.wrapper-sm -->
-		<section class="footer-secondary">
-			<div class="container">
-				<div class="text-right">
-					<div class="col-lg-12">
-						<p class="no-margin-bottom"><i class="fa fa-user"></i> Made in USC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; © ShareTheTraining, Inc. 2014</p>
+			<h4 style="color: #2f353e;margin-top: 0;
+				font-family: Enriqueta,Helvetica,Arial,sans-serif;
+				font-weight: bold;
+				text-transform: capitalize;font-size: 18px;
+				margin-bottom: 10px;line-height: 1.1;box-sizing: border-box;display: block;
+				-webkit-margin-before: 1.33em;
+				-webkit-margin-after: 1.33em;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;">Best regards,
+			</h4>
+			<p style="margin: 0 0 10px;box-sizing: border-box;display: block;
+				-webkit-margin-before: 1em;
+				-webkit-margin-after: 1em;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;">ShareTheTraining Team
+			</p>
+
+		</div><!-- /.container -->
+	</div>
+
+	
+	<div class="wrapper-xs bg-primary" style="background:#37a0c2;
+	color:#fff;padding: 1em 0;display: block;box-sizing: border-box;">
+			<div class="container"  style="width: 800px;padding-right: 15px;
+			  padding-left: 15px;
+			  margin-right: auto;
+			  margin-left: auto;box-sizing: border-box;display: block;">
+				<div class="text-center" style="text-align: center;box-sizing: border-box;display: block;">
+					<div class="col-xs-12 col-sm-12 col-md-12" style="width: 100%;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;box-sizing: border-box;display: block;">
+						<h4 style="color: #fff;margin-top: 0;
+							font-family: Enriqueta,Helvetica,Arial,sans-serif;
+							font-weight: bold;
+							text-transform: capitalize;font-size: 18px;margin-bottom: 10px;line-height: 1.1;box-sizing: border-box;display: block;
+							-webkit-margin-before: 1.33em;
+							-webkit-margin-after: 1.33em;
+							-webkit-margin-start: 0px;
+							-webkit-margin-end: 0px;"><i class="fa fa-question-circle"></i> Need help finding a class? Email us at <i class="fa fa-envelope"></i>  
+							<a href="#link" style="color: #37a0c2;text-decoration: none;background: transparent;box-sizing: border-box;cursor: auto;"><span class="text-danger" style="color: #c0392b;box-sizing: border-box;">huhuhaha@@ShareTheTraining.com</span>
+							</a>
+						</h4>
 					</div><!-- /.col -->
 				</div><!-- /.row -->
 			</div><!-- /.container -->
-		</section><!-- /.footer-secondary -->
-	</footer><!-- /.footer-container --> <!-- End of footer -->
-
-	<!-- last but not least the javascript -->
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="assets/js/jquery-1.8.3.min.js"><\/script>')</script>
-	<script src="assets/js/bootstrap.min.js"></script>
-	<script src="assets/js/bootstrap-select.min.js"></script>
-	<script src="assets/js/prism.js"></script>
-	<script src="assets/js/prism-line-numbers.js"></script>
-	
-	<script>
-		$(document).ready(function(){
-			$('.selectpicker').selectpicker();
-			// tooltips
-			$('[data-toggle="tooltip"]').tooltip();
-			// popover demo
-			$('[data-toggle="popover"]').popover();
-			// dismiss alerts
-			$(".alert").alert();
-			// toggle open and close icon for collapse (accordions)
-			// set initial content
-			$('[data-state]').each(function () {
-				if ($(this).attr('data-state') == "open") {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
-			// toggle content on click
-			$('[data-state]').click(function () {
-				// toggle state
-				$(this).attr('data-state', $(this).attr('data-state') == 'open' ? 'closed' : 'open')
-				// toggle content based on state
-				if ($(this).attr('data-state') == 'open') {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-close'))
-				} else {
-					$(this).find(".toggle-indicator").html($(this).attr('data-text-open'))
-				}
-			});
-		});
-	</script>
-	<script src="assets/js/holder.js"></script>
+		</div>
+	<!-- Footer -->
+	<div class="footer-container" style="color: #e8e8e8;display: block;box-sizing: border-box;">
+		<div class="footer-secondary" style="padding: 2em 0;background: #262626;display: block;box-sizing: border-box;">
+			<div class="container"  style="width: 800px;padding-right: 15px;
+			  padding-left: 15px;
+			  margin-right: auto;
+			  margin-left: auto;box-sizing: border-box;display: block;">
+				<div class="text-right" style="text-align: right;box-sizing: border-box;display: block;">
+					<div class="col-lg-12" style="width: 100%;position: relative;min-height: 1px;padding-right: 15px;padding-left: 15px;box-sizing: border-box;display: block;">
+						<p class="no-margin-bottom" style="margin-bottom: 0!important;margin: 0 0 10px;box-sizing: border-box;display: block;-webkit-margin-before: 1em;-webkit-margin-after: 1em;-webkit-margin-start: 0px;-webkit-margin-end: 0px;"><i class="fa fa-user"></i> Made in USC &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; © ShareTheTraining, Inc. 2014</p>
+					</div><!-- /.col -->
+				</div><!-- /.row -->
+			</div><!-- /.container -->
+		</div>
+	</div>
+</div>
 
 	
-</body>
-</html>
