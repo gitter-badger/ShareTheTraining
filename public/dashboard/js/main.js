@@ -1,3 +1,31 @@
+var dates = new Array();
+var keyPoints = new Array();
+var keyPointNum = 0;
+var JsonData;
+
+function getJsonData() {
+    JsonData = getFormJson($('form'));
+    JsonData['courseDates'] = dates;
+    JsonData['keyPoints'] = keyPoints;
+}
+
+function getFormJson(frm) {
+    var o = {};
+    var a = $(frm).serializeArray();
+    $.each(a, function () {
+        if (o[this.name] !== undefined) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+
+    return o;
+}
+
 $(document).ready(function () {
     //themes, change CSS with JS
     //default theme(CSS) is cerulean, change it if needed
@@ -21,11 +49,8 @@ $(document).ready(function () {
     // Hide responsive navbar on clicking outside
     $(document).mouseup(function (e) {
         if (!$sidebarNav.is(e.target) // if the target of the click isn't the container...
-            && $sidebarNav.has(e.target).length === 0
-            && !$('.navbar-toggle').is(e.target)
-            && $('.navbar-toggle').has(e.target).length === 0
-            && $sidebarNav.hasClass('active')
-            )// ... nor a descendant of the container
+            && $sidebarNav.has(e.target).length === 0 && !$('.navbar-toggle').is(e.target) && $('.navbar-toggle').has(e.target).length === 0 && $sidebarNav.hasClass('active')
+        ) // ... nor a descendant of the container
         {
             e.stopPropagation();
             $('.navbar-toggle').click();
@@ -36,16 +61,18 @@ $(document).ready(function () {
     $('#themes a').click(function (e) {
         e.preventDefault();
         currentTheme = $(this).attr('data-value');
-        $.cookie('currentTheme', currentTheme, {expires: 365});
+        $.cookie('currentTheme', currentTheme, {
+            expires: 365
+        });
         switchTheme(currentTheme);
     });
 
 
     function switchTheme(themeName) {
         if (themeName == 'classic') {
-            $('#bs-css').attr('href', '/assets/dashboard/bower_components/bootstrap/dist/css/bootstrap.min.css');
+            $('#bs-css').attr('href', 'assets/dashboard/bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
         } else {
-            $('#bs-css').attr('href', '/assets/dashboard/css/bootstrap-' + themeName + '.min.css');
+            $('#bs-css').attr('href', 'assets/dashboard/bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
         }
 
         $('#themes i').removeClass('glyphicon glyphicon-ok whitespace').addClass('whitespace');
@@ -54,7 +81,9 @@ $(document).ready(function () {
 
     //ajax menu checkbox
     $('#is-ajax').click(function (e) {
-        $.cookie('is-ajax', $(this).prop('checked'), {expires: 365});
+        $.cookie('is-ajax', $(this).prop('checked'), {
+            expires: 365
+        });
     });
     $('#is-ajax').prop('checked', $.cookie('is-ajax') === 'true' ? true : false);
 
@@ -116,7 +145,7 @@ $(document).ready(function () {
         var $ul = $(this).siblings('ul');
         var $li = $(this).parent();
         if ($ul.is(':visible')) $li.removeClass('active');
-        else                    $li.addClass('active');
+        else $li.addClass('active');
         $ul.slideToggle();
     });
 
@@ -183,10 +212,14 @@ function docReady() {
         $(this).append('<div class="well gallery-controls">' +
             '<p><a href="#" class="gallery-edit btn"><i class="glyphicon glyphicon-edit"></i></a> <a href="#" class="gallery-delete btn"><i class="glyphicon glyphicon-remove"></i></a></p>' +
             '</div>');
-        $(this).find('.gallery-controls').stop().animate({'margin-top': '-1'}, 400);
+        $(this).find('.gallery-controls').stop().animate({
+            'margin-top': '-1'
+        }, 400);
     }, function () {
         $('img', this).fadeToggle(1000);
-        $(this).find('.gallery-controls').stop().animate({'margin-top': '-30'}, 200, function () {
+        $(this).find('.gallery-controls').stop().animate({
+            'margin-top': '-30'
+        }, 200, function () {
             $(this).remove();
         });
     });
@@ -218,7 +251,8 @@ function docReady() {
 
     //gallery fullscreen
     $('#toggle-fullscreen').button().click(function () {
-        var button = $(this), root = document.documentElement;
+        var button = $(this),
+            root = document.documentElement;
         if (!button.hasClass('active')) {
             $('#thumbnails').addClass('modal-fullscreen');
             if (root.webkitRequestFullScreen) {
@@ -237,12 +271,14 @@ function docReady() {
     });
 
     //tour
-    if ($('.tour').length && typeof(tour) == 'undefined') {
+    if ($('.tour').length && typeof (tour) == 'undefined') {
         var tour = new Tour();
         tour.addStep({
-            element: "#content", /* html element next to which the step popover should be shown */
+            element: "#content",
+            /* html element next to which the step popover should be shown */
             placement: "top",
-            title: "Custom Tour", /* title of the popover */
+            title: "Custom Tour",
+            /* title of the popover */
             content: "You can create tour like this. Click Next." /* content of the popover */
         });
         tour.addStep({
@@ -275,12 +311,39 @@ function docReady() {
     $('.datatable').dataTable({
         "sDom": "<'row'<'col-md-5'l><'col-md-5'f><'btns col-md-2'>r>t<'row'<'col-md-10'i><'btns col-md-2'>><'col-md-12 center-block'p>",
         "sPaginationType": "bootstrap",
-        "oLanguage": {"sLengthMenu": "_MENU_ records per page"},
-        
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ records per page"
+        },
+        //        initComplete: function () {
+        //            var api = this.api();
+        // 
+        //           // var app = $('.datatable').api();
+        //            console.log(this);
+        //            console.log($('.datatable'));
+        //            
+        //            api.columns().indexes().flatten().each( function ( i ) {
+        //                var column = api.column( i );
+        //                var select = $('<select><option value=""></option></select>')
+        //                    .appendTo( $(column.footer()).empty() )
+        //                    .on( 'change', function () {
+        //                        var val = $.fn.dataTable.util.escapeRegex(
+        //                            $(this).val()
+        //                        );
+        // 
+        //                        column
+        //                            .search( val ? '^'+val+'$' : '', true, false )
+        //                            .draw();
+        //                    } );
+        // 
+        //                column.data().unique().sort().each( function ( d, j ) {
+        //                    select.append( '<option value="'+d+'">'+d+'</option>' )
+        //                } );
+        //            } );
+        //        }
     });
-    
-  
-    
+
+
+
     $('.btn-close').click(function (e) {
         e.preventDefault();
         $(this).parent().parent().parent().fadeOut();
@@ -289,7 +352,7 @@ function docReady() {
         e.preventDefault();
         var $target = $(this).parent().parent().next('.box-content');
         if ($target.is(':visible')) $('i', $(this)).removeClass('glyphicon-chevron-up').addClass('glyphicon-chevron-down');
-        else                       $('i', $(this)).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
+        else $('i', $(this)).removeClass('glyphicon-chevron-down').addClass('glyphicon-chevron-up');
         $target.slideToggle();
     });
     $('.btn-setting').click(function (e) {
@@ -325,13 +388,17 @@ $.extend($.fn.dataTableExt.oPagination, {
 
             $(nPaging).addClass('pagination').append(
                 '<ul class="pagination">' +
-                    '<li class="prev disabled"><a href="#">&larr; ' + oLang.sPrevious + '</a></li>' +
-                    '<li class="next disabled"><a href="#">' + oLang.sNext + ' &rarr; </a></li>' +
-                    '</ul>'
+                '<li class="prev disabled"><a href="#">&larr; ' + oLang.sPrevious + '</a></li>' +
+                '<li class="next disabled"><a href="#">' + oLang.sNext + ' &rarr; </a></li>' +
+                '</ul>'
             );
             var els = $('a', nPaging);
-            $(els[0]).bind('click.DT', { action: "previous" }, fnClickHandler);
-            $(els[1]).bind('click.DT', { action: "next" }, fnClickHandler);
+            $(els[0]).bind('click.DT', {
+                action: "previous"
+            }, fnClickHandler);
+            $(els[1]).bind('click.DT', {
+                action: "next"
+            }, fnClickHandler);
         },
 
         "fnUpdate": function (oSettings, fnDraw) {
@@ -343,8 +410,7 @@ $.extend($.fn.dataTableExt.oPagination, {
             if (oPaging.iTotalPages < iListLength) {
                 iStart = 1;
                 iEnd = oPaging.iTotalPages;
-            }
-            else if (oPaging.iPage <= iHalf) {
+            } else if (oPaging.iPage <= iHalf) {
                 iStart = 1;
                 iEnd = iListLength;
             } else if (oPaging.iPage >= (oPaging.iTotalPages - iHalf)) {
@@ -387,3 +453,97 @@ $.extend($.fn.dataTableExt.oPagination, {
         }
     }
 });
+
+var isItem = 0;
+//for all pages' delete confirmation
+$(document).on("click", ".itemDelete", function () {
+    if ("Cancel" == $(".itemDelete").text()) {
+        $(".infoModal").modal('toggle');
+
+    } else {
+        $("#confirmDialog").modal({
+            backdrop: false
+        });
+        isItem = 1;
+    }
+});
+$(document).on("click", ".btndelete", function () {
+    $("#confirmDialog").modal({
+        backdrop: false
+    });
+});
+$(document).on("click", ".confirmDelete", function () {
+    if (1 == isItem) {
+        if (0 != $('.datatable').DataTable().row('.edited').length) {
+            $('.datatable').DataTable().row('.edited').remove().draw(false);
+            deleteEditedItem();
+            isItem = 0;
+        } else {
+            $("#errorDialog").modal("toggle");
+            $('.errorMsg').text('Please choose items you want to delete!');
+        }
+    } else {
+        if (0 != $('.datatable').DataTable().row('.selected').length) {
+            $('.datatable').DataTable().row('.selected').remove().draw(false);
+            deleteSelectedItems();
+        } else {
+            $("#errorDialog").modal("toggle");
+            $('.errorMsg').text('Please choose items you want to delete!');
+        }
+    }
+});
+$(document).on("click", ".confirmCancel", function () {
+    isItem = 0;
+});
+
+$(document).on("click", "#addDates", function () {
+    $("#dates").append($("#datepicker").val() + " ");
+    if ('' != $("#datepicker").val())
+        dates.push($("#datepicker").val());
+});
+$(document).on("click", "#clearDates", function () {
+    $("#dates").text("");
+    dates = [];
+});
+
+$(document).on("click", "#addKeyPoint", function () {
+    if (6 > keyPointNum) {
+        $("#keyPoints").append($("#keyPoint").val() + " ");
+        if ('' != $("#keyPoint").val()) {
+            keyPointNum++;
+            keyPoints.push($("#keyPoint").val());
+        }
+    } else {
+        //        $("#errorDialog").modal("toggle");
+        //        $('.errorMsg').text('Course can only have six key words!');
+        alert("Course can only have six key words!");
+    }
+    $("#keyPoint").val('');
+});
+$(document).on("click", "#clearKeyPoint", function () {
+    $("#keyPoints").text("");
+    keyPoints = [];
+    keyPointNum = 0;
+});
+
+function initSearchBox() {
+
+    // Setup - add a text input to each footer cell
+    $('.datatable tfoot th').each(function () {
+        var title = $('.datatable thead th').eq($(this).index()).text();
+        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    });
+
+    // DataTable
+    var table = $('.datatable').DataTable();
+
+    // Apply the search
+    table.columns().eq(0).each(function (colIdx) {
+        $('input', table.column(colIdx).footer()).on('keyup change', function () {
+            table
+                .column(colIdx)
+                .search(this.value)
+                .draw();
+        });
+    });
+}

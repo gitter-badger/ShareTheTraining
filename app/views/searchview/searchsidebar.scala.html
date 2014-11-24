@@ -9,7 +9,7 @@
 							<h3 class="panel-title">What would you like to be amazing at:</h3>
 						</div>
 						<div class="panel-body">
-							<form action="@routes.Application.search()"  method="post"  role="form">
+							<form action="@routes.Application.search()"  method="get"  role="form">
 								<div class="row">
 									<div class="col-md-12">
 										<label for="">Course Catagories:</label>
@@ -41,10 +41,10 @@
 									
 									<div class="col-md-12">
 									<label for="">City:</label>
-									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].city" id="cfb.locations[0].city" data-live-search="true" data-style="btn-primary">
+									<select  class="form-control selectpicker show-tick" name="cfb.locations[0].city" id="city" data-live-search="true" data-style="btn-primary">
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
-											</optgroup>
+										</optgroup>
 										
 										
 									</select>

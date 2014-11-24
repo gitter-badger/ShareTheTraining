@@ -223,14 +223,7 @@ public class Application extends Controller {
 	public static Result search() {
 		Form<CourseFilterForm> filterForm = form(CourseFilterForm.class)
 				.bindFromRequest();
-		Logger.info("keyword" + filterForm.get().getCfb().getKeyword());
-		Logger.info("city"
-				+ filterForm.get().getCfb().getLocations().iterator().next()
-						.getCity());
-		Logger.info("region"
-				+ filterForm.get().getCfb().getLocations().iterator().next()
-						.getRegion());
-		Logger.info("category" + filterForm.get().getCfb().getCategory());
+	
 
 		int datec = filterForm.get().getCfb().getDataChoice();
 		CourseHandler ch = new CourseHandler();
@@ -498,10 +491,13 @@ public class Application extends Controller {
 	@Transactional
 	public static Result showSiderbarCity() {
 		String stateName = form().bindFromRequest().get("name");
+		System.out.print("HEHEHEH");
 		System.out.print(stateName);
 		if (stateName != null) {
 			Collection<String> cityList = LocationHandler.getAvailableCity(
 					stateName, JPA.em());
+
+			System.out.println(cityList.size()+"hahaha");
 			return ok(Json.toJson(cityList).toString());
 
 		}
@@ -512,9 +508,10 @@ public class Application extends Controller {
 	public static Result showCity() {
 
 		String stateName = form().bindFromRequest().get("name");
-		System.out.print(stateName);
 		if (stateName != null) {
+			System.out.println(stateName+"HEHEHEH");
 			List<String> cityList = LocationHandler.getCitiesByState(stateName);
+
 			return ok(Json.toJson(cityList).toString());
 
 		}
@@ -752,7 +749,7 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result concreteCourseDisplay() {
-		return ok(Course_list.render());
+		return TODO;
 	}
 
 	
@@ -788,7 +785,7 @@ public class Application extends Controller {
 	
 	@Transactional
 	public static Result courseDisplay() {
-		return ok(Course_list.render());
+		return ok(Course_request.render());
 	}
 	
 	@Transactional
@@ -815,17 +812,24 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(cf));
 		return ok(Json.toJson(cf));
 	}
+	
+	@Transactional
+	public static Result dashCourseDelete(){
+		JsonNode json = request().body().asJson();
+		System.out.print(json);
+		return TODO;
+	}
 
 	
-	@Transactional
-	public static Result trainerDisplay() {
-		return ok(User_trainer.render());
-	}
-	
-	@Transactional
-	public static Result dashTrainer(){
-		return ok(User_trainer.render());
-	}
+//	@Transactional
+//	public static Result trainerDisplay() {
+//		return ok(User_trainer.render());
+//	}
+//	
+//	@Transactional
+//	public static Result dashTrainer(){
+//		return ok(User_trainer.render());
+//	}
 	
 	
 	
@@ -837,7 +841,8 @@ public class Application extends Controller {
 						routes.javascript.Application.dashConcreteCourseRequest(),
 						routes.javascript.Application.dashConcreteCourseRequestDetail(),
 						routes.javascript.Application.dashCourse(),
-						routes.javascript.Application.dashCourseDetail()
+						routes.javascript.Application.dashCourseDetail(),
+						routes.javascript.Application.dashCourseDelete()
 						));
 	}
 

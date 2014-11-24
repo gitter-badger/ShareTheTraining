@@ -1,4 +1,50 @@
-@dashmain("requestcourse"){
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Admin-Course Management</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Charisma, a fully featured, responsive, HTML5, Bootstrap admin template.">
+    <meta name="author" content="Muhammad Usman">
+
+    <!-- The styles -->
+<link id="bs-css" href="@routes.Assets.at("css/bootstrap-cerulean.min.css")" rel="stylesheet">
+
+<link href="@routes.Assets.at("dashboard/css/charisma-app.css")" rel="stylesheet">
+<link href="@routes.Assets.at("dashboard/bower_components/fullcalendar/dist/fullcalendar.css")"
+	rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/bower_components/fullcalendar/dist/fullcalendar.print.css")"
+	rel='stylesheet' media='print'>
+<link href="@routes.Assets.at("dashboard/bower_components/chosen/chosen.min.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/bower_components/colorbox/example3/colorbox.css")"
+	rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/bower_components/responsive-tables/responsive-tables.css")"
+	rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/bower_components/bootstrap-tour/build/css/bootstrap-tour.min.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/jquery.noty.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/noty_theme_default.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/elfinder.min.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/elfinder.theme.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/jquery.iphone.toggle.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/uploadify.css")" rel='stylesheet'>
+<link href="@routes.Assets.at("dashboard/css/animate.min.css")" rel='stylesheet'>
+<script type="text/javascript" src='@routes.Application.javascriptRoutes()'></script>
+
+    <!-- jQuery -->
+    <script src="@routes.Assets.at("dashboard/bower_components/jquery/jquery.min.js")"></script>
+
+    <!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- The fav icon -->
+    <link rel="shortcut icon" href="img/favicon.ico">
+
+</head>
+
+<body>
     <!-- topbar starts -->
     <div class="navbar navbar-default" role="navigation">
 
@@ -176,7 +222,7 @@
                                             <th>Course ID</th>
                                             <th>Course Name</th>
                                             <th>Trainer Name</th>
-                                            <th>Trainer Email</th>
+                                            <th>Course Type</th>
                                             <th>Minimum Seats</th>
                                             <th>Maximal Seats</th>
                                             <th>Price</th>
@@ -297,13 +343,28 @@
                                     <label>Trainer Id</label>
                                     <input class="form-control" name="trainerId" id="trainerId" value="" placeholder="Trainer Id" readonly="true">
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>Trainer Name</label>
-                                    <input class="form-control" name="trainerName" id="trainerName" value="" placeholder="Trainer Name" readonly="true">
-                                </div>
+                                
                                 <div class="form-group col-md-4">
                                     <label>Trainer Email</label>
                                     <input class="form-control" name="trainerEmail" id="trainerEmail" value="" placeholder="Trainer Email" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Methods</label>
+                                    <input class="form-control" name="methods" id="methods" value="" placeholder="Methods" readonly="true">
+                                </div>
+
+                                <div class="form-group col-md-3">
+                                    <input class="form-control" id="keyPoint" />
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a class="btn btn-success" id="addKeyPoint">add</a>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <a class="btn btn-warning" id="clearKeyPoint">clear</a>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Key Words</label>
+                                    <p id="keyPoints"></p>
                                 </div>
 
 
@@ -374,15 +435,17 @@
                                 </div>
                                 <div class="form-group col-md-7">
                                     <label>Dates</label>
-                                    <p id="dates"></p>                                    
+                                    <p id="dates"></p>
                                 </div>
-                                
+
                             </form>
                         </div>
                         <div class="modal-footer">
+                            <!--
                             <a class="btn btn-success" id="courseRequestApprove"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Approve</a>
                             <a class="btn btn-danger" id="courseRequestReject"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Reject</a>
                             <a class="btn btn-warning" id="courseRequestPend"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Pend</a>
+-->
                             <a class="btn btn-info" id="courseRequestEdit"><i class="glyphicon glyphicon-edit icon-white"></i>Edit</a>
                             <a class="btn btn-warning itemDelete" id="courseRequestDelete" data-dismiss="modal"><i class="glyphicon glyphicon-trash icon-white"></i>Delete</a>
                         </div>
@@ -392,9 +455,44 @@
         </div>
         <!--/.fluid-container-->
 
+        <!-- external javascript -->
 
+	<script src="@routes.Assets.at("dashboard/bower_components/bootstrap/dist/js/bootstrap.min.js")"></script>
 
-        <!--myjs-->
+	<!-- library for cookie management -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.cookie.js")"></script>
+	<!-- calender plugin -->
+	<script src="@routes.Assets.at("dashboard/bower_components/moment/min/moment.min.js")"></script>
+	<script src="@routes.Assets.at("dashboard/bower_components/fullcalendar/dist/fullcalendar.min.js")"></script>
+	<!-- data table plugin -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.dataTables.min.js")"></script>
+
+	<!-- select or dropdown enhancer -->
+	<script src="@routes.Assets.at("dashboard/bower_components/chosen/chosen.jquery.min.js")"></script>
+	<!-- plugin for gallery image view -->
+	<script src="@routes.Assets.at("dashboard/bower_components/colorbox/jquery.colorbox-min.js")"></script>
+	<!-- notification plugin -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.noty.js")"></script>
+	<!-- library for making tables responsive -->
+	<script src="@routes.Assets.at("dashboard/bower_components/responsive-tables/responsive-tables.js")"></script>
+	<!-- tour plugin -->
+	<script src="@routes.Assets.at("dashboard/bower_components/bootstrap-tour/build/js/bootstrap-tour.min.js")"></script>
+	<!-- star rating plugin -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.raty.min.js")"></script>
+	<!-- for iOS style toggle switch -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.iphone.toggle.js")"></script>
+	<!-- autogrowing textarea plugin -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.autogrow-textarea.js")"></script>
+	<!-- multiple file upload plugin -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.uploadify-3.1.min.js")"></script>
+	<!-- history.js for cross-browser state change on ajax -->
+	<script src="@routes.Assets.at("dashboard/js/jquery.history.js")"></script>
+	<!-- application script for Charisma demo -->
+	<script src="@routes.Assets.at("dashboard/js/main.js")"></script>
+
         <script src="@routes.Assets.at("dashboard/js/Course_request.js")"></script>
 
-}
+
+</body>
+
+</html>

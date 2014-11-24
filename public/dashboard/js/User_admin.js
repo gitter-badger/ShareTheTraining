@@ -1,4 +1,20 @@
-function getUserInfo() {}
+function deleteEditedItem() {
+    var Items = new Array;
+    Items.push($('.datatable').DataTable().$('td', 'tr.edited').eq(1).text());
+    deleteItems(Items);
+}
+function deleteSelectedItems(){
+       var Items = new Array;
+    var selectedItemsNum = $('.datatable').DataTable().row('.selected').length;
+    for(var i=0;i<selectedItemsNum;i++)
+        Items.push($('.datatable').DataTable().$('td', 'tr.selected').eq(1+i*9).text());
+    deleteItems(Items);
+}
+function deleteItems(Items){}
+function addItem(){}
+function updateItem(){}
+
+function getNewId(){}
 
 //function initUserPage() {
 //    $.getJSON('info.json', function (data) {
@@ -18,50 +34,97 @@ function getUserInfo() {}
 //    });
 //
 //}
+function addRow(v1, v2, v3, v4, v5, v6, v7) {
+    if (('0' == v7) || ('Inactive' == v7)) {
+        $('#userTable').DataTable().row.add([
+                '<input type="checkbox" name="chkItem" value="' + v1 + '">',
+                v1, v2, v3, v4, v5, v6,
+            '<span class="label-danger label">Inactive</span>',
+            '<a class="viewbtn btn btn-success" value="' + v1 + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+    }
+    if (('1' == v7) || ('Active' == v7)) {
+        $('#userTable').DataTable().row.add([
+                '<input type="checkbox" name="chkItem" value="' + v1 + '">',
+                v1, v2, v3, v4, v5, v6,
+            '<span class="label-success label">Active</span>',
+            '<a class="viewbtn btn btn-success" value="' + v1 + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
+    }
+}
 
 function initUserPage() {
     $.getJSON('../test_json/admin.json', function (data) {
 
-        var t = $('#userTable').DataTable();
-
         $.each(data, function (i, item) {
-            if ('active' == item.status) {
-                t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.username,
-                item.date,
-                item.role,
-                '<span class="label-success label">' + item.status + '</span>',
-                '<a class="viewbtn btn btn-success"value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
-
-            if ('inactive' == item.status) {
-                t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.username,
-                item.date,
-                item.role,
-                '<span class="label-danger label">' + item.status + '</span>',
-                '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
-            if ('pending' == item.status) {
-                t.row.add([
-                '<input type="checkbox" name="chkItem" value="' + item.id + '">',
-                item.id,
-                item.username,
-                item.date,
-                item.role,
-                '<span class="label-warning label">' + item.status + '</span>',
-                '<a class="viewbtn btn btn-success" value="' + item.id + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
+            addRow(item.id,
+                item.name,
+                item.email,
+                item.cellPhone,
+                item.state,
+                item.city, item.userStatus);
         });
 
     });
 
 }
 
+function getItemFromServer(id) {
+
+}
+
+function setDetailPage(item) {
+    $("#id").val(item.id);
+    $("#name").val(item.name);
+    $("#email").val(item.eventbriteId);
+    $("#cellPhone").val(item.trainerId);
+    $("#state").val(item.trainerName);
+    $("#city").val(item.trainerEmail);
+    $("#userStatus").val(item.detailedLoc);
+    
+    $("#userName").val(item.userName);
+    $("#password").val(item.password);
+    $("#phone").val(item.phone);
+
+    disableFields();
+}
+
+function disableFields() {
+    $("#id").attr("readonly", true);
+    $("#name").attr("readonly", true);
+    $("#email").attr("readonly", true);
+    $("#cellPhone").attr("readonly", true);
+    $("#state").attr("readonly", true);
+    $("#city").attr("readonly", true);
+    $("#userStatus").attr("disabled", true);
+    $("#userName").attr("readonly", true);
+    $("#password").attr("readonly", true);
+    $("#phone").attr("readonly", true);
+}
+
+function enableFields() {
+    $("#id").attr("readonly", false);
+    $("#name").attr("readonly", false);
+    $("#email").attr("readonly", false);
+    $("#cellPhone").attr("readonly", false);
+    $("#state").attr("readonly", false);
+    $("#city").attr("readonly", false);
+    $("#userStatus").attr("disabled", false);
+    $("#userName").attr("readonly", false);
+    $("#password").attr("readonly", false);
+    $("#phone").attr("readonly", false);
+}
+
+function emptyDetailPage(item) {
+    $("#id").val('');
+    $("#name").val('');
+    $("#email").val('');
+    $("#cellPhone").val('');
+    $("#state").val('');
+    $("#city").val('');
+    $("#userStatus").val('');
+    $("#userName").val('');
+    $("#password").val('');
+    $("#phone").val('');
+}
 
 
 $(document).ready(function () {
@@ -83,7 +146,7 @@ $(document).ready(function () {
             $(this).addClass('selected');
             $('td input', this).eq(0).prop("checked", true);
             $('td input', this).eq(0).attr("checked", true);
-        }        
+        }
     });
 
     //check all checkbox
@@ -111,9 +174,6 @@ $(document).ready(function () {
     $(document).on("click", ".viewbtn", function () {
 
         var id = $(this).parents('tr').children('td').eq(1).text();
-        var name = $(this).parents('tr').children('td').eq(2).text();
-        var role = $(this).parents('tr').children('td').eq(4).text();
-        var status = $(this).parents('tr').children('td').eq(5).text();
 
         //mark this row as edited
         $('#userTable').DataTable().$('tr.edited').removeClass('edited');
@@ -121,111 +181,77 @@ $(document).ready(function () {
 
         $("#userEdit").text("Edit");
         $("#userDelete").text("Delete");
-        if ('' != id) {
-            $("#userId").val(id);
-            $("#userName").val(name);
-            $("#userRole").val(role);
-            $("#userStatus").val(status);
-            $("#userInfo").modal('toggle');
-            $("#userId").attr("readonly", true);
-            $("#userName").attr("readonly", true);
-            $("#userRole").attr("disabled", true);
-            $("#userStatus").attr("disabled", true);
-        }
+
+        getItemFromServer(id);
+
+        disableFields();
+        $("#userInfo").modal('toggle');
+
     });
 
     //edit button function
     $(document).on("click", "#userEdit", function () {
         if ("Add" == $("#userEdit").text()) {
 
-            if ('active' == $("#userStatus").val()) {
-                $('#userTable').DataTable().row.add([
-                '<input type="checkbox" name="chkItem" value="' + $("#userId").val() + '">',
-                $("#userId").val(),
-                $("#userName").val(),
-                '',
-                $("#userRole").val(),
-                '<span class="label-success label">' + $("#userStatus").val() + '</span>',
-                '<a class="viewbtn btn btn-success"value="' + $("#userId").val() + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
-
-            if ('inactive' == $("#userStatus").val()) {
-                $('#userTable').DataTable().row.add([
-                '<input type="checkbox" name="chkItem" value="' + $("#userId").val() + '">',
-                $("#userId").val(),
-                $("#userName").val(),
-                '',
-                $("#userRole").val(),
-                '<span class="label-danger label">' + $("#userStatus").val() + '</span>',
-                '<a class="viewbtn btn btn-success"value="' + $("#userId").val() + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
-
-            if ('pending' == $("#userStatus").val()) {
-                $('#userTable').DataTable().row.add([
-                '<input type="checkbox" name="chkItem" value="' + $("#userId").val() + '">',
-                $("#userId").val(),
-                $("#userName").val(),
-                '',
-                $("#userRole").val(),
-                '<span class="label-warning label">' + $("#userStatus").val() + '</span>',
-                '<a class="viewbtn btn btn-success"value="' + $("#userId").val() + '"><i class="glyphicon glyphicon-zoom-in icon-white"></i>View</a>']).draw();
-            }
+            addRow($("#id").val(),
+                $("#name").val(),
+                $("#email").val(),
+                $("#cellPhone").val(),
+                $("#state").val(),
+                $("#city").val(),
+                $("#userStatus").val());
 
             $("#userInfo").modal('toggle');
+            addItem();
         }
         if ("Update" == $("#userEdit").text()) {
             alert("TODO: update user infomation to server");
-            $('#userTable').DataTable().$('td', 'tr.edited').eq(1).text($("#userId").val());
-            $('#userTable').DataTable().$('td', 'tr.edited').eq(2).text($("#userName").val());
-            $('#userTable').DataTable().$('td', 'tr.edited').eq(4).text($("#userRole").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(1).text($("#id").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(2).text($("#name").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(3).text($("#email").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(4).text($("#cellPhone").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(5).text($("#state").val());
+            $('#userTable').DataTable().$('td', 'tr.edited').eq(6).text($("#city").val());
 
-            if ('active' == $("#userStatus").val())
-                $('#userTable').DataTable().$('td', 'tr.edited').eq(5).html('<span class="label-success label">active</span>');
-            if ('inactive' == $("#userStatus").val())
-                $('#userTable').DataTable().$('td', 'tr.edited').eq(5).html('<span class="label-danger label">inactive</span>');
-            if ('pending' == $("#userStatus").val())
-                $('#userTable').DataTable().$('td', 'tr.edited').eq(5).html('<span class="label-warning label">pending</span>');
+            if ('Active' == $("#userStatus").val())
+                $('#userTable').DataTable().$('td', 'tr.edited').eq(7).html('<span class="label-success label">active</span>');
+            if ('Inactive' == $("#userStatus").val())
+                $('#userTable').DataTable().$('td', 'tr.edited').eq(7).html('<span class="label-danger label">inactive</span>');
+         
 
             $("#userInfo").modal('toggle');
+            updateItem();
         }
         if ("Edit" == $("#userEdit").text()) {
-            $("#userId").attr("readonly", false);
-            $("#userName").attr("readonly", false);
-            $("#userRole").attr("disabled", false);
-            $("#userStatus").attr("disabled", false);
+           enableFields();
             $("#userEdit").text("Update");
         }
     });
 
-    //delete button on detail page
-    $(document).on("click", "#userDelete", function () {
-        if ("Cancel" == $("#userDelete").text()) {
-            $("#userInfo").modal('toggle');
-
-        } else {
-            $('#userTable').DataTable().row('.edited').remove().draw(false);
-            $("#userInfo").modal('toggle');
-        }
-    });
+//    //delete button on detail page
+//    $(document).on("click", "#userDelete", function () {
+//        if ("Cancel" == $("#userDelete").text()) {
+//            $("#userInfo").modal('toggle');
+//
+//        } else {
+//            $('#userTable').DataTable().row('.edited').remove().draw(false);
+//            $("#userInfo").modal('toggle');
+//        }
+//    });
 
     //add button function
     $(document).on("click", ".btnadd", function () {
         $("#userInfo").modal('toggle');
-        $("#userId").attr("readonly", false);
-        $("#userName").attr("readonly", false);
-        $("#userRole").attr("disabled", false);
-        $("#userStatus").attr("disabled", false);
-        $("#userId").val("");
-        $("#userName").val("");
-        $("#userRole").val("");
-        $("#userStatus").val("");
+        enableFields();
+        emptyDetailPage();
+        getNewId();
         $("#userEdit").text("Add");
         $("#userDelete").text("Cancel");
     });
-    
-    //delete button function
-    $(document).on("click", ".btndelete", function () {
-        $('#userTable').DataTable().row('.selected').remove().draw(false);
-    });
+
+//    //delete button function
+//    $(document).on("click", ".btndelete", function () {
+//        $('#userTable').DataTable().row('.selected').remove().draw(false);
+//    });
 
 });

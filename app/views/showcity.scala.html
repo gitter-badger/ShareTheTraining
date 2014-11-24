@@ -1,5 +1,6 @@
 <script>
 	function showCity(value){
+		alert("hehe");
 	    $.post("@routes.Application.showCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");
@@ -17,27 +18,31 @@
                    $option.text(dataObj[i]);
                    $("select[name='location.city']").append($option);
              }
+             $('#city').selectpicker('refresh');
         });
 	}
 	
 	function showSidebarCity(value){
+		alert(value);
 	    $.post("@routes.Application.showSiderbarCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");
              //alert(dataObj);
              
              //删除城市
-             $("select[name='cfb.locations[0].city'] option[value!='']").remove();
+             $("select#city option").filter("[value!='']").remove();
              
              // <select name="city" style="width:90%">
                  //<option value="">--------</option>
              //</select>
              for(var i=0;i<dataObj.length;i++){
+            	   alert(dataObj[i]);
                    var $option=$("<option></option>");
                    $option.attr("value",dataObj[i]);
                    $option.text(dataObj[i]);
-                   $("select[name='cfb.locations[0].city']").append($option);
+                   $("select#city").append($option);
              }
+             $('#city').selectpicker('refresh');
         });
 	}
 </script>
