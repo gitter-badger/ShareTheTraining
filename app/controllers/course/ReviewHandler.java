@@ -9,6 +9,7 @@ import controllers.user.UserHandler;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
+import models.courses.CourseOrder;
 import models.courses.Review;
 import models.forms.ReviewForm;
 import models.users.Customer;
@@ -34,16 +35,14 @@ public class ReviewHandler implements IReviewHandler {
 	}
 
 	// TODO WRITE REVIEW, REVIEW SEARCH(?)
-	public Review writeReview(ReviewForm reviewForm, Customer author) {
-		if (!author.getEmail().equals(reviewForm.getEmail()))
-			return null;
-		ConcreteCourse concreteCourse = new CourseHandler()
-				.getCourseByConcreteCourseId(reviewForm.getConcreteCourseId());
-		if (concreteCourse == null
-				|| !concreteCourse.getSelectedCustomers().contains(author))
-			return null;
-		Review review = Review.create(author, concreteCourse, em);
-		reviewForm.bindReview(review);
-		return review;
+	@Override
+	public Review writeReview(ReviewForm reviewForm, Customer author, IOrderHandler orderHandler) {
+		CourseOrder courseOrder =  orderHandler.getCourseOrderByOrderId(reviewForm.getOrderId());
+		if(courseOrder != null &&  courseOrder.getCustomer().getEmail().equals(author.getEmail())){
+			Review review = Review.create(author, courseOrder.getConcreteCourse(), em);
+			reviewForm.bindReview(review);
+			return review;
+		}
+		return null;
 	}
 }

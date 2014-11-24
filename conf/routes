@@ -78,6 +78,7 @@ GET		/testAuth					controllers.Application.testAuth()
 
 #review
 GET     /review                     controllers.Application.review(orderId: String)
+POST    /reviewSubmit               controllers.Application.reviewSubmit()
 
 #dashboard
 GET     /dashConcreteCourseRequest  controllers.Application.dashConcreteCourseRequest()

@@ -150,4 +150,10 @@ public class Review extends BaseModelObject {
 		this.trainerRating = trainerRating;
 	}
 
+	public Review() {
+		
+	}
+	
+	
+
 }

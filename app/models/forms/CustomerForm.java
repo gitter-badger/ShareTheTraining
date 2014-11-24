@@ -3,6 +3,7 @@ package models.forms;
 import play.Logger;
 import models.locations.Location;
 import models.users.Customer;
+import models.users.Trainer;
 import models.users.User;
 import models.users.UserRole;
 
@@ -72,8 +73,14 @@ public class CustomerForm extends UserForm {
 		customer.setCellPhone(cellPhone);
 		customer.setPhone(phone);
 		customer.setLocation(location);
+		customer.setImage(image);
+		customer.setUsername(username);
+		customer.setName(name);
+		customer.setUserStatus(userStatus);
+		
 		
 		return true;
 	}
 
+	
 }

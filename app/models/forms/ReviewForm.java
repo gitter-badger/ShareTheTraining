@@ -9,9 +9,7 @@ public class ReviewForm {
 
 	private String comment;
 
-	private String email;
-
-	private String concreteCourseId;
+	private String orderId;
 
 	private List<Integer> courseRatings;
 
@@ -61,35 +59,24 @@ public class ReviewForm {
 		this.trainerQuestions = trainerQuestions;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getConcreteCourseId() {
-		return concreteCourseId;
-	}
-
-	public void setConcreteCourseId(String concreteCourseId) {
-		this.concreteCourseId = concreteCourseId;
-	}
-
 	public boolean bindReview(Review review) {
 		try {
-			if (review.getAuthor().getEmail().equals(this.email)
-					&& review.getConcreteCourse().getConcreteCourseId()
-							.equals(this.concreteCourseId)) {
-				review.setCourseQuestions(courseQuestions);
-				review.setTrainerQuestions(trainerQuestions);
-				return review.updateCourseRatings(courseRatings)
-						&& review.updateTrainerRatings(trainerRatings);
-			}
+			review.setCourseQuestions(courseQuestions);
+			review.setTrainerQuestions(trainerQuestions);
+			return review.updateCourseRatings(courseRatings)
+					&& review.updateTrainerRatings(trainerRatings);
+
 		} catch (Exception e) {
 			Logger.error(e.toString());
 		}
 		return false;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 }

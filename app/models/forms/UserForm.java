@@ -1,13 +1,36 @@
 package models.forms;
 
 import models.users.User;
+import models.users.UserStatus;
 
 public abstract class UserForm {
-	private String username;
+	protected String username;
 
-	private String password;
+	protected String password;
 
-	private String email;
+	protected String email;
+	
+	protected UserStatus userStatus;
+	
+	protected String image;
+	
+	
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
+	public UserStatus getUserStatus() {
+		return userStatus;
+	}
+
+	public void setUserStatus(UserStatus userStatus) {
+		this.userStatus = userStatus;
+	}
 
 	public String getUsername() {
 		return username;

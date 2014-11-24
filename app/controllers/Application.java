@@ -29,6 +29,7 @@ import java.util.Set;
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
+import controllers.course.ReviewHandler;
 import controllers.image.ImageHandler;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
@@ -43,6 +44,7 @@ import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
+import models.courses.Review;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
@@ -52,6 +54,7 @@ import models.forms.CourseForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.forms.NewPswForm;
+import models.forms.ReviewForm;
 import models.forms.TrainerForm;
 import models.forms.UserForm;
 import models.locations.Geolocation;
@@ -723,14 +726,34 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result review(String orderId) {
+		CourseHandler ch = new CourseHandler();
 		OrderHandler oh = new OrderHandler();
 		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
+		ReviewHandler rh = new ReviewHandler();
+		Review r = 
+				rh.getReviewByCustomerAndCourse(session().get("connected"), courseOrder.getConcreteCourse().getId().toString());
+		if(r!=null){
+			flash("error", "you have already reviewed this course");
+			return redirect(routes.Application.cuscoursedone());
+		}
 		return ok(review.render(courseOrder));
 	}
 
 	@Transactional
-	public static Result reviewsubmit() {
-		return TODO;
+	public static Result reviewSubmit() {
+		Form<ReviewForm> reviewForm = form(ReviewForm.class).bindFromRequest();
+		Logger.info(reviewForm.get().getComment());
+		Logger.info(reviewForm.get().getCourseRatings().iterator().next().toString());
+		UserHandler uh = new UserHandler();
+		Customer author = uh.getCustomerByEmail(session().get("connected"));
+		ReviewHandler rh = new ReviewHandler();
+		Review re=rh.writeReview(reviewForm.get(), author, new OrderHandler());
+		if(re==null){
+			flash("error", "you are not the right customer to write this comment");
+			return redirect(routes.Application.cuscoursedone());
+		}
+		return redirect(routes.Application.cuscoursedone());
+		
 	}
 
 	@Transactional

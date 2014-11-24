@@ -2,11 +2,15 @@ package models.forms;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import play.Logger;
+import models.courses.Course;
 import models.locations.Location;
 import models.users.Trainer;
 import models.users.User;
 import models.users.UserRole;
+import models.users.Veteran;
 
 public class TrainerForm extends UserForm {
 	private int id;
@@ -34,7 +38,30 @@ public class TrainerForm extends UserForm {
 	
 	private String email;
 	
+	private String companyInfo;
 	
+	
+	private boolean isVeteran;
+
+	@JsonFormat(shape= JsonFormat.Shape.NUMBER_INT)
+	private Veteran veteranRole = Veteran.NONE;
+	
+	
+	public boolean isVeteran() {
+		return isVeteran;
+	}
+
+	public void setVeteran(boolean isVeteran) {
+		this.isVeteran = isVeteran;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getEmail() {
 		return email;
@@ -120,6 +147,24 @@ public class TrainerForm extends UserForm {
 	public TrainerForm() {
 
 	}
+	
+
+	public Veteran getVeteranRole() {
+		return veteranRole;
+	}
+
+	public void setVeteranRole(Veteran veteranRole) {
+		this.veteranRole = veteranRole;
+	}
+
+	
+	public String getCompanyInfo() {
+		return companyInfo;
+	}
+
+	public void setCompanyInfo(String companyInfo) {
+		this.companyInfo = companyInfo;
+	}
 
 	@Override
 	public boolean bindUser(User user) {
@@ -136,6 +181,8 @@ public class TrainerForm extends UserForm {
 		trainer.setCertification(certification);
 		trainer.setLocation(location);
 		trainer.setName(name);
+		trainer.setUsername(name);
+		trainer.setCompanyInfo(companyInfo);
 		
 	
 	
@@ -143,6 +190,32 @@ public class TrainerForm extends UserForm {
 		
 	}
 	
+	public static TrainerForm bindTraienrForm(
+			Trainer trainer) {
+		if (trainer == null)
+			return null;
+		
+		TrainerForm trainerForm = new TrainerForm();
+		trainerForm.setCellPhone(trainer.getCellPhone());
+		trainerForm.setCertification(trainer.getCertification());
+		trainerForm.setCompany(trainer.getCompany());
+		trainerForm.setEducation(trainer.getEducation());
+		trainerForm.setExperience(trainer.getExperience());
+		trainerForm.setHowfar(trainer.getHowFar());
+		trainerForm.setCompanyInfo(trainer.getCompanyInfo());
+		trainerForm.setEmail(trainer.getEmail());
+		trainerForm.setName(trainer.getName());
+		trainerForm.setId(trainer.getId());
+		trainerForm.setImage(trainer.getImage());
+		trainerForm.getLocation().setRegion(trainer.getLocation().getRegion());
+		trainerForm.getLocation().setCity(trainer.getLocation().getCity());
+		trainerForm.setUsername(trainer.getUsername());
+		trainerForm.setUserStatus(trainer.getUserStatus());
+		trainerForm.setVeteranRole(trainer.getVeteranRole());
+		
+		return trainerForm;
+
+	}
 	
 
 }

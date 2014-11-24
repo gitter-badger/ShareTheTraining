@@ -7,6 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import play.Logger;
 import be.objectify.deadbolt.core.models.Permission;
 import be.objectify.deadbolt.core.models.Role;
@@ -30,6 +32,7 @@ public abstract class User extends BaseModelObject implements Subject {
 
 	private UserRole userRole;
 
+	@JsonFormat(shape= JsonFormat.Shape.NUMBER_INT)
 	private UserStatus userStatus;
 	
 	private String image;
