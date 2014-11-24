@@ -113,15 +113,18 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public boolean modifyMaximum(String concreteCourseId, int maximum) {
+	public boolean modifyMaximum(int courseId, int maximum) {
 		try {
-			ConcreteCourse c = this
-					.getCourseByConcreteCourseId(concreteCourseId);
-			if (maximum < 1 || c.getSelectedCustomers().size() > maximum
-					|| c.getMinimum() != -1 && c.getMinimum() > maximum) {
+			Course course = this.getCourseById(courseId);
+			if (course == null
+					|| maximum < 1
+					|| (course.getMinimum() != -1 && course.getMinimum() > maximum))
 				return false;
+			for (ConcreteCourse c : course.getCourses()) {
+				if (c.getSelectedCustomers().size() > maximum)
+					return false;
 			}
-			c.setMaximum(maximum);
+			course.setMaximum(maximum);
 			return true;
 		} catch (Exception e) {
 			Logger.error(e.toString());
@@ -130,14 +133,12 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public boolean modifyMinimum(String concreteCourseId, int minimum) {
+	public boolean modifyMinimum(int courseId, int minimum) {
 		try {
-			ConcreteCourse c = this
-					.getCourseByConcreteCourseId(concreteCourseId);
-			if (minimum < 0 || c == null
-					|| (c.getMaximum() != -1 && c.getMaximum() < minimum))
+			Course course = this.getCourseById(courseId);
+			if(course == null || minimum < 0|| (course.getMaximum() != -1 && course.getMaximum() < minimum))
 				return false;
-			c.setMaximum(minimum);
+			course.setMaximum(minimum);
 			return true;
 		} catch (Exception e) {
 			Logger.error(e.toString());
@@ -146,7 +147,8 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public Course addNewCourse(String trainerEmail, CourseForm courseForm, IUserHandler userHandler) {
+	public Course addNewCourse(String trainerEmail, CourseForm courseForm,
+			IUserHandler userHandler) {
 		Trainer trainer = userHandler.getTrainerByEmail(trainerEmail);
 		if (trainer == null)
 			return null;
@@ -195,19 +197,21 @@ public class CourseHandler implements ICourseHandler {
 
 	@Override
 	public CourseOrder registerCourse(Customer customer,
-			ConcreteCourse concreteCourse, String orderId, IOrderHandler orderHandler) {
+			ConcreteCourse concreteCourse, String orderId,
+			IOrderHandler orderHandler) {
 		try {
-			if(concreteCourse == null || customer == null)
+			if (concreteCourse == null || customer == null)
 				return null;
 			if (concreteCourse.getStatus() == ConcreteCourseStatus.VERIFYING
 					|| concreteCourse.getStatus() == ConcreteCourseStatus.FINISHED
-					|| concreteCourse.getSelectedCustomers().size() == concreteCourse
+					|| concreteCourse.getSelectedCustomers().size() == concreteCourse.getCourseInfo()
 							.getMaximum())
 				return null;
 			if (concreteCourse.getSelectedCustomers().contains(customer))
 				return null;
 			if (customer.registerCourse(concreteCourse)) {
-				return orderHandler.newCourseOrder(orderId, concreteCourse, customer);
+				return orderHandler.newCourseOrder(orderId, concreteCourse,
+						customer);
 			}
 			return null;
 		} catch (Exception e) {

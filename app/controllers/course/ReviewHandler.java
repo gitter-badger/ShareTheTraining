@@ -5,12 +5,16 @@ import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import controllers.user.UserHandler;
 import play.db.jpa.JPA;
+import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.Review;
 import models.forms.ReviewForm;
+import models.users.Customer;
+import models.users.User;
 
-public class ReviewHandler implements IReviewHandler{
+public class ReviewHandler implements IReviewHandler {
 	private EntityManager em;
 
 	public ReviewHandler() {
@@ -28,10 +32,16 @@ public class ReviewHandler implements IReviewHandler{
 			return (Review) result.iterator().next();
 		return null;
 	}
-	//TODO WRITE REVIEW, REVIEW SEARCH(?)
-	public Review writeReview(ReviewForm reviewForm){
-		
-		return null;
+
+	// TODO WRITE REVIEW, REVIEW SEARCH(?)
+	public Review writeReview(ReviewForm reviewForm, Customer author){
+		if(!author.getEmail().equals(reviewForm.getEmail()))
+				return null;
+		ConcreteCourse concreteCourse = new CourseHandler().getCourseByConcreteCourseId(reviewForm.getConcreteCourseId());
+		if(concreteCourse == null || !concreteCourse.getSelectedCustomers().contains(author))
+			return null;
+		Review review = Review.create(author, concreteCourse, em);
+		reviewForm.bindReview(review);
+		return review;
 	}
-	
 }

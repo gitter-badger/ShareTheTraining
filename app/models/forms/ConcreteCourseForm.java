@@ -222,7 +222,6 @@ public class ConcreteCourseForm {
 		concreteCourseForm.setConcreteCourseId(concreteCourse.getConcreteCourseId());
 		concreteCourseForm.setTrainerEmail(concreteCourse.getCourseInfo().getTrainer().getEmail());
 		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
-		concreteCourseForm.setMinimum(concreteCourse.getMinimum());
 		concreteCourseForm.setSoldSeat(concreteCourse.getSoldSeat());
 
 		return concreteCourseForm;

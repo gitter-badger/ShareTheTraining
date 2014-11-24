@@ -70,6 +70,10 @@ public class Course extends BaseModelObject {
 	private boolean displayRating;
 	
 	private int popular = 0;
+	
+	private int minimum = -1;
+
+	private int maximum = -1;
 
 	@OneToMany
 	private Collection<Review> reviews = new ArrayList<Review>();
@@ -301,6 +305,22 @@ public class Course extends BaseModelObject {
 
 	public void setPopular(int popular) {
 		this.popular = popular;
+	}
+
+	public int getMinimum() {
+		return minimum;
+	}
+
+	public void setMinimum(int minimum) {
+		this.minimum = minimum;
+	}
+
+	public int getMaximum() {
+		return maximum;
+	}
+
+	public void setMaximum(int maximum) {
+		this.maximum = maximum;
 	}
 
 }

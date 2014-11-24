@@ -22,6 +22,11 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 		return F.Promise.promise(new F.Function0<Subject>() {
 			@Override
 			public Subject apply() throws Throwable {
+				//TODO move this part to login method
+				context.flash().put(
+						"url",
+						"GET".equals(context.request().method()) ? context
+								.request().uri() : routes.Application.welcome().url());
 				String email = context.session().get("connected");
 				if (email != null) {
 					User u = new UserHandler().getUserByEmail(email);
@@ -33,7 +38,8 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 	}
 
 	@Override
-	public F.Promise<Result> onAuthFailure(final Http.Context context, String content) {
+	public F.Promise<Result> onAuthFailure(final Http.Context context,
+			String content) {
 		// you can return any result from here - forbidden, etc
 		return F.Promise.promise(new F.Function0<Result>() {
 			@Override
