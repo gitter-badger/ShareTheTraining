@@ -34,11 +34,13 @@ public class ReviewHandler implements IReviewHandler {
 	}
 
 	// TODO WRITE REVIEW, REVIEW SEARCH(?)
-	public Review writeReview(ReviewForm reviewForm, Customer author){
-		if(!author.getEmail().equals(reviewForm.getEmail()))
-				return null;
-		ConcreteCourse concreteCourse = new CourseHandler().getCourseByConcreteCourseId(reviewForm.getConcreteCourseId());
-		if(concreteCourse == null || !concreteCourse.getSelectedCustomers().contains(author))
+	public Review writeReview(ReviewForm reviewForm, Customer author) {
+		if (!author.getEmail().equals(reviewForm.getEmail()))
+			return null;
+		ConcreteCourse concreteCourse = new CourseHandler()
+				.getCourseByConcreteCourseId(reviewForm.getConcreteCourseId());
+		if (concreteCourse == null
+				|| !concreteCourse.getSelectedCustomers().contains(author))
 			return null;
 		Review review = Review.create(author, concreteCourse, em);
 		reviewForm.bindReview(review);
