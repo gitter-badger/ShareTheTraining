@@ -29,6 +29,8 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 
 	private Collection<Course> courseList;
 	
+	private int courseId = -1;
+	
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
@@ -43,6 +45,10 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if(courseList != null){
 			predicates.add(courseInfoRoot.in(courseList));
+		}
+		if(courseId != -1){
+			predicates.add(cb.equal(
+					courseInfoRoot.<Integer> get("status"),courseId));
 		}
 		if (cfb.getCourseStatus() != -1)
 			predicates.add(cb.equal(
@@ -155,5 +161,15 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 
 	public void setCourseList(Collection<Course> courseList) {
 		this.courseList = courseList;
+	}
+
+
+	public int getCourseId() {
+		return courseId;
+	}
+
+
+	public void setCourseId(int courseId) {
+		this.courseId = courseId;
 	}
 }

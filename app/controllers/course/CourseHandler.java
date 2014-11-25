@@ -23,6 +23,7 @@ import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
+import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.ConcreteCourseForm;
@@ -99,7 +100,6 @@ public class CourseHandler implements ICourseHandler {
 		return result;
 	}
 
-	
 	@Override
 	public Collection<Course> getCourseByCustomRule(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
@@ -114,17 +114,19 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public Map<Integer,List<ConcreteCourse>> getConcreteCourseMap(
+	public Map<Integer, List<ConcreteCourse>> getConcreteCourseMap(
 			FilterBuilder fb, String orderByColumn, boolean ascending,
 			int pageNumber, int pageSize) {
 		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
 				ascending, pageNumber, pageSize, em);
-		Map<Integer,List<ConcreteCourse>> result = new HashMap<Integer,List<ConcreteCourse>>();
+		Map<Integer, List<ConcreteCourse>> result = new HashMap<Integer, List<ConcreteCourse>>();
 		for (Tuple t : tupleList) {
 			ConcreteCourse concreteCourse = (ConcreteCourse) t.get(0);
-			if(!result.containsKey(concreteCourse.getCourseInfo().getId()))
-				result.put(concreteCourse.getCourseInfo().getId(), new ArrayList<ConcreteCourse>());
-			result.get(concreteCourse.getCourseInfo().getId()).add(concreteCourse);
+			if (!result.containsKey(concreteCourse.getCourseInfo().getId()))
+				result.put(concreteCourse.getCourseInfo().getId(),
+						new ArrayList<ConcreteCourse>());
+			result.get(concreteCourse.getCourseInfo().getId()).add(
+					concreteCourse);
 		}
 		return result;
 	}
@@ -346,5 +348,19 @@ public class CourseHandler implements ICourseHandler {
 		concreteCourse.setStatus(ConcreteCourseStatus.VERIFYING);
 		concreteCourse.getCourseInfo().updateDate();
 		return true;
+	}
+
+	@Override
+	public Collection<ConcreteCourse> getDisplayedConcreteCourse(
+			CourseFilterBuilder cfb, int courseId) {
+		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
+		ccfb.setCfb(cfb);
+		ccfb.setCourseId(courseId);
+		Map<Integer, List<ConcreteCourse>> courseMap = this
+				.getConcreteCourseMap(ccfb, null, true, -1, -1);
+		if(courseMap.containsKey(courseId)){
+			return courseMap.get(courseId);
+		}
+		return new ArrayList<ConcreteCourse>();
 	}
 }

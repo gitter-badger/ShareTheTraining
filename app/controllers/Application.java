@@ -46,6 +46,7 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.courses.Review;
+import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
@@ -232,7 +233,9 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		// TODO cache
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
+		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
+		Map<Integer, List<ConcreteCourse>> courseMap = ch.getConcreteCourseMap(
+				ccfb, null, true, -1, -1);
 		return ok(searchindex.render(course, states));
 	}
 
@@ -347,7 +350,7 @@ public class Application extends Controller {
 		}
 		return internalServerError();
 	}
-	
+
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerInfo() {
@@ -357,7 +360,6 @@ public class Application extends Controller {
 
 		return ok(trainerinfo.render(trainer));
 	}
-
 
 	@Transactional
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
@@ -434,12 +436,16 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result itempage(Integer id) throws ParseException {
+		CourseFilterForm filterForm = form(CourseFilterForm.class)
+				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		Course course = ch.getCourseById(id);
 		Collection<Course> similarcourse = ch.getCourseByCategory(
 				course.getCourseCategory(), 1, 3, null, true);
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		Collection<ConcreteCourse> concreteCourseList = ch
+				.getDisplayedConcreteCourse(filterForm, id);
 		return ok(itempage.render(course, states));
 	}
 
@@ -563,7 +569,6 @@ public class Application extends Controller {
 		return notFound();
 	}
 
-
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerInfoEdit() {
@@ -590,7 +595,6 @@ public class Application extends Controller {
 		return ok(traineraddcourse.render());
 	}
 
-
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcoursesubmit() {
@@ -600,7 +604,8 @@ public class Application extends Controller {
 		ch.addNewCourse(session().get("connected"), courseForm.get(),
 				new UserHandler());
 
-		return redirect(routes.Application.trainerCourseHistory(CourseStatus.VERIFYING.ordinal()));
+		return redirect(routes.Application
+				.trainerCourseHistory(CourseStatus.VERIFYING.ordinal()));
 	}
 
 	@Transactional
@@ -614,7 +619,8 @@ public class Application extends Controller {
 				courseOrder.getConcreteCourse().getId().toString());
 		if (r != null) {
 			flash("error", "you have already reviewed this course");
-			return redirect(routes.Application.customerCourseHistory(OrderStatus.DONE.ordinal()));
+			return redirect(routes.Application
+					.customerCourseHistory(OrderStatus.DONE.ordinal()));
 		}
 		return ok(review.render(courseOrder));
 	}
@@ -634,7 +640,8 @@ public class Application extends Controller {
 			flash("error",
 					"you are not the right customer to write this comment");
 		}
-		return redirect(routes.Application.customerCourseHistory(OrderStatus.DONE.ordinal()));
+		return redirect(routes.Application
+				.customerCourseHistory(OrderStatus.DONE.ordinal()));
 
 	}
 
