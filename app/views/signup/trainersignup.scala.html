@@ -1,3 +1,4 @@
+@import models.users._
 @(states: List[String])
 
 @main("signup_trainer"){
@@ -7,7 +8,7 @@
 				<div class="col-sm-12 col-md-6 col-md-offset-3 widget padding-lg bg-dark">
 					<h2 class="text-center">Basic Information</h2>
 					<p class="text-primary"><strong>Note: (*) denotes required item.</strong></p>
-					<form role="form" action="@routes.Application.signuptrainersubmit()" id="signup2" method="post">
+					<form role="form" action="@routes.Application.signupSubmit(UserRole.TRAINER.ordinal())" id="signup2" method="post">
 						<div class="form-group">
 							<label for="name">Name <span class="text-primary">(*)</span></label>
 							<input type="text" name="name" class="form-control required" size="25" id="name" placeholder="Your name">

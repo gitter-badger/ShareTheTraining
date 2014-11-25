@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -19,6 +22,7 @@ import javax.persistence.criteria.Selection;
 
 import org.apache.solr.common.SolrInputDocument;
 
+import models.locations.Location;
 import models.spellchecker.SolrDao;
 import models.users.Trainer;
 import common.BaseModelObject;
@@ -157,6 +161,21 @@ public class Course extends BaseModelObject {
 		if(keyPoints!=null)
 			keyPointsList = Arrays.asList(keyPoints.split(","));
 		return keyPointsList;
+	}
+	
+	public List<String[]> getLocationList(){
+		List<String[]> result = new ArrayList<String[]>();
+		HashMap<String,Set<String>> locationSet = new HashMap<String,Set<String>>();
+		for(ConcreteCourse c : courses){
+			Location location = c.getLocation();
+			if(!locationSet.containsKey(location.getRegion()));
+				locationSet.put(location.getRegion(), new HashSet<String>());
+			if(!locationSet.get(location.getRegion()).contains(location.getCity())){
+				String[] locationArray = new String[]{location.getRegion(), location.getCity()};
+				result.add(locationArray);
+			}
+		}
+		return result;
 	}
 	
 	public Collection<ConcreteCourse> getFilterCourse() {

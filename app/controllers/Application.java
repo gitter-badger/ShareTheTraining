@@ -237,81 +237,45 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result searchall() {
-
-		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(
-				new CourseFilterBuilder(), null, true, 1, 10);
-		Logger.info("course" + course.size());
-
-		LocationHandler lh = new LocationHandler();
-		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
-		return ok(searchindex.render(course, states));
-	}
-
-	@Transactional
-	// TODO test
-	public static Result searchloc(String city, String region) {
-		CourseFilterBuilder filter = new CourseFilterBuilder();
-		Location loc = new Location();
-		loc.setRegion(region);
-		loc.setCity(city);
-		ArrayList<Location> locationList = new ArrayList<Location>();
-		locationList.add(loc);
-		filter.setLocations(locationList);
-		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filter, null,
-				true, 1, 10);
-		LocationHandler lh = new LocationHandler();
-		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
-		return ok(searchindex.render(course, states));
-	}
-
-	@Transactional
-	public static Result signupcussubmit() {
-		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
-		AuthenticationHandler ah = new AuthenticationHandler();
-		IUserHandler uh = new UserHandler();
-		IMailHandler mh = new MailHandler();
-		ah.doRegister(cusForm.get().getEmail(), cusForm.get().getName(),
-				cusForm.get().getPassword(), UserRole.values()[1],
-				cusForm.get(), uh, mh);
-
-		return ok(signupemail.render());
-	}
-
-	@Transactional
-	public static Result signupcus() {
+	@Restrict({ @Group("!CUSTOMER"), @Group("!TRAINER") })
+	public static Result signup(int userRole) {
 		Logger.info(session().get("connected"));
-		LocationHandler lh = new LocationHandler();
 		List<String> stateList = LocationHandler.getStateList();
-		return ok(customersignup.render(stateList));
+		switch (UserRole.fromInteger(userRole)) {
+		case CUSTOMER:
+			return ok(customersignup.render(stateList));
+		case TRAINER:
+			return ok(trainersignup.render(stateList));
+		default:
+			break;
+		}
+		return notFound();
 	}
 
 	@Transactional
-	public static Result signuptrainer() {
-		LocationHandler lh = new LocationHandler();
-		List<String> stateList = LocationHandler.getStateList();
-		return ok(trainersignup.render(stateList));
-	}
-
-	@Transactional
-	// TODO write together?
-	public static Result signuptrainersubmit() {
-		Form<TrainerForm> trainerForm = form(TrainerForm.class)
-				.bindFromRequest();
+	public static Result signupSubmit(int userRole) {
+		UserForm userForm = null;
+		switch (UserRole.fromInteger(userRole)) {
+		case CUSTOMER:
+			userForm = form(CustomerForm.class).bindFromRequest().get();
+			break;
+		case TRAINER:
+			userForm = form(TrainerForm.class).bindFromRequest().get();
+			break;
+		default:
+			return notFound();
+		}
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
 		IMailHandler mh = new MailHandler();
-		ah.doRegister(trainerForm.get().getEmail(),
-				trainerForm.get().getName(), trainerForm.get().getPassword(),
-				UserRole.values()[2], trainerForm.get(), uh, mh);
+		ah.doRegister(userForm.getEmail(), userForm.getUsername(),
+				userForm.getPassword(), UserRole.fromInteger(userRole),
+				userForm, uh, mh);
 		return ok(signupemail.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result profile() {
 		UserHandler uh = new UserHandler();
 		User user = uh.getUserByEmail(session().get("connected"));
@@ -329,8 +293,7 @@ public class Application extends Controller {
 			System.out.print(course.size());
 			return ok(trainercoursehistory.render(course));
 		}
-
-		return null;
+		return internalServerError();
 	}
 
 	@Transactional
@@ -345,7 +308,6 @@ public class Application extends Controller {
 		ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
 				"connected")), ch.getCourseByEventbriteId(eventbriteId),
 				orderId, new OrderHandler());
-
 		return redirect(routes.Application.profile());
 	}
 
@@ -356,112 +318,116 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	// TODO together
 	@Restrict({ @Group("CUSTOMER") })
-	public static Result cuscourseconfirmed() {
-		OrderHandler oh = new OrderHandler();
-		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.CONFIRMED.ordinal());
-		fb.setUserEmail(session().get("connected"));
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb, null,
-				1, 10);
-		return ok(cuscoursehistory.render(order));
-	}
-
-	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cuscoursedone() {
-		OrderHandler oh = new OrderHandler();
-		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.DONE.ordinal());
-		fb.setUserEmail(session().get("connected"));
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb, null,
-				-1, -1);
-		return ok(cuscoursehistory.render(order));
-	}
-
-	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cuscoursecanceled() {
-		OrderHandler oh = new OrderHandler();
-		OrderFilterBuilder fb = new OrderFilterBuilder();
-		fb.setOrderStatus(OrderStatus.CANCELLED.ordinal());
-		fb.setUserEmail(session().get("connected"));
-		Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb, null,
-				-1, -1);
-		return ok(cuscoursehistory.render(order));
+	public static Result customerCourseHistory(int status) {
+		OrderStatus orderStatus = OrderStatus.fromInteger(status);
+		if (orderStatus != null) {
+			OrderHandler oh = new OrderHandler();
+			OrderFilterBuilder fb = new OrderFilterBuilder();
+			fb.setOrderStatus(orderStatus.ordinal());
+			fb.setUserEmail(session().get("connected"));
+			Collection<CourseOrder> order = oh.getCourseOrderByCustomRule(fb,
+					null, 1, 10);
+			return ok(cuscoursehistory.render(order));
+		}
+		return notFound();
 	}
 
 	// TODO together
 	@Transactional
 	@Restrict({ @Group("CUSTOMER") })
-	public static Result cusinfo() {
+	public static Result basicInfo() {
 		UserHandler uh = new UserHandler();
-		Customer customer = (Customer) uh.getUserByEmail(session().get(
-				"connected"));
+		User user = uh.getUserByEmail(session().get("connected"));
+		switch (user.getUserRole()) {
+		case CUSTOMER:
+			return ok(cusinfo.render((Customer) user));
+		case TRAINER:
+			return ok(trainerbasicinfo.render((Trainer) user));
+		}
+		return internalServerError();
+	}
+	
+	@Transactional
+	@Restrict({ @Group("TRAINER") })
+	public static Result trainerInfo() {
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer) uh.getUserByEmail(session()
+				.get("connected"));
 
-		return ok(cusinfo.render(customer));
+		return ok(trainerinfo.render(trainer));
 	}
 
-	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cusinfoedit() {
-		UserHandler uh = new UserHandler();
 
-		Customer customer = (Customer) uh.getUserByEmail(session().get(
-				"connected"));
+	@Transactional
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	public static Result editBasicInfo() {
+		UserHandler uh = new UserHandler();
+		User user = uh.getUserByEmail(session().get("connected"));
 		LocationHandler lh = new LocationHandler();
 		List<String> stateList = LocationHandler.getStateList();
-		return ok(cusinfoedit.render(customer, stateList));
+		switch (user.getUserRole()) {
+		case CUSTOMER:
+			return ok(cusinfoedit.render((Customer) user, stateList));
+		case TRAINER:
+			return ok(trainerbasicinfoedit.render((Trainer) user, stateList));
+		}
+		return internalServerError();
 
 	}
 
 	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cusinfoeditsubmit() throws IOException {
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	public static Result basicInfoEditSubmit() throws IOException {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
-		Logger.info(cusForm.get().getPhone());
-		Logger.info(cusForm.get().getEmail());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
 
 		// image processing
-		MultipartFormData body = request().body().asMultipartFormData();
-		FilePart picture = body.getFile("picture");
+		FilePart picture = request().body().asMultipartFormData()
+				.getFile("picture");
 		String oldpath = uh.getUserByEmail(session().get("connected"))
 				.getImage();
 		ImageHandler ih = new ImageHandler();
-		if (ih.processImage(picture, oldpath) != null) {
+		if (ih.processImage(
+				request().body().asMultipartFormData().getFile("picture"),
+				oldpath) != null) {
 			String imagePath = ih.processImage(picture, oldpath);
 			uh.getUserByEmail(session().get("connected")).setImage(imagePath);
-			return redirect(routes.Application.cusinfo());
 		}
 		flash("error", "Missing file");
-		return redirect(routes.Application.cusinfoedit());
+		return redirect(routes.Application.editBasicInfo());
 
 	}
 
 	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cuschangepsw() {
-		return ok(cuschangepsw.render());
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	public static Result changepsw() {
+		UserHandler uh = new UserHandler();
+		User user = uh.getUserByEmail(session().get("connected"));
+		switch (user.getUserRole()) {
+		case CUSTOMER:
+			return ok(cuschangepsw.render());
+		case TRAINER:
+			return ok(trainerchangepsw.render());
+		default:
+			return internalServerError();
+		}
 	}
 
 	@Transactional
-	// TODO ALSO TRAINER
-	@Restrict({ @Group("CUSTOMER") })
-	public static Result cuschangepswsubmit() throws Exception {
+	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
+	public static Result changepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
 		UserHandler uh = new UserHandler();
-		Customer customer = (Customer) uh.getUserByEmail(session().get(
-				"connected"));
-		String password = customer.getPassword();
+		User user = uh.getUserByEmail(session().get("connected"));
+		String password = user.getPassword();
 
 		if (Password.check(npf.get().getOldpsw(), password) == false) {
 			flash("error", "original password is incorrect");
-			return redirect(routes.Application.cuschangepsw());
+			return redirect(routes.Application.changepsw());
 		}
-		customer.setPassword(npf.get().getNewpsw());
+		user.setPassword(npf.get().getNewpsw());
 
 		return redirect(routes.Application.profile());
 	}
@@ -501,7 +467,6 @@ public class Application extends Controller {
 
 		String stateName = form().bindFromRequest().get("name");
 		if (stateName != null) {
-			System.out.println(stateName + "HEHEHEH");
 			List<String> cityList = LocationHandler.getCitiesByState(stateName);
 
 			return ok(Json.toJson(cityList).toString());
@@ -584,106 +549,24 @@ public class Application extends Controller {
 	// TODO writetogether
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
-	public static Result trainercourseapproved() {
+	public static Result trainerCourseHistory(int status) {
+		if (CourseStatus.fromInteger(status) != null) {
+			CourseHandler ch = new CourseHandler();
+			CourseFilterBuilder fb = new CourseFilterBuilder();
+			fb.setCourseStatus(status);
+			fb.setTrainerEmail(session().get("connected"));
+			Collection<Course> course = ch.getCourseByCustomRule(fb, null,
+					true, 1, 10);
 
-		CourseHandler ch = new CourseHandler();
-		CourseFilterBuilder fb = new CourseFilterBuilder();
-		fb.setCourseStatus(CourseStatus.APPROVED.ordinal());
-		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, 1,
-				10);
-
-		return ok(trainercoursehistory.render(course));
+			return ok(trainercoursehistory.render(course));
+		}
+		return notFound();
 	}
+
 
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
-	public static Result trainercourseverifying() {
-
-		CourseHandler ch = new CourseHandler();
-		CourseFilterBuilder fb = new CourseFilterBuilder();
-		fb.setCourseStatus(CourseStatus.VERIFYING.ordinal());
-		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, 1,
-				10);
-
-		return ok(trainercoursehistory.render(course));
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainercoursecompleted() {
-
-		CourseHandler ch = new CourseHandler();
-		CourseFilterBuilder fb = new CourseFilterBuilder();
-		fb.setCourseStatus(CourseStatus.COMPLETED.ordinal());
-		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, 1,
-				10);
-
-		return ok(trainercoursehistory.render(course));
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainercoursecanceled() {
-
-		CourseHandler ch = new CourseHandler();
-		CourseFilterBuilder fb = new CourseFilterBuilder();
-		fb.setCourseStatus(CourseStatus.CANCELLED.ordinal());
-		fb.setTrainerEmail(session().get("connected"));
-		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true, 1,
-				10);
-
-		return ok(trainercoursehistory.render(course));
-	}
-
-	// TODO write together
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerbasicinfo() {
-		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
-		return ok(trainerbasicinfo.render(trainer));
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerbasicinfoedit() {
-		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
-		LocationHandler lh = new LocationHandler();
-		List<String> stateList = LocationHandler.getStateList();
-
-		return ok(trainerbasicinfoedit.render(trainer, stateList));
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerbasicinfoeditsubmit() {
-		Form<TrainerForm> trainerForm = form(TrainerForm.class)
-				.bindFromRequest();
-		Logger.info(trainerForm.get().getName());
-		IUserHandler uh = new UserHandler();
-		uh.updateProfile(session().get("connected"), trainerForm.get());
-		return redirect(routes.Application.trainerbasicinfo());
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerinfo() {
-		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
-
-		return ok(trainerinfo.render(trainer));
-	}
-
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerinfoedit() {
+	public static Result trainerInfoEdit() {
 		UserHandler uh = new UserHandler();
 		Trainer trainer = (Trainer) uh.getUserByEmail(session()
 				.get("connected"));
@@ -692,27 +575,21 @@ public class Application extends Controller {
 
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
-	public static Result trainerinfoeditsubmit() {
+	public static Result trainerInfoEditSubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
 		Logger.info(trainerForm.get().getName());
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), trainerForm.get());
-		return redirect(routes.Application.trainerinfo());
+		return redirect(routes.Application.trainerInfo());
 	}
 
-	// END
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcourse() {
 		return ok(traineraddcourse.render());
 	}
 
-	@Transactional
-	@Restrict({ @Group("TRAINER") })
-	public static Result trainerchangepsw() {
-		return ok(trainerchangepsw.render());
-	}
 
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
@@ -723,20 +600,21 @@ public class Application extends Controller {
 		ch.addNewCourse(session().get("connected"), courseForm.get(),
 				new UserHandler());
 
-		return redirect(routes.Application.trainercourseverifying());
+		return redirect(routes.Application.trainerCourseHistory(CourseStatus.VERIFYING.ordinal()));
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER") })
 	public static Result review(String orderId) {
 		CourseHandler ch = new CourseHandler();
 		OrderHandler oh = new OrderHandler();
 		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
 		ReviewHandler rh = new ReviewHandler();
-		Review r = 
-				rh.getReviewByCustomerAndCourse(session().get("connected"), courseOrder.getConcreteCourse().getId().toString());
-		if(r!=null){
+		Review r = rh.getReviewByCustomerAndCourse(session().get("connected"),
+				courseOrder.getConcreteCourse().getId().toString());
+		if (r != null) {
 			flash("error", "you have already reviewed this course");
-			return redirect(routes.Application.cuscoursedone());
+			return redirect(routes.Application.customerCourseHistory(OrderStatus.DONE.ordinal()));
 		}
 		return ok(review.render(courseOrder));
 	}
@@ -745,17 +623,19 @@ public class Application extends Controller {
 	public static Result reviewSubmit() {
 		Form<ReviewForm> reviewForm = form(ReviewForm.class).bindFromRequest();
 		Logger.info(reviewForm.get().getComment());
-		Logger.info(reviewForm.get().getCourseRatings().iterator().next().toString());
+		Logger.info(reviewForm.get().getCourseRatings().iterator().next()
+				.toString());
 		UserHandler uh = new UserHandler();
 		Customer author = uh.getCustomerByEmail(session().get("connected"));
 		ReviewHandler rh = new ReviewHandler();
-		Review re=rh.writeReview(reviewForm.get(), author, new OrderHandler());
-		if(re==null){
-			flash("error", "you are not the right customer to write this comment");
-			return redirect(routes.Application.cuscoursedone());
+		Review re = rh
+				.writeReview(reviewForm.get(), author, new OrderHandler());
+		if (re == null) {
+			flash("error",
+					"you are not the right customer to write this comment");
 		}
-		return redirect(routes.Application.cuscoursedone());
-		
+		return redirect(routes.Application.customerCourseHistory(OrderStatus.DONE.ordinal()));
+
 	}
 
 	@Transactional

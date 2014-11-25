@@ -1,3 +1,4 @@
+@import models.users._
 @(states: List[String])
 
 @main("signupcus"){	
@@ -10,7 +11,7 @@
 			<div class="row ">
 				<div class="col-sm-12 col-md-6 col-md-offset-3 widget padding-lg bg-dark">
 					<h2 class="text-center">Please register......</h2>
-					<form role="form" action="@routes.Application.signupcussubmit()" id="signup" method="post">
+					<form role="form" action="@routes.Application.signupSubmit(UserRole.CUSTOMER.ordinal())" id="signup" method="post">
 						<div class="form-group">
 							<label for="name">Name <span class="text-primary">(*)</span></label>
 							<input type="text" name="name" class="form-control required" size="25" id="name" placeholder="Your name">

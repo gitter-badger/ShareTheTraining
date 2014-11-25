@@ -14,37 +14,29 @@ GET    /logout                      controllers.Application.logout()
 
 
 #signup-cus
-GET    /signupcus                   controllers.Application.signupcus()
-POST   /signupcus                   controllers.Application.signupcussubmit()
-GET    /signuptrainer               controllers.Application.signuptrainer()
-POST   /signuptrainer               controllers.Application.signuptrainersubmit()
+GET    /signup/:role                controllers.Application.signup(role: Integer)
+POST   /signup/:role		        controllers.Application.signupSubmit(role: Integer)
 
 #profile
 GET    /profile                     controllers.Application.profile()
+#profile-all
+GET    /basicinfo                   controllers.Application.basicInfo()
+GET    /editinfo                 	controllers.Application.editBasicInfo()
+GET    /changepsw            		controllers.Application.changepsw()
+POST   /basicinfoeditsubmit         controllers.Application.basicInfoEditSubmit()
+POST   /changepswsubmit          	controllers.Application.changepswsubmit()
+
 #profile-cus
-GET    /cuscourseconfirmed          controllers.Application.cuscourseconfirmed()
-GET    /cuscoursedone               controllers.Application.cuscoursedone()
-GET    /cuscoursecanceled           controllers.Application.cuscoursecanceled()
-GET    /cusinfo                     controllers.Application.cusinfo()
-GET    /cusinfoedit                 controllers.Application.cusinfoedit()
-GET    /cuschangepsw                controllers.Application.cuschangepsw()
-POST   /cusinfoeditsubmit           controllers.Application.cusinfoeditsubmit()
-POST   /cuschangepswsubmit          controllers.Application.cuschangepswsubmit()
+GET    /customer/coursehistory/:type      controllers.Application.customerCourseHistory(type: Integer)
+
 #profile-trainer
 GET    /trainerschedule             controllers.Application.trainerschedule()
-GET    /trainercourseapproved       controllers.Application.trainercourseapproved()
-GET    /trainercourseverifying      controllers.Application.trainercourseverifying()
-GET    /trainercoursecompleted      controllers.Application.trainercoursecompleted()
-GET    /trainercoursecanceled       controllers.Application.trainercoursecanceled()
-GET    /trainerbasicinfo            controllers.Application.trainerbasicinfo()
-GET    /traienrbasicinfoedit        controllers.Application.trainerbasicinfoedit()
-GET    /trainerinfo                 controllers.Application.trainerinfo()
-GET    /trainerinfoedit             controllers.Application.trainerinfoedit()
+GET    /trainer/coursehistory/:type       controllers.Application.trainerCourseHistory(type: Integer)
+GET    /trainerinfo                 controllers.Application.trainerInfo()
+GET    /trainerinfoedit             controllers.Application.trainerInfoEdit()
 GET    /traineraddcourse            controllers.Application.traineraddcourse()
-GET    /trainerchangepsw            controllers.Application.trainerchangepsw()
 POST   /traineraddcoursesubmit      controllers.Application.traineraddcoursesubmit()
-POST   /trainerinfoeditsubmit       controllers.Application.trainerinfoeditsubmit()
-POST   /trainerbasicinfoeditsubmit  controllers.Application.trainerbasicinfoeditsubmit()
+POST   /trainerinfoeditsubmit       controllers.Application.trainerInfoEditSubmit()
 
 #order
 GET    /createorder                 controllers.Application.createOrder(orderId: String ?= null, eventbriteId: String ?= null)
@@ -60,9 +52,7 @@ GET    /activate                    controllers.Application.activate(token: Stri
 POST    /resetpsw                    controllers.Application.authorizeResetPassword(token: String)
 
 #search
-GET     /searchall                  controllers.Application.searchall()   
 GET    /search/:pageNumber  	                controllers.Application.search(pageNumber: Integer )
-GET     /searchloc                  controllers.Application.searchloc(city: String, region: String)
 
 #itempage
 GET    /itempage/:id                controllers.Application.itempage(id: Integer)
