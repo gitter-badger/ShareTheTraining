@@ -1,9 +1,10 @@
+@import common.Utility
 @import models.courses._
+@import controllers.locations.LocationHandler
 @(course: Collection[Course])(states: Collection[String])
 @import helper._
 
 @main("home page"){
-
 	<!-- hero -->
 	<section class="wrapper-md bg-custom-home">
 		<div class="container">
@@ -30,9 +31,17 @@
 								<div class="col-md-12">
 									<label for="">State:</label>
 									<select  onchange="showSidebarCity(this.value)" class="form-control selectpicker show-tick" name="locations[0].region" id="cfb.locations[0].region" data-live-search="true" data-style="btn-primary">
+										@defining(LocationHandler.getLocationFromSession(session)) { currentLocation =>
+  											@if(currentLocation!=null){
+												<optgroup label="You are in @(currentLocation.getRegion()+" "+currentLocation.getCity()):">
+													<option value="nearby" selected="selected">Show courses nearby</option>
+											</optgroup>
+											}
+										}
 										<optgroup label="Show All">
 												<option value="" selected="selected">Show All</option>
 											</optgroup>
+											
 										<optgroup label="State:">
 											@for(s <- states){
 													<option value="@s">@s</option>

@@ -36,6 +36,13 @@ public class MailHandler implements IMailHandler {
 			return false;
 		}
 	}
+	
+	@Override
+	public boolean sendMail(String email){
+		Html content = register_content.render(generateURL(null, null));
+		sendEmail(email, "hehe", content);
+		return true;
+	}
 
 	private String generateURL(String token, UserAction action) {
 		try {

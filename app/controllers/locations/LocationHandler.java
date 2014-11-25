@@ -16,6 +16,7 @@ import javax.sql.DataSource;
 
 import play.Logger;
 import play.db.DB;
+import play.mvc.Http.Session;
 import models.courses.ConcreteCourse;
 import models.locations.Location;
 
@@ -51,7 +52,6 @@ public class LocationHandler {
 		}
 		return null;
 	}
-	
 
 	public static List<String> getStateList() {
 		Connection connection = DB.getConnection();
@@ -94,25 +94,38 @@ public class LocationHandler {
 		}
 		return cityMap;
 	}
-	
-	
-	public static List<String> getCitiesByState(String state){
+
+	public static List<String> getCitiesByState(String state) {
 		return cityMap.get(state);
 	}
-	
-	public static Collection<String> getAvailableState(EntityManager em){
+
+	public static Collection<String> getAvailableState(EntityManager em) {
 		String hql = " select distinct c.location.region from ConcreteCourse c";
 		Query query = em.createQuery(hql);
 		Collection result = query.getResultList();
 		return result;
 	}
-	
-	public static Collection<String> getAvailableCity(String state, EntityManager em){
+
+	public static Collection<String> getAvailableCity(String state,
+			EntityManager em) {
 		String hql = " select distinct c.location.city from ConcreteCourse c where c.location.region= :state";
-		Query query = em.createQuery(hql).setParameter("state",
-				state);
+		Query query = em.createQuery(hql).setParameter("state", state);
 		Collection result = query.getResultList();
 		return result;
 	}
-	
+
+	public static Location getLocationFromSession(Session session) {
+		try {
+			if (session.get("geo") == null
+					|| session.get("geo").equals("false"))
+				return null;
+			return new Location(session.get("state"), session.get("city"), "",
+					Double.parseDouble(session.get("lng")),
+					Double.parseDouble(session.get("lat")));
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return null;
+		}
+	}
+
 }

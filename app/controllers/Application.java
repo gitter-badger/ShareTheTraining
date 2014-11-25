@@ -61,6 +61,7 @@ import models.forms.TrainerForm;
 import models.forms.UserForm;
 import models.locations.Geolocation;
 import models.locations.Location;
+import models.spellchecker.SolrSuggestions;
 import models.users.Customer;
 import models.users.Trainer;
 import models.users.User;
@@ -148,23 +149,25 @@ public class Application extends Controller {
 	}
 
 	public static Result login() {
-		return ok(login.render());
+		String redirect = flash().get("redirect") == null ? routes.Application
+				.welcome().url() : flash().get("redirect");
+		return ok(login.render(redirect));
 	}
 
 	@Transactional
 	public static Result loginAuthen() {
-		Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
-		Logger.info(loginForm.get().getEmail());
+		LoginForm loginForm = form(LoginForm.class).bindFromRequest().get();
+		Logger.info(loginForm.getEmail());
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler userHandler = new UserHandler();
-		User u = ah.doLogin(loginForm.get().getEmail(), loginForm.get()
-				.getPassword(), Context.current(), userHandler);
+		User u = ah.doLogin(loginForm.getEmail(), loginForm.getPassword(),
+				Context.current(), userHandler);
 		if (u != null) {
 
 			return redirect(routes.Application.welcome());
 		}
 		flash("error", "Username or Password is incorrect");
-		return ok(login.render());
+		return ok(login.render(loginForm.getRedirect()));
 	}
 
 	@Transactional
@@ -221,11 +224,12 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result search(Integer pageNumber) {
-		Logger.info(Utility.getQueryString(request().uri()));
 		CourseFilterForm filterForm = form(CourseFilterForm.class)
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		filterForm.transferChoiceToRange();
+		filterForm.setCurentLocation(LocationHandler
+				.getLocationFromSession(session()));
 		Collection<Course> course = ch.getCourseByCustomRule(filterForm, null,
 				true, pageNumber < 1 ? 1 : pageNumber, Play.application()
 						.configuration().getInt("page.size.search"));
@@ -234,8 +238,20 @@ public class Application extends Controller {
 		// TODO cache
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
+		ccfb.setCfb(filterForm);
 		Map<Integer, List<ConcreteCourse>> courseMap = ch.getConcreteCourseMap(
 				ccfb, null, true, -1, -1);
+		String newKeyword = null;
+		if (filterForm.getKeyword() != null) {
+			newKeyword = SolrSuggestions
+					.getSuggestions(filterForm.getKeyword());
+			if (newKeyword != null) {
+				Logger.info(newKeyword);
+				Logger.info(Utility.replaceKeyword(
+						Utility.getQueryString(request().uri()),
+						filterForm.getKeyword(), newKeyword));
+			}
+		}
 		return ok(searchindex.render(course, states));
 	}
 

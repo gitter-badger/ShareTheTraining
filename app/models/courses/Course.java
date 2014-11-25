@@ -123,7 +123,7 @@ public class Course extends BaseModelObject {
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("id", this.getId());
 		doc.addField("name", this.getCourseName());
-		doc.addField("description", this.getCourseDesc());
+		doc.addField("description", this.getKeyPoints());
 		return doc;
 	}
 
