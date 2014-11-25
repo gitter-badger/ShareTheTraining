@@ -40,10 +40,12 @@
 										<i class="fa fa-fw fa-signal"></i>Location: <span
 											class="text-primary">
 											<ul class="tags">
-												@for(c <- course.getCourses()){
-												<li><a href="@routes.Application.searchloc(c.getLocation().getCity(),c.getLocation().getRegion())">
-												@c.getLocation().getCity() @c.getLocation().getRegion()
+												@for((l, index) <- course.getLocationList().zipWithIndex){
+												<form action="@routes.Application.search(1)" id="@("location"+index)" method="get">
+												<li><a onclick="document.getElementById("@("location"+index)").submit(); return false;">
+												@l.apply(0) @l.apply(1)
 												</a></li>
+												</form>
 												}
 											</ul>
 										</span>

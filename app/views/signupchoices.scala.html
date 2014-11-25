@@ -1,3 +1,4 @@
+@import models.users._
 <!-- Modal -->
 	<div class="modal fade bs-modal-signup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog ">
@@ -9,12 +10,12 @@
 	      		<div class="modal-body">
 	      			<h4>Would you want to take more courses?</h4>
 	      			<p>Benefits...</p>
-	      			<form action="@routes.Application.signupcus()">
+	      			<form action="@routes.Application.signup(UserRole.CUSTOMER.ordinal())">
 	      				<p><button type="submit" class="btn btn-info btn-lg btn-block" >Yes. I need to take courses.</button></p>
 	      			</form>
 	      			<h4>Would you like to train with us?</h4>
 	      			<p>Benefits...</p>
-	      			<form action="@routes.Application.signuptrainer()">
+	      			<form action="@routes.Application.signup(UserRole.TRAINER.ordinal())">
 	      				<p><button type="submit" class="btn btn-warning btn-lg btn-block">Yes. I want to be a Trainer.</button></p>
 					</form>
 					<p class="text-center">Requires background check and quiz.</p>

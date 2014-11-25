@@ -181,6 +181,7 @@
                                             <th>Minimum Seats</th>
                                             <th>Maximal Seats</th>
                                             <th>Price</th>
+                                            <th>Popular</th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
@@ -189,7 +190,7 @@
 
                                     </tbody>
                                     <tfoot>
-                                    	<tr>
+                                        <tr>
                                             <th>
                                                 <input type="checkbox" class="chkAll">
                                             </th>
@@ -200,6 +201,7 @@
                                             <th>Minimum Seats</th>
                                             <th>Maximal Seats</th>
                                             <th>Price</th>
+                                            <th>Popular</th>
                                             <th>Status</th>
                                             <th></th>
                                         </tr>
@@ -323,7 +325,28 @@
                                     <label>Methods</label>
                                     <input class="form-control" name="methods" id="methods" value="" placeholder="Methods" readonly="true">
                                 </div>
+                                
+                                <div class="form-group col-md-4">
+                                    <label>Price</label>
+                                    <input class="form-control" name="price" id="price" value="" placeholder="Course Price" readonly="true">
+                                </div>
 
+
+                                <div class="form-group col-md-2">
+                                    <label>Minimum Seats</label>
+                                    <input class="form-control" name="minimum" id="minimum" value="" placeholder="Minimum Seats" readonly="true">
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Maximal Seats</label>
+                                    <input class="form-control" name="maximum" id="maximum" value="" placeholder="Maximal Seats" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Popular</label>
+                                    <select name="popular" id="popular" class="form-control">
+                                        <option value="Yes">Yes</option>
+                                        <option value="No">No</option>
+                                    </select>
+                                </div>
                                 <div class="form-group col-md-3">
                                     <input class="form-control" id="keyPoint" />
                                 </div>
@@ -361,24 +384,11 @@
                                     <label>Length</label>
                                     <input class="form-control" name="courseLength" id="courseLength" value="" placeholder="Length" readonly="true">
                                 </div>
-                                <div class="form-group col-md-4">
+                                <!-- <div class="form-group col-md-4">
                                     <label>Date</label>
                                     <input class="form-control" name="courseDate" id="courseDate" value="" placeholder="Date" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Price</label>
-                                    <input class="form-control" name="price" id="price" value="" placeholder="Course Price" readonly="true">
-                                </div>
-
-
-                                <div class="form-group col-md-4">
-                                    <label>Minimum Seats</label>
-                                    <input class="form-control" name="minimum" id="minimum" value="" placeholder="Minimum Seats" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Maximal Seats</label>
-                                    <input class="form-control" name="maximal" id="maximal" value="" placeholder="Maximal Seats" readonly="true">
-                                </div>
+                                </div> -->
+                                
 
                                 <!--
                                 <div class="form-group col-md-3">
@@ -387,7 +397,8 @@
                                 </div>
 -->
 
-                                <div class="form-group col-md-4">
+                                
+                                <div class="form-group col-md-8">
                                     <label>Status</label>
                                     <select name="status" id="status" class="form-control">
                                         <option value="approved">approved</option>
@@ -412,9 +423,9 @@
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <!--
-                            <a class="btn btn-success" id="courseRequestApprove"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Approve</a>
-                            <a class="btn btn-danger" id="courseRequestReject"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Reject</a>
+                            
+                            <a class="btn btn-success" id="courseRequestApprove"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Add</a>
+                           <!-- <a class="btn btn-danger" id="courseRequestReject"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Reject</a>
                             <a class="btn btn-warning" id="courseRequestPend"><i class="glyphicon glyphicon-zoom-in icon-white"></i>Pend</a>
 -->
                             <a class="btn btn-info" id="courseRequestEdit"><i class="glyphicon glyphicon-edit icon-white"></i>Edit</a>

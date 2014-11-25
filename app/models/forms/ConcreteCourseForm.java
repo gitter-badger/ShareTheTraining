@@ -39,7 +39,7 @@ public class ConcreteCourseForm {
 
 	private Date courseDate;
 
-	private Time length;
+	private String length;
 
 	private Location location = new Location();
 
@@ -88,11 +88,12 @@ public class ConcreteCourseForm {
 		this.courseDate = courseDate;
 	}
 
-	public Time getLength() {
+
+	public String getLength() {
 		return length;
 	}
 
-	public void setLength(Time length) {
+	public void setLength(String length) {
 		this.length = length;
 	}
 
@@ -186,13 +187,8 @@ public class ConcreteCourseForm {
 
 	
 	
-	public List<Date> getCourseDates() {
-		return courseDates;
-	}
 
-	public void setCourseDates(Collection<Date> collection) {
-		this.courseDates = (List<Date>) collection;
-	}
+
 
 	public ConcreteCourseForm() {
 
@@ -204,10 +200,11 @@ public class ConcreteCourseForm {
 			return false;
 		// TODO a lot of set here
 		concreteCourse.setConcreteCourseId(concreteCourseId);
-		concreteCourse.setCourseDate(courseDate);
+		//concreteCourse.setCourseDates(courseDates);
 		concreteCourse.setEventbriteId(eventbriteId);
 		concreteCourse.setLocation(location);
 		concreteCourse.setStatus(status);
+		concreteCourse.setLength(length);
 		
 		
 		return true;
@@ -233,9 +230,17 @@ public class ConcreteCourseForm {
 		concreteCourseForm.setTrainerEmail(concreteCourse.getCourseInfo().getTrainer().getEmail());
 		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
 		concreteCourseForm.setSoldSeat(concreteCourse.getSelectedCustomers().size());
-		concreteCourseForm.setCourseDates(concreteCourse.getCourseDates());
+		//concreteCourseForm.setCourseDates(concreteCourse.getCourseDates());
 		
 		return concreteCourseForm;
 
+	}
+
+	public List<Date> getCourseDates() {
+		return courseDates;
+	}
+
+	public void setCourseDates(List<Date> courseDates) {
+		this.courseDates = courseDates;
 	}
 }

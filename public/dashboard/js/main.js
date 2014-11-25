@@ -2,13 +2,23 @@ var dates = new Array();
 var keyPoints = new Array();
 var keyPointNum = 0;
 var JsonData;
+var keyPointsString='';
 
 var api;
 
 function getJsonData() {
     JsonData = getFormJson($('form'));
     JsonData['courseDates'] = dates;
-    JsonData['keyPoints'] = keyPoints;
+    keyPointsString='';
+    var len=keyPoints.length;
+    for(var i=0;i<len;i++)
+    {
+        if(0==i)
+            keyPointsString+=keyPoints[i];
+        else
+            keyPointsString+=(','+keyPoints[i]);
+    }
+    JsonData['keyPoints'] = keyPointsString;
 }
 
 function getFormJson(frm) {
@@ -530,14 +540,13 @@ $(document).on("click", "#clearKeyPoint", function () {
     keyPointNum = 0;
 });
 
-
 function initSearchBox() {
 
     // Setup - add a text input to each footer cell
-    //    $('.datatable tfoot th').each(function () {
-    //        var title = $('.datatable thead th').eq($(this).index()).text();
-    //        $(this).html('<input placeholder="' + title + '" />');
-    //    });
+        $('.datatable tfoot th').each(function () {
+            var title = $('.datatable thead th').eq($(this).index()).text();
+            $(this).html('<input placeholder="' + title + '" />');
+        });
 
     // DataTable
     var table = $('.datatable').DataTable();
@@ -557,7 +566,7 @@ function initSearchSelect() {
 
     api.columns().indexes().flatten().each(function (i) {
         var column = api.column(i);
-        var select = $('<select><option value=""></option><lect>')
+        var select = $('<select style="width:'+$(column.footer()).empty().width()+'px;"><option value=""></option></select>')
             .appendTo($(column.footer()).empty())
             .on('change', function () {
                 var val = $.fn.dataTable.util.escapeRegex(
@@ -575,9 +584,9 @@ function initSearchSelect() {
     });
 
     $('.datatable tfoot th').eq(0).html('<input type="checkbox" class="chkAll">');
-    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 1).html('');
-    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 2).html('');
-    
+    $('.datatable tfoot th').eq(1).html('')
+    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 1).html('')
+    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 2).html('')
 }
 
 //get parameters from url

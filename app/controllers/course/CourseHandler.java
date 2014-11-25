@@ -43,7 +43,8 @@ public class CourseHandler implements ICourseHandler {
 
 	
 	public Collection<ConcreteCourse> getAllConcreteCourse(){
-		FilterBuilder fb =new ConcreteCourseFilterBuilder();
+		ConcreteCourseFilterBuilder fb =new ConcreteCourseFilterBuilder();
+		fb.setCfb(new CourseFilterBuilder());
 		List<Tuple> tupleList = Utility.findBaseModelObject(fb, null,
 				true, -1, -1, em);
 		Collection<ConcreteCourse> result = new ArrayList<ConcreteCourse>();

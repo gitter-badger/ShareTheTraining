@@ -57,7 +57,7 @@ public class ConcreteCourse extends BaseModelObject {
 	@ElementCollection
 	private List<Date> courseDates = new ArrayList<Date>();
 
-	private Time length;
+	private String length;
 
 	private Location location = new Location(null, null, "", 0, 0);
 
@@ -94,11 +94,12 @@ public class ConcreteCourse extends BaseModelObject {
 		this.courseDate = courseDate;
 	}
 
-	public Time getLength() {
+
+	public String getLength() {
 		return length;
 	}
 
-	public void setLength(Time length) {
+	public void setLength(String length) {
 		this.length = length;
 	}
 

@@ -45,11 +45,12 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 			IUserHandler userHandler) {
 		User u = userHandler.getUserByEmail(userEmail);
 		if (u != null && Password.check(password, u.getPassword())) {
-			if (u.getUserStatus() == UserStatus.ACTIVE)
+			if (u.getUserStatus() == UserStatus.ACTIVE){
 				context.session().put("connected", u.getEmail());
-
+				return u;
+			}
 		}
-		return u;
+		return null;
 	}
 
 	@Override

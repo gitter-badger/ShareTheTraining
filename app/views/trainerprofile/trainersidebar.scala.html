@@ -1,3 +1,4 @@
+@import models.courses._
 <!-- Sidebar -->
 				<div class="col-xs-3 col-sm-3 col-md-3" id="accountBar">
 					<div class="panel panel-primary">
@@ -6,19 +7,19 @@
 						</div>
 						<div class="list-group text-default">
 							<a href="@routes.Application.profile()" class="list-group-item">All courses</a>
-							<a href="@routes.Application.trainercourseapproved()" class="list-group-item">&nbsp;&nbsp;&nbsp;Approved</a>
-							<a href="@routes.Application.trainercourseverifying()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Verifying</a>
-							<a href="@routes.Application.trainercoursecompleted()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Completed</a>
-							<a href="@routes.Application.trainercoursecanceled()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Canceled</a>
+							<a href="@routes.Application.trainerCourseHistory(CourseStatus.APPROVED.ordinal())" class="list-group-item">&nbsp;&nbsp;&nbsp;Approved</a>
+							<a href="@routes.Application.trainerCourseHistory(CourseStatus.VERIFYING.ordinal())" class="list-group-item ">&nbsp;&nbsp;&nbsp;Verifying</a>
+							<a href="@routes.Application.trainerCourseHistory(CourseStatus.COMPLETED.ordinal())" class="list-group-item ">&nbsp;&nbsp;&nbsp;Completed</a>
+							<a href="@routes.Application.trainerCourseHistory(CourseStatus.CANCELLED.ordinal())" class="list-group-item ">&nbsp;&nbsp;&nbsp;Canceled</a>
 						</div>
 						<div class="panel-heading ">
 							<h3 class="panel-title">Account Profile</h3>
 						</div>
 						<div class="list-group text-default">
-							<a href="@routes.Application.trainerbasicinfo()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Basic info</a>
-							<a href="@routes.Application.trainerinfo()" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer info</a>
+							<a href="@routes.Application.basicInfo()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Basic info</a>
+							<a href="@routes.Application.trainerInfo()" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer info</a>
 							<a href="@routes.Application.trainerschedule()" class="list-group-item">&nbsp;&nbsp;&nbsp;Trainer Schedule</a>
-							<a href="@routes.Application.trainerchangepsw()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Change password</a>
+							<a href="@routes.Application.changepsw()" class="list-group-item ">&nbsp;&nbsp;&nbsp;Change password</a>
 						</div>
 						
 					</div><!-- /.panel -->

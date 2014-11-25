@@ -8,7 +8,6 @@ import models.users.User;
 import models.users.UserRole;
 
 public class CustomerForm extends UserForm {
-	
 
 	private String name;
 
@@ -76,27 +75,25 @@ public class CustomerForm extends UserForm {
 		customer.setImage(image);
 		customer.setUsername(username);
 		customer.setName(name);
-		customer.setUserStatus(userStatus);
-		
-		
+		if (userStatus != null)
+			customer.setUserStatus(userStatus);
+
 		return true;
 	}
 
-	//TODO
-	public static CustomerForm bindCustomerForm(
-			Customer customer) {
+	// TODO
+	public static CustomerForm bindCustomerForm(Customer customer) {
 		if (customer == null)
 			return null;
 		CustomerForm customerForm = new CustomerForm();
 		customerForm.setCellPhone(customer.getCellPhone());
 		customerForm.setImage(customer.getImage());
 		customerForm.setName(customer.getName());
-		customerForm.getLocation().setRegion(customer.getLocation().getRegion());
+		customerForm.getLocation()
+				.setRegion(customer.getLocation().getRegion());
 		customerForm.getLocation().setCity(customer.getLocation().getCity());
 		customerForm.setUsername(customer.getUsername());
-		
-		
-		
+
 		return customerForm;
 
 	}
