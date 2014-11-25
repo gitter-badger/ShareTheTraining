@@ -169,6 +169,7 @@ public class CourseHandlerTest extends BaseTest {
 
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
+		cb.getLocations().add(new Location("nearby", null, ""));
 		cb.setCurentLocation(new Location("qunimaba", null, "", -118.495,
 				34.030));
 		Collection<Course> result = courseHandler.getCourseByCustomRule(cb,

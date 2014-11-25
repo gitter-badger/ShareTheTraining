@@ -1,6 +1,5 @@
 <script>
 	function showCity(value){
-		alert("hehe");
 	    $.post("@routes.Application.showCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");
@@ -23,7 +22,6 @@
 	}
 	
 	function showSidebarCity(value){
-		alert(value);
 	    $.post("@routes.Application.showSiderbarCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");

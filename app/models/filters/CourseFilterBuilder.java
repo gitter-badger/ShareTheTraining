@@ -51,6 +51,7 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private int courseStatus = -1;
 	private int concreteCourseStatus = -1;
 	private boolean isVeteran = false;
+	private boolean isNearBy = false;
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -124,7 +125,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 			List<Predicate> locationQueries = new ArrayList<Predicate>();
 			for (Location location : locations) {
 				if (location.getRegion() != null
-						&& !location.getRegion().equals("")) {
+						&& !location.getRegion().equals("") && curentLocation != null) {
+					if (location.getRegion().equals("nearby")) {
+						locationQueries.add(new WithinPredicate(
+								(CriteriaBuilderImpl) cb, locationRoot
+										.<Point> get("point"), createTriangle(
+										curentLocation.getPoint(), 0.36)));
+						continue;
+					}
 					if (location.getCity() == null
 							|| location.getCity().equals("")) {
 						locationQueries.add(cb.equal(
@@ -144,11 +152,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 			if (locationQueries.size() > 0)
 				predicates.add(cb.or(locationQueries
 						.toArray(new Predicate[] {})));
-		}
-		if (curentLocation != null) {
-			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
-					locationRoot.<Point> get("point"), createTriangle(
-							curentLocation.getPoint(), 0.36)));
 		}
 		// TODO add more filter here
 		if (orderByColumn != null) {
@@ -250,7 +253,6 @@ public class CourseFilterBuilder implements FilterBuilder {
 		this.category = category;
 	}
 
-
 	public int getCourseStatus() {
 		return courseStatus;
 	}
@@ -297,6 +299,14 @@ public class CourseFilterBuilder implements FilterBuilder {
 
 	public void setTrainerRating(double trainerRating) {
 		this.trainerRating = trainerRating;
+	}
+
+	public boolean isNearBy() {
+		return isNearBy;
+	}
+
+	public void setNearBy(boolean isNearBy) {
+		this.isNearBy = isNearBy;
 	}
 
 }
