@@ -1,0 +1,292 @@
+@dashmain("Dashboard"){
+
+    <!-- topbar starts -->
+    <div class="navbar navbar-default" role="navigation">
+
+        <div class="navbar-inner">
+            <button type="button" class="navbar-toggle pull-left animated flip">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html"><span style="font-size:10px">ShareTheTraining.com</span></a>
+
+            <!-- user dropdown starts -->
+            <div class="btn-group pull-right">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-user"></i><span class="hidden-sm hidden-xs"> admin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Profile</a>
+                    </li>
+                    <li class="divider"></li>
+                    <li><a href="login.html">Logout</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- user dropdown ends -->
+
+            <!-- theme selector starts -->
+            <!--
+            <div class="btn-group pull-right theme-container animated tada">
+                <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    <i class="glyphicon glyphicon-tint"></i><span
+                        class="hidden-sm hidden-xs"> Change Theme / Skin</span>
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" id="themes">
+                    <li><a data-value="classic" href="#"><i class="whitespace"></i> Classic</a></li>
+                    <li><a data-value="cerulean" href="#"><i class="whitespace"></i> Cerulean</a></li>
+                    <li><a data-value="cyborg" href="#"><i class="whitespace"></i> Cyborg</a></li>
+                    <li><a data-value="simplex" href="#"><i class="whitespace"></i> Simplex</a></li>
+                    <li><a data-value="darkly" href="#"><i class="whitespace"></i> Darkly</a></li>
+                    <li><a data-value="lumen" href="#"><i class="whitespace"></i> Lumen</a></li>
+                    <li><a data-value="slate" href="#"><i class="whitespace"></i> Slate</a></li>
+                    <li><a data-value="spacelab" href="#"><i class="whitespace"></i> Spacelab</a></li>
+                    <li><a data-value="united" href="#"><i class="whitespace"></i> United</a></li>
+                </ul>
+            </div>
+-->
+            <!-- theme selector ends -->
+
+            <!--
+            <ul class="collapse navbar-collapse nav navbar-nav top-menu">
+                <li><a href="http://sharethetraining.com/"><i class="glyphicon glyphicon-globe"></i> Visit Site</a></li>
+                <li class="dropdown">
+                    <a href="#" data-toggle="dropdown"><i class="glyphicon glyphicon-star"></i> Dropdown <span
+                            class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <form class="navbar-search pull-left">
+                        <input placeholder="Search" class="search-query form-control col-md-10" name="query"
+                               type="text">
+                    </form>
+                </li>
+            </ul>
+-->
+
+        </div>
+    </div>
+    <!-- topbar ends -->
+    <div class="ch-container">
+        <div class="row">
+
+            <!-- left menu starts -->
+            <div class="col-sm-2 col-lg-2">
+                <div class="sidebar-nav">
+                    <div class="nav-canvas">
+                        <div class="nav-sm nav nav-stacked">
+
+                        </div>
+                        <ul class="nav nav-pills nav-stacked main-menu">
+                            <li class="nav-header">Main</li>
+                            <li><a class="ajax-link" href="Dashboard.html"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
+                            </li>
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-plus"></i><span> Course Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="Course_list.html">Course List</a>
+                                    </li>
+                                    <li><a href="Course_request.html">New Course Requests</a>
+                                    </li>
+                                    <li><a href="Course_order.html">Order Management</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-eye-open"></i><span> User Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="User_admin.html">Admin Management</a>
+                                    </li>
+                                    <li><a href="User_trainer.html">Trainer Management</a>
+                                    </li>
+                                    <li><a href="User_attendee.html">Attendee Management</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-star"></i><span> Ratings Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="Rating.html">Ratings and Reviews</a>
+                                    </li>                                    
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <!-- left menu ends -->
+
+            <noscript>
+                <div class="alert alert-block col-md-12">
+                    <h4 class="alert-heading">Warning!</h4>
+
+                    <p>You need to have <a href="http://en.wikipedia.org/wiki/JavaScript" target="_blank">JavaScript</a>
+                        enabled to use this site.</p>
+                </div>
+            </noscript>
+
+            <div id="content" class="col-lg-10 col-sm-10">
+                <!-- content starts -->
+                <div>
+                    <ul class="breadcrumb">
+                        <li>
+                            <a href="#">Home</a>
+                        </li>
+                        <li>
+                            <a href="#">Dashboard</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class=" row">
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new trainers." class="well top-block" href="User_trainer.html?new=1" id="newTrainer">
+                            <i class="glyphicon glyphicon-user red"></i>
+
+                            <div>Total Trainers</div>
+                            <div id="trainerNumber">0</div>
+                            <span id="trainerNotf" class="notification red">0</span>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new attendees" class="well top-block" href="User_attendee.html?new=1" id="newAttendee">
+                            <i class="glyphicon glyphicon-user yellow"></i>
+
+                            <div>Total Attendees</div>
+                            <div id="attendeeNumber">0</div>
+                            <span id="attendeeNotf" class="notification yellow">0</span>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new courses" class="well top-block" href="Course_list.html?new=1" id="newCourse">
+                            <i class="glyphicon glyphicon-book blue"></i>
+
+                            <div>Total Sub Courses</div>
+                            <div id="courseNumber">0</div>
+                            <span id="courseNotf" class="notification blue">0</span>
+                        </a>
+                    </div>
+                    
+                     <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new course requests" class="well top-block" href="Course_request.html?new=1" id="newRequest">
+                            <i class="glyphicon glyphicon-book green"></i>
+
+                            <div>Total Courses</div>
+                            <div id="courseNumber">0</div>
+                            <span id="courseNotf" class="notification green">0</span>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new ratings" class="well top-block" href="Rating.html?new=1" id="newRating">
+                            <i class="glyphicon glyphicon-star red"></i>
+
+                            <div>Reviews & Ratings</div>
+                            <div id="ratingNumber">0</div>
+                            <span id="ratingNotf" class="notification red">0</span>
+                        </a>
+                    </div>
+
+                    <div class="col-md-2 col-sm-2 col-xs-6">
+                        <a data-toggle="tooltip" title="view the new orders" class="well top-block" href="Course_order.html?new=1" id="newOrder">
+                            <i class="glyphicon glyphicon-shopping-cart yellow"></i>
+
+                            <div>Total Orders</div>
+                            <div id="orderNumber">0</div>
+                            <span id="orderNotf" class="notification yellow">0</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="box col-md-12">
+                        <div class="box-inner">
+                            <div class="box-header well">
+                                <h2><i class="glyphicon glyphicon-info-sign"></i> Introduction</h2>
+
+                                <div class="box-icon">
+                                    <a href="#" class="btn btn-setting btn-round btn-default"><i
+                            class="glyphicon glyphicon-cog"></i></a>
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                            class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-close btn-round btn-default"><i
+                            class="glyphicon glyphicon-remove"></i></a>
+                                </div>
+                            </div>
+                            <div class="box-content row">
+                                <div class="col-lg-7 col-md-12">
+                                    <h1>ShareTheTraining.com <br><br>
+                                        <small>Administration Portal to manage Courses, Users, Trainers and Rating and Reviews. </small>
+                                    </h1>
+                                    <br>
+                                    <br>
+                                    <br>
+                                    <p><b>Please perform the desired action by navigating through the menu.</b>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/span-->
+
+
+                <hr>
+                <footer class="row">
+                    <p class="col-md-9 col-sm-9 col-xs-12 copyright">&copy; <a href="http://greenbay.usc.edu/csci577/fall2014/projects/team11/index.html" target="_blank">Team#11</a> Fall-2014</p>
+
+                    <p class="col-md-3 col-sm-3 col-xs-12 powered-by">Powered by: <a href="http://sharethetraining.com">ShareTheTraining.com</a>
+                    </p>
+                </footer>
+            </div>
+            <!--/row-->
+            <!-- content ends -->
+        </div>
+        <!--/#content.col-md-0-->
+    </div>
+    <!--/fluid-row-->
+
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">×</button>
+                    <h3>Settings</h3>
+                </div>
+                <div class="modal-body">
+                    <p>Here settings can be configured...</p>
+                </div>
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Close</a>
+                    <a href="#" class="btn btn-primary" data-dismiss="modal">Save changes</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--/.fluid-container-->
+
+   
+    <!--myjs-->
+    <script src="@routes.Assets.at("dashboard/js/dashboard.js")"></script>
+
+}

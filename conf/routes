@@ -11,6 +11,8 @@ POST   /forgetpsw                   controllers.Application.forgetpswsubmit()
 GET    /login                       controllers.Application.login()
 POST   /login                       controllers.Application.loginAuthen()
 GET    /logout                      controllers.Application.logout()
+GET    /auth_reset_psw              controllers.Application.authorizeResetPassword(token: String)
+POST   /resetpsw                    controllers.Application.resetpsw()
 
 
 #signup-cus
@@ -81,13 +83,17 @@ GET     /review                     controllers.Application.review(orderId: Stri
 POST    /reviewSubmit               controllers.Application.reviewSubmit()
 
 #dashboard
-GET     /dashConcreteCourseRequest  controllers.Application.dashConcreteCourseRequest()
+GET     /dashConcreteCourse         controllers.Application.dashConcreteCourse()
 GET     /concreteCourseDisplay      controllers.Application.concreteCourseDisplay()
-GET     /dashConcreteCourseRequestDetail  controllers.Application.dashConcreteCourseRequestDetail(concreteCourseId: String)
+GET     /dashConcreteCourseDetail   controllers.Application.dashConcreteCourseDetail(concreteCourseId: String)
+GET     /dashConcreteCourseDelete   controllers.Application.dashConcreteCourseDelete()
+GET     /dashConcreteCourseUpdate   controllers.Application.dashConcreteCourseUpdate()
 GET     /courseDisplay              controllers.Application.courseDisplay()
 GET     /dashCourse                 controllers.Application.dashCourse()
 GET     /dashCourseDetail           controllers.Application.dashCourseDetail(courseId: String)
 POST    /dashCourseDelete           controllers.Application.dashCourseDelete()
+POST    /dashCourseUpdate           controllers.Application.dashCourseUpdate()
+GET     /dashDashboard              controllers.Application.dashDashboard()
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

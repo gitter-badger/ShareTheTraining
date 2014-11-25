@@ -82,5 +82,22 @@ public class CustomerForm extends UserForm {
 		return true;
 	}
 
-	
+	//TODO
+	public static CustomerForm bindCustomerForm(
+			Customer customer) {
+		if (customer == null)
+			return null;
+		CustomerForm customerForm = new CustomerForm();
+		customerForm.setCellPhone(customer.getCellPhone());
+		customerForm.setImage(customer.getImage());
+		customerForm.setName(customer.getName());
+		customerForm.getLocation().setRegion(customer.getLocation().getRegion());
+		customerForm.getLocation().setCity(customer.getLocation().getCity());
+		customerForm.setUsername(customer.getUsername());
+		
+		
+		
+		return customerForm;
+
+	}
 }

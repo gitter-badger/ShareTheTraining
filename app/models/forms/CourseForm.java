@@ -193,6 +193,7 @@ public class CourseForm {
 		course.setStatus(CourseStatus.fromInteger(status));
 		course.setMaximum(maximum);
 		course.setMinimum(minimum);
+		course.setKeyPoints(keyPoints);
 		
 		
 		return true;

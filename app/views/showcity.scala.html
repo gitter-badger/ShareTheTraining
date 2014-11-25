@@ -23,7 +23,6 @@
 	}
 	
 	function showSidebarCity(value){
-		alert(value);
 	    $.post("@routes.Application.showSiderbarCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");
@@ -36,7 +35,6 @@
                  //<option value="">--------</option>
              //</select>
              for(var i=0;i<dataObj.length;i++){
-            	   alert(dataObj[i]);
                    var $option=$("<option></option>");
                    $option.attr("value",dataObj[i]);
                    $option.text(dataObj[i]);

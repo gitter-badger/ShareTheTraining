@@ -49,12 +49,14 @@ import models.courses.Review;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
+import models.filters.UserFilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
 import models.forms.CourseForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.forms.NewPswForm;
+import models.forms.ResetPswForm;
 import models.forms.ReviewForm;
 import models.forms.TrainerForm;
 import models.forms.UserForm;
@@ -175,18 +177,18 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result resetpsw(String token, String newPassword) {
+	public static Result resetpsw() {
+		Form<ResetPswForm> resetPswForm = form(ResetPswForm.class).bindFromRequest();
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
-		ah.doResetPassword(token, newPassword, uh);
-		return TODO;
+		ah.doResetPassword(resetPswForm.get().getToken(), resetPswForm.get().getNewPassword(), uh);
+		return ok(resetpswconfirm.render());
 	}
 
 	// TODO show password form here
 	@Transactional
 	public static Result authorizeResetPassword(String token) {
-
-		return TODO;
+		return ok(auth_password.render(token));
 	}
 
 	@Transactional
@@ -232,8 +234,8 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		// TODO cache
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
-		return ok(searchindex.render(course, states));
+		Logger.info(pageNumber+"hahah");
+		return ok(searchindex.render(course, states,pageNumber+1, Utility.getQueryString(request().uri())));
 	}
 
 	@Transactional
@@ -247,7 +249,7 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 
-		return ok(searchindex.render(course, states));
+		return ok(searchindex.render(course, states,1,""));
 	}
 
 	@Transactional
@@ -266,7 +268,7 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
 
-		return ok(searchindex.render(course, states));
+		return ok(searchindex.render(course, states,1,""));
 	}
 
 	@Transactional
@@ -764,11 +766,10 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result dashConcreteCourseRequest() {
+	public static Result dashConcreteCourse() {
 		CourseHandler ch = new CourseHandler();
 		// TODO get all the concreteCourse
-		Collection<ConcreteCourse> concreteCourse = ch.getCourseById(4)
-				.getCourses();
+		Collection<ConcreteCourse> concreteCourse = ch.getAllConcreteCourse();
 		Collection<ConcreteCourseForm> concreteCourseForms = new ArrayList<ConcreteCourseForm>();
 		for (ConcreteCourse cc : concreteCourse) {
 			Logger.info(cc.getCourseInfo().getCourseName());
@@ -782,7 +783,7 @@ public class Application extends Controller {
 
 	// how to pass several dates and location
 	@Transactional
-	public static Result dashConcreteCourseRequestDetail(String concreteCourseId) {
+	public static Result dashConcreteCourseDetail(String concreteCourseId) {
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch
 				.getCourseByConcreteCourseId(concreteCourseId);
@@ -790,6 +791,36 @@ public class Application extends Controller {
 				.bindConcreteCourseForm(concreteCourse);
 		System.out.print(Json.toJson(ccf));
 		return ok(Json.toJson(ccf));
+	}
+	
+	@Transactional
+	public static Result dashConcreteCourseDelete(){
+		Form<ConcreteCourseForm> concreteCourseForm = form(ConcreteCourseForm.class).bindFromRequest();
+		CourseHandler ch = new CourseHandler();
+		boolean flag = ch.deleteConcreteCourse(concreteCourseForm.get().getConcreteCourseId());
+		ObjectNode result = Json.newObject();
+		if(flag==true){
+			result.put("result", "true");
+			return ok(result);
+		}
+			result.put("result", "false");
+			return ok(result);
+	}
+	
+	@Transactional
+	public static Result dashConcreteCourseUpdate(){
+		Form<ConcreteCourseForm> concreteCourseForm = form(ConcreteCourseForm.class).bindFromRequest();
+		CourseHandler ch = new CourseHandler();
+		ConcreteCourse concreteCourse = 
+				ch.getCourseByConcreteCourseId(concreteCourseForm.get().getConcreteCourseId());
+		boolean flag = concreteCourseForm.get().bindConcreteCourse(concreteCourse);
+		ObjectNode result = Json.newObject();
+		if(flag==true){
+			result.put("result", "true");
+			return ok(result);
+		}
+			result.put("result", "false");
+			return ok(result);
 	}
 
 	@Transactional
@@ -825,31 +856,81 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result dashCourseDelete() {
-		JsonNode json = request().body().asJson();
-		System.out.print(json);
-		return TODO;
+		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
+		CourseHandler ch = new CourseHandler();
+		boolean flag = ch.deleteCourse(courseForm.get().getCourseId());
+		ObjectNode result = Json.newObject();
+		if(flag==true){
+			result.put("result", "true");
+			return ok(result);
+		}
+			result.put("result", "false");
+			return ok(result);
 	}
 
-	// @Transactional
-	// public static Result trainerDisplay() {
-	// return ok(User_trainer.render());
-	// }
-	//
-	// @Transactional
-	// public static Result dashTrainer(){
-	// return ok(User_trainer.render());
-	// }
-
+	
+	@Transactional
+	public static Result dashCourseUpdate() {
+		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
+		CourseHandler ch = new CourseHandler();
+		Course course = ch.getCourseById(courseForm.get().getCourseId());
+		boolean flag = courseForm.get().bindCourse(course);
+		ObjectNode result = Json.newObject();
+		if(flag==true){
+			result.put("result", "true");
+			return ok(result);
+		}
+			result.put("result", "false");
+			return ok(result);
+	}
+	
+	@Transactional
+	public static Result dashDashboard(){
+		return ok(Dashboard.render());
+		
+	}
+	
+	@Transactional
+	public static Result trainerDisplay() {
+		 return ok(User_trainer.render());
+	}
+	 
+	@Transactional
+	public static Result dashTrainer(){
+		UserHandler uh = new UserHandler();
+		UserFilterBuilder fb = new UserFilterBuilder();
+		fb.setUserRole(UserRole.TRAINER);
+		Collection<User> user = uh.getUserByCustomeRule(fb, null, true,
+				-1, -1);
+		
+		Collection<TrainerForm> trainerForm = new ArrayList<TrainerForm>();
+		for (User u : user) {
+			Trainer t =  (Trainer) u;
+			TrainerForm tf = TrainerForm.bindTraienrForm(t);
+			trainerForm.add(tf);
+		}
+		System.out.print(Json.toJson(trainerForm));
+		return ok(Json.toJson(trainerForm));
+	}
+		//
+		// @Transactional
+		// public static Result dashTrainer(){
+		// return ok(User_trainer.render());
+		// }
+	
+	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
 		return ok(Routes
-				.javascriptRouter("jsRoutes", routes.javascript.Application
-						.dashConcreteCourseRequest(),
-						routes.javascript.Application
-								.dashConcreteCourseRequestDetail(),
+				.javascriptRouter("jsRoutes", 
+						routes.javascript.Application.dashConcreteCourse(),
+						routes.javascript.Application.dashConcreteCourseDetail(),
+						routes.javascript.Application.dashConcreteCourseDelete(),
+						routes.javascript.Application.dashConcreteCourseUpdate(),
 						routes.javascript.Application.dashCourse(),
 						routes.javascript.Application.dashCourseDetail(),
-						routes.javascript.Application.dashCourseDelete()));
+						routes.javascript.Application.dashCourseDelete(),
+						routes.javascript.Application.dashCourseUpdate()));
 	}
 
 }

@@ -1,6 +1,6 @@
 
 @import models.courses._
-@(course: Collection[Course],states: Collection[String])
+@(course: Collection[Course],states: Collection[String],pageNumber: Integer = 1, query: String = "")
 @import helper._
 @implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
 
@@ -30,7 +30,7 @@
 								<li><a href="#">4</a></li>
 								<li><a href="#">...</a></li>
 								<li><a href="#">10</a></li>
-								<li><a href="#">»</a></li>
+								<li><a href="@(routes.Application.search(pageNumber)+"?"+query)">»</a></li>
 							</ul><!-- /.pagination -->
 						</div><!-- /.col -->
 					</div><!-- /.row --> <!-- End of pagination -->

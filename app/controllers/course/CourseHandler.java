@@ -23,6 +23,7 @@ import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
+import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.ConcreteCourseForm;
@@ -40,6 +41,18 @@ public class CourseHandler implements ICourseHandler {
 		this.em = JPA.em();
 	}
 
+	
+	public Collection<ConcreteCourse> getAllConcreteCourse(){
+		FilterBuilder fb =new ConcreteCourseFilterBuilder();
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, null,
+				true, -1, -1, em);
+		Collection<ConcreteCourse> result = new ArrayList<ConcreteCourse>();
+		for (Tuple t : tupleList) {
+			result.add((ConcreteCourse) t.get(0));
+		}
+		return result;
+	}
+	
 	@Override
 	public Course getCourseById(Integer courseId) {
 		String hql = "from Course c where c.id= :courseId";

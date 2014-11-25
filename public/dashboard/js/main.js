@@ -3,6 +3,8 @@ var keyPoints = new Array();
 var keyPointNum = 0;
 var JsonData;
 
+var api;
+
 function getJsonData() {
     JsonData = getFormJson($('form'));
     JsonData['courseDates'] = dates;
@@ -72,7 +74,7 @@ $(document).ready(function () {
         if (themeName == 'classic') {
             $('#bs-css').attr('href', 'assets/dashboard/bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
         } else {
-            $('#bs-css').attr('href', 'assets/dashboard/bower_components/bootstrap/dist/css/bootstrap-theme.min.css');
+            $('#bs-css').attr('href', 'assets/dashboard/css/bootstrap-simplex.min.css');
         }
 
         $('#themes i').removeClass('glyphicon glyphicon-ok whitespace').addClass('whitespace');
@@ -313,7 +315,9 @@ function docReady() {
         "sPaginationType": "bootstrap",
         "oLanguage": {
             "sLengthMenu": "_MENU_ records per page"
-        },
+        },initComplete: function () {
+            api = this.api();
+        }
         //        initComplete: function () {
         //            var api = this.api();
         // 
@@ -526,13 +530,14 @@ $(document).on("click", "#clearKeyPoint", function () {
     keyPointNum = 0;
 });
 
+
 function initSearchBox() {
 
     // Setup - add a text input to each footer cell
-    $('.datatable tfoot th').each(function () {
-        var title = $('.datatable thead th').eq($(this).index()).text();
-        $(this).html('<input type="text" placeholder="Search ' + title + '" />');
-    });
+    //    $('.datatable tfoot th').each(function () {
+    //        var title = $('.datatable thead th').eq($(this).index()).text();
+    //        $(this).html('<input placeholder="' + title + '" />');
+    //    });
 
     // DataTable
     var table = $('.datatable').DataTable();
@@ -546,4 +551,50 @@ function initSearchBox() {
                 .draw();
         });
     });
+}
+
+function initSearchSelect() {
+
+    api.columns().indexes().flatten().each(function (i) {
+        var column = api.column(i);
+        var select = $('<select><option value=""></option><lect>')
+            .appendTo($(column.footer()).empty())
+            .on('change', function () {
+                var val = $.fn.dataTable.util.escapeRegex(
+                    $(this).val()
+                );
+
+                column
+                    .search(val ? '^' + val + '$' : '', true, false)
+                    .draw();
+            });
+
+        column.data().unique().sort().each(function (d, j) {
+            select.append('<option value="' + d + '">' + d + '</option>')
+        });
+    });
+
+    $('.datatable tfoot th').eq(0).html('<input type="checkbox" class="chkAll">');
+    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 1).html('');
+    $('.datatable tfoot th').eq($('.datatable tfoot th').length - 2).html('');
+    
+}
+
+//get parameters from url
+function getParameter() {
+    var url = document.URL;
+    var para = new Array();
+    if (url.lastIndexOf("?") > 0) {
+        var temp = url.substring(url.lastIndexOf("?") + 1, url.length);
+        var arr = temp.split("&");
+
+        for (var i = 0; i < arr.length; i++) {
+            var key = arr[i].split("=")[0];
+            var vaule = arr[i].split("=")[1];
+            var o={};
+            o[key]=vaule;
+            para.push(o);
+        }
+    }
+    return para;
 }

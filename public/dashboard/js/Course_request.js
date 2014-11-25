@@ -23,7 +23,14 @@ function deleteItems(Items) {
     
 }
 
-function updateItem() {}
+function updateItem() {
+	alert("hehe");
+	getJsonData();
+	jsRoutes.controllers.Application.dashCourseUpdate().ajax({
+		data : JsonData,
+		suceess : {}
+	});
+}
 
 function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
     if ('0' == v8) {
@@ -51,6 +58,10 @@ function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
 
 function initCourseRequestPage() {
     console.log("hehe");
+    var urlParameter = getParameter();
+    if((0!=urlParameter.length)&&("1"==urlParameter[0]["new"]))
+    {}
+    else{
     jsRoutes.controllers.Application.dashCourse().ajax(
         {
             success :  function (data) {
@@ -66,7 +77,9 @@ function initCourseRequestPage() {
                     item.price, 
                     item.status);
             });
+            initSearchSelect();
          }});
+    }
 }
 
 function getItemFromServer(courseId) {
