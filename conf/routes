@@ -14,7 +14,6 @@ GET    /logout                      controllers.Application.logout()
 GET    /auth_reset_psw              controllers.Application.authorizeResetPassword(token: String)
 POST   /resetpsw                    controllers.Application.resetpsw()
 
-
 #signup-cus
 GET    /signup/:role                controllers.Application.signup(role: Integer)
 POST   /signup/:role		        controllers.Application.signupSubmit(role: Integer)
