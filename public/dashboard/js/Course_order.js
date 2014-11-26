@@ -12,9 +12,23 @@ function deleteSelectedItems() {
     deleteItems(Items);
 }
 
-function deleteItems(Items) {}
+function deleteItems(Items) {
+//	 getJsonData();
+//	    jsRoutes.controllers.Application.dashOrderDelete().ajax({
+//	        data : JsonData,
+//	        success : {}
+//	    });
+}
 function addItem(){}
-function updateItem(){}
+
+function updateItem(){
+	getJsonData();
+	jsRoutes.controllers.Application.dashOrderUpdate().ajax({
+		data : JsonData,
+		suceess : {}
+	});
+	
+}
 
 
 function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
@@ -42,9 +56,15 @@ function addRow(v1, v2, v3, v4, v5, v6, v7, v8) {
 }
 
 function initOrderPage() {
-    $.getJSON('../test_json/order.json', function (data) {
-
-        $.each(data, function (i, item) {
+	 var urlParameter = getParameter();
+	    if((0!=urlParameter.length)&&("1"==urlParameter[0]["new"]))
+	    {}
+	    else{
+	    jsRoutes.controllers.Application.dashOrder().ajax(
+	        {
+	            success :  function (data) {
+	               console.log(data);
+	         $.each(data, function (i, item) {
             addRow(item.orderId,
                 item.userName,
                 item.courseName,
@@ -53,11 +73,19 @@ function initOrderPage() {
                 item.orderDate,
                 item.price, item.orderStatus);
         });
-    });
+	         initSearchSelect();
+	         addDBtn();
+    }});
+ }
 }
 
 function getItemFromServer(orderId) {
-
+	jsRoutes.controllers.Application.dashOrderDetail(orderId).ajax({
+        success : function(data) {
+            console.log(data);
+            setDetailPage(data);
+        }
+    });
 }
 
 function setDetailPage(item) {
@@ -87,14 +115,14 @@ function disableFields() {
 }
 
 function enableFields() {
-    $("#orderId").attr("readonly", false);
-    $("#userName").attr("readonly", false);
-    $("#courseName").attr("readonly", false);
-    $("#courseDate").attr("readonly", false);
-    $("#trainerName").attr("readonly", false);
-    $("#orderDate").attr("readonly", false);
-    $("#price").attr("readonly", false);
-    $("#gross").attr("readonly", false);
+//    $("#orderId").attr("readonly", false);
+//    $("#userName").attr("readonly", false);
+//    $("#courseName").attr("readonly", false);
+//    $("#courseDate").attr("readonly", false);
+//    $("#trainerName").attr("readonly", false);
+//    $("#orderDate").attr("readonly", false);
+//    $("#price").attr("readonly", false);
+//    $("#gross").attr("readonly", false);
     $("#orderStatus").attr("disabled", false);
 }
 
@@ -113,8 +141,8 @@ function emptyDetailPage(item) {
 
 $(document).ready(function () {
     initOrderPage();
-    var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+    //var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+    //$(".btns").append(html);
 
 
     //click function for every row

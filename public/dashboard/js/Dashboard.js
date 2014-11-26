@@ -21,3 +21,42 @@ function initDashboard()
  $(document).ready(function() {
  initDashboard();
  });
+ 
+ function addItem(){
+		getJsonData();
+		jsRoutes.controllers.Application.dashAdminAdd().ajax({
+			data : JsonData,
+			suceess : {}
+		});
+	}
+ function validate(){
+	 
+//	    $("#name").val();
+//	    $("#email").val();
+//	    $("#cellPhone").val();
+//	    $("#state").val();
+//	    $("#city").val();
+//	    $("#userStatus").val()
+//	    $("#userName").val();
+	 
+	   if((''== $("#password").val())||(''==$("#password1").val()))
+	   { 
+		   alert('please type in password!');
+		   return false;
+	   }
+	   
+	   if($("#password").val()!=$("#password1").val())
+		   {
+		   alert('two passwords are different!');
+		   return false;
+		   }
+	   
+ }
+ 
+ $(document).on("click", "#userAdd", function () {
+	 if(false == validate())
+		 {
+		 return;
+		 }
+        addItem();
+   });

@@ -73,18 +73,42 @@ GET     /review                     controllers.Application.review(orderId: Stri
 POST    /reviewSubmit               controllers.Application.reviewSubmit()
 
 #dashboard
-GET     /dashConcreteCourse         controllers.Application.dashConcreteCourse()
+GET     /dashDashboard              controllers.Application.dashDashboard()
 GET     /concreteCourseDisplay      controllers.Application.concreteCourseDisplay()
+GET     /dashConcreteCourse         controllers.Application.dashConcreteCourse()
 GET     /dashConcreteCourseDetail   controllers.Application.dashConcreteCourseDetail(concreteCourseId: String)
-GET     /dashConcreteCourseDelete   controllers.Application.dashConcreteCourseDelete()
-GET     /dashConcreteCourseUpdate   controllers.Application.dashConcreteCourseUpdate()
+POST    /dashConcreteCourseDelete   controllers.Application.dashConcreteCourseDelete()
+POST    /dashConcreteCourseUpdate   controllers.Application.dashConcreteCourseUpdate()
 POST    /dashConcreteCourseAdd      controllers.Application.dashConcreteCourseAdd()
 GET     /courseDisplay              controllers.Application.courseDisplay()
 GET     /dashCourse                 controllers.Application.dashCourse()
 GET     /dashCourseDetail           controllers.Application.dashCourseDetail(courseId: String)
 POST    /dashCourseDelete           controllers.Application.dashCourseDelete()
 POST    /dashCourseUpdate           controllers.Application.dashCourseUpdate()
-GET     /dashDashboard              controllers.Application.dashDashboard()
+GET     /orderDisplay               controllers.Application.orderDisplay()
+GET     /dashOrder            		controllers.Application.dashOrder()
+GET     /dashOrderDetail            controllers.Application.dashOrderDetail(orderId: String)
+POST    /dashOrderUpdate            controllers.Application.dashOrderUpdate()
+GET     /ratingDisplay              controllers.Application.ratingDisplay()
+GET     /dashRating                 controllers.Application.dashRating()
+GET     /trainerDisplay             controllers.Application.trainerDisplay()
+GET     /dashTrainer                controllers.Application.dashTrainer()
+GET     /dashTrainerDetail          controllers.Application.dashTrainerDetail(id: Integer)
+POST    /dashTrainerUpdate          controllers.Application.dashTrainerUpdate()
+GET     /customerDisplay            controllers.Application.customerDisplay()
+GET     /dashCustomer               controllers.Application.dashCustomer()
+GET     /dashCustomerDetail         controllers.Application.dashCustomerDetail(id: Integer)
+POST    /dashCustomerUpdate         controllers.Application.dashCustomerUpdate()
+GET     /adminDisplay            	controllers.Application.adminDisplay()
+GET     /dashAdmin                  controllers.Application.dashAdmin()
+GET     /dashAdminDetail            controllers.Application.dashAdminDetail(id: Integer)
+POST    /dashAdminUpdate         	controllers.Application.dashAdminUpdate()
+POST    /dashAdminAdd               controllers.Application.dashAdminAdd()
+
+
+
+
+
 
 
 # Map static resources from the /public folder to the /assets URL path

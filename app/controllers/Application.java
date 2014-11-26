@@ -46,13 +46,16 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.courses.Review;
+import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
 import models.filters.UserFilterBuilder;
+import models.forms.AdminForm;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseFilterForm;
 import models.forms.CourseForm;
+import models.forms.CourseOrderForm;
 import models.forms.CustomerForm;
 import models.forms.LoginForm;
 import models.forms.NewPswForm;
@@ -62,6 +65,7 @@ import models.forms.TrainerForm;
 import models.forms.UserForm;
 import models.locations.Geolocation;
 import models.locations.Location;
+import models.users.Admin;
 import models.users.Customer;
 import models.users.Trainer;
 import models.users.User;
@@ -237,56 +241,15 @@ public class Application extends Controller {
 		LocationHandler lh = new LocationHandler();
 		// TODO cache
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-		Logger.info(pageNumber + "hahah");
+		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
+		ccfb.setCfb(filterForm);
+		Map<Integer, List<ConcreteCourse>> courseMap = ch.getConcreteCourseMap(
+				ccfb, null, true, -1, -1);
 		return ok(searchindex.render(course, states, pageNumber + 1,
 				Utility.getQueryString(request().uri())));
 	}
 
-	@Transactional
-	public static Result searchall() {
 
-		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(
-				new CourseFilterBuilder(), null, true, 1, 10);
-		Logger.info("course" + course.size());
-
-		LocationHandler lh = new LocationHandler();
-		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
-		return ok(searchindex.render(course, states, 1, ""));
-	}
-
-	@Transactional
-	// TODO test
-	public static Result searchloc(String city, String region) {
-		CourseFilterBuilder filter = new CourseFilterBuilder();
-		Location loc = new Location();
-		loc.setRegion(region);
-		loc.setCity(city);
-		ArrayList<Location> locationList = new ArrayList<Location>();
-		locationList.add(loc);
-		filter.setLocations(locationList);
-		CourseHandler ch = new CourseHandler();
-		Collection<Course> course = ch.getCourseByCustomRule(filter, null,
-				true, 1, 10);
-		LocationHandler lh = new LocationHandler();
-		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
-
-		return ok(searchindex.render(course, states, 1, ""));
-	}
-
-	@Transactional
-	public static Result signupcussubmit() {
-		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
-		AuthenticationHandler ah = new AuthenticationHandler();
-		IUserHandler uh = new UserHandler();
-		IMailHandler mh = new MailHandler();
-		ah.doRegister(cusForm.get().getEmail(), cusForm.get().getName(),
-				cusForm.get().getPassword(), UserRole.values()[1],
-				cusForm.get(), uh, mh);
-
-		return ok(signupemail.render());
-	}
 
 	@Transactional
 	@Restrict({ @Group("!CUSTOMER"), @Group("!TRAINER") })
@@ -485,12 +448,16 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result itempage(Integer id) throws ParseException {
+		CourseFilterForm filterForm = form(CourseFilterForm.class)
+				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		Course course = ch.getCourseById(id);
 		Collection<Course> similarcourse = ch.getCourseByCategory(
 				course.getCourseCategory(), 1, 3, null, true);
 		LocationHandler lh = new LocationHandler();
 		Collection<String> states = LocationHandler.getAvailableState(JPA.em());
+		Collection<ConcreteCourse> concreteCourseList = ch
+				.getDisplayedConcreteCourse(filterForm, id);
 		return ok(itempage.render(course, states));
 	}
 
@@ -643,10 +610,10 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcoursesubmit() {
-		Form<CourseForm> courseForm = form(CourseForm.class).bindFromRequest();
-		courseForm.get();
+		CourseForm courseForm = form(CourseForm.class).bindFromRequest().get();
+		Logger.info(courseForm.getCourseDesc()+"hahaha");
 		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm.get(),
+		ch.addNewCourse(session().get("connected"), courseForm,
 				new UserHandler());
 
 		return redirect(routes.Application
@@ -741,13 +708,15 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result dashConcreteCourseUpdate() {
-		Form<ConcreteCourseForm> concreteCourseForm = form(
-				ConcreteCourseForm.class).bindFromRequest();
+		ConcreteCourseForm concreteCourseForm = form(
+				ConcreteCourseForm.class).bindFromRequest().get();
+		Logger.info(concreteCourseForm.getConcreteCourseId());
+		Logger.info(concreteCourseForm.getLocation().getDetailedLoc());
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch
-				.getCourseByConcreteCourseId(concreteCourseForm.get()
+				.getCourseByConcreteCourseId(concreteCourseForm
 						.getConcreteCourseId());
-		boolean flag = concreteCourseForm.get().bindConcreteCourse(
+		boolean flag = concreteCourseForm.bindConcreteCourse(
 				concreteCourse);
 		ObjectNode result = Json.newObject();
 		if (flag == true) {
@@ -757,10 +726,33 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
+	
+	@Transactional
+	public static Result dashConcreteCourseAdd() throws JsonParseException, JsonMappingException, IOException {
+		ConcreteCourseForm concreteCourseForm = form(
+				ConcreteCourseForm.class).bindFromRequest().get();
+		if (concreteCourseForm.getCourseDates() != null) {
+			Logger.info(concreteCourseForm.getCourseDates().size()+"jhhhe");
+			
+		}
+		CourseHandler ch = new CourseHandler();
+		ConcreteCourse concreteCourse = ch.addNewConcreteCourse(
+				concreteCourseForm.getTrainerEmail(),
+				concreteCourseForm);
+		ObjectNode result = Json.newObject();
+		if (concreteCourse != null) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
 
 	@Transactional
 	public static Result courseDisplay() {
-		return ok(Course_request.render());
+		LocationHandler lh = new LocationHandler();
+		List<String> stateList = LocationHandler.getStateList();
+		return ok(Course_request.render(stateList));
 	}
 
 	@Transactional
@@ -818,26 +810,7 @@ public class Application extends Controller {
 		return ok(result);
 	}
 
-	@Transactional
-	public static Result dashConcreteCourseAdd() throws JsonParseException, JsonMappingException, IOException {
-		ConcreteCourseForm concreteCourseForm = form(
-				ConcreteCourseForm.class).bindFromRequest().get();
-		if (concreteCourseForm.getCourseDates() != null) {
-			Logger.info(concreteCourseForm.getCourseDates().size()+"jhhhe");
-			
-		}
-		CourseHandler ch = new CourseHandler();
-		ConcreteCourse concreteCourse = ch.addNewConcreteCourse(
-				concreteCourseForm.getTrainerEmail(),
-				concreteCourseForm);
-		ObjectNode result = Json.newObject();
-		if (concreteCourse != null) {
-			result.put("result", "true");
-			return ok(result);
-		}
-		result.put("result", "false");
-		return ok(result);
-	}
+	
 
 	@Transactional
 	public static Result dashDashboard() {
@@ -845,9 +818,88 @@ public class Application extends Controller {
 
 	}
 
+
+	@Transactional
+	public static Result orderDisplay(){
+		return ok(Course_order.render());
+	}
+	
+	@Transactional
+	public static Result dashOrder(){
+		OrderHandler oh = new OrderHandler();
+		FilterBuilder fb = new OrderFilterBuilder();
+		Collection<CourseOrder> courseOrder = oh.getCourseOrderByCustomRule(fb, null, -1, -1);
+
+		Collection<CourseOrderForm> courseOrderForm = new ArrayList<CourseOrderForm>();
+		for (CourseOrder co : courseOrder) {
+			CourseOrderForm cof = CourseOrderForm.bindCourseOrderForm(co);
+			courseOrderForm.add(cof);
+		}
+		System.out.print(Json.toJson(courseOrderForm));
+		return ok(Json.toJson(courseOrderForm));
+	}
+	
+	@Transactional
+	public static Result dashOrderDetail(String orderId){
+		
+		OrderHandler oh = new OrderHandler();
+		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
+		CourseOrderForm cof = CourseOrderForm.bindCourseOrderForm(courseOrder);
+		
+		System.out.print(Json.toJson(cof));
+		return ok(Json.toJson(cof));
+		
+	}
+	
+	@Transactional
+	public static Result dashOrderUpdate(){
+		CourseOrderForm courseOrderForm = form(CourseOrderForm.class).bindFromRequest().get();
+		OrderHandler oh = new OrderHandler();
+		CourseOrder courseOrder = oh.getCourseOrderByOrderId(courseOrderForm.getOrderId());
+		boolean flag = courseOrderForm.bindCourseOrder(courseOrder);
+		ObjectNode result = Json.newObject();
+		if (flag == true) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
+	
+	@Transactional
+	public static Result ratingDisplay(){
+		return ok(Rating.render());
+	}
+	
+	
+	
+	@Transactional
+	public static Result dashRating(){
+		
+		return TODO;
+	}
+	
+	
+//	@Transactional
+//	public static Result dashOrderDelete(){
+//		CourseOrderForm courseOrderForm = form(CourseOrderForm.class).bindFromRequest().get();
+//		OrderHandler oh = new OrderHandler();
+//		boolean flag = oh.
+//		ObjectNode result = Json.newObject();
+//		if (flag == true) {
+//			result.put("result", "true");
+//			return ok(result);
+//		}
+//		result.put("result", "false");
+//		return ok(result);
+//	}
+	
+	//
+	
+
 	@Transactional
 	public static Result trainerDisplay() {
-		return TODO;
+		return ok(User_trainer.render());
 	}
 
 	@Transactional
@@ -866,13 +918,144 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(trainerForm));
 		return ok(Json.toJson(trainerForm));
 	}
+	
+	@Transactional
+	public static Result dashTrainerDetail(Integer id){
+		UserHandler uh = new UserHandler();
+		Trainer trainer = (Trainer)uh.getUserById(id);
+		TrainerForm trainerForm = TrainerForm.bindTraienrForm(trainer);
+		
+		System.out.print(Json.toJson(trainerForm));
+		return ok(Json.toJson(trainerForm));
+	}
+	
+	@Transactional
+	public static Result dashTrainerUpdate(){
+		TrainerForm trainerForm = form(TrainerForm.class).bindFromRequest().get();
+		UserHandler uh = new UserHandler();
+		User user = uh.getUserByEmail(trainerForm.getEmail());
+		boolean flag = trainerForm.bindUser(user);
+		ObjectNode result = Json.newObject();
+		if (flag == true) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
+	
+	@Transactional
+	public static Result customerDisplay() {
+		return ok(User_attendee.render());
+	}
 
-	//
-	// @Transactional
-	// public static Result dashTrainer(){
-	// return ok(User_trainer.render());
-	// }
+	@Transactional
+	public static Result dashCustomer() {
+		UserHandler uh = new UserHandler();
+		UserFilterBuilder fb = new UserFilterBuilder();
+		fb.setUserRole(UserRole.CUSTOMER);
+		Collection<User> user = uh.getUserByCustomeRule(fb, null, true, -1, -1);
 
+		Collection<CustomerForm> customerForm = new ArrayList<CustomerForm>();
+		for (User u : user) {
+			Customer c = (Customer) u;
+			CustomerForm tf = CustomerForm.bindCustomerForm(c);
+			customerForm.add(tf);
+		}
+		System.out.print(Json.toJson(customerForm));
+		return ok(Json.toJson(customerForm));
+	}
+	
+	@Transactional
+	public static Result dashCustomerDetail(Integer id){
+		UserHandler uh = new UserHandler();
+		Customer customer = (Customer)uh.getUserById(id);
+		CustomerForm customerForm = CustomerForm.bindCustomerForm(customer);
+		
+		System.out.print(Json.toJson(customerForm));
+		return ok(Json.toJson(customerForm));
+	}
+	
+	@Transactional
+	public static Result dashCustomerUpdate(){
+		CustomerForm customerForm = form(CustomerForm.class).bindFromRequest().get();
+		UserHandler uh = new UserHandler();
+		User user = uh.getUserByEmail(customerForm.getEmail());
+		boolean flag = customerForm.bindUser(user);
+		ObjectNode result = Json.newObject();
+		if (flag == true) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
+	
+	@Transactional
+	public static Result adminDisplay() {
+		return ok(User_admin.render());
+	}
+
+	@Transactional
+	public static Result dashAdmin() {
+		UserHandler uh = new UserHandler();
+		UserFilterBuilder fb = new UserFilterBuilder();
+		fb.setUserRole(UserRole.ADMIN);
+		Collection<User> user = uh.getUserByCustomeRule(fb, null, true, -1, -1);
+
+		Collection<AdminForm> adminForm = new ArrayList<AdminForm>();
+		for (User u : user) {
+			Admin a = (Admin) u;
+			AdminForm af = AdminForm.bindAdminForm(a);
+			adminForm.add(af);
+		}
+		System.out.print(Json.toJson(adminForm));
+		return ok(Json.toJson(adminForm));
+	}
+	
+	@Transactional
+	public static Result dashAdminDetail(Integer id){
+		UserHandler uh = new UserHandler();
+		Admin admin = (Admin)uh.getUserById(id);
+		AdminForm adminForm = AdminForm.bindAdminForm(admin);
+		
+		System.out.print(Json.toJson(adminForm));
+		return ok(Json.toJson(adminForm));
+	}
+	
+	@Transactional
+	public static Result dashAdminUpdate(){
+		AdminForm adminForm = form(AdminForm.class).bindFromRequest().get();
+		UserHandler uh = new UserHandler();
+		User user = uh.getUserByEmail(adminForm.getEmail());
+		boolean flag = adminForm.bindUser(user);
+		ObjectNode result = Json.newObject();
+		if (flag == true) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
+	
+	@Transactional
+	public static Result dashAdminAdd(){
+		AdminForm adminForm = form(AdminForm.class).bindFromRequest().get();
+		UserHandler uh = new UserHandler();
+		User user = uh.createNewUser(adminForm.getEmail(), adminForm.getUsername(), adminForm.getPassword(), UserRole.ADMIN);
+		boolean flag = adminForm.bindUser(user);
+		ObjectNode result = Json.newObject();
+		if (flag == true) {
+			result.put("result", "true");
+			return ok(result);
+		}
+		result.put("result", "false");
+		return ok(result);
+	}
+	
+	
+	
+	
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
 		return ok(Routes.javascriptRouter("jsRoutes",
@@ -884,7 +1067,21 @@ public class Application extends Controller {
 				routes.javascript.Application.dashCourse(),
 				routes.javascript.Application.dashCourseDetail(),
 				routes.javascript.Application.dashCourseDelete(),
-				routes.javascript.Application.dashCourseUpdate()));
+				routes.javascript.Application.dashCourseUpdate(),
+				routes.javascript.Application.dashOrder(),
+				routes.javascript.Application.dashOrderDetail(),
+				routes.javascript.Application.dashOrderUpdate(),
+				routes.javascript.Application.dashRating(),
+				routes.javascript.Application.dashTrainer(),
+				routes.javascript.Application.dashTrainerDetail(),
+				routes.javascript.Application.dashTrainerUpdate(),
+				routes.javascript.Application.dashCustomer(),
+				routes.javascript.Application.dashCustomerDetail(),
+				routes.javascript.Application.dashCustomerUpdate(),
+				routes.javascript.Application.dashAdmin(),
+				routes.javascript.Application.dashAdminDetail(),
+				routes.javascript.Application.dashAdminUpdate(),
+				routes.javascript.Application.dashAdminAdd()));
 	}
 
 }

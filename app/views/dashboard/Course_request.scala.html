@@ -1,4 +1,4 @@
-
+@(states: List[String])
 @dashmain("course_request"){
    
     <div class="navbar navbar-default" role="navigation">
@@ -82,53 +82,7 @@
     <div class="ch-container">
         <div class="row">
 
-            <!-- left menu starts -->
-            <div class="col-sm-2 col-lg-2">
-                <div class="sidebar-nav">
-                    <div class="nav-canvas">
-                        <div class="nav-sm nav nav-stacked">
-
-                        </div>
-                        <ul class="nav nav-pills nav-stacked main-menu">
-                            <li class="nav-header">Main</li>
-                            <li><a class="ajax-link" href="Dashboard.html"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
-                            </li>
-                            <li class="accordion">
-                                <a href="#"><i class="glyphicon glyphicon-plus"></i><span> Course Management</span></a>
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="Course_list.html">Course List</a>
-                                    </li>
-                                    <li><a href="Course_request.html">New Course Requests</a>
-                                    </li>
-                                    <li><a href="Course_order.html">Order Management</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="accordion">
-                                <a href="#"><i class="glyphicon glyphicon-eye-open"></i><span> User Management</span></a>
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="User_admin.html">Admin Management</a>
-                                    </li>
-                                    <li><a href="User_trainer.html">Trainer Management</a>
-                                    </li>
-                                    <li><a href="User_attendee.html">Attendee Management</a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="accordion">
-                                <a href="#"><i class="glyphicon glyphicon-star"></i><span> Ratings Management</span></a>
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="Rating.html">Ratings and Reviews</a>
-                                    </li>
-                                </ul>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <!--/span-->
-            <!-- left menu ends -->
+           @dashSidebar()
 
             <noscript>
                 <div class="alert alert-block col-md-12">
@@ -295,7 +249,7 @@
                             <form role="form">
                                 <div class="form-group col-md-4">
                                     <label>Course Id</label>
-                                    <input class="form-control" name="courseId" id="courseId" value="" placeholder="Course Id" readonly="true">
+                                    <input class="form-control" name="courseInfoId" id="courseId" value="" placeholder="Course Id" readonly="true">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Course Name</label>
@@ -308,7 +262,11 @@
 
                                 <div class="form-group col-md-12">
                                     <label>Course Description</label>
-                                    <input class="form-control" name="courseDesc" id="courseDesc" value="" placeholder="Course Description" readonly="true">
+                                    <!-- <input class="form-control" 
+                                    name="courseDesc" id="courseDesc" value="" placeholder="Course Description" readonly="true"> -->
+                                    <textarea name="courseDesc" id="courseDesc" rows="10" cols="80">
+
+                                </textarea>
                                 </div>
 
 
@@ -340,13 +298,22 @@
                                     <label>Maximal Seats</label>
                                     <input class="form-control" name="maximum" id="maximum" value="" placeholder="Maximal Seats" readonly="true">
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-2">
                                     <label>Popular</label>
                                     <select name="popular" id="popular" class="form-control">
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
+                                        <option name="popular" value="1">Yes</option>
+                                        <option name="popular" value="0">No</option>
                                     </select>
                                 </div>
+                                
+                                <div class="form-group col-md-2">
+                                    <label>Display Rating</label>
+                                    <select name="displayRating" id="displayRating" class="form-control">
+                                        <option name="displayRating" value="1">Yes</option>
+                                        <option name="displayRating" value="0">No</option>
+                                    </select>
+                                </div> 
+                                
                                 <div class="form-group col-md-3">
                                     <input class="form-control" id="keyPoint" />
                                 </div>
@@ -366,15 +333,24 @@
                                     <label>Street</label>
                                     <input class="form-control" name="detailedLoc" id="detailedLoc" value="" placeholder="Street" readonly="true">
                                 </div>
-
+								<div class="form-group col-md-4">
+                                    <label>State</label>
+                                    <select onchange="showCity(this.value)" style="max-width:50%;" class="" title='Choose One' data-style="" name="state" id="state">
+												<optgroup label="State:">
+													<option value="" selected></option>
+												@for(s <- states){
+													<option value="@s">@s</option>
+													}
+												</optgroup>
+											</select> 
+                                </div>
                                 <div class="form-group col-md-4">
                                     <label>City</label>
-                                    <input class="form-control" name="city" id="city" value="" placeholder="City" readonly="true">
+                                   <select class="" style="max-width:50%;" data-style="" name="city" id="city">
+												<option value="" selected></option>
+											</select> 
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>State</label>
-                                    <input class="form-control" name="state" id="state" value="" placeholder="State" readonly="true">
-                                </div>
+                                
                                 <div class="form-group col-md-4">
                                     <label>ZIP Code</label>
                                     <input class="form-control" name="zipCode" id="zipCode" value="" placeholder="ZIP Code" readonly="true">
@@ -401,9 +377,9 @@
                                 <div class="form-group col-md-8">
                                     <label>Status</label>
                                     <select name="status" id="status" class="form-control">
-                                        <option value="approved">approved</option>
-                                        <option value="rejected">rejected</option>
-                                        <option value="pending">pending</option>
+                                        <option name="status" value="1">approved</option>
+                                        <option name="status" value="2">rejected</option>
+                                        <option name="status" value="0">pending</option>
                                     </select>
                                 </div>
                                 <div class="form-group col-md-3">

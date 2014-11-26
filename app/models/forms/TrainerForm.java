@@ -40,6 +40,8 @@ public class TrainerForm extends UserForm {
 	
 	private String companyInfo;
 	
+	private String userName;
+	
 	
 	private boolean isVeteran;
 
@@ -47,6 +49,16 @@ public class TrainerForm extends UserForm {
 	private Veteran veteranRole = Veteran.NONE;
 	
 	
+	
+	
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public boolean isVeteran() {
 		return isVeteran;
 	}
@@ -165,6 +177,10 @@ public class TrainerForm extends UserForm {
 	public void setCompanyInfo(String companyInfo) {
 		this.companyInfo = companyInfo;
 	}
+	
+
+
+	
 
 	@Override
 	public boolean bindUser(User user) {
@@ -181,7 +197,7 @@ public class TrainerForm extends UserForm {
 		trainer.setCertification(certification);
 		trainer.setLocation(location);
 		trainer.setName(name);
-		trainer.setUsername(name);
+		trainer.setUsername(userName);
 		trainer.setCompanyInfo(companyInfo);
 		
 	
@@ -209,7 +225,7 @@ public class TrainerForm extends UserForm {
 		trainerForm.setImage(trainer.getImage());
 		trainerForm.getLocation().setRegion(trainer.getLocation().getRegion());
 		trainerForm.getLocation().setCity(trainer.getLocation().getCity());
-		trainerForm.setUsername(trainer.getUsername());
+		trainerForm.setUserName(trainer.getUsername());
 		trainerForm.setUserStatus(trainer.getUserStatus());
 		trainerForm.setVeteranRole(trainer.getVeteranRole());
 		

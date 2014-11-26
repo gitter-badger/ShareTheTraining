@@ -1,8 +1,10 @@
 var dates = new Array();
 var keyPoints = new Array();
+var courses = new Array();
 var keyPointNum = 0;
 var JsonData;
 var keyPointsString='';
+var initKeyPointsString='';
 
 var api;
 
@@ -18,7 +20,15 @@ function getJsonData() {
         else
             keyPointsString+=(','+keyPoints[i]);
     }
-    JsonData['keyPoints'] = keyPointsString;
+//    if(''!=initKeyPointsString){
+//    	if(''!=keyPointsString)
+//    		keyPointsString=initKeyPointsString+','+keyPointsString;
+//    	else
+//    		keyPointsString=initKeyPointsString;
+//    }
+//    else
+//    	keyPointsString=initKeyPointsString;
+    	JsonData['keyPoints'] = keyPointsString;
 }
 
 function getFormJson(frm) {
@@ -606,4 +616,15 @@ function getParameter() {
         }
     }
     return para;
+}
+function addADBtn()
+{
+var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+$(".btns").append(html);
+}
+
+function addDBtn()
+{
+var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+$(".btns").append(html);
 }

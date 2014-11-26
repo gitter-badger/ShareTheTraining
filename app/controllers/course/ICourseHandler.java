@@ -8,6 +8,7 @@ import controllers.user.IUserHandler;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
+import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.forms.ConcreteCourseForm;
 import models.forms.CourseForm;
@@ -68,4 +69,7 @@ public interface ICourseHandler {
 	public Map<Integer, List<ConcreteCourse>> getConcreteCourseMap(FilterBuilder fb,
 			String orderByColumn, boolean ascending, int pageNumber,
 			int pageSize);
+
+	public Collection<ConcreteCourse> getDisplayedConcreteCourse(
+			CourseFilterBuilder cfb, int courseId);
 }

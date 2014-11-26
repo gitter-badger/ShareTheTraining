@@ -22,6 +22,7 @@ import javax.persistence.criteria.Selection;
 
 import org.apache.solr.common.SolrInputDocument;
 
+import play.Logger;
 import models.locations.Location;
 import models.spellchecker.SolrDao;
 import models.users.Trainer;
@@ -72,9 +73,9 @@ public class Course extends BaseModelObject {
 	private Date latestDate;
 
 	private boolean displayRating;
-	
+
 	private int popular = 0;
-	
+
 	private int minimum = -1;
 
 	private int maximum = -1;
@@ -120,11 +121,16 @@ public class Course extends BaseModelObject {
 
 	@Override
 	public SolrInputDocument getSolrDoc() {
-		SolrInputDocument doc = new SolrInputDocument();
-		doc.addField("id", this.getId());
-		doc.addField("name", this.getCourseName());
-		doc.addField("description", this.getCourseDesc());
-		return doc;
+		try {
+			SolrInputDocument doc = new SolrInputDocument();
+			doc.addField("id", this.getId());
+			doc.addField("name", this.getCourseName());
+			doc.addField("description", this.getCourseDesc());
+			return doc;
+		} catch (Exception e) {
+			Logger.info(e.toString());
+			return null;
+		}
 	}
 
 	public boolean removeConcreteCourse(ConcreteCourse c) {
@@ -156,28 +162,31 @@ public class Course extends BaseModelObject {
 		this.setLatestDate(latestDate);
 	}
 
-	public List<String> getKeyPointsAsList(){
+	public List<String> getKeyPointsAsList() {
 		List<String> keyPointsList = new ArrayList<String>();
-		if(keyPoints!=null)
+		if (keyPoints != null)
 			keyPointsList = Arrays.asList(keyPoints.split(","));
 		return keyPointsList;
 	}
-	
-	public List<String[]> getLocationList(){
+
+	public List<String[]> getLocationList() {
 		List<String[]> result = new ArrayList<String[]>();
-		HashMap<String,Set<String>> locationSet = new HashMap<String,Set<String>>();
-		for(ConcreteCourse c : courses){
+		HashMap<String, Set<String>> locationSet = new HashMap<String, Set<String>>();
+		for (ConcreteCourse c : courses) {
 			Location location = c.getLocation();
-			if(!locationSet.containsKey(location.getRegion()));
-				locationSet.put(location.getRegion(), new HashSet<String>());
-			if(!locationSet.get(location.getRegion()).contains(location.getCity())){
-				String[] locationArray = new String[]{location.getRegion(), location.getCity()};
+			if (!locationSet.containsKey(location.getRegion()))
+				;
+			locationSet.put(location.getRegion(), new HashSet<String>());
+			if (!locationSet.get(location.getRegion()).contains(
+					location.getCity())) {
+				String[] locationArray = new String[] { location.getRegion(),
+						location.getCity() };
 				result.add(locationArray);
 			}
 		}
 		return result;
 	}
-	
+
 	public Collection<ConcreteCourse> getFilterCourse() {
 		return null;
 	}

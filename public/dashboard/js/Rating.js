@@ -27,9 +27,16 @@ function addRow(v1, v2, v3, v4, v5, v6, v7) {
 }
 
 function initRatingPage() {
-    $.getJSON('../test_json/rating.json', function (data) {
+	var urlParameter = getParameter();
+    if((0!=urlParameter.length)&&("1"==urlParameter[0]["new"]))
+    {}
+    else{
+    jsRoutes.controllers.Application.dashRating().ajax(
+        {
+            success :  function (data) {
+               console.log(data);
 
-        $.each(data, function (i, item) {
+               $.each(data, function (i, item) {
             addRow(
                 item.reviewId,
                 item.concreteCourseId,
@@ -39,9 +46,10 @@ function initRatingPage() {
                 item.courseRating,
                 item.trainerRating);
         });
-
-    });
-
+               initSearchSelect();
+               addDBtn();
+    }});
+    }
 }
 
 function getItemFromServer(reviewId) {
@@ -61,6 +69,14 @@ function setDetailPage(item) {
         $("#courseRating" + (i + 1)).val(item.courseRatings[i]);
         $("#trainerRating" + (i + 1)).val(item.trainerRatings[i]);
     }
+    
+    $("#courseQuestion1").val(item.courseQuestions[0]);
+    $("#courseQuestion2").val(item.courseQuestions[1]);
+    
+    $("#trainerQuestion1").val(item.trainerQuestions[0]);
+    $("#trainerQuestion2").val(item.trainerQuestions[1]);
+    
+    $('#comment').val(item.comment);
 
     disableFields();
 }
@@ -73,6 +89,21 @@ function disableFields() {
     $("#userName").attr("readonly", true);
     $("#courseRating").attr("readonly", true);
     $("#trainerRating").attr("readonly", true);
+    $("#courseRating1").attr("readonly", true);
+    $("#courseRating2").attr("readonly", true);
+    $("#courseRating3").attr("readonly", true);
+    $("#courseRating4").attr("readonly", true);
+    $("#courseRating5").attr("readonly", true);
+    $("#courseQuestion1").attr("readonly", true);
+    $("#courseQuestion2").attr("readonly", true);
+    
+    $("#trainerRating1").attr("readonly", true);
+    $("#trainerRating2").attr("readonly", true);
+    $("#trainerRating3").attr("readonly", true);
+    $("#trainerRating4").attr("readonly", true);
+    $("#trainerRating5").attr("readonly", true);
+    $("#trainerQuestion1").attr("readonly", true);
+    $("#trainerQuestion2").attr("readonly", true);
 }
 
 function enableFields() {
@@ -98,8 +129,8 @@ function emptyDetailPage(item) {
 
 $(document).ready(function () {
     initRatingPage();
-    var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+    //var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+    //$(".btns").append(html);
 
     //click function for every row
     $("#ratingTable").on('click', 'tr', function () {

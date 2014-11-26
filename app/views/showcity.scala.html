@@ -1,6 +1,5 @@
 <script>
 	function showCity(value){
-		alert("hehe");
 	    $.post("@routes.Application.showCity()",{name:value} ,function(data,textStatuts){
              //alert(data);
              var dataObj=eval("("+data+")");

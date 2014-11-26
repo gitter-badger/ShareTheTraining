@@ -1,0 +1,47 @@
+  <!-- left menu starts -->
+            <div class="col-sm-2 col-lg-2">
+                <div class="sidebar-nav">
+                    <div class="nav-canvas">
+                        <div class="nav-sm nav nav-stacked">
+
+                        </div>
+                        <ul class="nav nav-pills nav-stacked main-menu">
+                            <li class="nav-header">Main</li>
+                            <li><a class="ajax-link" href="@routes.Application.dashDashboard()"><i class="glyphicon glyphicon-home"></i><span> Dashboard</span></a>
+                            </li>
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-plus"></i><span> Course Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="@routes.Application.concreteCourseDisplay()">Course List</a>
+                                    </li>
+                                    <li><a href="@routes.Application.courseDisplay()">New Course Requests</a>
+                                    </li>
+                                    <li><a href="@routes.Application.orderDisplay()">Order Management</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-eye-open"></i><span> User Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="@routes.Application.adminDisplay()">Admin Management</a>
+                                    </li>
+                                    <li><a href="@routes.Application.trainerDisplay()">Trainer Management</a>
+                                    </li>
+                                    <li><a href="@routes.Application.customerDisplay()">Attendee Management</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="accordion">
+                                <a href="#"><i class="glyphicon glyphicon-star"></i><span> Ratings Management</span></a>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="@routes.Application.ratingDisplay()">Ratings and Reviews</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--/span-->
+            <!-- left menu ends -->

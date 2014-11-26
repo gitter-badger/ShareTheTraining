@@ -24,7 +24,7 @@ public class CourseForm {
 	
 	private int courseCategory;
 	
-	private Double price;
+	private double price;
 
 	private String fromCompany;
 	
@@ -38,15 +38,26 @@ public class CourseForm {
 	
 	private String companyInfo;
 	
-	private int minimum;
+	private int minimum = 0;
 
-	private int maximum;
+	private int maximum = 0;
+	
+	private int popular = 0;
 	
 	
 	
 	private Collection<ConcreteCourse> courses = new ArrayList<ConcreteCourse>();
 	
 	
+	
+
+	public int getPopular() {
+		return popular;
+	}
+
+	public void setPopular(int popular) {
+		this.popular = popular;
+	}
 
 	public String getTrainerName() {
 		return trainerName;
@@ -97,11 +108,11 @@ public class CourseForm {
 		this.courseCategory = courseCategory;
 	}
 
-	public Double getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -194,6 +205,7 @@ public class CourseForm {
 		course.setMaximum(maximum);
 		course.setMinimum(minimum);
 		course.setKeyPoints(keyPoints);
+		course.setPopular(popular);
 		
 		
 		return true;
@@ -218,6 +230,7 @@ public class CourseForm {
 		courseForm.setMaximum(course.getMaximum());
 		courseForm.setMinimum(course.getMinimum());
 		courseForm.setCourseId(course.getId());
+		courseForm.setPopular(course.getPopular());
 		
 		
 		return courseForm;

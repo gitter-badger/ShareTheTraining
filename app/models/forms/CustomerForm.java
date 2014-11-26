@@ -18,6 +18,7 @@ public class CustomerForm extends UserForm {
 	private String userRole;
 
 	private Location location;
+	
 
 	public Location getLocation() {
 		return location;
@@ -93,6 +94,8 @@ public class CustomerForm extends UserForm {
 				.setRegion(customer.getLocation().getRegion());
 		customerForm.getLocation().setCity(customer.getLocation().getCity());
 		customerForm.setUsername(customer.getUsername());
+		customerForm.setEmail(customer.getEmail());
+		customerForm.setPhone(customer.getPhone());
 
 		return customerForm;
 

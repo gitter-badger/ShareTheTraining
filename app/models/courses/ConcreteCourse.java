@@ -15,7 +15,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.apache.solr.common.SolrInputDocument;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

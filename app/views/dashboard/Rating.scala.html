@@ -1,6 +1,4 @@
-@dashmain("course_list"){
-
-<body>
+@dashmain("rating"){
     <!-- topbar starts -->
     <div class="navbar navbar-default" role="navigation">
 
@@ -83,7 +81,7 @@
     <div class="ch-container">
         <div class="row">
 
-           @dashSidebar()
+            @dashSidebar()
 
             <noscript>
                 <div class="alert alert-block col-md-12">
@@ -105,7 +103,7 @@
                             <a href="Dashboard.html">Dashboard</a>
                         </li>
                         <li>
-                            <a href="Course_list.html">Course List</a>
+                            <a href="Rating.html">Ratings & Reviews</a>
                         </li>
                     </ul>
                 </div>
@@ -114,54 +112,47 @@
                     <div class="box col-md-12">
                         <div class="box-inner">
                             <div class="box-header well" data-original-title="">
-                                <h2><i class="glyphicon glyphicon-user"></i> Course List and Details</h2>
+                                <h2><i class="glyphicon glyphicon-user"></i> Rating & Reviews</h2>
 
                                 <div class="box-icon">
                                     <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
-                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                                    <a href="#" class="btn btn-minimize btn-round btn-default"><i
+                    class="glyphicon glyphicon-chevron-up"></i></a>
                                     <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
                                 </div>
                             </div>
                             <div class="box-content">
-                                <table class="table table-striped table-bordered table-hover bootstrap-datatable datatable responsive" id="courseTable">
+                                <table class="table table-striped table-bordered table-hover bootstrap-datatable datatable responsive" id="ratingTable">
                                     <thead>
                                         <tr>
                                             <th>
                                                 <input type="checkbox" class="chkAll">
                                             </th>
-                                            <th>Subcourse ID</th>
+                                            <th>Review ID</th>
+                                            <th>Course ID</th>
                                             <th>Course Name</th>
                                             <th>Trainer Name</th>
-                                            <th>Course Type</th>
-                                            <th>City</th>
-                                            <th>State</th>
-                                            <th>Date</th>
-                                            <th>Sold Seats</th>
-                                            <th>Minimum Seats</th>
-                                            
-                                            <th>Status</th>
+                                            <th>Customer userName</th>
+                                            <th>Course Rating</th>
+                                            <th>Trainer Rating</th>
                                             <th></th>
                                         </tr>
                                     </thead>
-                                    <tbody id="courseTableBody">
+                                    <tbody id="ratingTableBody">
 
                                     </tbody>
                                     <tfoot>
-                                         <tr>
+                                        <tr>
                                             <th>
                                                 <input type="checkbox" class="chkAll">
                                             </th>
-                                            <th>Subcourse ID</th>
+                                            <th>Review ID</th>
+                                            <th>Course ID</th>
                                             <th>Course Name</th>
                                             <th>Trainer Name</th>
-                                            <th>Course Type</th>
-                                            <th>City</th>
-                                            <th>State</th>
-                                            <th>Date</th>
-                                            <th>Sold Seats</th>
-                                            <th>Minimum Seats</th>
-                                            
-                                            <th>Status</th>
+                                            <th>Customer userName</th>
+                                            <th>Course Rating</th>
+                                            <th>Trainer Rating</th>
                                             <th></th>
                                         </tr>
                                     </tfoot>
@@ -175,7 +166,6 @@
                 <!--/row-->
 
 
-                <!-- Ad ends -->
 
                 <hr>
 
@@ -240,7 +230,8 @@
                     </div>
                 </div>
             </div>
-            <div id="courseInfo" class="modal fade infoModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+            <div id="ratingInfo" class="modal fade infoModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -252,152 +243,149 @@
                             <form role="form">
 
                                 <div class="form-group col-md-4">
-                                    <label>Course Id</label>
-                                    <input class="form-control" name="courseId" id="courseId" value="" placeholder="Course Id" readonly="true">
+                                    <label>Review ID</label>
+                                    <input class="form-control" name="reviewId" id="reviewId" value="" placeholder="Review ID" readonly="true">
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Subcourse ID</label>
+                                    <input class="form-control" name="concreteCourseId" id="concreteCourseId" value="" placeholder="course ID" readonly="true">
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label>Course Name</label>
                                     <input class="form-control" name="courseName" id="courseName" value="" placeholder="Course Name" readonly="true">
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>eventbriteId</label>
-                                    <input class="form-control" name="eventbriteId" id="eventbriteId" value="" placeholder="eventbriteId" readonly="true">
+                                <div class="form-group col-md-6">
+                                    <label>Trainer Name</label>
+                                    <input class="form-control" name="trainerName" id="trainerName" value="" placeholder="Trainer Name" readonly="true">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Customer userName</label>
+                                    <input class="form-control" name="userName" id="userName" value="" placeholder="User Name" readonly="true">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Course Rating</label>
+                                    <input class="form-control" name="courseRating" id="courseRating" value="" placeholder="Course Rating" readonly="true">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Trainer Rating</label>
+                                    <input class="form-control" name="trainerRating" id="trainerRating" value="" placeholder="Trainer Rating" readonly="true">
                                 </div>
 
-
-                                <div class="form-group col-md-4">
-                                    <label>Trainer Id</label>
-                                    <input class="form-control" name="trainerId" id="trainerId" value="" placeholder="Trainer Id" readonly="true">
+                                <div class="form-group col-md-11">
+                                    <label>Course Rating 1</label>
+                                    <input class="form-control" name="" id="" value="The learning objectives and key points were clear." readonly="true">
                                 </div>
-                                 <div class="form-group col-md-4">
-                                    <label>Trainer Email</label>
-                                    <input class="form-control" name="trainerEmail" id="trainerEmail" value="" placeholder="Trainer Email" readonly="true">
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="courserRating1" id="courseRating1" value="" placeholder="0" readonly="true">
                                 </div>
-                                <div class="form-group col-md-4">
-                                    <label>Course Type</label>
-                                    <input class="form-control" name="courseCategory" id="courseCategory" value="" placeholder="Course Type" readonly="true">
+                                <div class="form-group col-md-11">
+                                    <label>Course Rating 2</label>
+                                    <input class="form-control" name="" id="" value="The structure was logical and flowed well." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="courserRating2" id="courseRating2" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Course Rating 3</label>
+                                    <input class="form-control" name="" id="" value="The content and examples were targeted and current." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="courserRating3" id="courseRating3" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Course Rating 4</label>
+                                    <input class="form-control" name="" id="" value="The exercises (individual and group) were effective and had clear directions." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="courserRating4" id="courseRating4" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Course Rating 5</label>
+                                    <input class="form-control" name="" id="" value="The visual aids supported the content." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="courserRating5" id="courseRating5" value="" placeholder="0" readonly="true">
                                 </div>
                                 
-                                <div class="form-group col-md-4">
-                                    <label>Minimum Seats</label>
-                                    <input class="form-control" name="minimum" id="minimum" value="" placeholder="Minimum Seats" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Maximal Seats</label>
-                                    <input class="form-control" name="maximum" id="maximum" value="" placeholder="Maximal Seats" readonly="true">
-                                </div>
-                               <div class="form-group col-md-4">
-                                    <label>Methods</label>
-                                    <input class="form-control" name="methods" id="methods" value="" placeholder="Methods" readonly="true">
-                                </div>
-
-<!--
-                                <div class="form-group col-md-3">
-                                    <input class="form-control" id="keyPoint" />
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <a class="btn btn-success" id="addKeyPoint">add</a>
-                                </div>
-                                <div class="form-group col-md-1">
-                                    <a class="btn btn-warning" id="clearKeyPoint">clear</a>
-                                </div>
--->
                                 <div class="form-group col-md-12">
-                                    <label>Key Words</label>
-                                    <p id="keyPoints"></p>
+                                    <label>What did you like most about this course?</label>
+                                    <input class="form-control" name="courseQuestion1" id="courseQuestions1" value="" readonly="true">
                                 </div>
-
-
                                 <div class="form-group col-md-12">
-                                    <label>Street</label>
-                                    <input class="form-control" name="detailedLoc" id="detailedLoc" value="" placeholder="Street" readonly="true">
+                                    <label>Any areas that could be improved or removed?</label>
+                                    <input class="form-control" name="courseQuestions2" id="courseQuestions2" value="" readonly="true">
                                 </div>
-                                
-
-                                <div class="form-group col-md-4">
-                                    <label>City</label>
-                                    <input class="form-control" name="city" id="city" value="" placeholder="City" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>State</label>
-                                    <input class="form-control" name="state" id="state" value="" placeholder="State" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>ZIP Code</label>
-                                    <input class="form-control" name="zipCode" id="zipCode" value="" placeholder="ZIP Code" readonly="true">
-                                </div>
-                                
-                                <!-- <div class="form-group col-md-3">
-                                    <label>Display Rating</label>
-                                    <select name="displayRating" id="displayRating" class="form-control">
-                                        <option name="displayRating" value="1">Yes</option>
-                                        <option name="displayRating" value="0">No</option>
-                                    </select>
-                                </div> -->
-
-                                <div class="form-group col-md-4">
-                                    <label>Sold Seats</label>
-                                    <input class="form-control" name="soldSeat" id="soldSeat" value="" placeholder="Sold Seats" readonly="true">
-                                </div>
-                                
-                                <!-- <div class="form-group col-md-3">
-                                    <label>Rating Number</label>
-                                    <input class="form-control" name="ratingNum" id="ratingNum" value="" placeholder="Rating Number" readonly="true">
-                                </div> -->
 
 
-                                <div class="form-group col-md-4">
-                                    <label>Length</label>
-                                    <input class="form-control" name="courseLength" id="courseLength" value="" placeholder="Length" readonly="true">
-                                </div>
-                                <div class="form-group col-md-4">
-                                    <label>Status</label>
-                                    <select name="status" id="status" class="form-control">
-                                        <option name="status" value="0">Pending</option>
-                                        <option name="status" value="1">Approved</option>
-                                        <option name="status" value="2">Completed</option>
-                                    </select>
-                                </div>
-<!--
-                                <div class="form-group col-md-3">
-                                    <label>Date</label>
-                                    <input class="form-control" name="courseDate" id="courseDate" value="" placeholder="Date" readonly="true">
-                                </div>
--->
-
-                                
-<!--
-                                <div class="form-group col-md-3">
-                                    <label>Popular</label>
-                                    <select name="popular" id="popular" class="form-control">
-                                        <option value="Yes">Yes</option>
-                                        <option value="No">No</option>
-                                    </select>
-                                </div>
--->
-
-                                <div class="form-group col-md-3">
-                                    <input class="form-control" type="date" name="dates" id="datepicker" />
+                                <div class="form-group col-md-11">
+                                    <label>Trainer Rating 1</label>
+                                    <input class="form-control" name="" id="" value="The trainer was clear and engaging." readonly="true">
                                 </div>
                                 <div class="form-group col-md-1">
-                                    <a class="btn btn-success" id="addDates">add</a>
+                                    <label>Score</label>
+                                    <input class="form-control" name="trainerRating1" id="trainerRating1" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Trainer Rating 2</label>
+                                    <input class="form-control" name="" id="" value="The trainer handled questions appropriately." readonly="true">
                                 </div>
                                 <div class="form-group col-md-1">
-                                    <a class="btn btn-warning" id="clearDates">clear</a>
+                                    <label>Score</label>
+                                    <input class="form-control" name="trainerRating2" id="trainerRating2" value="" placeholder="0" readonly="true">
                                 </div>
-                                <div class="form-group col-md-7">
-                                    <label>Dates</label>
-                                    <p id="dates"></p>
+                                <div class="form-group col-md-11">
+                                    <label>Trainer Rating 3</label>
+                                    <input class="form-control" name="" id="" value="The trainer made good use of visual aids." readonly="true">
                                 </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="trainerRating3" id="trainerRating3" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Trainer Rating 4</label>
+                                    <input class="form-control" name="" id="" value="The trainer was current and gave real life examples." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="trainerRating4" id="trainerRating4" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-11">
+                                    <label>Trainer Rating 5</label>
+                                    <input class="form-control" name="" id="" value="The trainer was comfortable with the technology used." readonly="true">
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Score</label>
+                                    <input class="form-control" name="trainerRating5" id="trainerRating5" value="" placeholder="0" readonly="true">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>What did you like most about this trainer?</label>
+                                    <input class="form-control" name="trainerQuestion1" id="trainerQuestion1" value="" readonly="true">
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label>Any areas that the trainer could improve upon?</label>
+                                    <input class="form-control" name="trainerQuestions2" id="trainerQuestion2" value="" readonly="true">
+                                </div>
+                                
+                                <div class="form-group col-md-12">
+                                    <label>Comment</label>
+                                    <input class="form-control" name="comment" id="comment" value="" readonly="true">
+                                </div>
+                                
+                                
 
                             </form>
                         </div>
                         <div class="modal-footer">
-                            <a class="btn btn-info" id="courseEdit">
+                            <!-- <a class="btn btn-info" id="ratingEdit">
                                 <i class="glyphicon glyphicon-edit icon-white"></i>
                                 Edit
-                            </a>
-                            <a class="btn btn-danger itemDelete" id="courseDelete" data-dismiss="modal">
+                            </a> -->
+                            <a class="btn btn-danger itemDelete" id="ratingDelete" data-dismiss="modal">
                                 <i class="glyphicon glyphicon-trash icon-white"></i>
                                 Delete
                             </a>
@@ -408,6 +396,7 @@
         </div>
         <!--/.fluid-container-->
 
-       
-        <script src="@routes.Assets.at("dashboard/js/Course_list.js")"></script>
+        
+        <script src="@routes.Assets.at("dashboard/js/Rating.js")"></script>
+
 }

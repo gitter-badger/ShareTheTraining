@@ -16,7 +16,13 @@ function deleteItems(Items) {}
 
 function addItem() {}
 
-function updateItem() {}
+function updateItem() {
+	getJsonData();
+	jsRoutes.controllers.Application.dashTrainerUpdate().ajax({
+		data : JsonData,
+		suceess : {}
+	});
+}
 
 function getNewId(){}
 
@@ -56,23 +62,36 @@ function addRow(v1, v2, v3, v4, v5, v6, v7) {
 }
 
 function initUserPage() {
-    $.getJSON('../test_json/admin.json', function (data) {
-
+	alert("hehe");
+	var urlParameter = getParameter();
+    if((0!=urlParameter.length)&&("1"==urlParameter[0]["new"]))
+    {}
+    else{
+    	  jsRoutes.controllers.Application.dashTrainer().ajax(
+     {	success :  function (data){
         $.each(data, function (i, item) {
             addRow(item.id,
                 item.name,
                 item.email,
                 item.cellPhone,
-                item.state,
-                item.city, item.userStatus);
+                item.location.region,
+                item.location.city, 
+                item.userStatus);
         });
+        initSearchSelect();
+        addDBtn();
 
-    });
-
+    }});
+    }
 }
 
 function getItemFromServer(id) {
-
+	jsRoutes.controllers.Application.dashTrainerDetail(orderId).ajax({
+        success : function(data) {
+            console.log(data);
+            setDetailPage(data);
+        }
+    });
 }
 
 function setDetailPage(item) {
@@ -80,8 +99,8 @@ function setDetailPage(item) {
     $("#name").val(item.name);
     $("#email").val(item.eventbriteId);
     $("#cellPhone").val(item.trainerId);
-    $("#state").val(item.trainerName);
-    $("#city").val(item.trainerEmail);
+    $("#state").val(item.location.region);
+    $("#city").val(item.location.city);
     $("#userStatus").val(item.detailedLoc);
 
     $("#userName").val(item.userName);
@@ -94,6 +113,11 @@ function setDetailPage(item) {
     $("#howfar").val(item.howfar);
     $("#company").val(item.company);
     $("#companyInfo").val(item.companyInfo);
+    var len=item.courseNames.length;
+    for(var i=0;i<len;i++)
+    	{
+    	$("#courses").append(item.courseNames[i]+"<br>");
+    	}
 
     disableFields();
 }
@@ -165,8 +189,8 @@ $(document).ready(function () {
     initUserPage();
 
     //add addbtn & delbtn in the top and bottom
-    var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+    //var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+    //$(".btns").append(html);
 
 
     //click function for every row

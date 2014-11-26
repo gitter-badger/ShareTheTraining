@@ -12,14 +12,24 @@ function deleteSelectedItems() {
     deleteItems(Items);
 }
 
-function deleteItems(Items) {}
+function deleteItems(Items) {
+	 getJsonData();
+	    jsRoutes.controllers.Application.dashConcreteCourseDelete().ajax({
+	        data : JsonData,
+	        success : {}
+	    });
+}
+
 function addItem(){
 getJsonData();
     //data:JsonData
 }
 function updateItem(){
-    getJsonData();
-    //data:JsonData
+	getJsonData();
+	jsRoutes.controllers.Application.dashConcreteCourseUpdate().ajax({
+		data : JsonData,
+		suceess : {}
+	});
 }
 
 function getNewId(){}
@@ -72,6 +82,7 @@ function initCoursePage() {
                 item.status);
         });
         initSearchSelect();
+        addDBtn();
     }});
     }
 }
@@ -94,8 +105,8 @@ function setDetailPage(item) {
     $("#trainerEmail").val(item.trainerEmail);
     $("#courseCategory").val(item.courseCategory);
     $("#detailedLoc").val(item.detailedLoc);
-    $("#city").val(item.city);
-    $("#state").val(item.state);
+    $("#city").val(item.location.city);
+    $("#state").val(item.location.region);
     $("#zipCode").val(item.zipCode);
     $("#soldSeat").val(item.soldSeat);
     $("#minimum").val(item.minimum);
@@ -106,6 +117,20 @@ function setDetailPage(item) {
     $("#status").val(item.status);
     $("#popular").val(item.popular);
     $("#methods").val(item.methods);
+    $("#displayRating").val(item.displayRating);
+    var len=item.courseDates.length;
+    for(var i=0;i<len;i++)
+    	{
+    	$("#dates").append(item.courseDates[i]+" ");
+    	dates.push(item.courseDates[i]);
+    	}
+    
+    keyPoints = item.keyPoints.split(',');
+    len=keyPoints.length;
+    for(var i=0;i<len;i++)
+    	{
+    	$("#keyPoints").append(keyPoints[i]+" ");
+    	}
 
     disableFields();
 }
@@ -130,6 +155,7 @@ function disableFields() {
     $("#courseDate").attr("readonly", true);
     $("#status").attr("disabled", true);
     $("#popular").attr("disabled", true);
+    $("#displayRating").attr("disabled", true);
     $("#methods").attr("readonly", true);
     $("#datepicker").attr("readonly",true);
 }
@@ -144,6 +170,7 @@ function enableFields() {
     $("#courseLength").attr("readonly", false);
     $("#status").attr("disabled", false);
     $("#datepicker").attr("readonly",false);
+    $("#displayRating").attr("disabled", false);
     
 }
 
@@ -168,14 +195,15 @@ function emptyDetailPage(item) {
     $("#status").val('');
     $("#popular").val('');
     $("#methods").val('');
+    $("#displayRating").val('');
 }
 
 $(document).ready(function () {
     initCoursePage();
     //initSearchSelect();
     //initSearchBox();
-    var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+    //var html = "<a class='btn btn-info btnadd'><i class='glyphicon glyphicon-edit icon-white'></i>add</a> <a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+    //$(".btns").append(html);
 
     //click function for every row
     $("#courseTable").on('click', 'tr', function () {

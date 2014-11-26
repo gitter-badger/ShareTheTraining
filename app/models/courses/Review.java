@@ -77,6 +77,17 @@ public class Review extends BaseModelObject {
 	private List<String> courseQuestions;
 
 	private Date createDate;
+	
+	private String comment;
+	
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 	public ConcreteCourse getConcreteCourse() {
 		return concreteCourse;

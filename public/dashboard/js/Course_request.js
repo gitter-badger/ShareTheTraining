@@ -13,9 +13,8 @@ function deleteSelectedItems() {
 }
 
 function deleteItems(Items) {
-    alert("hehe");
     getJsonData();
-    jsRoutes.controllers.Application.dashCourseDelete().ajax({
+    jsRoutes.controllers.Application.dashConcreteCourseDelete().ajax({
         data : JsonData,
         success : {}
     });
@@ -23,7 +22,6 @@ function deleteItems(Items) {
  
 }
 function addItem(){
-	alert("hehe");
 	getJsonData();
 	jsRoutes.controllers.Application.dashConcreteCourseAdd().ajax({
 		data : JsonData,
@@ -33,7 +31,6 @@ function addItem(){
 }
 
 function updateItem() {
-	alert("hehe");
 	getJsonData();
 	jsRoutes.controllers.Application.dashCourseUpdate().ajax({
 		data : JsonData,
@@ -89,7 +86,6 @@ function addRow(v1, v2, v3, v4, v5, v6, v7, v8, v9) {
 }
 
 function initCourseRequestPage() {
-    console.log("hehe");
     var urlParameter = getParameter();
     if((0!=urlParameter.length)&&("1"==urlParameter[0]["new"]))
     {}
@@ -111,6 +107,7 @@ function initCourseRequestPage() {
                     item.status);
             });
             initSearchSelect();
+            addDBtn();
          }});
     }
 }
@@ -134,8 +131,8 @@ function setDetailPage(item) {
     $("#trainerEmail").val(item.trainerEmail);
     $("#methods").val(item.methods);
     $("#detailedLoc").val(item.detailedLoc);
-    $("#city").val(item.city);
-    $("#state").val(item.state);
+    $("#city").val(item.location.city);
+    $("#state").val(item.location.region);
     $("#zipCode").val(item.zipCode);
     $("#length").val(item.courseLength);
     $("#courseDate").val(item.courseDate);
@@ -144,6 +141,21 @@ function setDetailPage(item) {
     $("#price").val(item.price);
     $("#popular").val(item.popular);
     $("#status").val(item.status);
+    $("#displayRating").val(item.displayRating);
+    var len=item.courseDates.length;
+    for(var i=0;i<len;i++)
+    	{
+    	$("#dates").append(item.courseDates[i]+" ");
+    	dates.push(item.courseDates[i]);
+    	}
+    
+    keyPoints = item.keyPoints.split(',');
+    len=keyPoints.length;
+    for(var i=0;i<len;i++)
+    	{
+    	$("#keyPoints").append(keyPoints[i]+" ");
+    	}
+    
 
     disableFields();
 }
@@ -168,6 +180,7 @@ function disableFields() {
     $("#price").attr("readonly", true);
     $("#status").attr("disabled", true);
     $("#popular").attr("disabled", true);
+    $("#displayRating").attr("disabled", true);
     $("#keyPoint").attr("readonly", true);
     $("#datepicker").attr("readonly", true);
 }
@@ -192,6 +205,7 @@ function enableFields() {
     $("#price").attr("readonly", false);
     $("#status").attr("disabled", false);
     $("#popular").attr("disabled", false);
+    $("#displayRating").attr("disabled", false);
     $("#keyPoint").attr("readonly", false);
     $("#datepicker").attr("readonly", false);
 }
@@ -209,6 +223,7 @@ function disableFieldsForAdd() {
     $("#maximum").attr("readonly", true);
     $("#price").attr("readonly", true);
     $("#popular").attr("disabled", true);
+    $("#displayRating").attr("disabled", true);
     $("#keyPoint").attr("readonly", true);
     
 }
@@ -251,6 +266,7 @@ function enableFieldsForEdit() {
     $("#price").attr("readonly", false);
     
     $("#popular").attr("disabled", false);
+    $("#displayRating").attr("disabled", false);
     $("#keyPoint").attr("readonly", false);
 }
 function emptyDetailPage(item) {
@@ -273,13 +289,14 @@ function emptyDetailPage(item) {
     $("#price").val('');
     $("#status").val('');
     $("#popular").val('');
+    $("#displayRating").val('');
 }
 
 
 $(document).ready(function () {
     initCourseRequestPage();
-    var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
-    $(".btns").append(html);
+    //var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
+    //$(".btns").append(html);
 
     //click function for every row
     $("#requestTable").on('click', 'tr', function () {
