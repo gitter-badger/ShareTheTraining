@@ -80,7 +80,9 @@ public class Trainer extends User {
 	private Set<Date> availableDates = new HashSet<Date>();
 
 	public Course createNewCourse(String courseName, EntityManager em){
-		return Course.create(courseName, this, em);
+		Course course = Course.create(courseName, this, em);
+		this.courses.add(course);
+		return course;
 	}
 	
 	public void updateRating(double rating) {

@@ -1,7 +1,10 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,6 +25,15 @@ public class OrderFilterBuilder implements FilterBuilder {
 	String concreteCourseId;
 	String userEmail;
 	int orderStatus = -1;
+
+	private static Set<String> orderBySet = new HashSet<String>(Arrays.asList(
+			"orderStatus", "orderDate"));
+	private static Set<String> customerOrderBySet = new HashSet<String>(
+			Arrays.asList("email"));
+	private static Set<String> courseOrderBySet = new HashSet<String>(
+			Arrays.asList("id", "category"));
+	private static Set<String> concreteCourseOrderBySet = new HashSet<String>(
+			Arrays.asList("concreteCourseId"));
 
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
@@ -54,10 +66,28 @@ public class OrderFilterBuilder implements FilterBuilder {
 			predicates.add(cb.equal(customerRoot.<String> get("email"),
 					userEmail));
 		}
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(entityRoot.get(orderByColumn)) : cb
-					.desc(entityRoot.get(orderByColumn));
+					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
+					.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null
+				&& customerOrderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(customerRoot.get(orderByColumn)) : cb.desc(customerRoot
+					.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null
+				&& concreteCourseOrderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(concreteCourseRoot.get(orderByColumn)) : cb.desc(concreteCourseRoot
+					.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null
+				&& courseOrderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(courseRoot.get(orderByColumn)) : cb.desc(courseRoot
+					.get(orderByColumn));
 			criteria.orderBy(order);
 		}
 		criteria.where(predicates.toArray(new Predicate[] {}));
@@ -95,6 +125,5 @@ public class OrderFilterBuilder implements FilterBuilder {
 	public void setOrderStatus(int orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-
 
 }

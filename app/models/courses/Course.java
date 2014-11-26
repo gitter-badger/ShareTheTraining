@@ -22,6 +22,7 @@ import javax.persistence.criteria.Selection;
 
 import org.apache.solr.common.SolrInputDocument;
 
+import play.Logger;
 import models.locations.Location;
 import models.spellchecker.SolrDao;
 import models.users.Trainer;
@@ -113,18 +114,24 @@ public class Course extends BaseModelObject {
 		List<Selection> selections = new ArrayList<Selection>();
 		selections.add(path.get("price"));
 		selections.add(path.get("courseCategory"));
-		selections.add(path.get("courseDesc"));
 		selections.add(path.get("popularity"));
+		selections.add(path.get("rating"));
+		selections.add(path.get("status"));
 		return selections;
 	}
 
 	@Override
 	public SolrInputDocument getSolrDoc() {
+		try{
 		SolrInputDocument doc = new SolrInputDocument();
 		doc.addField("id", this.getId());
 		doc.addField("name", this.getCourseName());
 		doc.addField("description", this.getKeyPoints());
 		return doc;
+		}catch(Exception e){
+			Logger.info(e.toString());
+			return null;
+		}
 	}
 
 	public boolean removeConcreteCourse(ConcreteCourse c) {

@@ -1,8 +1,11 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -52,6 +55,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 	private int concreteCourseStatus = -1;
 	private boolean isVeteran = false;
 	private boolean isNearBy = false;
+	private static Set<String> orderBySet = new HashSet<String>(Arrays.asList(
+			"courseCategory", "price", "popularity", "status", "rating"));
 
 	@Override
 	// can't order by date right now, I hope tomorrow morning when I wake up an
@@ -125,7 +130,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 			List<Predicate> locationQueries = new ArrayList<Predicate>();
 			for (Location location : locations) {
 				if (location.getRegion() != null
-						&& !location.getRegion().equals("") && curentLocation != null) {
+						&& !location.getRegion().equals("")
+						&& curentLocation != null) {
 					if (location.getRegion().equals("nearby")) {
 						locationQueries.add(new WithinPredicate(
 								(CriteriaBuilderImpl) cb, locationRoot
@@ -154,9 +160,9 @@ public class CourseFilterBuilder implements FilterBuilder {
 						.toArray(new Predicate[] {})));
 		}
 		// TODO add more filter here
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(courseInfoRoot.get(orderByColumn)) : cb
+					.asc(entityRoot.get(orderByColumn)) : cb
 					.desc(entityRoot.get(orderByColumn));
 			criteria.orderBy(order);
 		}

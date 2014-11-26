@@ -1,9 +1,12 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -24,13 +27,20 @@ import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 
 import com.vividsolutions.jts.geom.Point;
 
-public class ConcreteCourseFilterBuilder implements FilterBuilder{
+public class ConcreteCourseFilterBuilder implements FilterBuilder {
 	private CourseFilterBuilder cfb;
 
 	private Collection<Course> courseList;
-	
+
 	private int courseId = -1;
-	
+
+	private static Set<String> orderBySet = new HashSet<String>(Arrays.asList(
+			"status", "courseDate"));
+
+	private static Set<String> courseOrderBySet = new HashSet<String>(
+			Arrays.asList("id", "courseCategory", "price", "popularity",
+					"rating"));
+
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
@@ -43,12 +53,12 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 		selections.add(0, entityRoot);
 		criteria.multiselect(selections.toArray(new Selection[0]));
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if(courseList != null){
+		if (courseList != null) {
 			predicates.add(courseInfoRoot.in(courseList));
 		}
-		if(courseId != -1){
-			predicates.add(cb.equal(
-					courseInfoRoot.<Integer> get("status"),courseId));
+		if (courseId != -1) {
+			predicates.add(cb.equal(courseInfoRoot.<Integer> get("id"),
+					courseId));
 		}
 		if (cfb.getCourseStatus() != -1)
 			predicates.add(cb.equal(
@@ -83,14 +93,18 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 		}
 		if (cfb.getCategory() != -1) {
 			predicates.add(cb.equal(
-					courseInfoRoot.<Integer> get("courseCategory"), cfb.getCategory()));
+					courseInfoRoot.<Integer> get("courseCategory"),
+					cfb.getCategory()));
 		}
 		if (cfb.getCourseRating() != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
-					courseInfoRoot.<Double> get("rating"), cfb.getCourseRating()));
+					courseInfoRoot.<Double> get("rating"),
+					cfb.getCourseRating()));
 		if (cfb.getTrainerRating() != -1)
-			predicates.add(cb.greaterThanOrEqualTo(
-					trainerRoot.<Double> get("rating"), cfb.getTrainerRating()));
+			predicates
+					.add(cb.greaterThanOrEqualTo(
+							trainerRoot.<Double> get("rating"),
+							cfb.getTrainerRating()));
 		if (cfb.getStartDate() != null)
 			predicates.add(cb.greaterThanOrEqualTo(
 					entityRoot.<Date> get("courseDate"), cfb.getStartDate()));
@@ -130,30 +144,34 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 		}
 		if (cfb.getCurentLocation() != null) {
 			predicates.add(new WithinPredicate((CriteriaBuilderImpl) cb,
-					locationRoot.<Point> get("point"), CourseFilterBuilder.createTriangle(
-							cfb.getCurentLocation() .getPoint(), 0.36)));
+					locationRoot.<Point> get("point"), CourseFilterBuilder
+							.createTriangle(cfb.getCurentLocation().getPoint(),
+									0.36)));
 		}
 		// TODO add more filter here
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(entityRoot.get(orderByColumn)) : cb
+					.desc(entityRoot.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null
+				&& courseOrderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
 					.asc(courseInfoRoot.get(orderByColumn)) : cb
-					.desc(entityRoot.get(orderByColumn));
+					.desc(courseInfoRoot.get(orderByColumn));
 			criteria.orderBy(order);
 		}
 		criteria.where(predicates.toArray(new Predicate[] {}));
 		return criteria;
 	}
-	
 
 	public CourseFilterBuilder getCfb() {
 		return cfb;
 	}
 
-
 	public void setCfb(CourseFilterBuilder cfb) {
 		this.cfb = cfb;
 	}
-
 
 	public Collection<Course> getCourseList() {
 		return courseList;
@@ -163,11 +181,9 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder{
 		this.courseList = courseList;
 	}
 
-
 	public int getCourseId() {
 		return courseId;
 	}
-
 
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;

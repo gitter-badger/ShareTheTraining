@@ -46,6 +46,7 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.courses.Review;
+import models.filters.BackendCourseFilter;
 import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
@@ -223,14 +224,15 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result search(Integer pageNumber) {
+	public static Result search(String orderBy, Integer pageNumber) {
+		orderBy = "default".equals(orderBy)?null:orderBy;
 		CourseFilterForm filterForm = form(CourseFilterForm.class)
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		filterForm.transferChoiceToRange();
 		filterForm.setCurentLocation(LocationHandler
 				.getLocationFromSession(session()));
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm, null,
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm, orderBy,
 				true, pageNumber < 1 ? 1 : pageNumber, Play.application()
 						.configuration().getInt("page.size.search"));
 		Logger.info("course" + course.size());
@@ -571,14 +573,15 @@ public class Application extends Controller {
 	// TODO writetogether
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
-	public static Result trainerCourseHistory(int status) {
+	public static Result trainerCourseHistory(int status, int page) {
 		if (CourseStatus.fromInteger(status) != null) {
 			CourseHandler ch = new CourseHandler();
-			CourseFilterBuilder fb = new CourseFilterBuilder();
+			BackendCourseFilter fb = new BackendCourseFilter();
 			fb.setCourseStatus(status);
 			fb.setTrainerEmail(session().get("connected"));
 			Collection<Course> course = ch.getCourseByCustomRule(fb, null,
-					true, 1, 10);
+					true, page < 1 ? 1 : page, Play.application()
+							.configuration().getInt("page.size.search"));
 
 			return ok(trainercoursehistory.render(course));
 		}

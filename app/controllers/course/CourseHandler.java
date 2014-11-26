@@ -284,6 +284,7 @@ public class CourseHandler implements ICourseHandler {
 			for (ConcreteCourse c : course.getCourses()) {
 				this._deleteConcreteCourse(c);
 			}
+			course.getTrainer().getCourses().remove(course);
 			em.remove(course);
 			return true;
 		} catch (Exception e) {

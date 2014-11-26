@@ -42,7 +42,7 @@
 											class="text-primary">
 											<ul class="tags">
 												@for((l, index) <- course.getLocationList().zipWithIndex){
-												<form action="@routes.Application.search(1)" id="@("location"+index)" method="get">
+												<form action="@routes.Application.search("default",1)" id="@("location"+index)" method="get">
 												<li><a onclick="document.getElementById("@("location"+index)").submit(); return false;">
 												@l.apply(0) @l.apply(1)
 												</a></li>

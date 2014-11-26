@@ -1,7 +1,10 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -26,7 +29,17 @@ public class ReviewFilterBuilder implements FilterBuilder {
 	double lowCourseRate = -1;
 	double highTrainerRate;
 	double lowTrainerRate;
+	private static Set<String> orderBySet = new HashSet<String>(Arrays.asList(
+			"courseRatings", "trainerRatings"));
+	private static Set<String> concreteCourseOrderBySet = new HashSet<String>(
+			Arrays.asList("id", "courseCategory", "price", "popularity",
+					"rating"));
 
+	private static Set<String> customerOrderBySet = new HashSet<String>(
+			Arrays.asList("id", "courseCategory", "price", "popularity",
+					"rating"));
+
+	
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
@@ -70,7 +83,17 @@ public class ReviewFilterBuilder implements FilterBuilder {
 			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Double> get("trainerRatings"),
 					lowTrainerRate));
 		}
-		if (orderByColumn != null) {
+		if (orderByColumn != null  && orderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(entityRoot.get(orderByColumn)) : cb
+					.desc(entityRoot.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null  && concreteCourseOrderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(concreteCourseRoot.get(orderByColumn)) : cb
+					.desc(concreteCourseRoot.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null  && customerOrderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
 					.asc(entityRoot.get(orderByColumn)) : cb
 					.desc(entityRoot.get(orderByColumn));
