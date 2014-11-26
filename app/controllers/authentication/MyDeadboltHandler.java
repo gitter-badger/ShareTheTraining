@@ -12,7 +12,7 @@ import be.objectify.deadbolt.core.models.Subject;
 import be.objectify.deadbolt.java.AbstractDeadboltHandler;
 
 public class MyDeadboltHandler extends AbstractDeadboltHandler {
-
+	
 	@Override
 	public F.Promise<Result> beforeAuthCheck(Context arg0) {
 		return F.Promise.pure(null);
@@ -23,16 +23,13 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 		return F.Promise.promise(new F.Function0<Subject>() {
 			@Override
 			public Subject apply() throws Throwable {
-				//TODO move this part to login method
-				context.flash().put(
-						"url",
-						"GET".equals(context.request().method()) ? context
-								.request().uri() : routes.Application.welcome().url());
 				String email = context.session().get("connected");
 				if (email != null) {
 					User u = new UserHandler().getUserByEmail(email);
+					context.args.put("connected", u);
 					return u;
 				}
+				context.args.put("connected", new Guest());
 				return new Guest();
 			}
 		});

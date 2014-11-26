@@ -70,6 +70,7 @@ import models.locations.Location;
 import models.users.Admin;
 import models.spellchecker.SolrSuggestions;
 import models.users.Customer;
+import models.users.Guest;
 import models.users.Trainer;
 import models.users.User;
 import models.users.UserAction;
@@ -165,23 +166,22 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("GUEST") })
 	public static Result loginAuthen() {
-		Form form = form(LoginForm.class).bindFromRequest();
+		Form<LoginForm>form = form(LoginForm.class).bindFromRequest();
 		if (form.hasErrors()) {
 			flash("error", "Username or Password is incorrect");
 			return badRequest(login.render(routes.Application.welcome().url()));
 		}
-		LoginForm loginForm = form(LoginForm.class).bindFromRequest().get();
+		LoginForm loginForm = form.get();
 		Logger.info(loginForm.getEmail());
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler userHandler = new UserHandler();
 		User u = ah.doLogin(loginForm.getEmail(), loginForm.getPassword(),
 				Context.current(), userHandler);
 		if (u != null) {
-			Logger.info(u.getEmail());
 			return redirect(routes.Application.welcome());
 		}
 		flash("error", "Username or Password is incorrect");
-		return ok(login.render(loginForm.getRedirect()));
+		return badRequest(login.render(loginForm.getRedirect()));
 	}
 
 	@Transactional
@@ -310,18 +310,18 @@ public class Application extends Controller {
 		switch (UserRole.fromInteger(userRole)) {
 		case CUSTOMER:
 			form = form(CustomerForm.class).bindFromRequest();
-			if(form.hasErrors())
-				return notFound();
-			userForm = (UserForm) form.get();
-			break;
+			if (!form.hasErrors()) {
+				userForm = (UserForm) form.get();
+				break;
+			}
 		case TRAINER:
 			form = form(TrainerForm.class).bindFromRequest();
-			if(form.hasErrors())
-				return notFound();
-			userForm =  (UserForm) form.get();
-			break;
+			if (!form.hasErrors()) {
+				userForm = (UserForm) form.get();
+				break;
+			}
 		default:
-			return notFound();
+			return badRequest(signupemail.render());
 		}
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
@@ -336,7 +336,7 @@ public class Application extends Controller {
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result profile() {
 		UserHandler uh = new UserHandler();
-		User user = uh.getUserByEmail(session().get("connected"));
+		User user = (User) Context.current().args.get("connected");
 		if (user.getUserRole().ordinal() == 1) {
 			OrderHandler oh = new OrderHandler();
 			Collection<CourseOrder> order = oh
@@ -395,8 +395,7 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("CUSTOMER") })
 	public static Result basicInfo() {
-		UserHandler uh = new UserHandler();
-		User user = uh.getUserByEmail(session().get("connected"));
+		User user = (User) Context.current().args.get("connected");
 		switch (user.getUserRole()) {
 		case CUSTOMER:
 			return ok(cusinfo.render((Customer) user));
@@ -409,10 +408,7 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerInfo() {
-		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
-
+		Trainer trainer = (Trainer) Context.current().args.get("connected");
 		return ok(trainerinfo.render(trainer));
 	}
 
@@ -420,7 +416,7 @@ public class Application extends Controller {
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result editBasicInfo() {
 		UserHandler uh = new UserHandler();
-		User user = uh.getUserByEmail(session().get("connected"));
+		User user = (User) Context.current().args.get("connected");
 		LocationHandler lh = new LocationHandler();
 		List<String> stateList = LocationHandler.getStateList();
 		switch (user.getUserRole()) {
@@ -436,20 +432,29 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result basicInfoEditSubmit() {
-		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		IUserHandler uh = new UserHandler();
-		uh.updateProfile(session().get("connected"), cusForm.get());
+		User user = (User) Context.current().args.get("connected");
+		Form<UserForm> userForm = form(UserForm.class).bindFromRequest();
+		if(userForm.hasErrors()){
+			List<String> stateList = LocationHandler.getStateList();
+			switch (user.getUserRole()) {
+			case CUSTOMER:
+				return ok(cusinfoedit.render((Customer) user, stateList));
+			case TRAINER:
+				return ok(trainerbasicinfoedit.render((Trainer) user, stateList));
+			}
+		}
+		uh.updateProfile(session().get("connected"), userForm.get());
 		if (request().body().asMultipartFormData() != null) {
 			try {
 				FilePart picture = request().body().asMultipartFormData()
 						.getFile("picture");
-				String oldpath = uh.getUserByEmail(session().get("connected"))
-						.getImage();
+				String oldpath = user.getImage();
 				ImageHandler ih = new ImageHandler();
 				if (ih.processImage(request().body().asMultipartFormData()
 						.getFile("picture"), oldpath) != null) {
 					String imagePath = ih.processImage(picture, oldpath);
-					uh.getUserByEmail(session().get("connected")).setImage(
+					user.setImage(
 							imagePath);
 				}
 			} catch (Exception e) {
@@ -464,8 +469,7 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result changepsw() {
-		UserHandler uh = new UserHandler();
-		User user = uh.getUserByEmail(session().get("connected"));
+		User user = (User) Context.current().args.get("connected");
 		switch (user.getUserRole()) {
 		case CUSTOMER:
 			return ok(cuschangepsw.render());
@@ -480,8 +484,17 @@ public class Application extends Controller {
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
 	public static Result changepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
-		UserHandler uh = new UserHandler();
-		User user = uh.getUserByEmail(session().get("connected"));
+		User user = (User) Context.current().args.get("connected");
+		if(npf.hasErrors()){
+			switch (user.getUserRole()) {
+			case CUSTOMER:
+				return badRequest(cuschangepsw.render());
+			case TRAINER:
+				return badRequest(trainerchangepsw.render());
+			default:
+				return internalServerError();
+			}
+		}
 		String password = user.getPassword();
 
 		if (Password.check(npf.get().getOldpsw(), password) == false) {
@@ -547,8 +560,7 @@ public class Application extends Controller {
 		Logger.info(start);
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
+		Trainer trainer = (Trainer) Context.current().args.get("connected");
 		trainer.getAvailableDates().add(date);
 		return ok("lala");
 	}
@@ -559,8 +571,7 @@ public class Application extends Controller {
 		String start = form().bindFromRequest().get("start");
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
+		Trainer trainer = (Trainer)Context.current().args.get("connected");
 		uh.removeAvailableDate(date, trainer);
 
 		return ok();
@@ -632,9 +643,7 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerInfoEdit() {
-		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer) uh.getUserByEmail(session()
-				.get("connected"));
+		Trainer trainer = (Trainer) Context.current().args.get("connected");
 		return ok(trainerinfoedit.render(trainer));
 	}
 
@@ -643,8 +652,11 @@ public class Application extends Controller {
 	public static Result trainerInfoEditSubmit() {
 		Form<TrainerForm> trainerForm = form(TrainerForm.class)
 				.bindFromRequest();
-		Logger.info(trainerForm.get().getName());
+		User user = (User) Context.current().args.get("connected");
 		IUserHandler uh = new UserHandler();
+		if(trainerForm.hasErrors())
+			return badRequest(trainerinfoedit.render((Trainer)user));
+		Logger.info(trainerForm.get().getName());
 		uh.updateProfile(session().get("connected"), trainerForm.get());
 		return redirect(routes.Application.trainerInfo());
 	}
@@ -658,7 +670,10 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcoursesubmit() {
-		CourseForm courseForm = form(CourseForm.class).bindFromRequest().get();
+		Form<CourseForm> form = form(CourseForm.class).bindFromRequest();
+		if(form.hasErrors())
+			return badRequest(traineraddcourse.render());
+		CourseForm courseForm = form.get();
 		Logger.info(courseForm.getCourseDesc() + "hahaha");
 		CourseHandler ch = new CourseHandler();
 		Course course = ch.addNewCourse(session().get("connected"), courseForm,
@@ -770,7 +785,7 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result dashConcreteCourseUpdate() {
-		
+
 		ConcreteCourseForm concreteCourseForm = form(ConcreteCourseForm.class)
 				.bindFromRequest().get();
 		Logger.info(concreteCourseForm.getConcreteCourseId());
