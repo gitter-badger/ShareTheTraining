@@ -16,7 +16,10 @@ function deleteItems(Items) {
     getJsonData();
     jsRoutes.controllers.Application.dashConcreteCourseDelete().ajax({
         data : JsonData,
-        success : {}
+        success : function(data){
+        	if(false==data.result)
+        		errorMsgAlert('delete failed, there may be subcourse still exist');
+        }
     });
     
  

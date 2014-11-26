@@ -1,8 +1,11 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -20,6 +23,9 @@ public class NotificationFilterBuilder implements FilterBuilder {
 	Date creation = null;
 
 	Class objectClass = null;
+
+	private static Set<String> orderBySet = new HashSet<String>(
+			Arrays.asList("created"));
 
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
@@ -43,7 +49,7 @@ public class NotificationFilterBuilder implements FilterBuilder {
 				true);
 		predicates.add(cb.greaterThanOrEqualTo(
 				entityRoot.<Date> get("created"), creation));
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
 					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
 					.get(orderByColumn));

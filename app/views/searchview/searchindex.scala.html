@@ -1,13 +1,23 @@
 
 @import models.courses._
-@(course: Collection[Course],states: Collection[String],pageNumber: Integer = 1, query: String = "")
+@(course: Collection[Course],states: Collection[String],pageNumber: Integer = 1, query: String = "", newKeyword: String, newKeywordUrl: String)
 @import helper._
 @implicitField = @{ FieldConstructor(myFieldConstructorTemplate.f) }
 
-
+@tail = {
+<script>
+@if(newKeyword!=null){
+		var para = document.createElement("label");
+		var node = document.createTextNode("*Recommend search: <a href='@(routes.Application.search("default",pageNumber)+"?"+newKeywordUrl)'>@newKeyword</a>");
+		para.appendChild(node);
+		var element = document.getElementById("key_words");
+		element.appendChild(para);
+}
+</script>
+}
 
 <!-- main courselist -->
-@main("search result"){
+@main("search result",tail){
 <section class="wrapper-sm bg-highlight">
 		<div class="container">
 			<div class="row">
@@ -30,7 +40,7 @@
 								<li><a href="#">4</a></li>
 								<li><a href="#">...</a></li>
 								<li><a href="#">10</a></li>
-								<li><a href="@(routes.Application.search(pageNumber)+"?"+query)">»</a></li>
+								<li><a href="@(routes.Application.search("default",pageNumber)+"?"+query)">»</a></li>
 							</ul><!-- /.pagination -->
 						</div><!-- /.col -->
 					</div><!-- /.row --> <!-- End of pagination -->

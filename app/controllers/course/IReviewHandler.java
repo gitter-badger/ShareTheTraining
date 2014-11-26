@@ -14,5 +14,6 @@ public interface IReviewHandler {
 	public Review writeReview(ReviewForm reviewForm, Customer author,
 			IOrderHandler orderHandler);
 
-	
+	public Collection getReviewByCustomerRule(FilterBuilder fb, String orderByColumn,
+			int pageNumber, int pageSize);
 }

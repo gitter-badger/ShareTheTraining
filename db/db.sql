@@ -25,6 +25,13 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- Table structure for table `zips`
 --
 
+CREATE TABLE IF NOT EXISTS `category` (
+     `id` MEDIUMINT NOT NULL AUTO_INCREMENT,
+     `name` CHAR(30) NOT NULL,
+     PRIMARY KEY (id)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+
 CREATE TABLE IF NOT EXISTS `notification` (
 	`action` int(2) DEFAULT -1,
 	`action_timestamp` TIMESTAMP DEFAULT '1970-01-01 00:00:01'

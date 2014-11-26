@@ -1,7 +1,10 @@
 package models.filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -30,7 +33,8 @@ public class UserFilterBuilder implements FilterBuilder {
 	boolean education = false;
 	boolean experience = false;
 	int registerCourseCount = -1;
-
+	private static  Set<String> orderBySet = new HashSet<String>(Arrays.asList("userRole", "userStatus"));
+	private static  Set<String> trainerOrderBySet = new HashSet<String>(Arrays.asList("rating", "veteranRole"));
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
@@ -80,7 +84,7 @@ public class UserFilterBuilder implements FilterBuilder {
 			predicates.add(cb.equal(entityRoot.<String> get("username"),
 					username));
 		}
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
 					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
 					.get(orderByColumn));
@@ -127,7 +131,12 @@ public class UserFilterBuilder implements FilterBuilder {
 			}
 			predicates.add(keyWordConditions);
 		}
-		if (orderByColumn != null) {
+		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
+			javax.persistence.criteria.Order order = ascending ? cb
+					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
+					.get(orderByColumn));
+			criteria.orderBy(order);
+		} else if (orderByColumn != null && trainerOrderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
 					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
 					.get(orderByColumn));

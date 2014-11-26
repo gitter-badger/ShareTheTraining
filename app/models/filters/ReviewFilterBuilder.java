@@ -18,42 +18,42 @@ import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
+import models.courses.Review;
 import models.users.Customer;
 
-public class OrderFilterBuilder implements FilterBuilder {
+public class ReviewFilterBuilder implements FilterBuilder {
 	int courseId = -1;
 	String concreteCourseId;
 	String userEmail;
-	int orderStatus = -1;
-
+	double highCourseRate = -1;
+	double lowCourseRate = -1;
+	double highTrainerRate;
+	double lowTrainerRate;
 	private static Set<String> orderBySet = new HashSet<String>(Arrays.asList(
-			"orderStatus", "orderDate"));
-	private static Set<String> customerOrderBySet = new HashSet<String>(
-			Arrays.asList("email"));
-	private static Set<String> courseOrderBySet = new HashSet<String>(
-			Arrays.asList("id", "category"));
+			"courseRatings", "trainerRatings"));
 	private static Set<String> concreteCourseOrderBySet = new HashSet<String>(
-			Arrays.asList("concreteCourseId"));
+			Arrays.asList("id", "courseCategory", "price", "popularity",
+					"rating"));
 
+	private static Set<String> customerOrderBySet = new HashSet<String>(
+			Arrays.asList("id", "courseCategory", "price", "popularity",
+					"rating"));
+
+	
 	@Override
 	public CriteriaQuery<Tuple> buildeQuery(CriteriaBuilder cb,
 			String orderByColumn, boolean ascending) {
 		CriteriaQuery<Tuple> criteria = cb.createTupleQuery();
-		Root<CourseOrder> entityRoot = criteria.from(CourseOrder.class);
+		Root<Review> entityRoot = criteria.from(Review.class);
 		Path<ConcreteCourse> concreteCourseRoot = entityRoot
 				.get("concreteCourse");
-		Path<Customer> customerRoot = entityRoot.get("customer");
+		Path<Customer> customerRoot = entityRoot.get("author");
 		Path<Course> courseRoot = concreteCourseRoot.get("courseInfo");
 		List<Selection> selections = new ArrayList<Selection>();
 		selections.add(0, entityRoot);
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		List<Predicate> predicates = new ArrayList<Predicate>();
-		if (orderStatus != -1) {
-			predicates.add(cb.equal(
-					entityRoot.<OrderStatus> get("orderStatus"),
-					OrderStatus.fromInteger(orderStatus)));
-		}
 		if (courseId != -1) {
 			predicates.add(cb.equal(courseRoot.<Integer> get("id"), courseId));
 		}
@@ -66,28 +66,37 @@ public class OrderFilterBuilder implements FilterBuilder {
 			predicates.add(cb.equal(customerRoot.<String> get("email"),
 					userEmail));
 		}
-		if (orderByColumn != null && orderBySet.contains(orderByColumn)) {
+		if(highCourseRate != -1){
+			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Double> get("courseRatings"),
+					highCourseRate));
+		}
+		if(lowCourseRate != -1){
+			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Double> get("courseRatings"),
+					lowCourseRate));
+		}
+		
+		if(highTrainerRate != -1){
+			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Double> get("trainerRatings"),
+					highTrainerRate));
+		}
+		if(lowTrainerRate != -1){
+			predicates.add(cb.lessThanOrEqualTo(entityRoot.<Double> get("trainerRatings"),
+					lowTrainerRate));
+		}
+		if (orderByColumn != null  && orderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(entityRoot.get(orderByColumn)) : cb.desc(entityRoot
-					.get(orderByColumn));
+					.asc(entityRoot.get(orderByColumn)) : cb
+					.desc(entityRoot.get(orderByColumn));
 			criteria.orderBy(order);
-		} else if (orderByColumn != null
-				&& customerOrderBySet.contains(orderByColumn)) {
+		} else if (orderByColumn != null  && concreteCourseOrderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(customerRoot.get(orderByColumn)) : cb.desc(customerRoot
-					.get(orderByColumn));
+					.asc(concreteCourseRoot.get(orderByColumn)) : cb
+					.desc(concreteCourseRoot.get(orderByColumn));
 			criteria.orderBy(order);
-		} else if (orderByColumn != null
-				&& concreteCourseOrderBySet.contains(orderByColumn)) {
+		} else if (orderByColumn != null  && customerOrderBySet.contains(orderByColumn)) {
 			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(concreteCourseRoot.get(orderByColumn)) : cb.desc(concreteCourseRoot
-					.get(orderByColumn));
-			criteria.orderBy(order);
-		} else if (orderByColumn != null
-				&& courseOrderBySet.contains(orderByColumn)) {
-			javax.persistence.criteria.Order order = ascending ? cb
-					.asc(courseRoot.get(orderByColumn)) : cb.desc(courseRoot
-					.get(orderByColumn));
+					.asc(entityRoot.get(orderByColumn)) : cb
+					.desc(entityRoot.get(orderByColumn));
 			criteria.orderBy(order);
 		}
 		criteria.where(predicates.toArray(new Predicate[] {}));
@@ -118,12 +127,38 @@ public class OrderFilterBuilder implements FilterBuilder {
 		this.userEmail = userEmail;
 	}
 
-	public int getOrderStatus() {
-		return orderStatus;
+	public double getHighCourseRate() {
+		return highCourseRate;
 	}
 
-	public void setOrderStatus(int orderStatus) {
-		this.orderStatus = orderStatus;
+	public void setHighCourseRate(double highCourseRate) {
+		this.highCourseRate = highCourseRate;
 	}
+
+	public double getLowCourseRate() {
+		return lowCourseRate;
+	}
+
+	public void setLowCourseRate(double lowCourseRate) {
+		this.lowCourseRate = lowCourseRate;
+	}
+
+	public double getHighTrainerRate() {
+		return highTrainerRate;
+	}
+
+	public void setHighTrainerRate(double highTrainerRate) {
+		this.highTrainerRate = highTrainerRate;
+	}
+
+	public double getLowTrainerRate() {
+		return lowTrainerRate;
+	}
+
+	public void setLowTrainerRate(double lowTrainerRate) {
+		this.lowTrainerRate = lowTrainerRate;
+	}
+
+
 
 }

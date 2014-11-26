@@ -46,10 +46,12 @@ import models.courses.CourseOrder;
 import models.courses.CourseStatus;
 import models.courses.OrderStatus;
 import models.courses.Review;
+import models.filters.BackendCourseFilter;
 import models.filters.ConcreteCourseFilterBuilder;
 import models.filters.CourseFilterBuilder;
 import models.filters.FilterBuilder;
 import models.filters.OrderFilterBuilder;
+import models.filters.ReviewFilterBuilder;
 import models.filters.UserFilterBuilder;
 import models.forms.AdminForm;
 import models.forms.ConcreteCourseForm;
@@ -66,6 +68,7 @@ import models.forms.UserForm;
 import models.locations.Geolocation;
 import models.locations.Location;
 import models.users.Admin;
+import models.spellchecker.SolrSuggestions;
 import models.users.Customer;
 import models.users.Trainer;
 import models.users.User;
@@ -153,24 +156,26 @@ public class Application extends Controller {
 	}
 
 	public static Result login() {
-		return ok(login.render());
+		String redirect = flash().get("redirect") == null ? routes.Application
+				.welcome().url() : flash().get("redirect");
+		return ok(login.render(redirect));
 	}
 
 	@Transactional
 	public static Result loginAuthen() {
-		Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
+		LoginForm loginForm = form(LoginForm.class).bindFromRequest().get();
+		Logger.info(loginForm.getEmail());
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler userHandler = new UserHandler();
-		User u = ah.doLogin(loginForm.get().getEmail(), loginForm.get()
-				.getPassword(), Context.current(), userHandler);
+		User u = ah.doLogin(loginForm.getEmail(), loginForm.getPassword(),
+				Context.current(), userHandler);
 		if (u != null) {
 
 			Logger.info(u.getEmail());
 			return redirect(routes.Application.welcome());
 		}
 		flash("error", "Username or Password is incorrect");
-
-		return ok(login.render());
+		return ok(login.render(loginForm.getRedirect()));
 	}
 
 	@Transactional
@@ -228,13 +233,15 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result search(Integer pageNumber) {
-		Logger.info(Utility.getQueryString(request().uri()));
+	public static Result search(String orderBy, Integer pageNumber) {
+		orderBy = "default".equals(orderBy)?null:orderBy;
 		CourseFilterForm filterForm = form(CourseFilterForm.class)
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		filterForm.transferChoiceToRange();
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm, null,
+		filterForm.setCurentLocation(LocationHandler
+				.getLocationFromSession(session()));
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm, orderBy,
 				true, pageNumber < 1 ? 1 : pageNumber, Play.application()
 						.configuration().getInt("page.size.search"));
 		Logger.info("course" + course.size());
@@ -245,8 +252,18 @@ public class Application extends Controller {
 		ccfb.setCfb(filterForm);
 		Map<Integer, List<ConcreteCourse>> courseMap = ch.getConcreteCourseMap(
 				ccfb, null, true, -1, -1);
+		String newKeyword = null, newKeywordQuery = null;
+		if (filterForm.getKeyword() != null) {
+			newKeyword = SolrSuggestions
+					.getSuggestions(filterForm.getKeyword());
+			if (newKeyword != null) {
+				newKeywordQuery = Utility.replaceKeyword(
+						Utility.getQueryString(request().uri()),
+						filterForm.getKeyword(), newKeyword);
+			}
+		}
 		return ok(searchindex.render(course, states, pageNumber + 1,
-				Utility.getQueryString(request().uri())));
+				Utility.getQueryString(request().uri()),newKeyword, newKeywordQuery));
 	}
 
 
@@ -567,14 +584,15 @@ public class Application extends Controller {
 	// TODO writetogether
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
-	public static Result trainerCourseHistory(int status) {
+	public static Result trainerCourseHistory(int status, int page) {
 		if (CourseStatus.fromInteger(status) != null) {
 			CourseHandler ch = new CourseHandler();
-			CourseFilterBuilder fb = new CourseFilterBuilder();
+			BackendCourseFilter fb = new BackendCourseFilter();
 			fb.setCourseStatus(status);
 			fb.setTrainerEmail(session().get("connected"));
 			Collection<Course> course = ch.getCourseByCustomRule(fb, null,
-					true, 1, 10);
+					true, page < 1 ? 1 : page, Play.application()
+							.configuration().getInt("page.size.search"));
 
 			return ok(trainercoursehistory.render(course));
 		}
@@ -617,7 +635,7 @@ public class Application extends Controller {
 				new UserHandler());
 
 		return redirect(routes.Application
-				.trainerCourseHistory(CourseStatus.VERIFYING.ordinal()));
+				.trainerCourseHistory(CourseStatus.VERIFYING.ordinal(),1));
 	}
 
 	@Transactional
@@ -758,7 +776,7 @@ public class Application extends Controller {
 	@Transactional
 	public static Result dashCourse() {
 		CourseHandler ch = new CourseHandler();
-		FilterBuilder fb = new CourseFilterBuilder();
+		FilterBuilder fb = new BackendCourseFilter();
 
 		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true,
 				-1, -1);
@@ -875,8 +893,18 @@ public class Application extends Controller {
 	
 	@Transactional
 	public static Result dashRating(){
+		ReviewHandler rh = new ReviewHandler();
+		FilterBuilder fb = new ReviewFilterBuilder();
 		
-		return TODO;
+		Collection<Review> review = rh.getReviewByCustomerRule(fb, null, -1, -1);
+
+		Collection<ReviewForm> reviewForm = new ArrayList<ReviewForm>();
+		for (Review re : review) {
+			ReviewForm rf = ReviewForm.bindReviewForm(re);
+			reviewForm.add(rf);
+		}
+		System.out.print(Json.toJson(reviewForm));
+		return ok(Json.toJson(reviewForm));
 	}
 	
 	

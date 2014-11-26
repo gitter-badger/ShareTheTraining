@@ -32,13 +32,16 @@ public class SolrSuggestions {
 				QueryResponse response = server.query(params);
 				if (response != null) {
 					SpellCheckResponse scr = response.getSpellCheckResponse();
-					if (scr != null && scr.getCollatedResult() != null)
-						return scr.getCollatedResult();
+					if (scr != null && scr.getCollatedResult() != null){
+						String result = scr.getCollatedResult();
+						if(!result.equals("")&&!result.equals(queryStr))
+							return result;
+					}
 				}
 			} catch (Exception e) {
 				Logger.error(e.toString());
 			}
 		}
-		return queryStr;
+		return null;
 	}
 }

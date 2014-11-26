@@ -7,6 +7,8 @@ public class LoginForm {
 	private String email;
 	
 	private String password;
+	
+	private String redirect;
 
 	public String getUsername() {
 		return username;
@@ -34,6 +36,14 @@ public class LoginForm {
 
 	public LoginForm() {
 		
+	}
+
+	public String getRedirect() {
+		return redirect;
+	}
+
+	public void setRedirect(String redirect) {
+		this.redirect = redirect;
 	}
 	 
 	

@@ -166,7 +166,6 @@ public class CourseHandlerTest extends BaseTest {
 		} catch (Exception e) {
 			Logger.error(e.toString());
 		}
-
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.getLocations().add(new Location("nearby", null, ""));
@@ -188,7 +187,8 @@ public class CourseHandlerTest extends BaseTest {
 		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
 		ccfb.setCfb(cb);
 		ccfb.setCourseList(result);
-		Map<Integer,List<ConcreteCourse>> map = courseHandler.getConcreteCourseMap(ccfb, null, true, -1, -1);
+		Map<Integer,List<ConcreteCourse>> map = courseHandler.getConcreteCourseMap(ccfb, "courseCategory", true, -1, -1);
+		Logger.info("heheho");
 		int count = 0;
 		Iterator<Entry<Integer, List<ConcreteCourse>>> it = map.entrySet().iterator();
 	    while (it.hasNext()) {

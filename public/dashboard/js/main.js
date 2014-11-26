@@ -628,3 +628,15 @@ function addDBtn()
 var html = "<a class='btn btn-danger btndelete'><i class='glyphicon glyphicon-trash icon-white'></i>Delete</a>";
 $(".btns").append(html);
 }
+
+
+function errorMsg(msg)
+{
+    $("#errorDialog").modal("toggle");
+    $('.errorMsg').text(msg);    
+}
+
+function errorMsgAlert(msg)
+{
+    alert(msg);
+}

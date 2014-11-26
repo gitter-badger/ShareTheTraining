@@ -33,7 +33,7 @@ GET    /customer/coursehistory/:type      controllers.Application.customerCourse
 
 #profile-trainer
 GET    /trainerschedule             controllers.Application.trainerschedule()
-GET    /trainer/coursehistory/:type       controllers.Application.trainerCourseHistory(type: Integer)
+GET    /trainer/coursehistory/:type       controllers.Application.trainerCourseHistory(type: Integer, page: Integer ?= 1)
 GET    /trainerinfo                 controllers.Application.trainerInfo()
 GET    /trainerinfoedit             controllers.Application.trainerInfoEdit()
 GET    /traineraddcourse            controllers.Application.traineraddcourse()
@@ -54,7 +54,7 @@ GET    /activate                    controllers.Application.activate(token: Stri
 POST    /resetpsw                    controllers.Application.authorizeResetPassword(token: String)
 
 #search
-GET    /search/:pageNumber  	                controllers.Application.search(pageNumber: Integer )
+GET    /search/:orderBy/:pageNumber  controllers.Application.search(orderBy: String, pageNumber: Integer )
 
 #itempage
 GET    /itempage/:id                controllers.Application.itempage(id: Integer)
