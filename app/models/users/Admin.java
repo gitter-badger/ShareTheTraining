@@ -18,9 +18,9 @@ public class Admin extends User {
 
 	private String phone;
 
-	private Location location;
+	private Location location= new Location(null, null, "", 0, 0);
 	
-	
+	private boolean isSuper;
 	
 	public String getName() {
 		return name;
@@ -74,6 +74,14 @@ public class Admin extends User {
 		List<UserRole> list = new ArrayList<UserRole>();
 		list.add(this.getUserRole());
 		return list;
+	}
+
+	public boolean isSuper() {
+		return isSuper;
+	}
+
+	public void setSuper(boolean isSuper) {
+		this.isSuper = isSuper;
 	}
 
 }

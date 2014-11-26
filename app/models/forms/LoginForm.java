@@ -1,11 +1,16 @@
 package models.forms;
 
+import play.data.validation.Constraints;
+
 public class LoginForm {
+	
 	
 	private String username;
 	
+	@Constraints.Required
 	private String email;
 	
+	@Constraints.Required
 	private String password;
 	
 	private String redirect;

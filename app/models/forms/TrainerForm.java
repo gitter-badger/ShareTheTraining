@@ -42,7 +42,6 @@ public class TrainerForm extends UserForm {
 	
 	private String userName;
 	
-	
 	private boolean isVeteran;
 
 	@JsonFormat(shape= JsonFormat.Shape.NUMBER_INT)
@@ -232,6 +231,7 @@ public class TrainerForm extends UserForm {
 		return trainerForm;
 
 	}
+
 	
 
 }

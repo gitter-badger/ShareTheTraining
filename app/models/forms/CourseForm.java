@@ -3,6 +3,7 @@ package models.forms;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import play.data.validation.Constraints;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseStatus;
@@ -14,6 +15,7 @@ public class CourseForm {
 	
 	private Integer courseId;
 
+	@Constraints.Required
 	private String courseName;
 	
 	private String trainerId;

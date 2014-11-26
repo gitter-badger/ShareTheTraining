@@ -155,6 +155,7 @@ public class Application extends Controller {
 
 	}
 
+	@Restrict({ @Group("GUEST") })
 	public static Result login() {
 		String redirect = flash().get("redirect") == null ? routes.Application
 				.welcome().url() : flash().get("redirect");
@@ -162,7 +163,13 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result loginAuthen() {
+		Form form = form(LoginForm.class).bindFromRequest();
+		if (form.hasErrors()) {
+			flash("error", "Username or Password is incorrect");
+			return badRequest(login.render(routes.Application.welcome().url()));
+		}
 		LoginForm loginForm = form(LoginForm.class).bindFromRequest().get();
 		Logger.info(loginForm.getEmail());
 		AuthenticationHandler ah = new AuthenticationHandler();
@@ -170,7 +177,6 @@ public class Application extends Controller {
 		User u = ah.doLogin(loginForm.getEmail(), loginForm.getPassword(),
 				Context.current(), userHandler);
 		if (u != null) {
-
 			Logger.info(u.getEmail());
 			return redirect(routes.Application.welcome());
 		}
@@ -187,45 +193,58 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result resetpsw() {
 		Form<ResetPswForm> resetPswForm = form(ResetPswForm.class)
 				.bindFromRequest();
+		if (resetPswForm.hasErrors()) {
+			flash("error", "= =");
+			// TODO wo bu zhi dao zhuan na li
+			return notFound();
+		}
 		AuthenticationHandler ah = new AuthenticationHandler();
 		IUserHandler uh = new UserHandler();
-		ah.doResetPassword(resetPswForm.get().getToken(), resetPswForm.get()
-				.getNewPassword(), uh);
-		return ok(resetpswconfirm.render());
+		if (ah.doResetPassword(resetPswForm.get().getToken(), resetPswForm
+				.get().getNewPassword(), uh)) {
+			return ok(resetpswconfirm.render());
+		}
+		// TODO wo bu zhi dao zhuan na li
+		return notFound();
 	}
 
 	// TODO show password form here
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result authorizeResetPassword(String token) {
 		return ok(auth_password.render(token));
 	}
 
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result forgetpsw() {
 		return ok(forgetpsw.render());
 	}
 
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result forgetpswsubmit() {
-		Form<LoginForm> loginForm = form(LoginForm.class).bindFromRequest();
-		UserHandler uh = new UserHandler();
-		User u = uh.getUserByEmail(loginForm.get().getEmail());
-		if (u != null) {
-			AuthenticationHandler ah = new AuthenticationHandler();
-			IMailHandler mh = new MailHandler();
-			ah.authorizeResetPassword(loginForm.get().getUsername(), loginForm
-					.get().getEmail(), mh);
-			return ok(forgetpswconfirm.render());
+		String email = form().bindFromRequest().get("email");
+		if (email != null) {
+			UserHandler uh = new UserHandler();
+			User u = uh.getUserByEmail(email);
+			if (u != null) {
+				AuthenticationHandler ah = new AuthenticationHandler();
+				IMailHandler mh = new MailHandler();
+				ah.authorizeResetPassword(u.getUsername(), u.getEmail(), mh);
+				return ok(forgetpswconfirm.render());
+			}
 		}
 		flash("error", "email doesn't exist!!!");
 		return ok(forgetpsw.render());
-
 	}
 
 	@Transactional
+	@Restrict({ @Group("!GUEST") })
 	public static Result logout() {
 		AuthenticationHandler ah = new AuthenticationHandler();
 		ah.doLogout(Context.current());
@@ -234,16 +253,16 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result search(String orderBy, Integer pageNumber) {
-		orderBy = "default".equals(orderBy)?null:orderBy;
+		orderBy = "default".equals(orderBy) ? null : orderBy;
 		CourseFilterForm filterForm = form(CourseFilterForm.class)
 				.bindFromRequest().get();
 		CourseHandler ch = new CourseHandler();
 		filterForm.transferChoiceToRange();
 		filterForm.setCurentLocation(LocationHandler
 				.getLocationFromSession(session()));
-		Collection<Course> course = ch.getCourseByCustomRule(filterForm, orderBy,
-				true, pageNumber < 1 ? 1 : pageNumber, Play.application()
-						.configuration().getInt("page.size.search"));
+		Collection<Course> course = ch.getCourseByCustomRule(filterForm,
+				orderBy, true, pageNumber < 1 ? 1 : pageNumber,
+				Play.application().configuration().getInt("page.size.search"));
 		Logger.info("course" + course.size());
 		LocationHandler lh = new LocationHandler();
 		// TODO cache
@@ -262,14 +281,13 @@ public class Application extends Controller {
 						filterForm.getKeyword(), newKeyword);
 			}
 		}
-		return ok(searchindex.render(course, states, pageNumber + 1,
-				Utility.getQueryString(request().uri()),newKeyword, newKeywordQuery));
+		return ok(searchindex.render(course, states, pageNumber,
+				Utility.getQueryString(request().uri()), newKeyword,
+				newKeywordQuery));
 	}
 
-
-
 	@Transactional
-	@Restrict({ @Group("!CUSTOMER"), @Group("!TRAINER") })
+	@Restrict({ @Group("GUEST") })
 	public static Result signup(int userRole) {
 		Logger.info(session().get("connected"));
 		List<String> stateList = LocationHandler.getStateList();
@@ -285,14 +303,22 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("GUEST") })
 	public static Result signupSubmit(int userRole) {
 		UserForm userForm = null;
+		Form form;
 		switch (UserRole.fromInteger(userRole)) {
 		case CUSTOMER:
-			userForm = form(CustomerForm.class).bindFromRequest().get();
+			form = form(CustomerForm.class).bindFromRequest();
+			if(form.hasErrors())
+				return notFound();
+			userForm = (UserForm) form.get();
 			break;
 		case TRAINER:
-			userForm = form(TrainerForm.class).bindFromRequest().get();
+			form = form(TrainerForm.class).bindFromRequest();
+			if(form.hasErrors())
+				return notFound();
+			userForm =  (UserForm) form.get();
 			break;
 		default:
 			return notFound();
@@ -409,22 +435,26 @@ public class Application extends Controller {
 
 	@Transactional
 	@Restrict({ @Group("CUSTOMER"), @Group("TRAINER") })
-	public static Result basicInfoEditSubmit() throws IOException {
+	public static Result basicInfoEditSubmit() {
 		Form<CustomerForm> cusForm = form(CustomerForm.class).bindFromRequest();
 		IUserHandler uh = new UserHandler();
 		uh.updateProfile(session().get("connected"), cusForm.get());
-
-		// image processing
-		FilePart picture = request().body().asMultipartFormData()
-				.getFile("picture");
-		String oldpath = uh.getUserByEmail(session().get("connected"))
-				.getImage();
-		ImageHandler ih = new ImageHandler();
-		if (ih.processImage(
-				request().body().asMultipartFormData().getFile("picture"),
-				oldpath) != null) {
-			String imagePath = ih.processImage(picture, oldpath);
-			uh.getUserByEmail(session().get("connected")).setImage(imagePath);
+		if (request().body().asMultipartFormData() != null) {
+			try {
+				FilePart picture = request().body().asMultipartFormData()
+						.getFile("picture");
+				String oldpath = uh.getUserByEmail(session().get("connected"))
+						.getImage();
+				ImageHandler ih = new ImageHandler();
+				if (ih.processImage(request().body().asMultipartFormData()
+						.getFile("picture"), oldpath) != null) {
+					String imagePath = ih.processImage(picture, oldpath);
+					uh.getUserByEmail(session().get("connected")).setImage(
+							imagePath);
+				}
+			} catch (Exception e) {
+				Logger.error(e.toString());
+			}
 		}
 		flash("error", "Missing file");
 		return redirect(routes.Application.editBasicInfo());
@@ -585,18 +615,18 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("TRAINER") })
 	public static Result trainerCourseHistory(int status, int page) {
-		if (CourseStatus.fromInteger(status) != null) {
-			CourseHandler ch = new CourseHandler();
-			BackendCourseFilter fb = new BackendCourseFilter();
+		CourseHandler ch = new CourseHandler();
+		BackendCourseFilter fb = new BackendCourseFilter();
+		if (CourseStatus.fromInteger(status) != null)
 			fb.setCourseStatus(status);
-			fb.setTrainerEmail(session().get("connected"));
-			Collection<Course> course = ch.getCourseByCustomRule(fb, null,
-					true, page < 1 ? 1 : page, Play.application()
-							.configuration().getInt("page.size.search"));
+		else
+			status = -1;
+		fb.setTrainerEmail(session().get("connected"));
+		Collection<Course> course = ch.getCourseByCustomRule(fb, null, true,
+				page < 1 ? 1 : page,
+				Play.application().configuration().getInt("page.size.search"));
 
-			return ok(trainercoursehistory.render(course));
-		}
-		return notFound();
+		return ok(trainercoursehistory.render(course));
 	}
 
 	@Transactional
@@ -629,13 +659,26 @@ public class Application extends Controller {
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcoursesubmit() {
 		CourseForm courseForm = form(CourseForm.class).bindFromRequest().get();
-		Logger.info(courseForm.getCourseDesc()+"hahaha");
+		Logger.info(courseForm.getCourseDesc() + "hahaha");
 		CourseHandler ch = new CourseHandler();
-		ch.addNewCourse(session().get("connected"), courseForm,
+		Course course = ch.addNewCourse(session().get("connected"), courseForm,
 				new UserHandler());
-
-		return redirect(routes.Application
-				.trainerCourseHistory(CourseStatus.VERIFYING.ordinal(),1));
+		if (request().body().asMultipartFormData() != null) {
+			try {
+				FilePart picture = request().body().asMultipartFormData()
+						.getFile("picture");
+				ImageHandler ih = new ImageHandler();
+				if (ih.processImage(request().body().asMultipartFormData()
+						.getFile("picture"), null) != null) {
+					String imagePath = ih.processImage(picture, null);
+					course.setImage(imagePath);
+				}
+			} catch (Exception e) {
+				Logger.info(e.toString());
+			}
+		}
+		return redirect(routes.Application.trainerCourseHistory(
+				CourseStatus.VERIFYING.ordinal(), 1));
 	}
 
 	@Transactional
@@ -656,6 +699,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
+	@Restrict({ @Group("CUSTOMER") })
 	public static Result reviewSubmit() {
 		Form<ReviewForm> reviewForm = form(ReviewForm.class).bindFromRequest();
 		Logger.info(reviewForm.get().getComment());
@@ -726,16 +770,15 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result dashConcreteCourseUpdate() {
-		ConcreteCourseForm concreteCourseForm = form(
-				ConcreteCourseForm.class).bindFromRequest().get();
+		ConcreteCourseForm concreteCourseForm = form(ConcreteCourseForm.class)
+				.bindFromRequest().get();
 		Logger.info(concreteCourseForm.getConcreteCourseId());
 		Logger.info(concreteCourseForm.getLocation().getDetailedLoc());
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch
 				.getCourseByConcreteCourseId(concreteCourseForm
 						.getConcreteCourseId());
-		boolean flag = concreteCourseForm.bindConcreteCourse(
-				concreteCourse);
+		boolean flag = concreteCourseForm.bindConcreteCourse(concreteCourse);
 		ObjectNode result = Json.newObject();
 		if (flag == true) {
 			result.put("result", "true");
@@ -744,19 +787,19 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
+
 	@Transactional
-	public static Result dashConcreteCourseAdd() throws JsonParseException, JsonMappingException, IOException {
-		ConcreteCourseForm concreteCourseForm = form(
-				ConcreteCourseForm.class).bindFromRequest().get();
+	public static Result dashConcreteCourseAdd() throws JsonParseException,
+			JsonMappingException, IOException {
+		ConcreteCourseForm concreteCourseForm = form(ConcreteCourseForm.class)
+				.bindFromRequest().get();
 		if (concreteCourseForm.getCourseDates() != null) {
-			Logger.info(concreteCourseForm.getCourseDates().size()+"jhhhe");
-			
+			Logger.info(concreteCourseForm.getCourseDates().size() + "jhhhe");
+
 		}
 		CourseHandler ch = new CourseHandler();
 		ConcreteCourse concreteCourse = ch.addNewConcreteCourse(
-				concreteCourseForm.getTrainerEmail(),
-				concreteCourseForm);
+				concreteCourseForm.getTrainerEmail(), concreteCourseForm);
 		ObjectNode result = Json.newObject();
 		if (concreteCourse != null) {
 			result.put("result", "true");
@@ -828,25 +871,23 @@ public class Application extends Controller {
 		return ok(result);
 	}
 
-	
-
 	@Transactional
 	public static Result dashDashboard() {
 		return ok(Dashboard.render());
 
 	}
 
-
 	@Transactional
-	public static Result orderDisplay(){
+	public static Result orderDisplay() {
 		return ok(Course_order.render());
 	}
-	
+
 	@Transactional
-	public static Result dashOrder(){
+	public static Result dashOrder() {
 		OrderHandler oh = new OrderHandler();
 		FilterBuilder fb = new OrderFilterBuilder();
-		Collection<CourseOrder> courseOrder = oh.getCourseOrderByCustomRule(fb, null, -1, -1);
+		Collection<CourseOrder> courseOrder = oh.getCourseOrderByCustomRule(fb,
+				null, -1, -1);
 
 		Collection<CourseOrderForm> courseOrderForm = new ArrayList<CourseOrderForm>();
 		for (CourseOrder co : courseOrder) {
@@ -856,24 +897,26 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(courseOrderForm));
 		return ok(Json.toJson(courseOrderForm));
 	}
-	
+
 	@Transactional
-	public static Result dashOrderDetail(String orderId){
-		
+	public static Result dashOrderDetail(String orderId) {
+
 		OrderHandler oh = new OrderHandler();
 		CourseOrder courseOrder = oh.getCourseOrderByOrderId(orderId);
 		CourseOrderForm cof = CourseOrderForm.bindCourseOrderForm(courseOrder);
-		
+
 		System.out.print(Json.toJson(cof));
 		return ok(Json.toJson(cof));
-		
+
 	}
-	
+
 	@Transactional
-	public static Result dashOrderUpdate(){
-		CourseOrderForm courseOrderForm = form(CourseOrderForm.class).bindFromRequest().get();
+	public static Result dashOrderUpdate() {
+		CourseOrderForm courseOrderForm = form(CourseOrderForm.class)
+				.bindFromRequest().get();
 		OrderHandler oh = new OrderHandler();
-		CourseOrder courseOrder = oh.getCourseOrderByOrderId(courseOrderForm.getOrderId());
+		CourseOrder courseOrder = oh.getCourseOrderByOrderId(courseOrderForm
+				.getOrderId());
 		boolean flag = courseOrderForm.bindCourseOrder(courseOrder);
 		ObjectNode result = Json.newObject();
 		if (flag == true) {
@@ -883,20 +926,19 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
+
 	@Transactional
-	public static Result ratingDisplay(){
+	public static Result ratingDisplay() {
 		return ok(Rating.render());
 	}
-	
-	
-	
+
 	@Transactional
-	public static Result dashRating(){
+	public static Result dashRating() {
 		ReviewHandler rh = new ReviewHandler();
 		FilterBuilder fb = new ReviewFilterBuilder();
-		
-		Collection<Review> review = rh.getReviewByCustomerRule(fb, null, -1, -1);
+
+		Collection<Review> review = rh
+				.getReviewByCustomerRule(fb, null, -1, -1);
 
 		Collection<ReviewForm> reviewForm = new ArrayList<ReviewForm>();
 		for (Review re : review) {
@@ -906,24 +948,23 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(reviewForm));
 		return ok(Json.toJson(reviewForm));
 	}
-	
-	
-//	@Transactional
-//	public static Result dashOrderDelete(){
-//		CourseOrderForm courseOrderForm = form(CourseOrderForm.class).bindFromRequest().get();
-//		OrderHandler oh = new OrderHandler();
-//		boolean flag = oh.
-//		ObjectNode result = Json.newObject();
-//		if (flag == true) {
-//			result.put("result", "true");
-//			return ok(result);
-//		}
-//		result.put("result", "false");
-//		return ok(result);
-//	}
-	
+
+	// @Transactional
+	// public static Result dashOrderDelete(){
+	// CourseOrderForm courseOrderForm =
+	// form(CourseOrderForm.class).bindFromRequest().get();
+	// OrderHandler oh = new OrderHandler();
+	// boolean flag = oh.
+	// ObjectNode result = Json.newObject();
+	// if (flag == true) {
+	// result.put("result", "true");
+	// return ok(result);
+	// }
+	// result.put("result", "false");
+	// return ok(result);
+	// }
+
 	//
-	
 
 	@Transactional
 	public static Result trainerDisplay() {
@@ -946,20 +987,21 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(trainerForm));
 		return ok(Json.toJson(trainerForm));
 	}
-	
+
 	@Transactional
-	public static Result dashTrainerDetail(Integer id){
+	public static Result dashTrainerDetail(Integer id) {
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer)uh.getUserById(id);
+		Trainer trainer = (Trainer) uh.getUserById(id);
 		TrainerForm trainerForm = TrainerForm.bindTraienrForm(trainer);
-		
+
 		System.out.print(Json.toJson(trainerForm));
 		return ok(Json.toJson(trainerForm));
 	}
-	
+
 	@Transactional
-	public static Result dashTrainerUpdate(){
-		TrainerForm trainerForm = form(TrainerForm.class).bindFromRequest().get();
+	public static Result dashTrainerUpdate() {
+		TrainerForm trainerForm = form(TrainerForm.class).bindFromRequest()
+				.get();
 		UserHandler uh = new UserHandler();
 		User user = uh.getUserByEmail(trainerForm.getEmail());
 		boolean flag = trainerForm.bindUser(user);
@@ -971,7 +1013,7 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
+
 	@Transactional
 	public static Result customerDisplay() {
 		return ok(User_attendee.render());
@@ -993,20 +1035,21 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(customerForm));
 		return ok(Json.toJson(customerForm));
 	}
-	
+
 	@Transactional
-	public static Result dashCustomerDetail(Integer id){
+	public static Result dashCustomerDetail(Integer id) {
 		UserHandler uh = new UserHandler();
-		Customer customer = (Customer)uh.getUserById(id);
+		Customer customer = (Customer) uh.getUserById(id);
 		CustomerForm customerForm = CustomerForm.bindCustomerForm(customer);
-		
+
 		System.out.print(Json.toJson(customerForm));
 		return ok(Json.toJson(customerForm));
 	}
-	
+
 	@Transactional
-	public static Result dashCustomerUpdate(){
-		CustomerForm customerForm = form(CustomerForm.class).bindFromRequest().get();
+	public static Result dashCustomerUpdate() {
+		CustomerForm customerForm = form(CustomerForm.class).bindFromRequest()
+				.get();
 		UserHandler uh = new UserHandler();
 		User user = uh.getUserByEmail(customerForm.getEmail());
 		boolean flag = customerForm.bindUser(user);
@@ -1018,7 +1061,7 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
+
 	@Transactional
 	public static Result adminDisplay() {
 		return ok(User_admin.render());
@@ -1040,19 +1083,19 @@ public class Application extends Controller {
 		System.out.print(Json.toJson(adminForm));
 		return ok(Json.toJson(adminForm));
 	}
-	
+
 	@Transactional
-	public static Result dashAdminDetail(Integer id){
+	public static Result dashAdminDetail(Integer id) {
 		UserHandler uh = new UserHandler();
-		Admin admin = (Admin)uh.getUserById(id);
+		Admin admin = (Admin) uh.getUserById(id);
 		AdminForm adminForm = AdminForm.bindAdminForm(admin);
-		
+
 		System.out.print(Json.toJson(adminForm));
 		return ok(Json.toJson(adminForm));
 	}
-	
+
 	@Transactional
-	public static Result dashAdminUpdate(){
+	public static Result dashAdminUpdate() {
 		AdminForm adminForm = form(AdminForm.class).bindFromRequest().get();
 		UserHandler uh = new UserHandler();
 		User user = uh.getUserByEmail(adminForm.getEmail());
@@ -1065,12 +1108,14 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
+
 	@Transactional
-	public static Result dashAdminAdd(){
+	public static Result dashAdminAdd() {
 		AdminForm adminForm = form(AdminForm.class).bindFromRequest().get();
 		UserHandler uh = new UserHandler();
-		User user = uh.createNewUser(adminForm.getEmail(), adminForm.getUsername(), adminForm.getPassword(), UserRole.ADMIN);
+		User user = uh.createNewUser(adminForm.getEmail(),
+				adminForm.getUsername(), adminForm.getPassword(),
+				UserRole.ADMIN);
 		boolean flag = adminForm.bindUser(user);
 		ObjectNode result = Json.newObject();
 		if (flag == true) {
@@ -1080,10 +1125,7 @@ public class Application extends Controller {
 		result.put("result", "false");
 		return ok(result);
 	}
-	
-	
-	
-	
+
 	public static Result javascriptRoutes() {
 		response().setContentType("text/javascript");
 		return ok(Routes.javascriptRouter("jsRoutes",

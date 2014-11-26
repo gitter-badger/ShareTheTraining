@@ -79,6 +79,8 @@ public class Course extends BaseModelObject {
 	private int minimum = -1;
 
 	private int maximum = -1;
+	
+	private String image;
 
 	@OneToMany
 	private Collection<Review> reviews = new ArrayList<Review>();
@@ -350,6 +352,14 @@ public class Course extends BaseModelObject {
 
 	public void setMaximum(int maximum) {
 		this.maximum = maximum;
+	}
+
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
 	}
 
 }

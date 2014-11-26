@@ -64,6 +64,8 @@ public class Trainer extends User {
 	private Location location = new Location(null,null, "", 0, 0);
 	
 	private String companyInfo;
+	
+	private boolean displayRating;
 
 	@Override
 	public List<? extends Role> getRoles() {
@@ -223,6 +225,14 @@ public class Trainer extends User {
 
 	public void setCompanyInfo(String companyInfo) {
 		this.companyInfo = companyInfo;
+	}
+
+	public boolean isDisplayRating() {
+		return displayRating;
+	}
+
+	public void setDisplayRating(boolean displayRating) {
+		this.displayRating = displayRating;
 	}
 	
 	

@@ -2,6 +2,7 @@ package controllers.authentication;
 
 import controllers.routes;
 import controllers.user.UserHandler;
+import models.users.Guest;
 import models.users.User;
 import play.libs.F;
 import play.mvc.Http;
@@ -32,7 +33,7 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 					User u = new UserHandler().getUserByEmail(email);
 					return u;
 				}
-				return null;
+				return new Guest();
 			}
 		});
 	}

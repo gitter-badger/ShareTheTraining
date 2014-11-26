@@ -29,11 +29,11 @@ POST   /basicinfoeditsubmit         controllers.Application.basicInfoEditSubmit(
 POST   /changepswsubmit          	controllers.Application.changepswsubmit()
 
 #profile-cus
-GET    /customer/coursehistory/:type      controllers.Application.customerCourseHistory(type: Integer)
+GET    /customer/coursehistory/      controllers.Application.customerCourseHistory(status: Integer)
 
 #profile-trainer
 GET    /trainerschedule             controllers.Application.trainerschedule()
-GET    /trainer/coursehistory/:type       controllers.Application.trainerCourseHistory(type: Integer, page: Integer ?= 1)
+GET    /trainer/coursehistory/       controllers.Application.trainerCourseHistory(status: Integer ?= -1, page: Integer ?= 1)
 GET    /trainerinfo                 controllers.Application.trainerInfo()
 GET    /trainerinfoedit             controllers.Application.trainerInfoEdit()
 GET    /traineraddcourse            controllers.Application.traineraddcourse()

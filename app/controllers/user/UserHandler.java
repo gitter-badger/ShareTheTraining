@@ -81,7 +81,6 @@ public class UserHandler implements IUserHandler {
 		return null;
 	}
 
-	
 	@Override
 	public User createNewUser(String userEmail, String userName,
 			String password, UserRole userRole) {
@@ -99,7 +98,6 @@ public class UserHandler implements IUserHandler {
 		}
 	}
 
-
 	@Override
 	public boolean updateProfile(String userEmail, UserForm form) {
 		try {
@@ -108,7 +106,7 @@ public class UserHandler implements IUserHandler {
 				return false;
 			Logger.info(form.getEmail());
 			Logger.info(userEmail);
-			
+
 			return form.bindUser(user);
 		} catch (Exception e) {
 			Logger.error(e.toString());
@@ -119,13 +117,11 @@ public class UserHandler implements IUserHandler {
 	@Override
 	public boolean deactiveUser(String userEmail) {
 		User u = this.getUserByEmail(userEmail);
-		if(u==null)
+		if (u == null)
 			return false;
 		u.setUserStatus(UserStatus.INACTIVE);
 		return true;
 	}
-
-
 
 	@Override
 	public Collection<User> getUserByCustomeRule(FilterBuilder fb,
@@ -139,19 +135,32 @@ public class UserHandler implements IUserHandler {
 		}
 		return result;
 	}
-	
+
 	@Override
-	public boolean addAvailableDate(Date date, Trainer trainer){
-		if(trainer == null)
+	public boolean addAvailableDate(Date date, Trainer trainer) {
+		if (trainer == null)
 			return false;
 		return trainer.addAvailableDate(date);
 	}
-	
+
 	@Override
-	public boolean removeAvailableDate(Date date, Trainer trainer){
-		if(trainer == null)
+	public boolean removeAvailableDate(Date date, Trainer trainer) {
+		if (trainer == null)
 			return false;
 		return trainer.removeAvailableDate(date);
+	}
+
+	@Override
+	public Admin newAdmin(Admin superAdmin, String userEmail, String userName,
+			String password, UserForm userForm) {
+		if (superAdmin.isSuper()) {
+			Admin newAdmin = (Admin) this.createNewUser(userEmail, userName,
+					password, UserRole.ADMIN);
+			if (newAdmin != null)
+				userForm.bindUser(newAdmin);
+			return newAdmin;
+		}
+		return null;
 	}
 
 }

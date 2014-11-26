@@ -6,7 +6,8 @@ public enum UserRole implements Role
 {
     ADMIN,
     CUSTOMER,
-    TRAINER;
+    TRAINER,
+    GUEST;
 
     @Override
     public String getName()

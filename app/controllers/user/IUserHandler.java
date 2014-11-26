@@ -41,4 +41,7 @@ public interface IUserHandler {
 
 	public boolean removeAvailableDate(Date date, Trainer trainer);
 
+	public Admin newAdmin(Admin superAdmin, String userEmail, String userName,
+			String password, UserForm userForm);
+
 }

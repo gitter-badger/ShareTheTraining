@@ -1,0 +1,15 @@
+@(pageNumber: Integer = 1)(size: Integer = 0)(query: String = "")
+	@if(pageNumber == 1){
+		<li><a href="#">«</a></li>
+	}else{
+	<li  class="#"><a href="@(routes.Application.search("default",pageNumber-1)+"?"+query)">«</a></li>
+	}
+	<li><a href="active">@pageNumber</a></li>
+	@for(i <- pageNumber+1 to pageNumber+5){
+		<li><a href="#">@i</a></li>
+	}
+	@if(size!=0){
+	<li><a href="@(routes.Application.search("default",pageNumber+1)+"?"+query)">»</a></li>
+	}else{
+		<li class="inactive"><a href="#">»</a></li>
+	}
