@@ -1,9 +1,14 @@
 package controllers.course;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.Tuple;
+
+import common.Utility;
 
 import controllers.user.UserHandler;
 import play.db.jpa.JPA;
@@ -11,6 +16,7 @@ import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.Review;
+import models.filters.FilterBuilder;
 import models.forms.ReviewForm;
 import models.users.Customer;
 import models.users.User;
@@ -44,5 +50,17 @@ public class ReviewHandler implements IReviewHandler {
 			return review;
 		}
 		return null;
+	}
+	
+	@Override
+	public Collection<Review> getReviewByCustomerRule(FilterBuilder fb,
+			String orderByColumn, int pageNumber, int pageSize) {
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, orderByColumn,
+				true, pageNumber, pageSize, em);
+		Collection<Review> result = new ArrayList<Review>();
+		for (Tuple t : tupleList) {
+			result.add((Review) t.get(0));
+		}
+		return result;
 	}
 }

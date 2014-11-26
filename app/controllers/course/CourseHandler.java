@@ -1,5 +1,10 @@
 package controllers.course;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,6 +21,7 @@ import common.Utility;
 import controllers.user.IUserHandler;
 import controllers.user.UserHandler;
 import play.Logger;
+import play.db.DB;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
 import models.courses.ConcreteCourseStatus;
@@ -358,9 +364,62 @@ public class CourseHandler implements ICourseHandler {
 		ccfb.setCourseId(courseId);
 		Map<Integer, List<ConcreteCourse>> courseMap = this
 				.getConcreteCourseMap(ccfb, null, true, -1, -1);
-		if(courseMap.containsKey(courseId)){
+		if (courseMap.containsKey(courseId)) {
 			return courseMap.get(courseId);
 		}
 		return new ArrayList<ConcreteCourse>();
+	}
+
+	public static Map<Integer, String> getCategoryMap() {
+		Connection connection = DB.getConnection();
+		String selectSQL = "SELECT * FROM category";
+		Map<Integer, String> categoryMap = new HashMap<Integer, String>();
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement(selectSQL);
+			ResultSet rs = preparedStatement.executeQuery(selectSQL);
+			while (rs.next()) {
+				int category = rs.getInt("state");
+				String categoryText = rs.getString("city");
+				categoryMap.put(category, categoryText);
+
+			}
+		} catch (SQLException e) {
+			Logger.info(e.toString());
+		}
+		return categoryMap;
+	}
+	
+	public static boolean isCategoryExist(String category){
+		Connection connection = DB.getConnection();
+		String selectSQL = "SELECT * FORM category WHERE name = ?";
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement(selectSQL);
+			preparedStatement.setString(1, category);
+			ResultSet rs = preparedStatement.executeQuery(selectSQL);
+			if (rs.next()) 
+				return true;
+		} catch (SQLException e) {
+			Logger.info(e.toString());
+		}
+		return false;
+	}
+	
+	public static boolean addCategory(String category){
+		if (isCategoryExist(category))
+			return false;
+		Connection connection = DB.getConnection();
+		String updateSQL = "INSERT INTO category (name) ?";
+		try {
+			PreparedStatement preparedStatement = connection
+					.prepareStatement(updateSQL);
+			preparedStatement.setString(1, category);
+			preparedStatement.executeUpdate();
+			return true;
+		} catch (SQLException e) {
+			Logger.info(e.toString());
+			return false;
+		}
 	}
 }

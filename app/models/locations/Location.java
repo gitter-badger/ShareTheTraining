@@ -55,7 +55,7 @@ public class Location {
 		GeocodingResult[] results;
 		try {
 			results = GeocodingApi.geocode(context,
-					this.detailedLoc)
+					this.detailedLoc+" "+this.city+" "+this.region)
 					.await();
 			GeometryFactory geometryFactory = new GeometryFactory(
 					new PrecisionModel(), 4326);
