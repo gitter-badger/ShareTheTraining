@@ -73,7 +73,6 @@ import models.locations.Location;
 import models.users.Admin;
 import models.spellchecker.SolrSuggestions;
 import models.users.Customer;
-import models.users.Guest;
 import models.users.Trainer;
 import models.users.User;
 import models.users.UserAction;
@@ -148,7 +147,6 @@ public class Application extends Controller {
 
 	@Transactional
 	public static Result welcome() throws URISyntaxException {
-		CourseHandler.createEventbriteEvent(null);
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		Collection<Course> course = ch.getCourseByCustomRule(cfb, null, true,

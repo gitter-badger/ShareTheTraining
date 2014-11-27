@@ -58,20 +58,25 @@ public class CourseHandler implements ICourseHandler {
 	public CourseHandler() {
 		this.em = JPA.em();
 	}
-
 	
-	public Collection<ConcreteCourse> getAllConcreteCourse(){
-		ConcreteCourseFilterBuilder fb =new ConcreteCourseFilterBuilder();
+	public static Map<Integer, String> categoryMap;
+	
+	public static void initialize() {
+		categoryMap = getCategoryMap();
+	}
+
+	public Collection<ConcreteCourse> getAllConcreteCourse() {
+		ConcreteCourseFilterBuilder fb = new ConcreteCourseFilterBuilder();
 		fb.setCfb(new CourseFilterBuilder());
-		List<Tuple> tupleList = Utility.findBaseModelObject(fb, null,
-				true, -1, -1, em);
+		List<Tuple> tupleList = Utility.findBaseModelObject(fb, null, true, -1,
+				-1, em);
 		Collection<ConcreteCourse> result = new ArrayList<ConcreteCourse>();
 		for (Tuple t : tupleList) {
 			result.add((ConcreteCourse) t.get(0));
 		}
 		return result;
 	}
-	
+
 	@Override
 	public Course getCourseById(Integer courseId) {
 		String hql = "from Course c where c.id= :courseId";
@@ -272,6 +277,7 @@ public class CourseHandler implements ICourseHandler {
 			return null;
 		}
 	}
+
 	public static Promise<JSONObject> getOrderDetails(String orderId) {
 		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
 				"www.eventbriteapi.com/v3/orders/");
@@ -294,7 +300,7 @@ public class CourseHandler implements ICourseHandler {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse) {
 		return customer.dropCourse(concreteCourse);
@@ -419,7 +425,7 @@ public class CourseHandler implements ICourseHandler {
 		return new ArrayList<ConcreteCourse>();
 	}
 
-	public static Map<Integer, String> getCategoryMap() {
+	private static Map<Integer, String> getCategoryMap() {
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT * FROM category";
 		Map<Integer, String> categoryMap = new HashMap<Integer, String>();
@@ -438,8 +444,8 @@ public class CourseHandler implements ICourseHandler {
 		}
 		return categoryMap;
 	}
-	
-	public static boolean isCategoryExist(String category){
+
+	public static boolean isCategoryExist(String category) {
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT * FORM category WHERE name = ?";
 		try {
@@ -447,15 +453,17 @@ public class CourseHandler implements ICourseHandler {
 					.prepareStatement(selectSQL);
 			preparedStatement.setString(1, category);
 			ResultSet rs = preparedStatement.executeQuery(selectSQL);
-			if (rs.next()) 
+			if (rs.next()){
+				categoryMap.put(rs.getInt("id"), rs.getString("name"));
 				return true;
+			}
 		} catch (SQLException e) {
 			Logger.info(e.toString());
 		}
 		return false;
 	}
-	
-	public static boolean addCategory(String category){
+
+	public static boolean addCategory(String category) {
 		if (isCategoryExist(category))
 			return false;
 		Connection connection = DB.getConnection();
@@ -471,33 +479,6 @@ public class CourseHandler implements ICourseHandler {
 			return false;
 		}
 	}
+
 	
-	
-	public static Promise<JSONObject> createEventbriteEvent(ConcreteCourse concreteCourse) {
-		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
-				"www.eventbriteapi.com/v3/");
-		builder.setPath("events/");
-		String query = "token=J6FBKZBCXVV3XZ2TLGZH&event.name.html=hehe&client_id=53BDCJMMIVE7HAM2VI" ;
-		JsonNode json = Json.newObject()
-		        .put("token", "J6FBKZBCXVV3XZ2TLGZH")
-		        .put("event.name.html", "hehe")
-		        .put("event.start.timezone", "US")
-		        .put("event.end.timezone", "US")
-		        .put("event.start.utc", "2014-11-30 23:59:59" )
-		        .put("event.end.utc", "2014-12-31 23:59:59");
-		try {
-			final Promise<JSONObject> resultPromise = WS
-					.url(builder.build().toString()).setContentType("application/x-www-form-urlencoded").post(query)
-					.map(new Function<WSResponse, JSONObject>() {
-						public JSONObject apply(WSResponse response) {
-							System.out.println(response.getBody());
-							return null;
-						}
-					});
-			return resultPromise;
-		} catch (URISyntaxException e) {
-			Logger.error(e.toString());
-			return null;
-		}
-	}
 }

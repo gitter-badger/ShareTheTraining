@@ -22,6 +22,7 @@ import models.courses.Review;
 import models.users.Customer;
 
 public class ReviewFilterBuilder implements FilterBuilder {
+	int reviewId = -1;
 	int courseId = -1;
 	String concreteCourseId;
 	String userEmail;
@@ -56,6 +57,9 @@ public class ReviewFilterBuilder implements FilterBuilder {
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		if (courseId != -1) {
 			predicates.add(cb.equal(courseRoot.<Integer> get("id"), courseId));
+		}
+		if(reviewId != -1){
+			predicates.add(cb.equal(entityRoot.<Integer> get("id"), reviewId));
 		}
 		if (concreteCourseId != null) {
 			predicates.add(cb.equal(
@@ -157,6 +161,39 @@ public class ReviewFilterBuilder implements FilterBuilder {
 
 	public void setLowTrainerRate(double lowTrainerRate) {
 		this.lowTrainerRate = lowTrainerRate;
+	}
+
+	public int getReviewId() {
+		return reviewId;
+	}
+
+	public void setReviewId(int reviewId) {
+		this.reviewId = reviewId;
+	}
+
+	public static Set<String> getOrderBySet() {
+		return orderBySet;
+	}
+
+	public static void setOrderBySet(Set<String> orderBySet) {
+		ReviewFilterBuilder.orderBySet = orderBySet;
+	}
+
+	public static Set<String> getConcreteCourseOrderBySet() {
+		return concreteCourseOrderBySet;
+	}
+
+	public static void setConcreteCourseOrderBySet(
+			Set<String> concreteCourseOrderBySet) {
+		ReviewFilterBuilder.concreteCourseOrderBySet = concreteCourseOrderBySet;
+	}
+
+	public static Set<String> getCustomerOrderBySet() {
+		return customerOrderBySet;
+	}
+
+	public static void setCustomerOrderBySet(Set<String> customerOrderBySet) {
+		ReviewFilterBuilder.customerOrderBySet = customerOrderBySet;
 	}
 
 

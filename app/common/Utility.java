@@ -3,6 +3,8 @@ package common;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -19,6 +21,8 @@ public class Utility {
 		TypedQuery<Tuple> tq = em.createQuery(fb.buildeQuery(
 				em.getCriteriaBuilder(), orderByColumn, ascending));
 		if (pageNumber != -1 && pageSize != -1) {
+			pageNumber = pageNumber>0?pageNumber: 1;
+			pageSize = pageSize>0?pageSize: 10;
 			tq.setMaxResults(pageSize);
 			tq.setFirstResult(pageSize * (pageNumber - 1));
 		}
@@ -37,6 +41,13 @@ public class Utility {
 		} catch (UnsupportedEncodingException e) {
 			return query;
 		}
+	}
+	
+	public static String getEventbriteDateFormat(Date date){
+		Date someDate = new Date();
+		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+		String s = df.format(someDate);
+		return s;
 	}
 
 }

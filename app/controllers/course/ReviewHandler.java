@@ -40,7 +40,6 @@ public class ReviewHandler implements IReviewHandler {
 		return null;
 	}
 
-	// TODO WRITE REVIEW, REVIEW SEARCH(?)
 	@Override
 	public Review writeReview(ReviewForm reviewForm, Customer author, IOrderHandler orderHandler) {
 		CourseOrder courseOrder =  orderHandler.getCourseOrderByOrderId(reviewForm.getOrderId());

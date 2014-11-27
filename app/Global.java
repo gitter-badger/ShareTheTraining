@@ -1,6 +1,8 @@
 import play.mvc.*;
 import play.mvc.Http.*;
 import play.db.jpa.JPA;
+import play.db.jpa.Transactional;
+import play.libs.F;
 import play.libs.F.*;
 import static play.mvc.Results.*;
 import play.Application;
@@ -13,10 +15,12 @@ import play.mvc.Result;
 import java.lang.reflect.Method;
 
 import models.locations.Geolocation;
+import models.users.Trainer;
+import models.users.UserStatus;
 import controllers.routes;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
-
+@Transactional
 public class Global extends GlobalSettings {
 
 	public void onStart(Application app) {
@@ -24,8 +28,11 @@ public class Global extends GlobalSettings {
 		// Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
 		Logger.info("Play it, Sam. Play \"As Time Goes By.\"");
 		LocationHandler.initialize();
+		
 	}
+	
 
+	
 	public void onStop(Application app) {
 		// Logger.info("Baby tomato starts lagging behind. Poppa tomato gets angry, goes over to the baby tomato, and smooshes him... and says, Catch up.");
 		// Logger.info("The other one says, \"Yeah, I know; and such small portions.\"");

@@ -8,6 +8,7 @@ import java.io.Reader;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -188,12 +189,4 @@ public class OrderHandler implements IOrderHandler {
 		return courseOrder;
 	}
 
-	public static void main(String[] args) throws URISyntaxException{
-		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
-				"www.eventbriteapi.com/v3/");
-			builder.setPath("orders/"+"heh");
-			builder.setParameter("token", "dsd");
-			builder.setParameter("hehe", "dsd");
-			System.out.println(builder.build().toString());
-	}
 }
