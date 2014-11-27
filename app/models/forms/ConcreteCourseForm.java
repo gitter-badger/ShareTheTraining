@@ -201,8 +201,7 @@ public class ConcreteCourseForm {
 	}
 
 	public boolean bindConcreteCourse(ConcreteCourse concreteCourse) {
-		if (concreteCourse == null
-				|| concreteCourse.getConcreteCourseId() != this.concreteCourseId)
+		if (concreteCourse == null)
 			return false;
 		// TODO a lot of set here
 		concreteCourse.setConcreteCourseId(concreteCourseId);

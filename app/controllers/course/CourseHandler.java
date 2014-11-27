@@ -246,6 +246,7 @@ public class CourseHandler implements ICourseHandler {
 			ConcreteCourseForm courseForm) {
 		Course course = this.getCourseById(courseForm.getCourseInfoId());
 		final ConcreteCourse concreteCourse = ConcreteCourse.create(course, em);
+		courseForm.bindConcreteCourse(concreteCourse);
 		if (course != null && course.getTrainer() != null
 				&& course.getTrainer().getEmail().equals(trainerEmail)) {
 			course.addConcreteCourse(concreteCourse);
@@ -260,7 +261,7 @@ public class CourseHandler implements ICourseHandler {
 		}
 		return Promise.promise(new Function0<ConcreteCourse>() {
 			public ConcreteCourse apply() {
-				return null;
+				return concreteCourse;
 			}
 		});
 	}

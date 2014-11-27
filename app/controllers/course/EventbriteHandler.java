@@ -271,13 +271,13 @@ public class EventbriteHandler {
 		/*
 		Promise<JSONObject> courseDetails = createEventbriteEvent(concreteCourse);
 		if(courseDetails!=null){
-			return courseDetails.map(new Function<JSONObject, Boolean>() {
+			return courseDetails.flatMap(new Function<JSONObject, Promise<Boolean>>() {
 				@Override
-				public Boolean apply(JSONObject courseDetails) throws Throwable {
+				public Promise<Boolean> apply(JSONObject courseDetails) throws Throwable {
 					final String eventbriteId = getEventbriteIdAfterCreation(courseDetails);
 					if(eventbriteId!=null){
 						Promise<JSONObject> newTicket = createEventbriteTicket(concreteCourse,eventbriteId);
-						newTicket.map(new Function<JSONObject, Boolean>() {
+						return newTicket.map(new Function<JSONObject, Boolean>() {
 							@Override
 							public Boolean apply(JSONObject result) throws Throwable {
 								String status = getTicketResult(result);
@@ -290,7 +290,11 @@ public class EventbriteHandler {
 							
 						});
 					}
-					return false;
+					return Promise.promise(new Function0<Boolean>() {
+						public Boolean apply() {
+							return false;
+						}
+					});
 				}
 			});
 		}

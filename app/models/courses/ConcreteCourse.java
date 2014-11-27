@@ -60,7 +60,7 @@ public class ConcreteCourse extends BaseModelObject {
 
 	private String length;
 
-	private Location location = new Location(null, null, "", 0, 0);
+	private Location location = new Location("", "", "", 0, 0);
 
 	private String eventbriteId;
 
