@@ -24,6 +24,7 @@ function initDashboard()
  
  function addItem(){
 		getJsonData();
+		addLocation();
 		jsRoutes.controllers.Application.dashAdminAdd().ajax({
 			data : JsonData,
 			suceess : {}

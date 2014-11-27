@@ -1,3 +1,6 @@
+function addExtraData(){
+	JsonData['courseInfoId']=JsonData['courseId'];
+}
 function deleteEditedItem() {
     var Items = new Array;
     Items.push($('.datatable').DataTable().$('td', 'tr.edited').eq(1).text());
@@ -26,6 +29,8 @@ function deleteItems(Items) {
 }
 function addItem(){
 	getJsonData();
+	addExtraData();
+	addLocation();
 	jsRoutes.controllers.Application.dashConcreteCourseAdd().ajax({
 		data : JsonData,
 		suceess : {}
@@ -35,6 +40,8 @@ function addItem(){
 
 function updateItem() {
 	getJsonData();
+	addExtraData();
+	addLocation();
 	jsRoutes.controllers.Application.dashCourseUpdate().ajax({
 		data : JsonData,
 		suceess : {}
@@ -127,16 +134,22 @@ function getItemFromServer(courseId) {
 function setDetailPage(item) {
     $("#courseId").val(item.courseId);
     $("#courseName").val(item.courseName);
-    $("#courseCategory").val(item.courseCategory);
+    //$("#courseCategory").val(item.courseCategory);
+    var len = item.courseCategory.length;
+    for(var i=0;i<len;i++)
+    {
+    	$('#courseCategory').append("<option name='courseCategory' value='"+item.courseCategory[i]+"'>"+item.courseCategory[i]+"</option>");
+    }    
+    
     $("#courseDesc").val(item.courseDesc);
     $("#trainerId").val(item.trainerId);
     $("#trainerName").val(item.trainerName);
     $("#trainerEmail").val(item.trainerEmail);
     $("#methods").val(item.methods);
-    $("#detailedLoc").val(item.detailedLoc);
+    $("#detailedLoc").val(item.location.detailedLoc);
     $("#city").val(item.location.city);
     $("#state").val(item.location.region);
-    $("#zipCode").val(item.zipCode);
+    $("#zipCode").val(item.location.zipCode);
     $("#length").val(item.courseLength);
     $("#courseDate").val(item.courseDate);
     $("#minimum").val(item.minimum);
@@ -166,7 +179,7 @@ function setDetailPage(item) {
 function disableFields() {
     $("#courseId").attr("readonly", true);
     $("#courseName").attr("readonly", true);
-    $("#courseCategory").attr("readonly", true);
+    $("#courseCategory").attr("disabled", true);
     $("#courseDesc").attr("readonly", true);
     $("#trainerId").attr("readonly", true);
     $("#trainerName").attr("readonly", true);
@@ -191,7 +204,7 @@ function disableFields() {
 function enableFields() {
     $("#courseId").attr("readonly", false);
     $("#courseName").attr("readonly", false);
-    $("#courseCategory").attr("readonly", false);
+    $("#courseCategory").attr("disabled", false);
     $("#courseDesc").attr("readonly", false);
     $("#trainerId").attr("readonly", false);
     $("#trainerName").attr("readonly", false);
@@ -216,7 +229,7 @@ function enableFields() {
 function disableFieldsForAdd() {
     $("#courseId").attr("readonly", true);
     $("#courseName").attr("readonly", true);
-    $("#courseCategory").attr("readonly", true);
+    $("#courseCategory").attr("disabled", true);
     $("#courseDesc").attr("readonly", true);
     $("#trainerId").attr("readonly", true);
     $("#trainerName").attr("readonly", true);
@@ -257,7 +270,7 @@ function disableFieldsForEdit() {
 function enableFieldsForEdit() {
     $("#courseId").attr("readonly", false);
     $("#courseName").attr("readonly", false);
-    $("#courseCategory").attr("readonly", false);
+    $("#courseCategory").attr("disabled", false);
     $("#courseDesc").attr("readonly", false);
     $("#trainerId").attr("readonly", false);
     $("#trainerName").attr("readonly", false);

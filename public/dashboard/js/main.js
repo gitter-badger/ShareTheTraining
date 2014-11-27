@@ -8,6 +8,10 @@ var initKeyPointsString='';
 
 var api;
 
+function addLocation(){
+	JsonData['location']={'city':JsonData['city'],'region':JsonData['state'],'detailedLoc':JsonData['detailedLoc'],'zipCode':JsonData['zipCode']}
+}
+
 function getJsonData() {
     JsonData = getFormJson($('form'));
     JsonData['courseDates'] = dates;
