@@ -149,15 +149,15 @@ public class Course extends BaseModelObject {
 		Date earliestDate = null, latestDate = null;
 		for (ConcreteCourse concreteCourse : this.courses) {
 			if (concreteCourse.getStatus() != ConcreteCourseStatus.VERIFYING
-					&& concreteCourse.getCourseDate() != null) {
+					&& concreteCourse.getCourseStartDate() != null) {
 				if (earliestDate == null
-						|| earliestDate.after(concreteCourse.getCourseDate())) {
-					earliestDate = concreteCourse.getCourseDate();
+						|| earliestDate.after(concreteCourse.getCourseStartDate())) {
+					earliestDate = concreteCourse.getCourseStartDate();
 				}
 
 				if (latestDate == null
-						|| latestDate.before(concreteCourse.getCourseDate())) {
-					latestDate = concreteCourse.getCourseDate();
+						|| latestDate.before(concreteCourse.getCourseStartDate())) {
+					latestDate = concreteCourse.getCourseStartDate();
 				}
 			}
 		}

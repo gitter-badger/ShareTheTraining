@@ -51,7 +51,9 @@ public class ConcreteCourse extends BaseModelObject {
 	@OneToMany(mappedBy = "concreteCourse", cascade = { CascadeType.ALL })
 	private Collection<WaitListRecord> waitListRecords = new ArrayList<WaitListRecord>();
 
-	private Date courseDate;
+	private Date courseStartDate;
+	
+	private Date courseEndDate;
 
 	@ElementCollection
 	private List<Date> courseDates = new ArrayList<Date>();
@@ -84,15 +86,6 @@ public class ConcreteCourse extends BaseModelObject {
 	public void setCourseInfo(Course courseInfo) {
 		this.courseInfo = courseInfo;
 	}
-
-	public Date getCourseDate() {
-		return courseDate;
-	}
-
-	public void setCourseDate(Date courseDate) {
-		this.courseDate = courseDate;
-	}
-
 
 	public String getLength() {
 		return length;
@@ -155,7 +148,8 @@ public class ConcreteCourse extends BaseModelObject {
 		this.courseDates = courseDates;
 		if (courseDates.size() > 0) {
 			Collections.sort(courseDates);
-			this.setCourseDate(courseDates.get(0));
+			this.setCourseStartDate(courseDates.get(0));
+			this.setCourseEndDate(courseDates.get(courseDates.size()-1));
 		}
 	}
 
@@ -181,6 +175,22 @@ public class ConcreteCourse extends BaseModelObject {
 
 	public void setMaximum(int maximum) {
 		this.maximum = maximum;
+	}
+
+	public Date getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	public void setCourseStartDate(Date courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+
+	public Date getCourseEndDate() {
+		return courseEndDate;
+	}
+
+	public void setCourseEndDate(Date courseEndDate) {
+		this.courseEndDate = courseEndDate;
 	}
 	
 	

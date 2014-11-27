@@ -15,6 +15,7 @@ import common.Password;
 import common.Utility;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -26,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.http.client.utils.URIBuilder;
 
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
@@ -84,6 +87,7 @@ import play.libs.F.Function0;
 import play.libs.F.Promise;
 import play.libs.Json;
 import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 import play.mvc.*;
 import play.mvc.Http.Context;
 import play.mvc.Http.MultipartFormData;
@@ -143,7 +147,8 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result welcome() {
+	public static Result welcome() throws URISyntaxException {
+		CourseHandler.createEventbriteEvent(null);
 		CourseHandler ch = new CourseHandler();
 		CourseFilterBuilder cfb = new CourseFilterBuilder();
 		Collection<Course> course = ch.getCourseByCustomRule(cfb, null, true,
@@ -434,8 +439,15 @@ public class Application extends Controller {
 	public static Result basicInfoEditSubmit() {
 		IUserHandler uh = new UserHandler();
 		User user = (User) Context.current().args.get("connected");
-		Form<UserForm> userForm = form(UserForm.class).bindFromRequest();
-		if(userForm.hasErrors()){
+		Form form = null;
+		UserForm userForm = null;
+		switch (user.getUserRole()) {
+		case CUSTOMER:
+			form = form(CustomerForm.class).bindFromRequest();
+		case TRAINER:
+			form = form(TrainerForm.class).bindFromRequest();
+		}
+		if(form.hasErrors()){
 			List<String> stateList = LocationHandler.getStateList();
 			switch (user.getUserRole()) {
 			case CUSTOMER:
@@ -444,7 +456,8 @@ public class Application extends Controller {
 				return ok(trainerbasicinfoedit.render((Trainer) user, stateList));
 			}
 		}
-		uh.updateProfile(session().get("connected"), userForm.get());
+		userForm = (UserForm) form.get();
+		uh.updateProfile(session().get("connected"), userForm);
 		if (request().body().asMultipartFormData() != null) {
 			try {
 				FilePart picture = request().body().asMultipartFormData()

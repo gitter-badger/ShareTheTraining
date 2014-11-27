@@ -1,5 +1,6 @@
 package controllers.course;
 
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,12 +18,23 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 import javax.persistence.TypedQuery;
 
+import org.apache.http.client.utils.URIBuilder;
+import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.JsonNode;
+
 import common.Utility;
 import controllers.user.IUserHandler;
 import controllers.user.UserHandler;
 import play.Logger;
+import play.Play;
 import play.db.DB;
 import play.db.jpa.JPA;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.Json;
+import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 import models.courses.ConcreteCourse;
 import models.courses.ConcreteCourseStatus;
 import models.courses.Course;
@@ -260,7 +272,29 @@ public class CourseHandler implements ICourseHandler {
 			return null;
 		}
 	}
-
+	public static Promise<JSONObject> getOrderDetails(String orderId) {
+		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
+				"www.eventbriteapi.com/v3/orders/");
+		builder.setPath(orderId);
+		builder.setParameter("token", Play.application().configuration()
+				.getString("token.eventbrite.oauth"));
+		try {
+			final Promise<JSONObject> resultPromise = WS
+					.url(builder.build().toString()).get()
+					.map(new Function<WSResponse, JSONObject>() {
+						public JSONObject apply(WSResponse response) {
+							JSONObject orderDetails = new JSONObject(response
+									.getBody());
+							return orderDetails;
+						}
+					});
+			return resultPromise;
+		} catch (URISyntaxException e) {
+			Logger.error(e.toString());
+			return null;
+		}
+	}
+	
 	@Override
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse) {
 		return customer.dropCourse(concreteCourse);
@@ -329,15 +363,15 @@ public class CourseHandler implements ICourseHandler {
 		Course course = concreteCourse.getCourseInfo();
 		if (course.getStatus() == CourseStatus.APPROVED)
 			course.setStatus(CourseStatus.OPEN);
-		if (concreteCourse.getCourseDate() != null) {
+		if (concreteCourse.getCourseStartDate() != null) {
 			if (course.getEarliestDate() == null
 					|| course.getEarliestDate().after(
-							concreteCourse.getCourseDate()))
-				course.setEarliestDate(concreteCourse.getCourseDate());
+							concreteCourse.getCourseStartDate()))
+				course.setEarliestDate(concreteCourse.getCourseStartDate());
 			if (course.getLatestDate() == null
 					|| course.getLatestDate().before(
-							concreteCourse.getCourseDate()))
-				course.setLatestDate(concreteCourse.getCourseDate());
+							concreteCourse.getCourseStartDate()))
+				course.setLatestDate(concreteCourse.getCourseStartDate());
 		}
 		return true;
 	}
@@ -435,6 +469,35 @@ public class CourseHandler implements ICourseHandler {
 		} catch (SQLException e) {
 			Logger.info(e.toString());
 			return false;
+		}
+	}
+	
+	
+	public static Promise<JSONObject> createEventbriteEvent(ConcreteCourse concreteCourse) {
+		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
+				"www.eventbriteapi.com/v3/");
+		builder.setPath("events/");
+		String query = "token=J6FBKZBCXVV3XZ2TLGZH&event.name.html=hehe&client_id=53BDCJMMIVE7HAM2VI" ;
+		JsonNode json = Json.newObject()
+		        .put("token", "J6FBKZBCXVV3XZ2TLGZH")
+		        .put("event.name.html", "hehe")
+		        .put("event.start.timezone", "US")
+		        .put("event.end.timezone", "US")
+		        .put("event.start.utc", "2014-11-30 23:59:59" )
+		        .put("event.end.utc", "2014-12-31 23:59:59");
+		try {
+			final Promise<JSONObject> resultPromise = WS
+					.url(builder.build().toString()).setContentType("application/x-www-form-urlencoded").post(query)
+					.map(new Function<WSResponse, JSONObject>() {
+						public JSONObject apply(WSResponse response) {
+							System.out.println(response.getBody());
+							return null;
+						}
+					});
+			return resultPromise;
+		} catch (URISyntaxException e) {
+			Logger.error(e.toString());
+			return null;
 		}
 	}
 }

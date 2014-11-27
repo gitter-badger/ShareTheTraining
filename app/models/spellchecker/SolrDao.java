@@ -19,7 +19,7 @@ public class SolrDao<T> {
 
 	public SolrDao() {
 		String solrURL = Play.application().configuration()
-				.getString("solr.url");
+				.getString("ws.solr.url");
 		server = (HttpSolrServer) SolrServerFactory.getInstance().createServer(
 				solrURL);
 		configureSolr(server);

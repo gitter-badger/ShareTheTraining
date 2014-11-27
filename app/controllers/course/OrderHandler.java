@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -25,11 +26,16 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import common.Utility;
+import com.fasterxml.jackson.databind.JsonNode;
 
+import common.Utility;
 import play.Logger;
 import play.Play;
 import play.db.jpa.JPA;
+import play.libs.F.Function;
+import play.libs.F.Promise;
+import play.libs.ws.WS;
+import play.libs.ws.WSResponse;
 import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
@@ -121,28 +127,32 @@ public class OrderHandler implements IOrderHandler {
 		}
 	}
 
-	public static JSONObject getOrderDetails(String orderId) {
+	public static Promise<JSONObject> getOrderDetails(String orderId) {
+		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
+				"www.eventbriteapi.com/v3/");
+		builder.setPath("orders/"+orderId);
+		builder.setParameter("token", Play.application().configuration()
+				.getString("token.eventbrite.oauth"));
 		try {
-			URIBuilder builder = new URIBuilder().setScheme("https").setHost(
-					"www.eventbriteapi.com/v3/orders/");
-			builder.setPath(orderId);
-			builder.setParameter("token", Play.application().configuration()
-					.getString("token.eventbrite.oauth"));
-			HttpGet httpget = new HttpGet(builder.build().toString());
-			HttpResponse response = new DefaultHttpClient().execute(httpget);
-			if (response.getStatusLine().getStatusCode() == 200) {
-				String result = EntityUtils.toString(response.getEntity());
-				JSONObject orderDetails = new JSONObject(result);
-				return orderDetails;
-			}
-			return null;
-		} catch (Exception e) {
+			System.out.println(builder.build().toString());
+			final Promise<JSONObject> resultPromise = WS
+					.url(builder.build().toString()).get()
+					.map(new Function<WSResponse, JSONObject>() {
+						public JSONObject apply(WSResponse response) {
+							JSONObject orderDetails = new JSONObject(response
+									.getBody());
+							return orderDetails;
+						}
+					});
+			return resultPromise;
+		} catch (URISyntaxException e) {
 			Logger.error(e.toString());
 			return null;
 		}
 	}
 
-	public static double getGrossFee(JSONObject orderDetails) throws JSONException {
+	public static double getGrossFee(JSONObject orderDetails)
+			throws JSONException {
 		if (orderDetails != null)
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getJSONObject("costs").getJSONObject("gross")
@@ -150,7 +160,8 @@ public class OrderHandler implements IOrderHandler {
 		return -1;
 	}
 
-	public static String getEventbriteUserId(JSONObject orderDetails) throws JSONException {
+	public static String getEventbriteUserId(JSONObject orderDetails)
+			throws JSONException {
 		if (orderDetails != null)
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getString("id");
@@ -159,13 +170,30 @@ public class OrderHandler implements IOrderHandler {
 
 	@Override
 	public CourseOrder newCourseOrder(String orderId,
-			ConcreteCourse concreteCourse, Customer customer) throws JSONException {
-		CourseOrder courseOrder = CourseOrder.create(orderId, concreteCourse,
-				customer, new Date(), OrderStatus.CONFIRMED, em);
-		JSONObject orderDetails = getOrderDetails(orderId);
-		courseOrder.setGross(getGrossFee(orderDetails));
-		courseOrder.setEventbriteUserId(getEventbriteUserId(orderDetails));
+			ConcreteCourse concreteCourse, Customer customer) {
+		final CourseOrder courseOrder = CourseOrder
+				.create(orderId, concreteCourse, customer, new Date(),
+						OrderStatus.CONFIRMED, em);
+		Promise<JSONObject> orderDetails = getOrderDetails(orderId);
+		orderDetails.map(new Function<JSONObject, Void>() {
+			@Override
+			public Void apply(JSONObject node) throws Throwable {
+				Logger.info(getEventbriteUserId(node));
+				courseOrder.setGross(getGrossFee(node));
+				courseOrder.setEventbriteUserId(getEventbriteUserId(node));
+				return null;
+			}
+		});
+
 		return courseOrder;
 	}
 
+	public static void main(String[] args) throws URISyntaxException{
+		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
+				"www.eventbriteapi.com/v3/");
+			builder.setPath("orders/"+"heh");
+			builder.setParameter("token", "dsd");
+			builder.setParameter("hehe", "dsd");
+			System.out.println(builder.build().toString());
+	}
 }

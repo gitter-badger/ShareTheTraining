@@ -24,5 +24,5 @@ public interface IOrderHandler {
 	public CourseOrder getCourseOrderByOrderId(String orderId);
 	
 	public CourseOrder newCourseOrder(String orderId,
-			ConcreteCourse concreteCourse, Customer customer) throws JSONException;
+			ConcreteCourse concreteCourse, Customer customer);
 }

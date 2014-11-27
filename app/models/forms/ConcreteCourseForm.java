@@ -232,10 +232,10 @@ public class ConcreteCourseForm {
 				concreteCourse.getLocation().getRegion());
 		concreteCourseForm.getLocation().setCity(
 				concreteCourse.getLocation().getCity());
-		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
+		concreteCourseForm.setCourseDate(concreteCourse.getCourseStartDate());
 		concreteCourseForm.setConcreteCourseId(concreteCourse.getConcreteCourseId());
 		concreteCourseForm.setTrainerEmail(concreteCourse.getCourseInfo().getTrainer().getEmail());
-		concreteCourseForm.setCourseDate(concreteCourse.getCourseDate());
+		concreteCourseForm.setCourseDate(concreteCourse.getCourseStartDate());
 		concreteCourseForm.setSoldSeat(concreteCourse.getSelectedCustomers().size());
 		concreteCourseForm.setCourseLength(concreteCourse.getLength());
 		//concreteCourseForm.setCourseDates(concreteCourse.getCourseDates());

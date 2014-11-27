@@ -116,10 +116,10 @@ public class CourseFilterBuilder implements FilterBuilder {
 					trainerRoot.<Double> get("rating"), trainerRating));
 		if (startDate != null)
 			predicates.add(cb.greaterThanOrEqualTo(
-					entityRoot.<Date> get("courseDate"), startDate));
+					entityRoot.<Date> get("courseStartDate"), startDate));
 		if (endDate != null)
 			predicates.add(cb.lessThanOrEqualTo(
-					entityRoot.<Date> get("courseDate"), endDate));
+					entityRoot.<Date> get("courseStartDate"), endDate));
 		if (lowPrice != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
 					courseInfoRoot.<Double> get("price"), lowPrice));

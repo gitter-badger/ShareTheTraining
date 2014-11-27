@@ -11,6 +11,7 @@ import models.filters.OrderFilterBuilder;
 
 import org.junit.Test;
 
+import play.Logger;
 import common.BaseTest;
 import controllers.course.OrderHandler;
 
@@ -31,4 +32,5 @@ public class OrderHandlerTest extends BaseTest {
 		assertThat(result.size()).isEqualTo(1);
 		this.getmEm().remove(order);
 	}
+	
 }

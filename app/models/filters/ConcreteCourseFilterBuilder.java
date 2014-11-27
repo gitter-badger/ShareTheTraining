@@ -107,10 +107,10 @@ public class ConcreteCourseFilterBuilder implements FilterBuilder {
 							cfb.getTrainerRating()));
 		if (cfb.getStartDate() != null)
 			predicates.add(cb.greaterThanOrEqualTo(
-					entityRoot.<Date> get("courseDate"), cfb.getStartDate()));
+					entityRoot.<Date> get("courseStartDate"), cfb.getStartDate()));
 		if (cfb.getEndDate() != null)
 			predicates.add(cb.lessThanOrEqualTo(
-					entityRoot.<Date> get("courseDate"), cfb.getEndDate()));
+					entityRoot.<Date> get("courseStartDate"), cfb.getEndDate()));
 		if (cfb.getLowPrice() != -1)
 			predicates.add(cb.greaterThanOrEqualTo(
 					courseInfoRoot.<Double> get("price"), cfb.getLowPrice()));

@@ -140,7 +140,7 @@ public class CourseOrderForm {
 		if (courseOrder == null)
 			return null;
 		CourseOrderForm courseOrderForm = new CourseOrderForm();
-		courseOrderForm.setCourseDate(courseOrder.getConcreteCourse().getCourseDate());
+		courseOrderForm.setCourseDate(courseOrder.getConcreteCourse().getCourseStartDate());
 		courseOrderForm.setCourseName(courseOrder.getConcreteCourse().getCourseInfo().getCourseName());
 		courseOrderForm.setGross(courseOrder.getGross());
 		courseOrderForm.setOrderDate(courseOrder.getOrderDate());
