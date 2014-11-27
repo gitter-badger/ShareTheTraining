@@ -294,7 +294,6 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("GUEST") })
 	public static Result signup(int userRole) {
-		Logger.info(session().get("connected"));
 		List<String> stateList = LocationHandler.getStateList();
 		switch (UserRole.fromInteger(userRole)) {
 		case CUSTOMER:
@@ -444,19 +443,21 @@ public class Application extends Controller {
 		switch (user.getUserRole()) {
 		case CUSTOMER:
 			form = form(CustomerForm.class).bindFromRequest();
+			if(form.hasErrors()){
+				List<String> stateList = LocationHandler.getStateList();
+				return ok(cusinfoedit.render((Customer) user, stateList));
+			}
+			userForm = (UserForm)form.get();
+			break;
 		case TRAINER:
 			form = form(TrainerForm.class).bindFromRequest();
-		}
-		if(form.hasErrors()){
-			List<String> stateList = LocationHandler.getStateList();
-			switch (user.getUserRole()) {
-			case CUSTOMER:
-				return ok(cusinfoedit.render((Customer) user, stateList));
-			case TRAINER:
+			if(form.hasErrors()){
+				List<String> stateList = LocationHandler.getStateList();
 				return ok(trainerbasicinfoedit.render((Trainer) user, stateList));
 			}
+			userForm = (UserForm)form.get();
+			break;
 		}
-		userForm = (UserForm) form.get();
 		uh.updateProfile(session().get("connected"), userForm);
 		if (request().body().asMultipartFormData() != null) {
 			try {
