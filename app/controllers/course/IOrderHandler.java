@@ -5,6 +5,7 @@ import java.util.Date;
 
 import org.json.JSONException;
 
+import play.libs.F.Promise;
 import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
@@ -23,6 +24,6 @@ public interface IOrderHandler {
 
 	public CourseOrder getCourseOrderByOrderId(String orderId);
 	
-	public CourseOrder newCourseOrder(String orderId,
+	public Promise<CourseOrder> newCourseOrder(String orderId,
 			ConcreteCourse concreteCourse, Customer customer);
 }

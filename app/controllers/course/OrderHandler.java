@@ -22,7 +22,6 @@ import javax.persistence.TypedQuery;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,13 +29,16 @@ import org.json.JSONObject;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import common.Utility;
+import controllers.routes;
 import play.Logger;
 import play.Play;
 import play.db.jpa.JPA;
 import play.libs.F.Function;
+import play.libs.F.Function0;
 import play.libs.F.Promise;
 import play.libs.ws.WS;
 import play.libs.ws.WSResponse;
+import play.mvc.Result;
 import models.courses.ConcreteCourse;
 import models.courses.CourseOrder;
 import models.courses.OrderStatus;
@@ -129,9 +131,12 @@ public class OrderHandler implements IOrderHandler {
 	}
 
 	public static Promise<JSONObject> getOrderDetails(String orderId) {
-		URIBuilder builder = new URIBuilder().setScheme("https").setHost(
-				"www.eventbriteapi.com/v3/");
-		builder.setPath("orders/"+orderId);
+		URIBuilder builder = new URIBuilder().setScheme(
+				Play.application().configuration()
+						.getString("ws.eventbrite.scheme")).setHost(
+				Play.application().configuration()
+						.getString("ws.eventbrite.v3"));
+		builder.setPath("orders/" + orderId);
 		builder.setParameter("token", Play.application().configuration()
 				.getString("token.eventbrite.oauth"));
 		try {
@@ -154,39 +159,48 @@ public class OrderHandler implements IOrderHandler {
 
 	public static double getGrossFee(JSONObject orderDetails)
 			throws JSONException {
-		if (orderDetails != null)
+		try {
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getJSONObject("costs").getJSONObject("gross")
 					.getDouble("value");
-		return -1;
+		} catch (Exception e) {
+			return -1;
+		}
 	}
 
 	public static String getEventbriteUserId(JSONObject orderDetails)
 			throws JSONException {
-		if (orderDetails != null)
+		try {
 			return orderDetails.getJSONArray("attendees").getJSONObject(0)
 					.getString("id");
-		return null;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
-	public CourseOrder newCourseOrder(String orderId,
+	public Promise<CourseOrder> newCourseOrder(String orderId,
 			ConcreteCourse concreteCourse, Customer customer) {
 		final CourseOrder courseOrder = CourseOrder
 				.create(orderId, concreteCourse, customer, new Date(),
 						OrderStatus.CONFIRMED, em);
+		/*
 		Promise<JSONObject> orderDetails = getOrderDetails(orderId);
-		orderDetails.map(new Function<JSONObject, Void>() {
-			@Override
-			public Void apply(JSONObject node) throws Throwable {
-				Logger.info(getEventbriteUserId(node));
-				courseOrder.setGross(getGrossFee(node));
-				courseOrder.setEventbriteUserId(getEventbriteUserId(node));
-				return null;
+		if (orderDetails != null) {
+			return orderDetails.map(new Function<JSONObject, CourseOrder>() {
+				@Override
+				public CourseOrder apply(JSONObject node) throws Throwable {
+					Logger.info(getEventbriteUserId(node));
+					courseOrder.setGross(getGrossFee(node));
+					courseOrder.setEventbriteUserId(getEventbriteUserId(node));
+					return courseOrder;
+				}
+			});
+		}*/
+		return Promise.promise(new Function0<CourseOrder>() {
+			public CourseOrder apply() {
+				return courseOrder;
 			}
 		});
-
-		return courseOrder;
 	}
-
 }

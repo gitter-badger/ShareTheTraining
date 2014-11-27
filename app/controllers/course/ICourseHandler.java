@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import play.libs.F.Promise;
 import controllers.user.IUserHandler;
 import models.courses.ConcreteCourse;
 import models.courses.Course;
@@ -40,7 +41,7 @@ public interface ICourseHandler {
 
 	public boolean dropCourse(Customer customer, ConcreteCourse concreteCourse);
 
-	public CourseOrder registerCourse(Customer customer,
+	public Promise<CourseOrder> registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId,
 			IOrderHandler orderHandler);
 
@@ -50,7 +51,7 @@ public interface ICourseHandler {
 
 	public boolean deleteCourse(int courseId);
 
-	public ConcreteCourse addNewConcreteCourse(String trainerEmail,
+	public Promise<ConcreteCourse> addNewConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm);
 
 	public boolean updateConcreteCourse(String trainerEmail,

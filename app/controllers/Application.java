@@ -32,6 +32,7 @@ import org.apache.http.client.utils.URIBuilder;
 
 import controllers.authentication.AuthenticationHandler;
 import controllers.course.CourseHandler;
+import controllers.course.EventbriteHandler;
 import controllers.course.OrderHandler;
 import controllers.course.ReviewHandler;
 import controllers.image.ImageHandler;
@@ -169,7 +170,7 @@ public class Application extends Controller {
 	@Transactional
 	@Restrict({ @Group("GUEST") })
 	public static Result loginAuthen() {
-		Form<LoginForm>form = form(LoginForm.class).bindFromRequest();
+		Form<LoginForm> form = form(LoginForm.class).bindFromRequest();
 		if (form.hasErrors()) {
 			flash("error", "Username or Password is incorrect");
 			return badRequest(login.render(routes.Application.welcome().url()));
@@ -283,6 +284,7 @@ public class Application extends Controller {
 						Utility.getQueryString(request().uri()),
 						filterForm.getKeyword(), newKeyword);
 			}
+
 		}
 		return ok(searchindex.render(course, states, pageNumber,
 				Utility.getQueryString(request().uri()), newKeyword,
@@ -358,17 +360,29 @@ public class Application extends Controller {
 
 	@Transactional
 	@Restrict({ @Group("CUSTOMER") })
-	public static Result createOrder(String orderId, String eventbriteId) {
+	public static Promise<Result> createOrder(String orderId,
+			String eventbriteId) {
 		Logger.info(orderId);
 		Logger.info(eventbriteId);
 		if (session().get("connected") == null) {
 			flash("error", "your order is failed because you log out");
+			return Promise.promise(new Function0<Result>() {
+				public Result apply() {
+					return redirect(routes.Application.profile());
+				}
+			});
 		}
 		CourseHandler ch = new CourseHandler();
-		ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
+		Promise<CourseOrder> orderPromise = ch.registerCourse(new UserHandler().getCustomerByEmail(session().get(
 				"connected")), ch.getCourseByEventbriteId(eventbriteId),
 				orderId, new OrderHandler());
-		return redirect(routes.Application.profile());
+		return orderPromise.map(new Function<CourseOrder, Result>() {
+			public Result apply(CourseOrder courseOrder) {
+				if(courseOrder == null)
+					flash("error", "your order is failed because you log out");
+				return redirect(routes.Application.profile());
+			}
+		});
 	}
 
 	@Transactional
@@ -441,19 +455,20 @@ public class Application extends Controller {
 		switch (user.getUserRole()) {
 		case CUSTOMER:
 			form = form(CustomerForm.class).bindFromRequest();
-			if(form.hasErrors()){
+			if (form.hasErrors()) {
 				List<String> stateList = LocationHandler.getStateList();
 				return ok(cusinfoedit.render((Customer) user, stateList));
 			}
-			userForm = (UserForm)form.get();
+			userForm = (UserForm) form.get();
 			break;
 		case TRAINER:
 			form = form(TrainerForm.class).bindFromRequest();
-			if(form.hasErrors()){
+			if (form.hasErrors()) {
 				List<String> stateList = LocationHandler.getStateList();
-				return ok(trainerbasicinfoedit.render((Trainer) user, stateList));
+				return ok(trainerbasicinfoedit
+						.render((Trainer) user, stateList));
 			}
-			userForm = (UserForm)form.get();
+			userForm = (UserForm) form.get();
 			break;
 		}
 		uh.updateProfile(session().get("connected"), userForm);
@@ -466,8 +481,7 @@ public class Application extends Controller {
 				if (ih.processImage(request().body().asMultipartFormData()
 						.getFile("picture"), oldpath) != null) {
 					String imagePath = ih.processImage(picture, oldpath);
-					user.setImage(
-							imagePath);
+					user.setImage(imagePath);
 				}
 			} catch (Exception e) {
 				Logger.error(e.toString());
@@ -497,7 +511,7 @@ public class Application extends Controller {
 	public static Result changepswsubmit() throws Exception {
 		Form<NewPswForm> npf = form(NewPswForm.class).bindFromRequest();
 		User user = (User) Context.current().args.get("connected");
-		if(npf.hasErrors()){
+		if (npf.hasErrors()) {
 			switch (user.getUserRole()) {
 			case CUSTOMER:
 				return badRequest(cuschangepsw.render());
@@ -583,7 +597,7 @@ public class Application extends Controller {
 		String start = form().bindFromRequest().get("start");
 		Date date = new SimpleDateFormat("yyyy-MM-dd").parse(start);
 		UserHandler uh = new UserHandler();
-		Trainer trainer = (Trainer)Context.current().args.get("connected");
+		Trainer trainer = (Trainer) Context.current().args.get("connected");
 		uh.removeAvailableDate(date, trainer);
 
 		return ok();
@@ -666,8 +680,8 @@ public class Application extends Controller {
 				.bindFromRequest();
 		User user = (User) Context.current().args.get("connected");
 		IUserHandler uh = new UserHandler();
-		if(trainerForm.hasErrors())
-			return badRequest(trainerinfoedit.render((Trainer)user));
+		if (trainerForm.hasErrors())
+			return badRequest(trainerinfoedit.render((Trainer) user));
 		Logger.info(trainerForm.get().getName());
 		uh.updateProfile(session().get("connected"), trainerForm.get());
 		return redirect(routes.Application.trainerInfo());
@@ -683,7 +697,7 @@ public class Application extends Controller {
 	@Restrict({ @Group("TRAINER") })
 	public static Result traineraddcoursesubmit() {
 		Form<CourseForm> form = form(CourseForm.class).bindFromRequest();
-		if(form.hasErrors())
+		if (form.hasErrors())
 			return badRequest(traineraddcourse.render());
 		CourseForm courseForm = form.get();
 		Logger.info(courseForm.getCourseDesc() + "hahaha");
@@ -817,7 +831,7 @@ public class Application extends Controller {
 	}
 
 	@Transactional
-	public static Result dashConcreteCourseAdd() throws JsonParseException,
+	public static Promise<Result> dashConcreteCourseAdd() throws JsonParseException,
 			JsonMappingException, IOException {
 		ConcreteCourseForm concreteCourseForm = form(ConcreteCourseForm.class)
 				.bindFromRequest().get();
@@ -826,15 +840,21 @@ public class Application extends Controller {
 
 		}
 		CourseHandler ch = new CourseHandler();
-		ConcreteCourse concreteCourse = ch.addNewConcreteCourse(
+		Promise<ConcreteCourse> concreteCoursePromise = ch.addNewConcreteCourse(
 				concreteCourseForm.getTrainerEmail(), concreteCourseForm);
-		ObjectNode result = Json.newObject();
-		if (concreteCourse != null) {
-			result.put("result", "true");
-			return ok(result);
-		}
-		result.put("result", "false");
-		return ok(result);
+		return concreteCoursePromise.map(new Function<ConcreteCourse, Result>(){
+			@Override
+			public Result apply(ConcreteCourse concreteCourse) throws Throwable {
+				ObjectNode result = Json.newObject();
+				if (concreteCourse != null) {
+					result.put("result", "true");
+					return ok(result);
+				}
+				result.put("result", "false");
+				return ok(result);
+			}
+			
+		});
 	}
 
 	@Transactional

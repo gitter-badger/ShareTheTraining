@@ -16,4 +16,6 @@ public interface IReviewHandler {
 
 	public Collection getReviewByCustomerRule(FilterBuilder fb, String orderByColumn,
 			int pageNumber, int pageSize);
+
+	public Review getReviewById(int reviewId);
 }

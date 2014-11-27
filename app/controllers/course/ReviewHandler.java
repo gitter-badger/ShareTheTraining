@@ -9,7 +9,6 @@ import javax.persistence.Query;
 import javax.persistence.Tuple;
 
 import common.Utility;
-
 import controllers.user.UserHandler;
 import play.db.jpa.JPA;
 import models.courses.ConcreteCourse;
@@ -17,6 +16,7 @@ import models.courses.Course;
 import models.courses.CourseOrder;
 import models.courses.Review;
 import models.filters.FilterBuilder;
+import models.filters.ReviewFilterBuilder;
 import models.forms.ReviewForm;
 import models.users.Customer;
 import models.users.User;
@@ -48,6 +48,16 @@ public class ReviewHandler implements IReviewHandler {
 			reviewForm.bindReview(review);
 			return review;
 		}
+		return null;
+	}
+	
+	@Override
+	public Review getReviewById(int reviewId){
+		ReviewFilterBuilder rfb = new ReviewFilterBuilder();
+		rfb.setReviewId(reviewId);
+		Collection result  = this.getReviewByCustomerRule(rfb, null, -1, -1);
+		if (result.size() > 0)
+			return (Review) result.iterator().next();
 		return null;
 	}
 	

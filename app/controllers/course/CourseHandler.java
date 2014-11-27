@@ -31,6 +31,7 @@ import play.Play;
 import play.db.DB;
 import play.db.jpa.JPA;
 import play.libs.F.Function;
+import play.libs.F.Function0;
 import play.libs.F.Promise;
 import play.libs.Json;
 import play.libs.ws.WS;
@@ -241,20 +242,31 @@ public class CourseHandler implements ICourseHandler {
 	}
 
 	@Override
-	public ConcreteCourse addNewConcreteCourse(String trainerEmail,
+	public Promise<ConcreteCourse> addNewConcreteCourse(String trainerEmail,
 			ConcreteCourseForm courseForm) {
 		Course course = this.getCourseById(courseForm.getCourseInfoId());
-		ConcreteCourse concreteCourse = ConcreteCourse.create(course, em);
+		final ConcreteCourse concreteCourse = ConcreteCourse.create(course, em);
 		if (course != null && course.getTrainer() != null
 				&& course.getTrainer().getEmail().equals(trainerEmail)) {
 			course.addConcreteCourse(concreteCourse);
-			return concreteCourse;
+			Promise<Boolean> eventbriteCreation = EventbriteHandler.EventbriteProcess(concreteCourse);
+			return eventbriteCreation.map(new Function<Boolean, ConcreteCourse>() {
+				@Override
+				public ConcreteCourse apply(Boolean result) throws Throwable {
+					return concreteCourse;
+				}
+				
+			});
 		}
-		return null;
+		return Promise.promise(new Function0<ConcreteCourse>() {
+			public ConcreteCourse apply() {
+				return null;
+			}
+		});
 	}
 
 	@Override
-	public CourseOrder registerCourse(Customer customer,
+	public Promise<CourseOrder> registerCourse(Customer customer,
 			ConcreteCourse concreteCourse, String orderId,
 			IOrderHandler orderHandler) {
 		try {

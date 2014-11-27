@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.persistence.EntityManager;
+
 import models.courses.ConcreteCourse;
 import models.courses.Course;
 import models.courses.CourseOrder;
@@ -24,12 +26,16 @@ import models.users.Customer;
 import org.junit.Test;
 
 import play.Logger;
+import play.libs.F.Promise;
+import play.libs.F.Function;
+import play.libs.F.Function0;
 
 import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import common.BaseTest;
+import common.Initialization;
 import controllers.course.CourseHandler;
 import controllers.course.OrderHandler;
 import controllers.user.UserHandler;
@@ -177,7 +183,7 @@ public class CourseHandlerTest extends BaseTest {
 	}
 
 	@Test
-	public void testGetConcreteCourseMap(){
+	public void testGetConcreteCourseMap() {
 		CourseHandler courseHandler = new CourseHandler();
 		CourseFilterBuilder cb = new CourseFilterBuilder();
 		cb.setKeyword("xingbuxin");
@@ -187,31 +193,47 @@ public class CourseHandlerTest extends BaseTest {
 		ConcreteCourseFilterBuilder ccfb = new ConcreteCourseFilterBuilder();
 		ccfb.setCfb(cb);
 		ccfb.setCourseList(result);
-		Map<Integer,List<ConcreteCourse>> map = courseHandler.getConcreteCourseMap(ccfb, "courseCategory", true, -1, -1);
+		Map<Integer, List<ConcreteCourse>> map = courseHandler
+				.getConcreteCourseMap(ccfb, "courseCategory", true, -1, -1);
 		Logger.info("heheho");
 		int count = 0;
-		Iterator<Entry<Integer, List<ConcreteCourse>>> it = map.entrySet().iterator();
-	    while (it.hasNext()) {
-	        Map.Entry pairs = (Map.Entry)it.next();
-	        count+=((List<ConcreteCourse>)pairs.getValue()).size();
-	    }
-	    assertThat(count).isEqualTo(2);
+		Iterator<Entry<Integer, List<ConcreteCourse>>> it = map.entrySet()
+				.iterator();
+		while (it.hasNext()) {
+			Map.Entry pairs = (Map.Entry) it.next();
+			count += ((List<ConcreteCourse>) pairs.getValue()).size();
+		}
+		assertThat(count).isEqualTo(2);
 	}
-	
-	@Test
+
 	public void testCourseRegisteration() {
-		CourseOrder courseOrder = new CourseHandler().registerCourse(
-				this.initData.customer1, this.initData.concreteCourse1, "hehe", new OrderHandler());
-		Customer customer = new UserHandler()
-				.getCustomerByEmail(this.initData.customer1.getEmail());
-		ConcreteCourse concreteCourse = new CourseHandler()
-				.getCourseByConcreteCourseId(this.initData.concreteCourse1
-						.getConcreteCourseId());
-		assertThat(concreteCourse.getSelectedCustomers().contains(customer))
-				.isTrue();
-		assertThat(customer.getSelectedCourses().contains(concreteCourse))
-				.isTrue();
-		assertThat(courseOrder.getOrderId()).isEqualTo("hehe");
-		this.getmEm().remove(courseOrder);
+		Promise<CourseOrder> courseOrderPromise = new CourseHandler()
+				.registerCourse(this.initData.customer1,
+						this.initData.concreteCourse1, "hehe",
+						new OrderHandler());
+
+		final Initialization localInitData = this.initData;
+		final EntityManager em = this.getmEm();
+		courseOrderPromise.map(new Function<CourseOrder, Void>() {
+			@Override
+			public Void apply(CourseOrder courseOrder) throws Throwable {
+				Customer customer = new UserHandler()
+						.getCustomerByEmail(localInitData.customer1.getEmail());
+				ConcreteCourse concreteCourse = new CourseHandler()
+						.getCourseByConcreteCourseId(localInitData.concreteCourse1
+								.getConcreteCourseId());
+				assertThat(
+						concreteCourse.getSelectedCustomers()
+								.contains(customer)).isTrue();
+				assertThat(
+						customer.getSelectedCourses().contains(concreteCourse))
+						.isTrue();
+				assertThat(courseOrder.getOrderId()).isEqualTo("hehe");
+				em.remove(courseOrder);
+				return null;
+			}
+
+		});
+
 	}
 }
