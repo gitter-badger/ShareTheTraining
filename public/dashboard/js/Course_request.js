@@ -1,3 +1,6 @@
+function addExtraData(){
+	JsonData['courseInfoId']=JsonData['courseId'];
+}
 function deleteEditedItem() {
     var Items = new Array;
     Items.push($('.datatable').DataTable().$('td', 'tr.edited').eq(1).text());
@@ -26,6 +29,7 @@ function deleteItems(Items) {
 }
 function addItem(){
 	getJsonData();
+	addExtraData();
 	jsRoutes.controllers.Application.dashConcreteCourseAdd().ajax({
 		data : JsonData,
 		suceess : {}
@@ -35,6 +39,7 @@ function addItem(){
 
 function updateItem() {
 	getJsonData();
+	addExtraData();
 	jsRoutes.controllers.Application.dashCourseUpdate().ajax({
 		data : JsonData,
 		suceess : {}
