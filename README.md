@@ -9,4 +9,4 @@ ShareTheTraining
 
 >*O Captain! My Captain! Fallen cold and dead.*
 
-![Bilby Stampede](http://assets1.redbubble.net/assets/clear-24f1b1f9614bdeeb1c30a4aa48f963d0.gif)
+![Fuck My Life](http://sd.keepcalm-o-matic.co.uk/i/keep-calm-and-fuck-my-life-6.png)
