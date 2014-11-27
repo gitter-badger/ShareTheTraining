@@ -18,6 +18,7 @@ function addItem(){}
 
 function updateItem(){
 	getJsonData();
+	addLocation();
 	jsRoutes.controllers.Application.dashCustomerUpdate().ajax({
 		data : JsonData,
 		suceess : {}
@@ -103,7 +104,9 @@ function setDetailPage(item) {
     $("#cellPhone").val(item.trainerId);
     $("#state").val(item.location.region);
     $("#city").val(item.location.city);
-    $("#userStatus").val(item.detailedLoc);
+    $("#detailedLoc").val(item.location.detailedLoc);
+    $("#zipCode").val(item.location.zipCode);
+    $("#userStatus").val(item.userStatus);
 
     $("#userName").val(item.userName);
     $("#password").val(item.password);
@@ -124,6 +127,8 @@ function disableFields() {
     $("#cellPhone").attr("readonly", true);
     $("#state").attr("readonly", true);
     $("#city").attr("readonly", true);
+    $("#detailedLoc").attr("readonly", true);
+    $("#zipCode").attr("readonly", true);
     $("#userStatus").attr("disabled", true);
     $("#userName").attr("readonly", true);
     $("#password").attr("readonly", true);
@@ -137,6 +142,8 @@ function enableFields() {
     $("#cellPhone").attr("readonly", false);
     $("#state").attr("readonly", false);
     $("#city").attr("readonly", false);
+    $("#detailedLoc").attr("readonly", false);
+    $("#zipCode").attr("readonly", false);
     $("#userStatus").attr("disabled", false);
     $("#userName").attr("readonly", false);
     $("#password").attr("readonly", false);
@@ -150,6 +157,8 @@ function emptyDetailPage(item) {
     $("#cellPhone").val('');
     $("#state").val('');
     $("#city").val('');
+    $("#detailedLoc").val('');
+    $("#zipCode").val('');
     $("#userStatus").val('');
     $("#userName").val('');
     $("#password").val('');

@@ -26,6 +26,7 @@ getJsonData();
 }
 function updateItem(){
 	getJsonData();
+	addLocation();
 	jsRoutes.controllers.Application.dashConcreteCourseUpdate().ajax({
 		data : JsonData,
 		suceess : {}
@@ -104,10 +105,10 @@ function setDetailPage(item) {
     $("#trainerName").val(item.trainerName);
     $("#trainerEmail").val(item.trainerEmail);
     $("#courseCategory").val(item.courseCategory);
-    $("#detailedLoc").val(item.detailedLoc);
+    $("#detailedLoc").val(item.location.detailedLoc);
     $("#city").val(item.location.city);
     $("#state").val(item.location.region);
-    $("#zipCode").val(item.zipCode);
+    $("#zipCode").val(item.location.zipCode);
     $("#soldSeat").val(item.soldSeat);
     $("#minimum").val(item.minimum);
     $("#maximum").val(item.maximum);
