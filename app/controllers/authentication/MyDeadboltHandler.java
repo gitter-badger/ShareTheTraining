@@ -40,21 +40,6 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 		});
 	}
 
-	public static User retrieveUser(final String userEmail){
-		final User u = null;
-		try {
-			return JPA.withTransaction(new F.Function0<User>() {
-			    @Override
-			    public User apply() throws Throwable {
-					return null;
-			    }
-			});
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return u;
-	}
 	
 	@Override
 	public F.Promise<Result> onAuthFailure(final Http.Context context,
