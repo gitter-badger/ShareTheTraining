@@ -83,19 +83,25 @@ public class UserHandler implements IUserHandler {
 
 	@Override
 	public User createNewUser(String userEmail, String userName,
-			String password, UserRole userRole) {
+			String password, UserRole userRole, UserForm userForm) {
 		if (getUserByEmail(userEmail) != null)
 			return null;
+		User user = null;
 		switch (userRole) {
 		case ADMIN:
-			return Admin.create(userEmail, userName, password, em);
+			user = Admin.create(userEmail, userName, password, em);
+			break;
 		case CUSTOMER:
-			return Customer.create(userEmail, userName, password, em);
+			user =  Customer.create(userEmail, userName, password, em);
+			break;
 		case TRAINER:
-			return Trainer.create(userEmail, userName, password, em);
+			user = Trainer.create(userEmail, userName, password, em);
+			break;
 		default:
 			return null;
 		}
+		userForm.bindUser(user);
+		return user;
 	}
 
 	@Override
@@ -155,9 +161,7 @@ public class UserHandler implements IUserHandler {
 			String password, UserForm userForm) {
 		if (superAdmin.isSuper()) {
 			Admin newAdmin = (Admin) this.createNewUser(userEmail, userName,
-					password, UserRole.ADMIN);
-			if (newAdmin != null)
-				userForm.bindUser(newAdmin);
+					password, UserRole.ADMIN, userForm);
 			return newAdmin;
 		}
 		return null;

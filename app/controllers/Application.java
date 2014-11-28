@@ -1163,7 +1163,7 @@ public class Application extends Controller {
 		UserHandler uh = new UserHandler();
 		User user = uh.createNewUser(adminForm.getEmail(),
 				adminForm.getUsername(), adminForm.getPassword(),
-				UserRole.ADMIN);
+				UserRole.ADMIN, adminForm);
 		boolean flag = adminForm.bindUser(user);
 		ObjectNode result = Json.newObject();
 		if (flag == true) {

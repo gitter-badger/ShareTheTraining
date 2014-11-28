@@ -59,9 +59,8 @@ public class AuthenticationHandler implements IAuthenticationHandler {
 			IMailHandler mailHandler) {
 		try {
 			User user = userHandler.createNewUser(userEmail, userName,
-					password, userRole);
+					password, userRole, userform);
 			if (user != null) {
-				userform.bindUser(user);
 				ActionToken actionToken = assignNewToke(userEmail,
 						UserAction.REGISTER);
 				String confirmToken = generateConfirmToken(actionToken);

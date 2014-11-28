@@ -41,7 +41,7 @@ public class AuthenticationHandlerTest extends BaseTest {
 		AuthenticationHandler authenticationHandler = new AuthenticationHandler();
 		UserHandler userHandler = new UserHandler();
 		User u = userHandler.createNewUser("wjf3121@gmail.com", "hehe", "123",
-				UserRole.CUSTOMER);
+				UserRole.CUSTOMER, new CustomerForm());
 		u.setUserStatus(UserStatus.ACTIVE);
 		authenticationHandler.doLogin("wjf3121@gmail.com", "123",
 				mockContext, userHandler);
@@ -55,7 +55,7 @@ public class AuthenticationHandlerTest extends BaseTest {
 		AuthenticationHandler authenticationHandler = new AuthenticationHandler();
 		UserHandler userHandler = new UserHandler();
 		User u = userHandler.createNewUser("wjf3121@gmail.com", "hehe", "123",
-				UserRole.CUSTOMER);
+				UserRole.CUSTOMER, new CustomerForm());
 		u.setUserStatus(UserStatus.ACTIVE);
 		authenticationHandler.doLogin("wjf3121@gmail.com", "123",
 				mockContext, userHandler);

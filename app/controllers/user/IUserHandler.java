@@ -18,7 +18,7 @@ public interface IUserHandler {
 	public User getUserByEmail(String userEmail);
 	
 	public User createNewUser(String userEmail, String userName, String password,
-			UserRole userRole);
+			UserRole userRole, UserForm userForm);
 	
 	public boolean updateProfile(String userEmail, UserForm form);
 	
@@ -43,5 +43,7 @@ public interface IUserHandler {
 
 	public Admin newAdmin(Admin superAdmin, String userEmail, String userName,
 			String password, UserForm userForm);
+
+
 
 }
