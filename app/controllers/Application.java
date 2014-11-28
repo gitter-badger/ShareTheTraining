@@ -410,7 +410,7 @@ public class Application extends Controller {
 
 	// TODO together
 	@Transactional
-	@Restrict({ @Group("CUSTOMER") })
+	@Restrict({ @Group("CUSTOMER"),@Group("TRAINER") })
 	public static Result basicInfo() {
 		User user = (User) Context.current().args.get("connected");
 		switch (user.getUserRole()) {
