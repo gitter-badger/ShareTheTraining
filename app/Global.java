@@ -16,10 +16,12 @@ import java.lang.reflect.Method;
 
 import models.locations.Geolocation;
 import models.users.Trainer;
+import models.users.User;
 import models.users.UserStatus;
 import controllers.routes;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
+import controllers.user.UserHandler;
 @Transactional
 public class Global extends GlobalSettings {
 
@@ -28,10 +30,27 @@ public class Global extends GlobalSettings {
 		// Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
 		Logger.info("Play it, Sam. Play \"As Time Goes By.\"");
 		LocationHandler.initialize();
+		//newUser("");
 		
 	}
 	
-
+	public static User newUser(final String userEmail){
+		final User u = null;
+		try {
+			return JPA.withTransaction(new F.Function0<User>() {
+			    @Override
+			    public User apply() throws Throwable {
+					Trainer trainer = Trainer.create("asd@asd.asd", "asd", "111", JPA.em());
+					trainer.setUserStatus(UserStatus.ACTIVE);
+					return trainer;
+			    }
+			});
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return u;
+	}
 	
 	public void onStop(Application app) {
 		// Logger.info("Baby tomato starts lagging behind. Poppa tomato gets angry, goes over to the baby tomato, and smooshes him... and says, Catch up.");

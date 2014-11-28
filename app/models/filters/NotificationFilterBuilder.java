@@ -24,6 +24,8 @@ public class NotificationFilterBuilder implements FilterBuilder {
 
 	Class objectClass = null;
 
+	boolean isCount = false;
+	
 	private static Set<String> orderBySet = new HashSet<String>(
 			Arrays.asList("created"));
 
@@ -44,7 +46,11 @@ public class NotificationFilterBuilder implements FilterBuilder {
 		Root entityRoot = criteria.from(objectClass);
 		List<Predicate> predicates = new ArrayList<Predicate>();
 		List<Selection> selections = new ArrayList<Selection>();
-		selections.add(0, entityRoot);
+		if(isCount){
+			selections.add(0, cb.count(entityRoot));
+		}
+		else
+			selections.add(0, entityRoot);
 		criteria.multiselect(selections.toArray(new Selection[0])).distinct(
 				true);
 		predicates.add(cb.greaterThanOrEqualTo(
@@ -73,5 +79,21 @@ public class NotificationFilterBuilder implements FilterBuilder {
 
 	public void setObjectClass(Class objectClass) {
 		this.objectClass = objectClass;
+	}
+
+	public boolean isCount() {
+		return isCount;
+	}
+
+	public void setCount(boolean isCount) {
+		this.isCount = isCount;
+	}
+
+	public static Set<String> getOrderBySet() {
+		return orderBySet;
+	}
+
+	public static void setOrderBySet(Set<String> orderBySet) {
+		NotificationFilterBuilder.orderBySet = orderBySet;
 	}
 }

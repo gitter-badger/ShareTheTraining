@@ -51,14 +51,39 @@ public class NotificationHandler implements INotificationHandler {
 		return result;
 	}
 
+	private long getNewItemsCount(Class objectClass, Date lastTime) {
+		try {
+			NotificationFilterBuilder nfb = new NotificationFilterBuilder();
+			nfb.setCreation(lastTime);
+			nfb.setObjectClass(objectClass);
+			nfb.setCount(true);
+			TypedQuery<Tuple> tq = em.createQuery(nfb.buildeQuery(
+					em.getCriteriaBuilder(), "created", true));
+			return (long) tq.getSingleResult().get(0);
+		} catch (Exception e) {
+			Logger.error(e.toString());
+			return 0;
+		}
+	}
+
 	@Override
 	public Collection<Trainer> getNewTrainers(Date lastTime) {
 		return getNewItems(Trainer.class, lastTime, -1, -1);
+	}
+	
+	@Override
+	public long getNewTrainerCount(Date lastTime){
+		return getNewItemsCount(Trainer.class, lastTime);
 	}
 
 	@Override
 	public Collection<Customer> getNewCustomers(Date lastTime) {
 		return getNewItems(Customer.class, lastTime, -1, -1);
+	}
+	
+	@Override
+	public long getNewCustomerCount(Date lastTime) {
+		return getNewItemsCount(Customer.class, lastTime);
 	}
 
 	@Override
@@ -67,17 +92,33 @@ public class NotificationHandler implements INotificationHandler {
 	}
 
 	@Override
+	public long getNewCourseCount(Date lastTime) {
+		return getNewItemsCount(Course.class, lastTime);
+	}
+	
+	@Override
 	public Collection<ConcreteCourse> getNewConcreteCourse(Date lastTime) {
 		return getNewItems(ConcreteCourse.class, lastTime, -1, -1);
+	}
+	
+	@Override
+	public long getNewConcreteCourseCount(Date lastTime) {
+		return getNewItemsCount(ConcreteCourse.class, lastTime);
 	}
 
 	@Override
 	public Collection<CourseOrder> getNewCourseOrder(Date lastTime) {
 		return getNewItems(CourseOrder.class, lastTime, -1, -1);
 	}
+	
+	@Override
+	public long getNewCourseOrderCount(Date lastTime) {
+		return getNewItemsCount(CourseOrder.class, lastTime);
+	}
 
 	@Override
-	public void updateNotifiedDate(NotificationItem notificationItem, Date current) {
+	public void updateNotifiedDate(NotificationItem notificationItem,
+			Date current) {
 		Connection connection = DB.getConnection();
 		String updateSQL = "UPDATE notification SET action_timestamp = ? WHERE action = ?";
 		try {

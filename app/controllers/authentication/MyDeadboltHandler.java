@@ -30,8 +30,9 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 			public Subject apply() throws Throwable {
 				String email = context.session().get("connected");
 				if (email != null) {
-					User u = retrieveUser(email);
+					User u = new UserHandler().getUserByEmail(email);
 					context.args.put("connected", u);
+					context.flash().put("role", Integer.toString(u.getUserRole().ordinal()));
 					return u;
 				}
 				return new Guest();
@@ -39,14 +40,13 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 		});
 	}
 
-	@Transactional
 	public static User retrieveUser(final String userEmail){
 		final User u = null;
 		try {
 			return JPA.withTransaction(new F.Function0<User>() {
 			    @Override
 			    public User apply() throws Throwable {
-					return new UserHandler().getUserByEmail(userEmail);
+					return null;
 			    }
 			});
 		} catch (Throwable e) {
@@ -59,16 +59,11 @@ public class MyDeadboltHandler extends AbstractDeadboltHandler {
 	@Override
 	public F.Promise<Result> onAuthFailure(final Http.Context context,
 			String content) {
-		// you can return any result from here - forbidden, etc
 		return F.Promise.promise(new F.Function0<Result>() {
 			@Override
 			public Result apply() throws Throwable {
-				if(context.args.get("connected")!=null){
-					User u = (User) context.args.get("connected");
-					if(u.getUserRole() == UserRole.ADMIN)
-						return redirect(routes.Application.dashDashboard());
+				if(context.session().get("connected")!=null)
 					return redirect(routes.Application.welcome());
-				}
 				context.flash().put("message", "go sigining up, you dumbass!");
 				context.flash().put("redirect", context.request().path());
 				return redirect(routes.Application.login());

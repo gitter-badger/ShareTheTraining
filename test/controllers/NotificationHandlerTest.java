@@ -38,4 +38,21 @@ public class NotificationHandlerTest extends BaseTest{
 		assertThat(list2.size()).isEqualTo(1);
 		assertThat(list2.iterator().next().getEmail()).isEqualTo("sda");
 	}
+	
+	@Test
+	public void testGetNewItemCount(){
+		SimpleDateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+		String dateInString = "06-04-1989";
+		Date date1 = new Date();
+		Date date2 = new Date();
+		try {
+			date2 = sdf.parse(dateInString);
+		} catch (ParseException e) {
+			Logger.error(e.toString());
+		}
+		NotificationHandler nfh = new NotificationHandler();
+		date1.setSeconds(date1.getSeconds()+1);
+		assertThat(nfh.getNewTrainerCount(date1)).isEqualTo(0);
+		assertThat(nfh.getNewTrainerCount(date2)).isEqualTo(1);
+	}
 }

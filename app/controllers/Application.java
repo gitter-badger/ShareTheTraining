@@ -160,6 +160,7 @@ public class Application extends Controller {
 
 	}
 
+	@Transactional
 	@Restrict({ @Group("GUEST") })
 	public static Result login() {
 		String redirect = flash().get("redirect") == null ? routes.Application

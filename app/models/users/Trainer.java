@@ -57,8 +57,6 @@ public class Trainer extends User {
 
 	private int rateCount;
 
-	private boolean isVeteran;
-	
 	private Veteran veteranRole = Veteran.NONE;
 
 	private Location location = new Location(null,null, "", 0, 0);
@@ -179,13 +177,6 @@ public class Trainer extends User {
 		this.rateCount = rateCount;
 	}
 
-	public boolean isVeteran() {
-		return isVeteran;
-	}
-
-	public void setVeteran(boolean isVeteran) {
-		this.isVeteran = isVeteran;
-	}
 
 	public Location getLocation() {
 		return location;

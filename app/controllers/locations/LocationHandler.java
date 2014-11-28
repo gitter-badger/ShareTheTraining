@@ -82,12 +82,15 @@ public class LocationHandler {
 			while (rs.next()) {
 				String state = rs.getString("state");
 				String city = rs.getString("city");
-				List<String> cityList = cityMap.get(state);
-				if (cityList == null) {
-					cityList = new ArrayList<String>();
-					cityMap.put(state, cityList);
+				if (city != null && city.length() > 0
+						&& Character.isDigit(city.charAt(0))) {
+					List<String> cityList = cityMap.get(state);
+					if (cityList == null) {
+						cityList = new ArrayList<String>();
+						cityMap.put(state, cityList);
+					}
+					cityList.add(city);
 				}
-				cityList.add(city);
 			}
 		} catch (SQLException e) {
 			Logger.info(e.toString());

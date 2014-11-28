@@ -33,6 +33,7 @@ import models.courses.CourseStatus;
 import models.courses.Review;
 import models.locations.Location;
 import models.users.Trainer;
+import models.users.Veteran;
 
 public class CourseFilterBuilder implements FilterBuilder {
 
@@ -101,8 +102,8 @@ public class CourseFilterBuilder implements FilterBuilder {
 					trainerEmail));
 		}
 		if (isVeteran == true) {
-			predicates.add(cb.equal(trainerRoot.<Boolean> get("isVeteran"),
-					isVeteran));
+			predicates.add(cb.notEqual(trainerRoot.<Boolean> get("veteranRole"),
+					Veteran.NONE));
 		}
 		if (category != -1) {
 			predicates.add(cb.equal(

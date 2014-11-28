@@ -25,5 +25,14 @@ public interface INotificationHandler {
 	public void updateNotifiedDate(NotificationItem notificationItem, Date current);
 
 	public Date getLastNotifiedDate(NotificationItem notificationItem);
+
+	public long getNewCourseOrderCount(Date lastTime);
+
+	public long getNewCustomerCount(Date lastTime);
 	
+	public long getNewTrainerCount(Date lastTime);
+	
+	public long getNewCourseCount(Date lastTime);
+	
+	public long getNewConcreteCourseCount(Date lastTime);
 }

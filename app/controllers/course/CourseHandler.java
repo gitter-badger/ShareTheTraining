@@ -61,9 +61,11 @@ public class CourseHandler implements ICourseHandler {
 	}
 	
 	public static Map<Integer, String> categoryMap;
+	public static Map<String, Integer> reverseCategoryMap;
+	
 	
 	public static void initialize() {
-		categoryMap = getCategoryMap();
+		getCategoryMap();
 	}
 
 	public Collection<ConcreteCourse> getAllConcreteCourse() {
@@ -438,10 +440,11 @@ public class CourseHandler implements ICourseHandler {
 		return new ArrayList<ConcreteCourse>();
 	}
 
-	private static Map<Integer, String> getCategoryMap() {
+	private static boolean getCategoryMap() {
 		Connection connection = DB.getConnection();
 		String selectSQL = "SELECT * FROM category";
-		Map<Integer, String> categoryMap = new HashMap<Integer, String>();
+		categoryMap = new HashMap<Integer, String>();
+		reverseCategoryMap = new HashMap<String, Integer>();
 		try {
 			PreparedStatement preparedStatement = connection
 					.prepareStatement(selectSQL);
@@ -452,10 +455,11 @@ public class CourseHandler implements ICourseHandler {
 				categoryMap.put(category, categoryText);
 
 			}
+			return true;
 		} catch (SQLException e) {
 			Logger.info(e.toString());
+			return false;
 		}
-		return categoryMap;
 	}
 
 	public static boolean isCategoryExist(String category) {
@@ -468,6 +472,7 @@ public class CourseHandler implements ICourseHandler {
 			ResultSet rs = preparedStatement.executeQuery(selectSQL);
 			if (rs.next()){
 				categoryMap.put(rs.getInt("id"), rs.getString("name"));
+				reverseCategoryMap.put(rs.getString("name"), rs.getInt("id"));
 				return true;
 			}
 		} catch (SQLException e) {
@@ -486,6 +491,7 @@ public class CourseHandler implements ICourseHandler {
 					.prepareStatement(updateSQL);
 			preparedStatement.setString(1, category);
 			preparedStatement.executeUpdate();
+			getCategoryMap();
 			return true;
 		} catch (SQLException e) {
 			Logger.info(e.toString());
