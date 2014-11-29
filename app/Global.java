@@ -19,6 +19,7 @@ import models.users.Trainer;
 import models.users.User;
 import models.users.UserStatus;
 import controllers.routes;
+import controllers.course.CourseHandler;
 import controllers.locations.GeolocationService;
 import controllers.locations.LocationHandler;
 import controllers.user.UserHandler;
@@ -30,6 +31,7 @@ public class Global extends GlobalSettings {
 		// Logger.info("Two elderly women are at a Catskill mountain resort, and one of 'em says, \"Boy, the food at this place is really terrible.\"");
 		Logger.info("Play it, Sam. Play \"As Time Goes By.\"");
 		LocationHandler.initialize();
+		CourseHandler.initialize();
 		//newUser("");
 		
 	}
